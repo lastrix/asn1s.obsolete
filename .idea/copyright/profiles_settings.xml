@@ -1,0 +1,14 @@
+<component name="CopyrightManager">
+  <settings default="ASN1S">
+    <module2copyright />
+    <LanguageOptions name="JAVA">
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+    </LanguageOptions>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+      <option name="box" value="true" />
+    </LanguageOptions>
+  </settings>
+</component>
