@@ -18,7 +18,10 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+
 import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -29,5 +32,15 @@ import java.io.OutputStream;
 public class ASN1OutputStream extends FilterOutputStream {
 	public ASN1OutputStream(final OutputStream out) {
 		super(out);
+	}
+
+
+	public void write(Object o) throws ASN1ProtocolException, IOException {
+
+		PrimitiveEncoder encoder = ASN1Types.getPrimitiveTypeEncoder(o);
+		if (encoder == null) {
+			throw new ASN1ProtocolException("No encoder for '" + o + "'");
+		}
+		encoder.encode(this, o);
 	}
 }

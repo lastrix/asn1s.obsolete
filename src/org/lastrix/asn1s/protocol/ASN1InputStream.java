@@ -20,7 +20,10 @@ package org.lastrix.asn1s.protocol;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author: lastrix
@@ -64,8 +67,8 @@ public class ASN1InputStream extends FilterInputStream {
 			//no header
 			return null;
 		}
-		final int tagClass = (temp & Tag.CLASS_MASK);
-		final boolean pc = ((temp & Tag.PC_MASK) >> 5) > 0;
+		final byte tagClass = (byte) (temp & Tag.CLASS_MASK);
+		final boolean constructed = ((temp & Tag.PC_MASK) >> 5) > 0;
 		long tag = temp & Tag.TAG_MASK;
 
 		/*
@@ -83,8 +86,6 @@ public class ASN1InputStream extends FilterInputStream {
 				tag = (tag << 7) | (temp & Tag.TAG_MASK_EXTENDED);
 			} while ((temp & Tag.TAG_EXTEND_MASK) > 0);
 		}
-
-		Length.LengthForm form = Length.LengthForm.DEFINITE;
 
 		/*
 			Read the length
@@ -104,7 +105,6 @@ public class ASN1InputStream extends FilterInputStream {
 			if ((temp & Length.LENGTH_MASK) == 0) {
 				//this is an indefinite form
 				length = 0;
-				form = Length.LengthForm.INDEFINITE;
 			} else {
 				//this is an definite long form
 				final int count = temp & Length.LENGTH_MASK;
@@ -118,7 +118,7 @@ public class ASN1InputStream extends FilterInputStream {
 				}
 			}
 		}
-		return new Header(tagClass, pc, tag, form, length);
+		return new Header(tag, tagClass, constructed, length);
 	}
 
 	/**
@@ -129,33 +129,18 @@ public class ASN1InputStream extends FilterInputStream {
 	 * @return an object
 	 */
 	public Object read(Header header) throws ASN1Exception {
-		if (header.getPc() != Tag.PC.PRIMITIVE) {
+		if (header.isConstructed()) {
 			throw new IllegalStateException("Header tells, that content doesn't contain any primitive");
 		}
-		ValueHandler handler = ValueHandlers.getByHeader(header);
-		if (handler == null) {
+		PrimitiveDecoder decoder = ASN1Types.getPrimitiveDecoder(header);
+		if (decoder == null) {
 			throw new ASN1Exception("No handler found for tag " + header.getTag() + " class " + header.getTagClass() + ".");
 		}
 		try {
-			return handler.decodeValue(header, this);
+			return decoder.decode(this, header);
 		} catch (IOException e) {
 			throw new ASN1Exception("Unexpected EOF found.", e);
 		}
 	}
 
-	public void fillOutputStream(OutputStream stream, int length)
-	throws ASN1Exception, IOException {
-		byte[] dataBucket = new byte[1024];
-		int readCount;
-
-		while (length != 0) {
-			readCount = read(
-			                dataBucket, 0, length < 1024 ? length
-			                                             : 1024
-			                );
-			if (readCount == -1) { throw new ASN1Exception("input stream has reached the end"); }
-			stream.write(dataBucket, 0, readCount);
-			length -= readCount;
-		}
-	}
 }

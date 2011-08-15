@@ -18,16 +18,31 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
+ * Boolean value encoder/decoder
+ *
  * @author: lastrix
  * Date: 8/14/11
  * Time: 1:30 PM
  */
-public final class ASN1Boolean implements ValueHandler {
+public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
+
+	/**
+	 * Boolean type id (tag)
+	 */
+	public static final long TAG_BOOLEAN = 0x01;
+
+	/**
+	 * No point in generation header many times, so just make default one.
+	 * It also helps sometimes.
+	 */
+	public final static Header BOOLEAN_HEADER = new Header(TAG_BOOLEAN, (byte) Tag.CLASS_UNIVERSAL, false, 1);
 
 	/**
 	 * Create ber boolean handler
@@ -35,60 +50,23 @@ public final class ASN1Boolean implements ValueHandler {
 	public ASN1Boolean() {
 	}
 
-	public static final long TAG_BOOLEAN = 0x01;
-
-	/**
-	 * Decode value
-	 *
-	 * @param header - the BER header
-	 * @param bis    - the input stream
-	 *
-	 * @return an Object
-	 */
 	@Override
-	public Object decodeValue(final Header header, final ASN1InputStream bis) throws IOException {
-		if (header.getTag() != TAG_BOOLEAN || header.getLength() != 1) {
-			throw new IllegalStateException("This is not an boolean value");
+	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
+		if (!BOOLEAN_HEADER.equals(header)) {
+			throw new ASN1ProtocolException("Incompatible header.");
 		}
-		final int octet = bis.read();
-		return new Boolean(octet > 0);
-	}
-
-	/**
-	 * Return PC
-	 *
-	 * @return an PC
-	 */
-	@Override
-	public PC getPC() {
-		return PC.PRIMITIVE;
-	}
-
-	/**
-	 * Return TagClass
-	 *
-	 * @return an TagClass
-	 */
-	@Override
-	public TagClass getTagClass() {
-		return TagClass.UNIVERSAL;
-	}
-
-	/**
-	 * Encode value with BER standard
-	 *
-	 * @param object - the object to be encoded
-	 * @param bos    - the output stream
-	 */
-	@Override
-	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
-		if (object instanceof java.lang.Boolean) {
-			bos.write(new byte[]{0x01, 0x01, (byte) (((java.lang.Boolean) object) ? 0x00 : 0xFF)});
-		} else { throw new ASN1Exception(String.format("Can not handle object '%s'", object)); }
+		//just read one octet which is actually the value
+		return new Boolean(is.read() > 0);
 	}
 
 	@Override
-	public long getTag() {
-		return TAG_BOOLEAN;
+	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
+		if (!(value instanceof Boolean)) {
+			throw new ASN1ProtocolException(String.format(getClass().getSimpleName() + ": can not handle object '%s'", value));
+		}
+		//write header
+		os.write(BOOLEAN_HEADER.toByteArray());
+		//and value
+		os.write(((Boolean) value) ? 0xFF : 0x00);
 	}
 }

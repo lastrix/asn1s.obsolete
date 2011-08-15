@@ -19,29 +19,45 @@
 package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 /**
+ * Integer encoder/decoder
+ *
  * @author: lastrix
  * Date: 8/14/11
  * Time: 2:22 PM
  */
-public class ASN1Integer implements ValueHandler {
+public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 
 	public final static long TAG_INTEGER = 0x02;
 
+	/**
+	 * Integer has default header as any primitive
+	 */
+	private final static Header INTEGER_HEADER = new Header(TAG_INTEGER, (byte) Tag.CLASS_UNIVERSAL, false, 2);
+	private final static double LOG_256        = Math.log(256);
+
+	/**
+	 * Create default integer encoder/decoder
+	 */
+	public ASN1Integer() {
+	}
+
 	@Override
-	public Object decodeValue(final Header header, final ASN1InputStream bis) throws IOException, ASN1Exception {
-		if (header.getTag() != TAG_INTEGER || header.getLength() < 1) {
-			throw new ASN1Exception("Not valid tag or length for integer type.");
+	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
+		if (!INTEGER_HEADER.isSame(header)) {
+			throw new ASN1ProtocolException("Supplied header is not valid Integer header.");
 		}
 		long value = 0;
 		//extract sign
-		int temp = bis.read();
+		int temp = is.read();
 		if ((temp & 0x80) != 0) {
 			//set value to all ones, so we get an negative value
 			value = Long.MIN_VALUE | Long.MAX_VALUE;
@@ -49,46 +65,31 @@ public class ASN1Integer implements ValueHandler {
 		//now we could extract all other octets
 		value = (value << 8) | ((long) temp & 0x00FFL);
 		for (int i = 1; i < header.getLength(); i++) {
-			temp = bis.read();
+			temp = is.read();
 			value = (value << 8) | ((long) temp & 0x00FFL);
 		}
 		return value;
 	}
 
 	@Override
-	public long getTag() {
-		return TAG_INTEGER;
-	}
-
-	@Override
-	public PC getPC() {
-		return PC.PRIMITIVE;
-	}
-
-	@Override
-	public TagClass getTagClass() {
-		return TagClass.UNIVERSAL;
-	}
-
-	@Override
-	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
+	public void encode(final OutputStream os, final Object object) throws ASN1ProtocolException, IOException {
 		if (!(object instanceof Integer)
 		    && !(object instanceof Byte)
 		    && !(object instanceof Long)
 		    && !(object instanceof Short)) {
-			throw new ASN1Exception("Object is not byte, short, integer or long.");
+			throw new ASN1ProtocolException("Object is not byte, short, integer or long.");
 		}
 		long value = numberToLong(object);
+
 		boolean negative = value < 0;
 		if (negative) {
 			value = -value;
 		}
 
-		//write the header
-		bos.write((byte) getTag());
 
-		final byte size = calculateSize(value);
-		bos.write(size);
+		//write the header
+		int size = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / LOG_256)), 1);
+
 
 		ByteBuffer bb = ByteBuffer.allocate(8);
 		if (negative) {
@@ -102,24 +103,27 @@ public class ASN1Integer implements ValueHandler {
 		byte[] data = new byte[size];
 		bb.get(data);
 
+		if (!negative && (data[0] & 0x80) > 0) {
+			size++;
+		}
+		if (INTEGER_HEADER.getLength() != size) {
+			//handle them separated
+			os.write(INTEGER_HEADER.tagToByteArray());
+			Header.writeLength(os, size);
+		} else {
+			//yeah! we could use cached one
+			os.write(INTEGER_HEADER.toByteArray());
+		}
+
+
 		//write data now
 		if (!negative) {
 			//we should check, that our data won't be counted as negative, so add trailing 0x00 octet
 			if ((data[0] & 0x80) > 0) {
-				bos.write(0x00);
+				os.write(0x00);
 			}
 		}
-		bos.write(data);
-	}
-
-	private byte calculateSize(final long value) {
-		byte size = 0;
-		long mask = 0xFF;
-		while (size < 8 && (value & mask) > 0) {
-			mask = mask << 8;
-			size++;
-		}
-		return (byte) Math.max(size, 1);
+		os.write(data);
 	}
 
 	/**
@@ -143,4 +147,6 @@ public class ASN1Integer implements ValueHandler {
 		Long l = (Long) o;
 		return l;
 	}
+
+
 }

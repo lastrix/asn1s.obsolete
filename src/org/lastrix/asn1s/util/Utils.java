@@ -16,16 +16,57 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.util;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:57 PM
+ * Date: 8/15/11
+ * Time: 2:14 PM
  */
-public interface Length {
+public class Utils {
 
-	public static final int FORM_MASK = 0x80;
+	private final static int CACHE_SIZE = 1024;
 
-	public static final int LENGTH_MASK = 0x1F;
+	public final static int getMinimumBytes(long value) {
+		return (int) (Math.ceil(Long.highestOneBit(value) / 8) + 1);
+	}
+
+	public final static int getMinimumBytes(int value) {
+		return (int) (Math.ceil(Integer.highestOneBit(value) / 8) + 1);
+	}
+
+	public final static int getMinimumBytes(short value) {
+		return (int) (Math.ceil(Integer.highestOneBit(((int) value) & 0xFFFF) / 8) + 1);
+	}
+
+	/**
+	 * Transfers <code>length</code> bytes from <code>is</code> to <code>os</code>
+	 *
+	 * @param is    - the input
+	 * @param os    - the output
+	 * @param count - bytes count
+	 *
+	 * @throws IOException
+	 */
+	public static final void fillOutputStream(InputStream is, OutputStream os, int count)
+	throws IOException {
+		byte[] dataBucket = new byte[CACHE_SIZE];
+		int readCount;
+
+		while (count != 0) {
+			readCount = is.read(
+			                   dataBucket, 0, count < CACHE_SIZE ? count
+			                                                     : CACHE_SIZE
+			                   );
+			if (readCount == -1) { throw new EOFException(); }
+			os.write(dataBucket, 0, readCount);
+			count -= readCount;
+		}
+	}
+
 }

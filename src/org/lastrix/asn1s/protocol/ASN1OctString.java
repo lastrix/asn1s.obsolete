@@ -20,42 +20,68 @@ package org.lastrix.asn1s.protocol;
 
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Null value encoder/decoder
- *
  * @author: lastrix
- * Date: 8/14/11
- * Time: 7:20 PM
+ * Date: 8/15/11
+ * Time: 5:29 PM
  */
-public class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
+public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 
-	public static final  long   TAG_NULL    = 0x05;
-	private final static Header NULL_HEADER = new Header(TAG_NULL, (byte) Tag.CLASS_UNIVERSAL, false, 0);
-
-	/**
-	 * Create default null value encoder/decoder
-	 */
-	public ASN1Null() {
-	}
+	public final static  int    TAG_OCTET_STRING    = 0x04;
+	private final static Header OCTET_STRING_HEADER = new Header(TAG_OCTET_STRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!NULL_HEADER.equals(header)) {
-			throw new ASN1ProtocolException("Header is not valid for 'null'.");
+		if (!OCTET_STRING_HEADER.isSame(header)) {
+			throw new ASN1ProtocolException("Parameter 'header' is not valid octet string header.");
 		}
-		return null;
+		if (header.getLength() == 0) {
+			return new Byte[0];
+		}
+
+		//infinite
+		if (header.getLength() == Length.FORM_MASK) {
+			//damn infinite form
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			int b = -1;
+			int b0 = -1;
+			while (true) {
+				b = is.read();
+				if (b == 0x00 && b0 == 0x00) {
+					break;
+				}
+				bos.write(b);
+				b0 = b;
+			}
+			byte[] result = new byte[bos.size() - 1];
+			System.arraycopy(bos.toByteArray(), 0, result, 0, result.length);
+			return result;
+		}
+
+		//defined
+		ByteArrayOutputStream bos = new ByteArrayOutputStream((int) header.getLength());
+		for (int i = 0; i < header.getLength(); i++) {
+			bos.write(is.read());
+		}
+		return bos.toByteArray();
 	}
 
 	@Override
 	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
-		if (value != null) {
-			throw new ASN1ProtocolException("Supplied value is not null.");
+		if (value == null) {
+			throw new NullPointerException();
 		}
-		//just write the header
-		os.write(NULL_HEADER.toByteArray());
+		if (!value.getClass().isArray() || !byte.class.equals(value.getClass().getComponentType())) {
+			throw new ASN1ProtocolException("Parameter 'value' should be byte array " + value.getClass());
+		}
+		byte[] array = (byte[]) value;
+		os.write(OCTET_STRING_HEADER.tagToByteArray());
+		os.write(array.length);
+		os.write(array);
 	}
 }

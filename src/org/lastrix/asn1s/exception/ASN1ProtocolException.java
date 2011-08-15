@@ -16,16 +16,27 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.exception;
 
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:57 PM
+ * Date: 8/15/11
+ * Time: 1:58 PM
  */
-public interface Length {
+public class ASN1ProtocolException extends ASN1Exception {
+	public ASN1ProtocolException(final Throwable cause) {
+		super(cause);
+	}
 
-	public static final int FORM_MASK = 0x80;
+	public ASN1ProtocolException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
 
-	public static final int LENGTH_MASK = 0x1F;
+	public ASN1ProtocolException(final String message) {
+		super(message);
+	}
+
+	public ASN1ProtocolException() {
+		super();
+	}
 }

@@ -18,6 +18,13 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
+import org.lastrix.asn1s.util.Utils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * Class for holding information about header (BER).
  *
@@ -25,34 +32,23 @@ package org.lastrix.asn1s.protocol;
  * Date: 8/14/11
  * Time: 12:29 PM
  */
-public class Header implements Length, Tag {
-	private final TagClass   tagClass;
-	private final PC         pc;
-	private final long       tag;
-	private final long       length;
-	private final LengthForm form;
+public class Header implements Length {
+	private static final Logger logger = Logger.getLogger(Header.class);
 
-	public Header(final int tagClass, final boolean pc, final long tag, final LengthForm form, final long length) {
-		if (tagClass == CLASS_APPLICATION) {
-			this.tagClass = TagClass.APPLICATION;
-		} else if (tagClass == CLASS_CONTEXT_SPECIFIC) {
-			this.tagClass = TagClass.CONTEXT_SPECIFIC;
-		} else if (tagClass == CLASS_PRIVATE) {
-			this.tagClass = TagClass.PRIVATE;
-		} else if (tagClass == CLASS_UNIVERSAL) {
-			this.tagClass = TagClass.UNIVERSAL;
-		} else {
-			this.tagClass = null;
-			throw new IllegalArgumentException(String.format("An unknown tagClass found '%d'.", tagClass));
-		}
-		if (pc) {
-			this.pc = PC.CONSTRUCTED;
-		} else {
-			this.pc = PC.PRIMITIVE;
-		}
+	public final static Header EOC_HEADER = new Header(0, (byte) 0, false, 0);
+
+	private final byte    tagClass;
+	private final boolean constructed;
+	private final long    tag;
+	private final long    length;
+	private byte[] byteArray = null;
+	private byte[] tagBytes  = null;
+
+	public Header(final long tag, final byte tagClass, final boolean constructed, final long length) {
 		this.tag = tag;
-		this.form = form;
-		this.length = length;
+		this.tagClass = tagClass;
+		this.constructed = constructed;
+		this.length = Math.max(length, 0);
 	}
 
 
@@ -64,31 +60,97 @@ public class Header implements Length, Tag {
 		return tag;
 	}
 
-	public TagClass getTagClass() {
+	public boolean isEOC() {
+		//end of contents is special 00 00 mark which could be counted as an UNIVERSAL PRIMITIVE object with zero tag and zero length
+		return length == 0 && tagClass == Tag.CLASS_UNIVERSAL && !constructed && tag == 0;
+	}
+
+	public byte getTagClass() {
 		return tagClass;
 	}
 
-	public PC getPc() {
-		return pc;
+	public boolean isConstructed() {
+		return constructed;
 	}
 
-	public LengthForm getForm() {
-		return form;
+	public byte[] tagToByteArray() {
+		if (tagBytes == null) {
+			toByteArray();
+		}
+		return tagBytes;
 	}
 
-	public boolean isEOC() {
-		//end of contents is special 00 00 mark which could be counted as an UNIVERSAL PRIMITIVE object with zero tag and zero length
-		return length == 0 && form == LengthForm.DEFINITE && tagClass == TagClass.UNIVERSAL && pc == PC.PRIMITIVE && tag == 0;
+	public byte[] toByteArray() {
+		if (byteArray != null) {
+			return byteArray;
+		}
+		final long tagBits = Long.highestOneBit(getTag());
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(Utils.getMinimumBytes(getTag()) + Utils.getMinimumBytes(getLength()) + 1);
+
+		if (tagBits > 0x1FL) {
+			//much worse, but doable
+			//TODO:
+		} else {
+			bos.write(((int) getTag()) & 0x1F | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
+		}
+
+		//save tag bytes
+		tagBytes = bos.toByteArray();
+		try {
+			writeLength(bos, getLength());
+		} catch (IOException e) {
+			//actually this should never happen here.
+			logger.error("An exception occurred.", e);
+		}
+		byteArray = bos.toByteArray();
+		return byteArray;
+	}
+
+	public static final void writeLength(OutputStream os, long length) throws IOException {
+		final long lengthBits = Long.highestOneBit(length);
+		if (lengthBits > 0x7FL) {
+			//much worse, but doable
+			//TODO:
+		} else {
+			os.write(((int) length) & 0x7F);
+		}
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		} else if (obj instanceof Header) {
+			return getLength() == ((Header) obj).getLength()
+			       && getTag() == ((Header) obj).getTag()
+			       && getTagClass() == ((Header) obj).getTagClass()
+			       && isConstructed() == ((Header) obj).isConstructed();
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if tag, tagClass and constructed fields are equal
+	 *
+	 * @param header
+	 *
+	 * @return an boolean
+	 */
+	public final boolean isSame(Header header) {
+		return isConstructed() == header.isConstructed()
+		       && getTag() == header.getTag()
+		       && getTagClass() == header.getTagClass();
 	}
 
 	@Override
 	public String toString() {
 		return "Header{" +
-		       "tagClass=" + tagClass +
-		       ", pc=" + pc +
-		       ", tag=" + tag +
+		       "tag=" + tag +
+		       ", tagClass=" + tagClass +
+		       ", constructed=" + constructed +
 		       ", length=" + length +
-		       ", form=" + form +
 		       '}';
 	}
+
+
 }

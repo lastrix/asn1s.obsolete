@@ -19,36 +19,37 @@
 package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author: lastrix
  * Date: 8/14/11
  * Time: 3:18 PM
  */
-public class ASN1Real implements ValueHandler {
+public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 	private final static Logger logger = Logger.getLogger(ASN1Real.class);
 
-	public static final long TAG_REAL = 0x09;
-
-	public enum BaseType {
-		DECIMAL,
-		BINARY,
-		SPECIAL
-	}
-
+	public static final  long   TAG_REAL    = 0x09;
+	private static final Header REAL_HEADER = new Header(TAG_REAL, (byte) Tag.CLASS_UNIVERSAL, false, 10);
 
 	@Override
-	public Object decodeValue(final Header header, final ASN1InputStream bis) throws IOException, ASN1Exception {
+	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
+		if (!REAL_HEADER.isSame(header)) {
+			throw new ASN1ProtocolException("Parameter 'header' is not valid Real type header.");
+		}
+
 		//test for zero value
 		if (header.getLength() == 0) {
 			return new Double(0d);
 		}
 
-		final int info = bis.read();
+		final int info = is.read();
 		long mantisLength = header.getLength() - 1;
 
 		//bad news
@@ -63,20 +64,21 @@ public class ASN1Real implements ValueHandler {
 				base = 16;
 			} else {
 				//this should not happen
-				throw new ASN1Exception("Invalid value for binary base (11)");
+				throw new ASN1ProtocolException("Invalid value for binary base (11)");
 			}
 		} else {
 			//decimal or something special
 			if ((info & 0x40) > 0) {
 				if (header.getLength() > 1) {
-					throw new ASN1Exception("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
+					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
 				}
 				if (info == 0x40) { return Double.POSITIVE_INFINITY; } else if (info == 0x41) { return Double.NEGATIVE_INFINITY; } else {
-					throw new ASN1Exception("Invalid real format for -inf/+inf");
+					throw new ASN1ProtocolException("Invalid real format for -inf/+inf");
 				}
 			} else {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) mantisLength);
-				bis.fillOutputStream(bos, (int) mantisLength);
+
+				Utils.fillOutputStream(is, bos, (int) mantisLength);
 				// IA5 == ASCII...?
 				String nrRep = new String(bos.toByteArray(), "US-ASCII");
 				// this will swallow NR(1-3) and give proper double :)
@@ -90,63 +92,44 @@ public class ASN1Real implements ValueHandler {
 		int exponent = 0;
 		int exponentType = info & 0x3;
 		if (exponentType == 0) {
-			exponent = bis.read();
+			exponent = is.read();
 			mantisLength--;
 		} else if (exponentType == 1 || exponentType == 2) {
 			int temp;
 			for (int i = 0; i < 2 + exponentType - 1; i++) {
-				temp = bis.read();
+				temp = is.read();
 				exponent = (exponent << 8) | (temp & 0xFF);
 			}
 			if (exponent > 0x7FF) {
-				throw new ASN1Exception("Exponent overflow.");
+				throw new ASN1ProtocolException("Exponent overflow.");
 			}
 			mantisLength -= 2 + exponentType - 1;
 		}
 
 		//extract mantis
 		if (mantisLength > 7) {
-			throw new ASN1Exception("Mantis overflow.");
+			throw new ASN1ProtocolException("Mantis overflow.");
 		}
 		long mantis = 0;
 		int temp;
 		for (int i = 0; i < mantisLength; i++) {
-			temp = bis.read();
+			temp = is.read();
 			mantis = (mantis << 8) | (temp & 0xFF);
 		}
+		//mantis <<= (8-mantisLength)*8;
+		//mantis = Long.reverseBytes(mantis);
 		mantis *= scale;
 		if (mantis > 0xFFFFFFFFFFFFFL) {
-			throw new ASN1Exception("Mantis overflow");
+			throw new ASN1ProtocolException(String.format("Mantis overflow (%X)", mantis));
 		}
-		long rawDouble = ((info & 0x40) != 0) ? (0x1L << 64) : 0;
+		long rawDouble = ((info & 0x40) != 0) ? (0x1L << 63) : 0;
 		rawDouble |= (exponent & 0x7FFL) << 52;
-		rawDouble |= (mantis & 0x0FL) << 48;
-		rawDouble |= ((mantis >> 8) & 0xFFL) << 40;
-		rawDouble |= ((mantis >> 16) & 0xFFL) << 32;
-		rawDouble |= ((mantis >> 24) & 0xFFL) << 24;
-		rawDouble |= ((mantis >> 32) & 0xFFL) << 16;
-		rawDouble |= ((mantis >> 40) & 0xFFL) << 8;
-		rawDouble |= ((mantis >> 48) & 0xFFL);
+		rawDouble |= mantis & 0xFFFFFFFFFFFFFL;
 		return Double.longBitsToDouble(rawDouble);
 	}
 
 	@Override
-	public long getTag() {
-		return TAG_REAL;
-	}
-
-	@Override
-	public PC getPC() {
-		return PC.PRIMITIVE;
-	}
-
-	@Override
-	public TagClass getTagClass() {
-		return TagClass.UNIVERSAL;
-	}
-
-	@Override
-	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
+	public void encode(final OutputStream os, final Object object) throws ASN1ProtocolException, IOException {
 		if (object == null) {
 			throw new NullPointerException("object == null.");
 		}
@@ -157,42 +140,48 @@ public class ASN1Real implements ValueHandler {
 			Float f = (Float) object;
 			value = f;
 		} else {
-			throw new ASN1Exception("Only 'Double' and 'Float' supported by ASN1Real ( has '" + object + "').");
+			throw new ASN1ProtocolException("Only 'Double' and 'Float' supported by ASN1Real ( has '" + object + "').");
 		}
 
 		// we don't need to make anything else
-		bos.write((int) getTag());
 		if (Double.isNaN(value) || value == 0d) {
 			//write length (that is all)
-			bos.write(0x00);
-			return;
-		} else if (Double.isInfinite(value)) {
+			os.write(REAL_HEADER.tagToByteArray());
 			//write length
-			bos.write(0x01);
+			os.write(0x00);
+			return;
+
+		} else if (Double.isInfinite(value)) {
+			//tag
+			os.write(REAL_HEADER.tagToByteArray());
+			//write length
+			os.write(0x01);
 			//write info octet
-			bos.write(0x40 | ((value < 0) ? 0x01 : 0x00));
+			os.write(0x40 | ((value < 0) ? 0x01 : 0x00));
 			return;
 		}
-		//it is not simple Double, so make something with it
-		bos.write(0x0A);
+
+		os.write(REAL_HEADER.toByteArray());
+
 		long valueBits = Double.doubleToLongBits(value);
 		//write info octet
-		bos.write(0x81 | ((int) (valueBits >> 57) & 0x40));
+		os.write(0x81 | ((int) (valueBits >> 57) & 0x40));
 
 		//extract exponent and write it
 		byte[] exponent = new byte[2];
 		exponent[0] = (byte) ((int) (valueBits >> 60) & 0x07);
 		exponent[1] = (byte) ((int) (valueBits >> 52) & 0xFF);
-		bos.write(exponent);
+		os.write(exponent);
 
 		//write mantis
 		byte[] mantis = new byte[7];
 		for (int index = 0; index < 7; index++) {
-			mantis[index] = (byte) (valueBits >> (index * 8));
+			mantis[6 - index] = (byte) (valueBits >> (index * 8));
 
 		}
-		mantis[6] &= 0x0F;
-		bos.write(mantis);
+		mantis[0] &= 0x0F;
+		os.write(mantis);
 		//well done!
 	}
+
 }

@@ -41,24 +41,10 @@ public interface Tag {
 
 	public static final int CLASS_PRIVATE = 0xC0;
 
-	public enum TagClass {
-		UNIVERSAL,
-		APPLICATION,
-		CONTEXT_SPECIFIC,
-		PRIVATE
-	}
-
 	/**
 	 * PC mask to extract 6th bit from first tag octet
 	 */
 	public static final int PC_MASK = 0x20;
-
-	public enum PC {
-		PRIMITIVE,
-		CONSTRUCTED,
-		ANY
-	}
-
 
 	/**
 	 * Tag mask to extract 1-5th bits from first tag octet

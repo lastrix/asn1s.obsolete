@@ -18,81 +18,98 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.BitSet;
 
 /**
- * TODO: probably should use java.util.BitSet here
+ * BitSet encoder/decoder
  *
  * @author: lastrix
  * Date: 8/14/11
  * Time: 6:15 PM
  */
-public class ASN1BitString implements ValueHandler {
+public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 
 	public static final long TAG_BITSTRING = 0x03;
 
+	private static final Header BIT_STRING_HEADER = new Header(TAG_BITSTRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+
+
 	@Override
-	public Object decodeValue(final Header header, final ASN1InputStream bis) throws IOException, ASN1Exception {
-		//this should be empty
-		if (header.getLength() == 1) {
-			return new String();
+	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
+		if (!BIT_STRING_HEADER.isSame(header)) {
+			throw new ASN1ProtocolException("Parameter 'header' is not valid BitString header.");
 		}
-		final int pad = bis.read();
+		final int pad = is.read();
 		if (pad > 7) {
-			throw new ASN1Exception("Bit string pad should be in [0,7]");
+			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
 		}
-		StringWriter sw = new StringWriter((int) ((header.getLength() - 1) * 2));
+		BitSet bs = new BitSet((int) (header.getLength() * 8));
 		int temp;
-		for (int i = 2; i < header.getLength(); i++) {
-			temp = bis.read();
-			//we should add it manually, since ASN1Integer.toHexString() doesn't add it anyway
-			if ((temp & 0xF0) == 0) {
-				sw.append("0");
+		final int size = (int) (header.getLength() - 1 - ((pad > 0) ? 1 : 0));
+		for (int i = 0; i < size; i++) {
+			temp = is.read();
+			for (int k = i * 8; k < (i + 1) * 8; k++) {
+				if ((temp & 0x01) > 0) {
+					bs.set(k);
+				}
+				temp >>= 1;
 			}
-			sw.append(Integer.toHexString(temp).toUpperCase());
 		}
-		temp = bis.read();
-		temp = temp >> pad;
-		sw.append(Integer.toHexString(temp).toUpperCase());
-		return sw.toString();
+		//handle pad
+		if (pad > 0) {
+			temp = is.read();
+			temp = temp >> pad;
+			final int end = (int) (header.getLength() * 8 - pad);
+			for (int i = (int) ((header.getLength() - 1) * 8); i < end; i++) {
+				if ((temp & 0x01) > 0) {
+					bs.set(i);
+				}
+				temp >>= 1;
+			}
+		}
+		return bs;
 	}
 
 	@Override
-	public long getTag() {
-		return TAG_BITSTRING;
+	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
+		if (!(value instanceof BitSet)) {
+			throw new ASN1ProtocolException("Parameter 'value' is not BitSet instance.");
+		}
+		os.write(BIT_STRING_HEADER.tagToByteArray());
+		BitSet bs = (BitSet) value;
+		final int bitCount = bs.length();
+		final int rest = bitCount % 8;
+		final int bytesCount = bitCount / 8 + ((rest > 0) ? 1 : 0) + 1;
+		Header.writeLength(os, bytesCount);
+		//write pad settings
+		if (rest == 0) {
+			os.write(0x00);
+		} else {
+			os.write(8 - rest);
+		}
+		for (int i = 0; i < bytesCount - 1; i++) {
+			os.write(getByte(bs, i * 8, (i + 1) * 8));
+		}
+		int lastByte = getByte(bs, (bytesCount - 1) * 8, Math.min(bitCount, bytesCount * 8));
+		if (rest > 0) {
+			lastByte <<= rest;
+		}
+		os.write(lastByte);
 	}
 
-	@Override
-	public PC getPC() {
-		return PC.PRIMITIVE;
-	}
-
-	@Override
-	public TagClass getTagClass() {
-		return TagClass.UNIVERSAL;
-	}
-
-	@Override
-	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
-		if (!(object instanceof String)) {
-			throw new ASN1Exception("String expected, has '" + object + "'.");
+	private byte getByte(final BitSet bs, final int sIndex, final int eIndex) {
+		int result = 0;
+		for (int i = sIndex; i < eIndex; i++) {
+			result = result << 1;
+			if (bs.get(i)) {
+				result |= 1;
+			}
 		}
-		String value = (String) object;
-		//header
-		bos.write(0x03);
-		//length (no OOB checks )
-		//FIXME: length should be written validly here.
-		bos.write(1 + value.length() / 2 + value.length() % 2);
-		//pad
-		bos.write((value.length() % 2) * 4);
-		for (int i = 0; i < value.length() / 2; i++) {
-			bos.write(Integer.parseInt(value.substring(i * 2, (i + 1) * 2), 16));
-		}
-		if (value.length() % 2 != 0) {
-			bos.write(Integer.parseInt(value.substring(value.length() - 1), 16) << 4);
-		}
+		return (byte) result;
 	}
 }

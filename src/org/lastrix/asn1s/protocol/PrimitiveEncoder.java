@@ -18,14 +18,27 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
+ * Interface for primitive encoder see X.690-0207 8.1.2.3 for more information
+ *
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:57 PM
+ * Date: 8/15/11
+ * Time: 1:53 PM
  */
-public interface Length {
+public interface PrimitiveEncoder {
 
-	public static final int FORM_MASK = 0x80;
-
-	public static final int LENGTH_MASK = 0x1F;
+	/**
+	 * Encode primitive value to output stream (with header writing)
+	 *
+	 * @param os    - the output stream
+	 * @param value - the value
+	 *
+	 * @throws ASN1ProtocolException
+	 */
+	public void encode(OutputStream os, Object value) throws ASN1ProtocolException, IOException;
 }

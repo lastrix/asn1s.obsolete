@@ -52,18 +52,18 @@ public interface ValueHandler extends Tag, Length {
 	public long getTag();
 
 	/**
-	 * Return PC
+	 * Return constructed
 	 *
-	 * @return an PC
+	 * @return constructed
 	 */
-	public PC getPC();
+	public boolean isConstructed();
 
 	/**
 	 * Return TagClass
 	 *
 	 * @return an TagClass
 	 */
-	public TagClass getTagClass();
+	public byte getTagClass();
 
 	/**
 	 * Encode value with BER standard

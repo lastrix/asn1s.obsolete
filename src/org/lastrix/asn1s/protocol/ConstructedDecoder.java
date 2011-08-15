@@ -20,15 +20,8 @@ package org.lastrix.asn1s.protocol;
 
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 3:09 PM
+ * Date: 8/15/11
+ * Time: 1:54 PM
  */
-public class ASN1Enumerated extends ASN1Integer {
-
-	public final static long TAG_ENUMERATED = 0x0A;
-
-	@Override
-	public long getTag() {
-		return TAG_ENUMERATED;
-	}
+public interface ConstructedDecoder {
 }
