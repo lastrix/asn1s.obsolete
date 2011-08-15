@@ -35,7 +35,7 @@ public class Header implements Length, Tag {
 	public Header(final int tagClass, final boolean pc, final long tag, final LengthForm form, final long length) {
 		if (tagClass == CLASS_APPLICATION) {
 			this.tagClass = TagClass.APPLICATION;
-		} else if (tagClass == CLASS_CONTEXTSPECIFIC) {
+		} else if (tagClass == CLASS_CONTEXT_SPECIFIC) {
 			this.tagClass = TagClass.CONTEXT_SPECIFIC;
 		} else if (tagClass == CLASS_PRIVATE) {
 			this.tagClass = TagClass.PRIVATE;

@@ -20,13 +20,12 @@ package org.lastrix.asn1s;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.lastrix.asn1s.protocol.*;
+import org.lastrix.asn1s.protocol.ASN1InputStream;
+import org.lastrix.asn1s.protocol.ASN1OutputStream;
+import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.protocol.ValueHandlers;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Arrays;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -74,11 +73,33 @@ public class Asn1s {
 	public static void main(final String[] args) {
 		initLogging();
 		ValueHandlers.init();
-		byte[] bytes = new byte[]{
-		                         0x09, 0x04, (byte) 0x81, 0x04, 0x01, 0x00,
-		                         0x09, 0x01, 0x41,
-		                         0x03, 0x07, 0x04, 0x0A, (byte) 0x3B, 0x5F, 0x29, 0x1C, (byte) 0xD0
+		Object[] objects = new Object[]{
+		                               "ADD01FC",
+		                               10,
+		                               -10,
+		                               10d,
+		                               0d,
+		                               0,
+		                               -10000d,
+		                               null,
+		                               true,
+		                               false,
+		                               Double.NEGATIVE_INFINITY,
+		                               Double.POSITIVE_INFINITY
 		};
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(64);
+		ASN1OutputStream os = new ASN1OutputStream(baos);
+		try {
+			for (Object o : objects) {
+				ValueHandlers.getTypeHandler((o != null) ? o.getClass() : (Class) null).encodeValue(o, os);
+			}
+		} catch (Exception e) {
+			logger.warn("An exception occurred:", e);
+			return;
+		}
+
+		final byte[] bytes = baos.toByteArray();
+		logger.warn(makeHexString(bytes));
 		ASN1InputStream bis = new ASN1InputStream(new ByteArrayInputStream(bytes));
 		try {
 			while (true) {
@@ -87,24 +108,25 @@ public class Asn1s {
 					break;
 				}
 				Object o = bis.read(header);
-				if (o instanceof Long) {
-					logger.warn(String.format("Object read: %s, %s", Long.toHexString((Long) o), o));
-				} else {
-					logger.warn(String.format("Object read: %s", o));
-				}
+				logger.warn(String.format("Object read: %s", o));
 			}
 		} catch (Exception e) {
 			logger.warn("Exception occurred:", e);
 		}
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(64);
-		ASN1OutputStream os = new ASN1OutputStream(baos);
-		try {
-			new ASN1Integer().encodeValue(new Integer(-100000), os);
-			logger.warn(Arrays.toString(baos.toByteArray()));
-		} catch (Exception e) {
-			logger.warn("An exception occurred:", e);
-		}
 	}
 
+	public static String makeHexString(byte[] array) {
+		if (array == null || array.length == 0) { return "[]"; }
+		StringWriter sw = new StringWriter(array.length * 2 + 2);
+		sw.append("[");
+		for (int i = 0; i < array.length; i++) {
+			sw.append(String.format(" 0x%02X", array[i]));
+			if (i < array.length - 1) {
+				sw.append(",");
+			}
+		}
+		sw.append(" ]");
+		return sw.toString();
+	}
 }

@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 /**
+ * TODO: probably should use java.util.BitSet here
+ *
  * @author: lastrix
  * Date: 8/14/11
  * Time: 6:15 PM
@@ -38,10 +40,9 @@ public class ASN1BitString implements ValueHandler {
 		if (header.getLength() == 1) {
 			return new String();
 		}
-
 		final int pad = bis.read();
-		if (pad < 1 || pad > 7) {
-			throw new ASN1Exception("Bit string pad should be in [1,7]");
+		if (pad > 7) {
+			throw new ASN1Exception("Bit string pad should be in [0,7]");
 		}
 		StringWriter sw = new StringWriter((int) ((header.getLength() - 1) * 2));
 		int temp;
@@ -76,7 +77,22 @@ public class ASN1BitString implements ValueHandler {
 
 	@Override
 	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
-		// TODO: unimplemented method stub
-
+		if (!(object instanceof String)) {
+			throw new ASN1Exception("String expected, has '" + object + "'.");
+		}
+		String value = (String) object;
+		//header
+		bos.write(0x03);
+		//length (no OOB checks )
+		//FIXME: length should be written validly here.
+		bos.write(1 + value.length() / 2 + value.length() % 2);
+		//pad
+		bos.write((value.length() % 2) * 4);
+		for (int i = 0; i < value.length() / 2; i++) {
+			bos.write(Integer.parseInt(value.substring(i * 2, (i + 1) * 2), 16));
+		}
+		if (value.length() % 2 != 0) {
+			bos.write(Integer.parseInt(value.substring(value.length() - 1), 16) << 4);
+		}
 	}
 }

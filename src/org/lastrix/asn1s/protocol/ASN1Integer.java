@@ -90,14 +90,10 @@ public class ASN1Integer implements ValueHandler {
 		final byte size = calculateSize(value);
 		bos.write(size);
 
-		//write data now
-		if (!negative) {
-			bos.write(0x00);
-		} else {
+		ByteBuffer bb = ByteBuffer.allocate(8);
+		if (negative) {
 			value = -value;
 		}
-
-		ByteBuffer bb = ByteBuffer.allocate(8);
 		bb.putLong(value);
 		bb.flip();
 		for (int i = 0; i < 8 - size; i++) {
@@ -105,6 +101,14 @@ public class ASN1Integer implements ValueHandler {
 		}
 		byte[] data = new byte[size];
 		bb.get(data);
+
+		//write data now
+		if (!negative) {
+			//we should check, that our data won't be counted as negative, so add trailing 0x00 octet
+			if ((data[0] & 0x80) > 0) {
+				bos.write(0x00);
+			}
+		}
 		bos.write(data);
 	}
 
@@ -115,7 +119,7 @@ public class ASN1Integer implements ValueHandler {
 			mask = mask << 8;
 			size++;
 		}
-		return size;
+		return (byte) Math.max(size, 1);
 	}
 
 	/**

@@ -31,16 +31,22 @@ import java.util.Map;
 public class ValueHandlers {
 	public static Map<Tag.TagClass, Map<Long, ValueHandler>> primitiveValues   = null;
 	public static Map<Tag.TagClass, Map<Long, ValueHandler>> constructedValues = null;
+	public static Map<Class, ValueHandler>                   typeHandlers      = null;
+	public static ValueHandler nullHandler;
 
 	public final static void init() {
 		primitiveValues = new HashMap<Tag.TagClass, Map<Long, ValueHandler>>();
 		constructedValues = new HashMap<Tag.TagClass, Map<Long, ValueHandler>>();
-		addPrimitiveHandler(new ASN1Boolean());
-		addPrimitiveHandler(new ASN1Integer());
-		addPrimitiveHandler(new ASN1BitString());
-		addPrimitiveHandler(new ASN1Null());
-		addPrimitiveHandler(new ASN1Real());
-		addPrimitiveHandler(new ASN1Enumerated());
+		typeHandlers = new HashMap<Class, ValueHandler>();
+		addPrimitiveHandler(new ASN1Boolean(), Boolean.class);
+		addPrimitiveHandler(new ASN1Integer(), Integer.class);
+		addPrimitiveHandler(new ASN1BitString(), String.class);
+
+		nullHandler = new ASN1Null();
+		addPrimitiveHandler(nullHandler);
+
+		addPrimitiveHandler(new ASN1Real(), Double.class, Float.class);
+		addPrimitiveHandler(new ASN1Enumerated(), Enum.class);
 	}
 
 	/**
@@ -63,6 +69,13 @@ public class ValueHandlers {
 		}
 	}
 
+	public static ValueHandler getTypeHandler(Class clazz) {
+		if (clazz == null) {
+			return nullHandler;
+		}
+		return typeHandlers.get(clazz);
+	}
+
 	/**
 	 * Helper function for value handler fetching
 	 *
@@ -83,9 +96,10 @@ public class ValueHandlers {
 	 * Add handler to primitive handlers
 	 *
 	 * @param handler - the handler
+	 * @param clazzs
 	 */
-	private static void addPrimitiveHandler(ValueHandler handler) {
-		addHandlerToMap(handler, primitiveValues);
+	private static void addPrimitiveHandler(ValueHandler handler, final Class... clazzs) {
+		addHandlerToMap(handler, primitiveValues, clazzs);
 	}
 
 	/**
@@ -93,8 +107,8 @@ public class ValueHandlers {
 	 *
 	 * @param handler - the handler
 	 */
-	private static void addConstructedHandler(ValueHandler handler) {
-		addHandlerToMap(handler, constructedValues);
+	private static void addConstructedHandler(ValueHandler handler, final Class... clazzs) {
+		addHandlerToMap(handler, constructedValues, clazzs);
 	}
 
 	/**
@@ -102,13 +116,21 @@ public class ValueHandlers {
 	 *
 	 * @param handler - the handler
 	 * @param map     - the map
+	 * @param clazzs
 	 */
-	private static void addHandlerToMap(ValueHandler handler, Map<Tag.TagClass, Map<Long, ValueHandler>> map) {
+	private static void addHandlerToMap(ValueHandler handler, Map<Tag.TagClass, Map<Long, ValueHandler>> map, final Class[] clazzs) {
 		Map<Long, ValueHandler> smap = map.get(handler.getTagClass());
 		if (smap == null) {
 			smap = new HashMap<Long, ValueHandler>();
 			map.put(handler.getTagClass(), smap);
 		}
 		smap.put(handler.getTag(), handler);
+
+		//put type handlers
+		if (clazzs != null && clazzs.length > 0) {
+			for (Class clazz : clazzs) {
+				typeHandlers.put(clazz, handler);
+			}
+		}
 	}
 }

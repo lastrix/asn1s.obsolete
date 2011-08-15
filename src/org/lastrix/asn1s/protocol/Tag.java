@@ -33,13 +33,13 @@ public interface Tag {
 	/*
 		Classes
 	 */
-	public static final int CLASS_UNIVERSAL       = 0x00;
+	public static final int CLASS_UNIVERSAL = 0x00;
 
-	public static final int CLASS_APPLICATION     = 0x40;
+	public static final int CLASS_APPLICATION = 0x40;
 
-	public static final int CLASS_CONTEXTSPECIFIC = 0x80;
+	public static final int CLASS_CONTEXT_SPECIFIC = 0x80;
 
-	public static final int CLASS_PRIVATE         = 0xC0;
+	public static final int CLASS_PRIVATE = 0xC0;
 
 	public enum TagClass {
 		UNIVERSAL,

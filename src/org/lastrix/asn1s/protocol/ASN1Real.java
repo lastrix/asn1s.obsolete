@@ -68,6 +68,9 @@ public class ASN1Real implements ValueHandler {
 		} else {
 			//decimal or something special
 			if ((info & 0x40) > 0) {
+				if (header.getLength() > 1) {
+					throw new ASN1Exception("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
+				}
 				if (info == 0x40) { return Double.POSITIVE_INFINITY; } else if (info == 0x41) { return Double.NEGATIVE_INFINITY; } else {
 					throw new ASN1Exception("Invalid real format for -inf/+inf");
 				}
@@ -144,7 +147,52 @@ public class ASN1Real implements ValueHandler {
 
 	@Override
 	public void encodeValue(final Object object, final ASN1OutputStream bos) throws ASN1Exception, IOException {
-		// TODO: unimplemented method stub
+		if (object == null) {
+			throw new NullPointerException("object == null.");
+		}
+		double value;
+		if (object instanceof Double) {
+			value = (Double) object;
+		} else if (object instanceof Float) {
+			Float f = (Float) object;
+			value = f;
+		} else {
+			throw new ASN1Exception("Only 'Double' and 'Float' supported by ASN1Real ( has '" + object + "').");
+		}
 
+		// we don't need to make anything else
+		bos.write((int) getTag());
+		if (Double.isNaN(value) || value == 0d) {
+			//write length (that is all)
+			bos.write(0x00);
+			return;
+		} else if (Double.isInfinite(value)) {
+			//write length
+			bos.write(0x01);
+			//write info octet
+			bos.write(0x40 | ((value < 0) ? 0x01 : 0x00));
+			return;
+		}
+		//it is not simple Double, so make something with it
+		bos.write(0x0A);
+		long valueBits = Double.doubleToLongBits(value);
+		//write info octet
+		bos.write(0x81 | ((int) (valueBits >> 57) & 0x40));
+
+		//extract exponent and write it
+		byte[] exponent = new byte[2];
+		exponent[0] = (byte) ((int) (valueBits >> 60) & 0x07);
+		exponent[1] = (byte) ((int) (valueBits >> 52) & 0xFF);
+		bos.write(exponent);
+
+		//write mantis
+		byte[] mantis = new byte[7];
+		for (int index = 0; index < 7; index++) {
+			mantis[index] = (byte) (valueBits >> (index * 8));
+
+		}
+		mantis[6] &= 0x0F;
+		bos.write(mantis);
+		//well done!
 	}
 }
