@@ -47,7 +47,7 @@ public class ASN1Types {
 		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Real.TAG_REAL, new ASN1Real(), Double.class, Float.class);
 		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Integer.TAG_INTEGER, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
 		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Null.TAG_NULL, new ASN1Null());
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1BitString.TAG_BITSTRING, new ASN1BitString(), BitSet.class);
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1BitString.TAG_BIT_STRING, new ASN1BitString(), BitSet.class);
 		byte[] arr = new byte[0];
 		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1OctString.TAG_OCTET_STRING, new ASN1OctString(), arr.getClass());
 	}

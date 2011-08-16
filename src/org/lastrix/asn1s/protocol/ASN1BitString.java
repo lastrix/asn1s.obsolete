@@ -33,10 +33,9 @@ import java.util.BitSet;
  * Time: 6:15 PM
  */
 public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
+	public static final byte TAG_BIT_STRING = 0x03;
 
-	public static final byte TAG_BITSTRING = 0x03;
-
-	private static final Header BIT_STRING_HEADER = new Header(TAG_BITSTRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+	private static final Header BIT_STRING_HEADER = new Header(TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 0);
 
 
 	@Override
@@ -48,7 +47,7 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		if (pad > 7) {
 			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
 		}
-		BitSet bs = new BitSet((int) (header.getLength() * 8));
+		BitSet bs = new BitSet((int) ((header.getLength() - 1) * 8));
 		int temp;
 		final int size = (int) (header.getLength() - 1 - ((pad > 0) ? 1 : 0));
 		for (int i = 0; i < size; i++) {
@@ -64,8 +63,8 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		if (pad > 0) {
 			temp = is.read();
 			temp = temp >> pad;
-			final int end = (int) (header.getLength() * 8 - pad);
-			for (int i = (int) ((header.getLength() - 1) * 8); i < end; i++) {
+			final int end = (int) ((header.getLength() - 1) * 8 - pad);
+			for (int i = (int) ((header.getLength() - 2) * 8); i < end; i++) {
 				if ((temp & 0x01) > 0) {
 					bs.set(i);
 				}
@@ -92,19 +91,19 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		} else {
 			os.write(8 - rest);
 		}
-		for (int i = 0; i < bytesCount - 1; i++) {
+		for (int i = 0; i < bytesCount - 2; i++) {
 			os.write(getByte(bs, i * 8, (i + 1) * 8));
 		}
-		int lastByte = getByte(bs, (bytesCount - 1) * 8, Math.min(bitCount, bytesCount * 8));
+		int lastByte = getByte(bs, (bytesCount - 2) * 8, Math.min((bytesCount - 2) * 8 + bitCount, (bytesCount - 1) * 8));
 		if (rest > 0) {
-			lastByte <<= rest;
+			lastByte <<= (8 - rest);
 		}
 		os.write(lastByte);
 	}
 
 	private byte getByte(final BitSet bs, final int sIndex, final int eIndex) {
 		int result = 0;
-		for (int i = sIndex; i < eIndex; i++) {
+		for (int i = eIndex - 1; i >= sIndex; i--) {
 			result = result << 1;
 			if (bs.get(i)) {
 				result |= 1;

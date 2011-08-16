@@ -18,42 +18,35 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.util.Locale;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 /**
  * @author: lastrix
  * Date: 8/16/11
- * Time: 11:25 AM
+ * Time: 1:54 PM
  */
-public class AllTests {
+public class ASN1OctStringTest extends TestCase {
+	@Test
+	public void testDecode() throws Exception {
+		final byte[] oct = new byte[]{/*ASN1OctString.TAG_OCTET_STRING, 0x04,*/ 0x11, 0x22, 0x33, 0x44};
+		final ByteArrayInputStream is = new ByteArrayInputStream(oct);
+		final ASN1OctString oStr = new ASN1OctString();
+		Object o = oStr.decode(is, new Header(ASN1OctString.TAG_OCTET_STRING, Tag.CLASS_UNIVERSAL, false, 0x04));
+		assertNotNull(o);
+		assertTrue(Arrays.equals((byte[]) o, new byte[]{0x11, 0x22, 0x33, 0x44}));
+	}
 
-	/**
-	 * Generate {@link TestSuite}
-	 *
-	 * @return an {@link Test} object
-	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.protocol");
-
-		suite.addTestSuite(ASN1BooleanTest.class);
-		suite.addTestSuite(ASN1NullTest.class);
-		suite.addTestSuite(ASN1IntegerTest.class);
-		suite.addTestSuite(ASN1RealTest.class);
-		suite.addTestSuite(ASN1BitStringTest.class);
-		suite.addTestSuite(ASN1OctStringTest.class);
-		//suite.addTest(org.lastrix.CSEmu.common.AllTests.suite());
-		// Make sure that we run the tests using the english locale
-		final TestSetup wrapper = new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
-		return wrapper;
-
+	@Test
+	public void testEncode() throws Exception {
+		final byte[] oct = new byte[]{0x11, 0x22, 0x33, 0x44};
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		final ASN1OctString o = new ASN1OctString();
+		o.encode(os, oct);
+		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1OctString.TAG_OCTET_STRING, 0x04, 0x11, 0x22, 0x33, 0x44}));
 	}
 }

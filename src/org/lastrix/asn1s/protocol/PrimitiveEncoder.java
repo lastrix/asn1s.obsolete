@@ -33,7 +33,7 @@ import java.io.OutputStream;
 public interface PrimitiveEncoder {
 
 	/**
-	 * Encode primitive value to output stream (with header writing)
+	 * Encode primitive value to output stream (with header)
 	 *
 	 * @param os    - the output stream
 	 * @param value - the value

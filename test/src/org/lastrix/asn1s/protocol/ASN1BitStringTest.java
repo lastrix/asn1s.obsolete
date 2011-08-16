@@ -24,52 +24,58 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.BitSet;
 
 /**
  * @author: lastrix
  * Date: 8/16/11
- * Time: 12:05 PM
+ * Time: 1:10 PM
  */
-public class ASN1RealTest extends TestCase {
+public class ASN1BitStringTest extends TestCase {
 	@Test
 	public void testDecode() throws Exception {
-		final int COUNT = 4;
-		//we don't need headers, because of arch
-		byte[] data = new byte[]{/*0x09, 0x05,*/ (byte) 0xC1, 0x04, 0x0C, (byte) 0x80, 0x38,//-10000d
-		                         /*0x09, 0x04,*/ (byte) 0x81, 0x04, 0x02, 0x40,//10d
-		                         /*0x09, 0x01,*/ 0x41,//-inf
-		                         /*0x09, 0x01,*/ 0x40//+inf
-		};
-		byte[] sizes = new byte[]{5, 4, 1, 1};
-		final ASN1Real real = new ASN1Real();
+		final byte[] data = new byte[]{0x02, (byte) 0xC4, 0x04, (byte) 0x89, (byte) 0x80};
+		final ASN1BitString bs = new ASN1BitString();
 		final ByteArrayInputStream is = new ByteArrayInputStream(data);
-		double doubles[] = new double[COUNT];
-		for (int i = 0; i < COUNT; i++) {
-			final Object o = real.decode(is, new Header(ASN1Real.TAG_REAL, Tag.CLASS_UNIVERSAL, false, sizes[i]));
-			if (o instanceof Double) {
-				doubles[i] = (Double) o;
-			} else {
-				fail("Double expected.");
-			}
-		}
-		assertTrue(Arrays.equals(doubles, new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY}));
+		Object o = bs.decode(is, new Header(ASN1BitString.TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 2));
+		assertNotNull(o);
+		assertTrue(o instanceof BitSet);
+		BitSet b = new BitSet(8);
+		b.set(0);
+		b.set(4);
+		b.set(5);
+		assertTrue(b.equals(o));
+		o = bs.decode(is, new Header(ASN1BitString.TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 3));
+		assertNotNull(o);
+		assertTrue(o instanceof BitSet);
+		b = new BitSet(16);
+		b.set(0);
+		b.set(3);
+		b.set(7);
+		b.set(11);
+		assertTrue(b.equals(o));
 	}
 
 	@Test
 	public void testEncode() throws Exception {
-		final double[] values = new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1Real real = new ASN1Real();
-		for (double d : values) {
-			real.encode(os, d);
-		}
+		BitSet b = new BitSet(8);
+		b.set(0);
+		b.set(4);
+		b.set(5);
+		final ASN1BitString bs = new ASN1BitString();
+		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
+		bs.encode(os, b);
+		b = new BitSet(16);
+		b.set(0);
+		b.set(3);
+		b.set(7);
+		b.set(11);
+		bs.encode(os, b);
 		assertTrue(
 		          Arrays.equals(
 		                       os.toByteArray(), new byte[]{
-		                                                   0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, (byte) 0x80, 0x38,//-10000d
-		                                                   0x09, 0x04, (byte) 0x81, 0x04, 0x02, 0x40,//10d
-		                                                   0x09, 0x01, 0x41,//-inf
-		                                                   0x09, 0x01, 0x40//+inf
+		                                                   ASN1BitString.TAG_BIT_STRING, 0x02, 0x02, (byte) 0xC4,
+		                                                   ASN1BitString.TAG_BIT_STRING, 0x03, 0x04, (byte) 0x89, (byte) 0x80
 		          }
 		                       )
 		          );
