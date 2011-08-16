@@ -20,6 +20,7 @@ package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,13 +37,12 @@ import java.nio.ByteBuffer;
 public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 
-	public final static long TAG_INTEGER = 0x02;
+	public final static byte TAG_INTEGER = 0x02;
 
 	/**
 	 * Integer has default header as any primitive
 	 */
-	private final static Header INTEGER_HEADER = new Header(TAG_INTEGER, (byte) Tag.CLASS_UNIVERSAL, false, 2);
-	private final static double LOG_256        = Math.log(256);
+	public final static Header INTEGER_HEADER = new Header(TAG_INTEGER, (byte) Tag.CLASS_UNIVERSAL, false, 2);
 
 	/**
 	 * Create default integer encoder/decoder
@@ -88,7 +88,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 
 
 		//write the header
-		int size = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / LOG_256)), 1);
+		int size = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_256)), 1);
 
 
 		ByteBuffer bb = ByteBuffer.allocate(8);

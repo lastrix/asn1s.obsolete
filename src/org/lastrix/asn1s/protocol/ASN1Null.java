@@ -33,8 +33,8 @@ import java.io.OutputStream;
  */
 public class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
 
-	public static final  long   TAG_NULL    = 0x05;
-	private final static Header NULL_HEADER = new Header(TAG_NULL, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+	public static final byte   TAG_NULL    = 0x05;
+	public final static Header NULL_HEADER = new Header(TAG_NULL, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 
 	/**
 	 * Create default null value encoder/decoder

@@ -18,46 +18,34 @@
 
 package org.lastrix.asn1s.protocol;
 
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:34 PM
+ * Date: 8/16/11
+ * Time: 11:38 AM
  */
-public interface Tag {
+public class ASN1NullTest extends TestCase {
 
-	/**
-	 * Class mask to extract 7th and 8th bits from first tag octet
-	 */
-	public static final int CLASS_MASK = 0xC0;
+	@Test
+	public void testDecode() throws Exception {
+		final ASN1Null n = new ASN1Null();
+		byte[] data = new byte[]{};
+		ByteArrayInputStream is = new ByteArrayInputStream(data);
+		Object o = n.decode(is, ASN1Null.NULL_HEADER);
+		assertNull(o);
+	}
 
-	/*
-		Classes
-	 */
-	public static final byte CLASS_UNIVERSAL = 0x00;
-
-	public static final byte CLASS_APPLICATION = 0x40;
-
-	public static final byte CLASS_CONTEXT_SPECIFIC = (byte) 0x80;
-
-	public static final byte CLASS_PRIVATE = (byte) 0xC0;
-
-	/**
-	 * PC mask to extract 6th bit from first tag octet
-	 */
-	public static final int PC_MASK = 0x20;
-
-	/**
-	 * Tag mask to extract 1-5th bits from first tag octet
-	 */
-	public static final int TAG_MASK = 0x1F;
-
-	/**
-	 * Used for additional tag octets
-	 */
-	public static final int TAG_MASK_EXTENDED = 0x7F;
-
-	/**
-	 * Mask to extract 8th bit from octets that come after 1st one ( if 1st one had 1-5 bits as 1 ).
-	 */
-	public static final int TAG_EXTEND_MASK = 0x80;
+	@Test
+	public void testEncode() throws Exception {
+		final ASN1Null n = new ASN1Null();
+		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
+		n.encode(os, null);
+		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1Null.TAG_NULL, 0x00}));
+	}
 }

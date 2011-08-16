@@ -30,6 +30,8 @@ import java.io.OutputStream;
  */
 public class Utils {
 
+	public final static double LOG_256 = Math.log(256);
+
 	private final static int CACHE_SIZE = 1024;
 
 	public final static int getMinimumBytes(long value) {

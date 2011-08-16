@@ -76,16 +76,9 @@ public class Asn1s {
 		ASN1Types.init();
 		final int SIZE = 500000;
 		Object[] objects = new Object[]{
-		                               new byte[]{10, 11, 12, 0, 1, 2},
 		                               -10000d,
-		                               10,
-		                               -10,
 		                               10d,
 		                               0d,
-		                               0,
-		                               null,
-		                               true,
-		                               false,
 		                               Double.NEGATIVE_INFINITY,
 		                               Double.POSITIVE_INFINITY
 		};
@@ -126,7 +119,10 @@ public class Asn1s {
 		StringWriter sw = new StringWriter(array.length * 2 + 2);
 		sw.append("[");
 		for (int i = 0; i < array.length; i++) {
-			sw.append(String.format(" %02X", array[i]));
+			sw.append(String.format(" 0x%02X", array[i]));
+			if (i < array.length - 1) {
+				sw.append(",");
+			}
 		}
 		sw.append(" ]");
 		return sw.toString();

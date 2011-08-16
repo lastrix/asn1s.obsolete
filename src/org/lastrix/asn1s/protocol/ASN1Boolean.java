@@ -36,7 +36,10 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 	/**
 	 * Boolean type id (tag)
 	 */
-	public static final long TAG_BOOLEAN = 0x01;
+	public static final byte TAG_BOOLEAN = 0x01;
+	public static final byte TRUE        = (byte) 0xFF;
+	public static final byte FALSE       = 0x00;
+
 
 	/**
 	 * No point in generation header many times, so just make default one.
@@ -67,6 +70,6 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 		//write header
 		os.write(BOOLEAN_HEADER.toByteArray());
 		//and value
-		os.write(((Boolean) value) ? 0xFF : 0x00);
+		os.write(((Boolean) value) ? TRUE : FALSE);
 	}
 }

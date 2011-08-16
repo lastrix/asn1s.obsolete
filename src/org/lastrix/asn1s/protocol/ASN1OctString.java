@@ -32,7 +32,7 @@ import java.io.OutputStream;
  */
 public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 
-	public final static  int    TAG_OCTET_STRING    = 0x04;
+	public final static  byte   TAG_OCTET_STRING    = 0x04;
 	private final static Header OCTET_STRING_HEADER = new Header(TAG_OCTET_STRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 
 	@Override

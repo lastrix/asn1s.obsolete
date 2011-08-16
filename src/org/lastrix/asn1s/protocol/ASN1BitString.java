@@ -34,7 +34,7 @@ import java.util.BitSet;
  */
 public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 
-	public static final long TAG_BITSTRING = 0x03;
+	public static final byte TAG_BITSTRING = 0x03;
 
 	private static final Header BIT_STRING_HEADER = new Header(TAG_BITSTRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 

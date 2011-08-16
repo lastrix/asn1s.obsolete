@@ -35,8 +35,8 @@ import java.io.OutputStream;
 public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 	private final static Logger logger = Logger.getLogger(ASN1Real.class);
 
-	public static final  long   TAG_REAL    = 0x09;
-	private static final Header REAL_HEADER = new Header(TAG_REAL, (byte) Tag.CLASS_UNIVERSAL, false, 10);
+	public static final  byte   TAG_REAL    = 0x09;
+	private static final Header REAL_HEADER = new Header(TAG_REAL, Tag.CLASS_UNIVERSAL, false, 10);
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
@@ -116,8 +116,8 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			temp = is.read();
 			mantis = (mantis << 8) | (temp & 0xFF);
 		}
-		//mantis <<= (8-mantisLength)*8;
-		//mantis = Long.reverseBytes(mantis);
+		mantis = Long.reverseBytes(mantis);
+		mantis >>= 12;
 		mantis *= scale;
 		if (mantis > 0xFFFFFFFFFFFFFL) {
 			throw new ASN1ProtocolException(String.format("Mantis overflow (%X)", mantis));
@@ -161,27 +161,38 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			return;
 		}
 
-		os.write(REAL_HEADER.toByteArray());
+		os.write(REAL_HEADER.tagToByteArray());
 
 		long valueBits = Double.doubleToLongBits(value);
-		//write info octet
-		os.write(0x81 | ((int) (valueBits >> 57) & 0x40));
 
-		//extract exponent and write it
-		byte[] exponent = new byte[2];
-		exponent[0] = (byte) ((int) (valueBits >> 60) & 0x07);
-		exponent[1] = (byte) ((int) (valueBits >> 52) & 0xFF);
-		os.write(exponent);
+		//extract exponent
+		long exponent = (valueBits >> 52) & 0x7FF;
+		final int exponentBytesCount = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(exponent)) / Utils.LOG_256)), 1);
+		//extract mantis
+		long mantis = valueBits & 0xFFFFFFFFFFFFFL;
+		mantis <<= 12;
+		mantis = Long.reverseBytes(mantis);
+		final int mantisBytesCount = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(mantis)) / Utils.LOG_256)), 1);
 
-		//write mantis
-		byte[] mantis = new byte[7];
-		for (int index = 0; index < 7; index++) {
-			mantis[6 - index] = (byte) (valueBits >> (index * 8));
+		//now we got all required information
+		final byte[] exponentBytes = extractBytes(exponent, exponentBytesCount);
+		final byte[] mantisBytes = extractBytes(mantis, mantisBytesCount);
 
+		//write length octet
+		os.write(mantisBytesCount + exponentBytesCount + 1);
+
+		//write info octet (we could only have here 1 or 2 exponent octets)
+		os.write(0x80 | ((exponentBytesCount == 1) ? 0x00 : 0x01) | ((int) (valueBits >> 57) & 0x40));
+		os.write(exponentBytes);
+		os.write(mantisBytes);
+	}
+
+	private byte[] extractBytes(long value, int bCount) {
+		final byte[] bytes = new byte[bCount];
+		for (int i = 0; i < bCount; i++) {
+			bytes[bCount - i - 1] = (byte) ((value >> i * 8) & 0xFF);
 		}
-		mantis[0] &= 0x0F;
-		os.write(mantis);
-		//well done!
+		return bytes;
 	}
 
 }

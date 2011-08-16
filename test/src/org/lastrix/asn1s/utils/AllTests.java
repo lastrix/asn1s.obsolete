@@ -16,48 +16,39 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.utils;
+
+import junit.extensions.TestSetup;
+import junit.framework.TestSuite;
+import org.junit.Test;
+
+import java.util.Locale;
 
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:34 PM
+ * Date: 8/16/11
+ * Time: 11:25 AM
  */
-public interface Tag {
+public class AllTests {
 
 	/**
-	 * Class mask to extract 7th and 8th bits from first tag octet
+	 * Generate {@link TestSuite}
+	 *
+	 * @return an {@link Test} object
 	 */
-	public static final int CLASS_MASK = 0xC0;
+	public static junit.framework.Test suite() {
+		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.utils");
 
-	/*
-		Classes
-	 */
-	public static final byte CLASS_UNIVERSAL = 0x00;
+		// suite.addTestSuite(SerializationTest.class);
+		//suite.addTest(org.lastrix.CSEmu.common.AllTests.suite());
+		// Make sure that we run the tests using the english locale
+		final TestSetup wrapper = new TestSetup(suite) {
+			@Override
+			public void setUp() {
+				Locale.setDefault(Locale.US);
+			}
+		};
+		return wrapper;
 
-	public static final byte CLASS_APPLICATION = 0x40;
-
-	public static final byte CLASS_CONTEXT_SPECIFIC = (byte) 0x80;
-
-	public static final byte CLASS_PRIVATE = (byte) 0xC0;
-
-	/**
-	 * PC mask to extract 6th bit from first tag octet
-	 */
-	public static final int PC_MASK = 0x20;
-
-	/**
-	 * Tag mask to extract 1-5th bits from first tag octet
-	 */
-	public static final int TAG_MASK = 0x1F;
-
-	/**
-	 * Used for additional tag octets
-	 */
-	public static final int TAG_MASK_EXTENDED = 0x7F;
-
-	/**
-	 * Mask to extract 8th bit from octets that come after 1st one ( if 1st one had 1-5 bits as 1 ).
-	 */
-	public static final int TAG_EXTEND_MASK = 0x80;
+	}
 }

@@ -18,46 +18,46 @@
 
 package org.lastrix.asn1s.protocol;
 
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:34 PM
+ * Date: 8/16/11
+ * Time: 11:30 AM
  */
-public interface Tag {
+public class ASN1BooleanTest extends TestCase {
 
-	/**
-	 * Class mask to extract 7th and 8th bits from first tag octet
-	 */
-	public static final int CLASS_MASK = 0xC0;
+	@Test
+	public void testDecode() throws Exception {
+		final ASN1Boolean b = new ASN1Boolean();
+		byte[] data = new byte[]{ASN1Boolean.TRUE, ASN1Boolean.FALSE};
+		ByteArrayInputStream is = new ByteArrayInputStream(data);
+		Object result = b.decode(is, ASN1Boolean.BOOLEAN_HEADER);
+		assertNotNull(result);
+		assertTrue((Boolean) result);
+		result = b.decode(is, ASN1Boolean.BOOLEAN_HEADER);
+		assertNotNull(result);
+		assertFalse((Boolean) result);
+	}
 
-	/*
-		Classes
-	 */
-	public static final byte CLASS_UNIVERSAL = 0x00;
-
-	public static final byte CLASS_APPLICATION = 0x40;
-
-	public static final byte CLASS_CONTEXT_SPECIFIC = (byte) 0x80;
-
-	public static final byte CLASS_PRIVATE = (byte) 0xC0;
-
-	/**
-	 * PC mask to extract 6th bit from first tag octet
-	 */
-	public static final int PC_MASK = 0x20;
-
-	/**
-	 * Tag mask to extract 1-5th bits from first tag octet
-	 */
-	public static final int TAG_MASK = 0x1F;
-
-	/**
-	 * Used for additional tag octets
-	 */
-	public static final int TAG_MASK_EXTENDED = 0x7F;
-
-	/**
-	 * Mask to extract 8th bit from octets that come after 1st one ( if 1st one had 1-5 bits as 1 ).
-	 */
-	public static final int TAG_EXTEND_MASK = 0x80;
+	@Test
+	public void testEncode() throws Exception {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
+		final ASN1Boolean b = new ASN1Boolean();
+		b.encode(bos, Boolean.TRUE);
+		b.encode(bos, Boolean.FALSE);
+		assertTrue(
+		          Arrays.equals(
+		                       bos.toByteArray(), new byte[]{
+		                                                    (byte) ASN1Boolean.TAG_BOOLEAN, 0x01, ASN1Boolean.TRUE,
+		                                                    (byte) ASN1Boolean.TAG_BOOLEAN, 0x01, ASN1Boolean.FALSE
+		          }
+		                       )
+		          );
+	}
 }
