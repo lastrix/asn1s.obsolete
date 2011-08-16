@@ -78,7 +78,7 @@ public class Asn1s {
 	public static void main(final String[] args) {
 		initLogging();
 		ASN1Types.init();
-		final int SIZE = 500000;
+
 		Object[] objects = new Object[]{
 		                               -10000d,
 		                               10d,
