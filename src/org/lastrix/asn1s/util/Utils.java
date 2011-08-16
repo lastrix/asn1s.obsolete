@@ -110,7 +110,8 @@ public class Utils {
 		StringWriter sw = new StringWriter(array.length * 2 + 2);
 		sw.append("[");
 		for (int i = 0; i < array.length; i++) {
-			sw.append(String.format(" %02X", array[i]));
+			sw.append(String.format(" 0x%02X", array[i]));
+			if (i < array.length - 1) { sw.append(","); }
 		}
 		sw.append(" ]");
 		return sw.toString();

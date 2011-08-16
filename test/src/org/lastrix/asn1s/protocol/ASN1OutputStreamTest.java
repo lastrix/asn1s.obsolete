@@ -18,44 +18,25 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.util.Locale;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 /**
  * @author: lastrix
  * Date: 8/16/11
- * Time: 11:25 AM
+ * Time: 8:06 PM
  */
-public class AllTests {
-
-	/**
-	 * Generate {@link TestSuite}
-	 *
-	 * @return an {@link Test} object
-	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.protocol");
-
-		suite.addTestSuite(ASN1BooleanTest.class);
-		suite.addTestSuite(ASN1NullTest.class);
-		suite.addTestSuite(ASN1IntegerTest.class);
-		suite.addTestSuite(ASN1RealTest.class);
-		suite.addTestSuite(ASN1BitStringTest.class);
-		suite.addTestSuite(ASN1OctStringTest.class);
-		suite.addTestSuite(HeaderTest.class);
-		suite.addTestSuite(ASN1InputStreamTest.class);
-		//suite.addTest(org.lastrix.CSEmu.common.AllTests.suite());
-		// Make sure that we run the tests using the english locale
-		final TestSetup wrapper = new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
-		return wrapper;
-
+public class ASN1OutputStreamTest extends TestCase {
+	@Test
+	public void testWork() throws Exception {
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		final ASN1OutputStream asnos = new ASN1OutputStream(os);
+		for (Object o : ASN1InputStreamTest.objects) {
+			asnos.write(o);
+		}
+		assertTrue(Arrays.equals(os.toByteArray(), ASN1InputStreamTest.data));
 	}
 }

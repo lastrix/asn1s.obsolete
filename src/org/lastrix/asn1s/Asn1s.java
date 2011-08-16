@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Properties;
 
 /**
@@ -78,13 +79,25 @@ public class Asn1s {
 	public static void main(final String[] args) {
 		initLogging();
 		ASN1Types.init();
-
-		Object[] objects = new Object[]{
-		                               -10000d,
-		                               10d,
-		                               0d,
-		                               Double.NEGATIVE_INFINITY,
-		                               Double.POSITIVE_INFINITY
+		final BitSet bs = new BitSet(8);
+		bs.set(1);
+		bs.set(3);
+		bs.set(5);
+		bs.set(7);
+		final Object[] objects = new Object[]{
+		                                     -10000d,
+		                                     10d,
+		                                     0d,
+		                                     Double.NEGATIVE_INFINITY,
+		                                     Double.POSITIVE_INFINITY,
+		                                     0,
+		                                     10000000,
+		                                     -1000000,
+		                                     true,
+		                                     false,
+		                                     new byte[]{1, 2, 3, 4, 5, 6, 7},
+		                                     null,
+		                                     bs
 		};
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(64);
 		ASN1OutputStream os = new ASN1OutputStream(baos);
