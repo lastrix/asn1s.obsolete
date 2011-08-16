@@ -19,23 +19,23 @@
 package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Class for holding information about header (BER).
+ * Class for holding, handling and simple processing header information (BER).
  *
  * @author: lastrix
  * Date: 8/14/11
  * Time: 12:29 PM
  */
-public class Header implements Length {
+public class Header {
 	private static final Logger logger = Logger.getLogger(Header.class);
-
-	public final static Header EOC_HEADER = new Header(0, (byte) 0, false, 0);
 
 	private final byte    tagClass;
 	private final boolean constructed;
@@ -44,11 +44,19 @@ public class Header implements Length {
 	private byte[] byteArray = null;
 	private byte[] tagBytes  = null;
 
+	/**
+	 * Create header
+	 *
+	 * @param tag         - the tag
+	 * @param tagClass    - the class tag see Tag.CLASS_ for more info
+	 * @param constructed - constructed or primitive
+	 * @param length      - the length
+	 */
 	public Header(final long tag, final byte tagClass, final boolean constructed, final long length) {
 		this.tag = tag;
 		this.tagClass = tagClass;
 		this.constructed = constructed;
-		this.length = Math.max(length, 0);
+		this.length = length;
 	}
 
 
@@ -88,8 +96,19 @@ public class Header implements Length {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(Utils.getMinimumBytes(getTag()) + Utils.getMinimumBytes(getLength()) + 1);
 
 		if (tagBits > 0x1FL) {
-			//much worse, but doable
-			//TODO:
+			//write XX X 11111
+			bos.write(0x1F | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
+
+			long mTag = 0;
+			long tag = getTag();
+			for (int i = 0; i < 8; i++) {
+				mTag |= (tag >> (i * 7) & 0x7F) << i * 8;
+			}
+			final int bytesCount = Utils.getMinimumBytes(mTag);
+			for (int i = bytesCount - 1; i > 0; i--) {
+				bos.write((int) ((mTag >> (i * 8)) & 0xFF) | 0x80);
+			}
+			bos.write((int) (mTag & 0xFF));
 		} else {
 			bos.write(((int) getTag()) & 0x1F | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 		}
@@ -97,7 +116,11 @@ public class Header implements Length {
 		//save tag bytes
 		tagBytes = bos.toByteArray();
 		try {
-			writeLength(bos, getLength());
+			if (getLength() >= 0) {
+				writeLength(bos, getLength());
+			} else {
+				writeLength(bos, Tag.FORM_INDEFINITE);
+			}
 		} catch (IOException e) {
 			//actually this should never happen here.
 			logger.error("An exception occurred.", e);
@@ -106,11 +129,25 @@ public class Header implements Length {
 		return byteArray;
 	}
 
+	/**
+	 * Writes the length into output stream
+	 *
+	 * @param os     - the output stream
+	 * @param length - the length
+	 *
+	 * @throws IOException
+	 */
 	public static final void writeLength(OutputStream os, long length) throws IOException {
-		final long lengthBits = Long.highestOneBit(length);
-		if (lengthBits > 0x7FL) {
-			//much worse, but doable
-			//TODO:
+		if (length == Tag.FORM_INDEFINITE) {
+			os.write(Tag.FORM_INDEFINITE);
+		} else if (length > 0x7FL) {
+			final int bytesCount = Utils.getMinimumBytes(length);
+			//as 8.1.3.5 in X.690-0207 says in 1st content octet bit 8 should be 1 and 7 to 1 should encode amount of bytes,
+			// the others - length as unsigned integer LE!
+			os.write(bytesCount | Tag.FORM_INDEFINITE);
+			for (int i = bytesCount - 1; i >= 0; i--) {
+				os.write((int) (length >> (i * 8)) & 0xFF);
+			}
 		} else {
 			os.write(((int) length) & 0x7F);
 		}
@@ -152,5 +189,75 @@ public class Header implements Length {
 		       '}';
 	}
 
+	/**
+	 * Read tag with length and return Header as result
+	 *
+	 * @param is - the input stream
+	 *
+	 * @return read Header
+	 *
+	 * @throws ASN1ProtocolException
+	 */
+	public static Header readHeader(InputStream is) throws ASN1ProtocolException {
+		//tag reading
+		int temp = 0;
+		try {
+			temp = is.read();
+		} catch (IOException e) {
+			//no header
+			return null;
+		}
+		final byte tagClass = (byte) (temp & Tag.CLASS_MASK);
+		final boolean constructed = ((temp & Tag.PC_MASK) >> 5) > 0;
+		long tag = temp & Tag.TAG_MASK;
 
+		/*
+			We have here tag with additional octets
+		 */
+		if (tag == Tag.TAG_MASK) {
+			//zeroing is necessary, since first octet has a flag, not real data.
+			tag = 0;
+			do {
+				try {
+					temp = is.read();
+				} catch (IOException e) {
+					throw new ASN1ProtocolException("Unexpected EOF found.", e);
+				}
+				tag = (tag << 7) | (temp & Tag.TAG_MASK_EXTENDED);
+			} while ((temp & Tag.TAG_EXTEND_MASK) > 0);
+		}
+
+		/*
+			Read the length
+		 */
+		try {
+			temp = is.read();
+		} catch (IOException e) {
+			throw new ASN1ProtocolException("Unexpected EOF found.", e);
+		}
+
+		long length = 0;
+
+		if ((temp & Tag.FORM_MASK) == 0) {
+			//this is short definite form
+			length = temp & Tag.LENGTH_MASK;
+		} else {
+			if ((temp & Tag.LENGTH_MASK) == 0) {
+				//this is an indefinite form
+				length = 0;
+			} else {
+				//this is an definite long form
+				final int count = temp & Tag.LENGTH_MASK;
+				try {
+					for (int i = 0; i < count; i++) {
+						temp = is.read();
+						length = (length << 8) | ((long) temp & 0xFFL);
+					}
+				} catch (IOException e) {
+					throw new ASN1ProtocolException("Unexpected EOF found.", e);
+				}
+			}
+		}
+		return new Header(tag, tagClass, constructed, length);
+	}
 }

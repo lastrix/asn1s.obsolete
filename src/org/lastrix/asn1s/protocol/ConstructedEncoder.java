@@ -18,10 +18,29 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+
+import java.io.IOException;
+
 /**
+ * Constructed object encoder (like user objects or arrays, or something like that)
+ * see 8.1.2.5 from X.690-0207 for more info
+ *
  * @author: lastrix
  * Date: 8/15/11
  * Time: 1:54 PM
  */
 public interface ConstructedEncoder {
+
+	/**
+	 * Encode object to ASN.1, the difference why {@link ASN1OutputStream} is used - constructed object may contain another constructed object
+	 * and is should contain primitives, so {@link ASN1OutputStream} could easily handle that job.
+	 *
+	 * @param os    - the output stream
+	 * @param value - the value to encode
+	 *
+	 * @throws ASN1ProtocolException
+	 * @throws IOException
+	 */
+	public void encode(ASN1OutputStream os, Object value) throws ASN1ProtocolException, IOException;
 }

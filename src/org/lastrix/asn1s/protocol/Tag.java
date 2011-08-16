@@ -60,4 +60,10 @@ public interface Tag {
 	 * Mask to extract 8th bit from octets that come after 1st one ( if 1st one had 1-5 bits as 1 ).
 	 */
 	public static final int TAG_EXTEND_MASK = 0x80;
+
+	public static final int FORM_INDEFINITE = 0x80;
+
+	public static final int FORM_MASK       = 0x80;
+
+	public static final int LENGTH_MASK     = 0x1F;
 }

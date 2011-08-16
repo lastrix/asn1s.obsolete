@@ -16,16 +16,39 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.util;
+
+import junit.extensions.TestSetup;
+import junit.framework.TestSuite;
+import org.junit.Test;
+
+import java.util.Locale;
 
 /**
  * @author: lastrix
- * Date: 8/14/11
- * Time: 12:57 PM
+ * Date: 8/16/11
+ * Time: 11:25 AM
  */
-public interface Length {
+public class AllTests {
 
-	public static final int FORM_MASK = 0x80;
+	/**
+	 * Generate {@link TestSuite}
+	 *
+	 * @return an {@link Test} object
+	 */
+	public static junit.framework.Test suite() {
+		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.util");
 
-	public static final int LENGTH_MASK = 0x1F;
+		suite.addTestSuite(UtilsTest.class);
+		//suite.addTest(org.lastrix.CSEmu.common.AllTests.suite());
+		// Make sure that we run the tests using the english locale
+		final TestSetup wrapper = new TestSetup(suite) {
+			@Override
+			public void setUp() {
+				Locale.setDefault(Locale.US);
+			}
+		};
+		return wrapper;
+
+	}
 }

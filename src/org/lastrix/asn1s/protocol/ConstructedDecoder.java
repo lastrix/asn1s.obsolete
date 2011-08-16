@@ -18,10 +18,31 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+
+import java.io.IOException;
+
 /**
+ * Constructed objects handler (like user objects or arrays, or something like that)
+ * see 8.1.2.5 from X.690-0207 for more info
+ *
  * @author: lastrix
  * Date: 8/15/11
  * Time: 1:54 PM
  */
 public interface ConstructedDecoder {
+
+	/**
+	 * Decode constructed object from ASN1InputStream, this is the difference between {@link PrimitiveDecoder}, since this decoder
+	 * may fetch additional data ( even constructed ).
+	 *
+	 * @param is     - the input stream
+	 * @param header - the header fetched from <code>is</code>
+	 *
+	 * @return the object
+	 *
+	 * @throws ASN1ProtocolException
+	 * @throws IOException
+	 */
+	public Object decode(ASN1InputStream is, Header header) throws ASN1ProtocolException, IOException;
 }

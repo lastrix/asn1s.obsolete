@@ -37,7 +37,7 @@ public class ASN1BitStringTest extends TestCase {
 		final byte[] data = new byte[]{0x02, (byte) 0xC4, 0x04, (byte) 0x89, (byte) 0x80};
 		final ASN1BitString bs = new ASN1BitString();
 		final ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object o = bs.decode(is, new Header(ASN1BitString.TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 2));
+		Object o = bs.decode(is, new Header(ASN1BitString.TAG, Tag.CLASS_UNIVERSAL, false, 2));
 		assertNotNull(o);
 		assertTrue(o instanceof BitSet);
 		BitSet b = new BitSet(8);
@@ -45,7 +45,7 @@ public class ASN1BitStringTest extends TestCase {
 		b.set(4);
 		b.set(5);
 		assertTrue(b.equals(o));
-		o = bs.decode(is, new Header(ASN1BitString.TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 3));
+		o = bs.decode(is, new Header(ASN1BitString.TAG, Tag.CLASS_UNIVERSAL, false, 3));
 		assertNotNull(o);
 		assertTrue(o instanceof BitSet);
 		b = new BitSet(16);
@@ -74,8 +74,8 @@ public class ASN1BitStringTest extends TestCase {
 		assertTrue(
 		          Arrays.equals(
 		                       os.toByteArray(), new byte[]{
-		                                                   ASN1BitString.TAG_BIT_STRING, 0x02, 0x02, (byte) 0xC4,
-		                                                   ASN1BitString.TAG_BIT_STRING, 0x03, 0x04, (byte) 0x89, (byte) 0x80
+		                                                   ASN1BitString.TAG, 0x02, 0x02, (byte) 0xC4,
+		                                                   ASN1BitString.TAG, 0x03, 0x04, (byte) 0x89, (byte) 0x80
 		          }
 		                       )
 		          );

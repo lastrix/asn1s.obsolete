@@ -45,7 +45,7 @@ public class ASN1RealTest extends TestCase {
 		final ByteArrayInputStream is = new ByteArrayInputStream(data);
 		double doubles[] = new double[COUNT];
 		for (int i = 0; i < COUNT; i++) {
-			final Object o = real.decode(is, new Header(ASN1Real.TAG_REAL, Tag.CLASS_UNIVERSAL, false, sizes[i]));
+			final Object o = real.decode(is, new Header(ASN1Real.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
 			if (o instanceof Double) {
 				doubles[i] = (Double) o;
 			} else {

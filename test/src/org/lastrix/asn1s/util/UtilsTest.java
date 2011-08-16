@@ -16,7 +16,7 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.util;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -28,25 +28,50 @@ import java.util.Arrays;
 /**
  * @author: lastrix
  * Date: 8/16/11
- * Time: 1:54 PM
+ * Time: 4:40 PM
  */
-public class ASN1OctStringTest extends TestCase {
+public class UtilsTest extends TestCase {
 	@Test
-	public void testDecode() throws Exception {
-		final byte[] oct = new byte[]{/*ASN1OctString.TAG, 0x04,*/ 0x11, 0x22, 0x33, 0x44};
-		final ByteArrayInputStream is = new ByteArrayInputStream(oct);
-		final ASN1OctString oStr = new ASN1OctString();
-		Object o = oStr.decode(is, new Header(ASN1OctString.TAG, Tag.CLASS_UNIVERSAL, false, 0x04));
-		assertNotNull(o);
-		assertTrue(Arrays.equals((byte[]) o, new byte[]{0x11, 0x22, 0x33, 0x44}));
+	public void testGetMinimumBytesShort() throws Exception {
+		assertTrue(Utils.getMinimumBytes((short) 1) == 1);
+		assertTrue(Utils.getMinimumBytes((short) 0x100) == 2);
 	}
 
 	@Test
-	public void testEncode() throws Exception {
-		final byte[] oct = new byte[]{0x11, 0x22, 0x33, 0x44};
+	public void testGetMinimumBytesInt() throws Exception {
+		assertTrue(Utils.getMinimumBytes(1) == 1);
+		assertTrue(Utils.getMinimumBytes(0x100) == 2);
+		assertTrue(Utils.getMinimumBytes(0x10000) == 3);
+		assertTrue(Utils.getMinimumBytes(0x1000000) == 4);
+	}
+
+	@Test
+	public void testGetMinimumBytesLong() throws Exception {
+		assertTrue(Utils.getMinimumBytes(1L) == 1);
+		assertTrue(Utils.getMinimumBytes(0x100L) == 2);
+		assertTrue(Utils.getMinimumBytes(0x10000L) == 3);
+		assertTrue(Utils.getMinimumBytes(0x1000000L) == 4);
+		assertTrue(Utils.getMinimumBytes(0x100000000L) == 5);
+		assertTrue(Utils.getMinimumBytes(0x10000000000L) == 6);
+		assertTrue(Utils.getMinimumBytes(0x1000000000000L) == 7);
+		assertTrue(Utils.getMinimumBytes(0x100000000000000L) == 8);
+	}
+
+	@Test
+	public void testTransfer() throws Exception {
+		final byte[] data = new byte[4096];
+		for (int i = 0; i < 4096; i++) {
+			data[i] = (byte) i;
+		}
+		final ByteArrayInputStream is = new ByteArrayInputStream(data);
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1OctString o = new ASN1OctString();
-		o.encode(os, oct);
-		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1OctString.TAG, 0x04, 0x11, 0x22, 0x33, 0x44}));
+		for (int i = 0; i < 16; i++) {
+			is.read();
+		}
+		Utils.transfer(is, os, 1024);
+		assertTrue(Arrays.equals(os.toByteArray(), Arrays.copyOfRange(data, 16, 16 + 1024)));
+		final ByteArrayOutputStream os2 = new ByteArrayOutputStream();
+		Utils.transfer(is, os2, 1024);
+		assertTrue(Arrays.equals(os2.toByteArray(), Arrays.copyOfRange(data, 16 + 1024, 16 + 2 * 1024)));
 	}
 }

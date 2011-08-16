@@ -29,7 +29,7 @@ import java.io.IOException;
  * Date: 8/14/11
  * Time: 1:39 PM
  */
-public interface ValueHandler extends Tag, Length {
+public interface ValueHandler extends Tag {
 
 	/**
 	 * Decode value

@@ -45,6 +45,7 @@ public class AllTests {
 		suite.addTestSuite(ASN1RealTest.class);
 		suite.addTestSuite(ASN1BitStringTest.class);
 		suite.addTestSuite(ASN1OctStringTest.class);
+		suite.addTestSuite(HeaderTest.class);
 		//suite.addTest(org.lastrix.CSEmu.common.AllTests.suite());
 		// Make sure that we run the tests using the english locale
 		final TestSetup wrapper = new TestSetup(suite) {

@@ -18,10 +18,14 @@
 
 package org.lastrix.asn1s.util;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 /**
  * @author: lastrix
@@ -30,24 +34,44 @@ import java.io.OutputStream;
  */
 public class Utils {
 
-	public final static double LOG_256 = Math.log(256);
+	public final static double LOG_255 = Math.log(255);
 
-	private final static int CACHE_SIZE = 1024;
-
+	/**
+	 * Returns minimum bytes required to hold value
+	 *
+	 * @param value - the value
+	 *
+	 * @return number of bytes
+	 */
 	public final static int getMinimumBytes(long value) {
-		return (int) (Math.ceil(Long.highestOneBit(value) / 8) + 1);
+		return Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
+	/**
+	 * Returns minimum bytes required to hold value
+	 *
+	 * @param value - the value
+	 *
+	 * @return number of bytes
+	 */
 	public final static int getMinimumBytes(int value) {
-		return (int) (Math.ceil(Integer.highestOneBit(value) / 8) + 1);
+		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
+	/**
+	 * Returns minimum bytes required to hold value
+	 *
+	 * @param value - the value
+	 *
+	 * @return number of bytes
+	 */
 	public final static int getMinimumBytes(short value) {
-		return (int) (Math.ceil(Integer.highestOneBit(((int) value) & 0xFFFF) / 8) + 1);
+		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
 	/**
 	 * Transfers <code>length</code> bytes from <code>is</code> to <code>os</code>
+	 * Please note: count is amount of memory to use by buffer. This function uses NIO channels.
 	 *
 	 * @param is    - the input
 	 * @param os    - the output
@@ -55,20 +79,40 @@ public class Utils {
 	 *
 	 * @throws IOException
 	 */
-	public static final void fillOutputStream(InputStream is, OutputStream os, int count)
+	public static final void transfer(InputStream is, OutputStream os, int count)
 	throws IOException {
-		byte[] dataBucket = new byte[CACHE_SIZE];
-		int readCount;
-
-		while (count != 0) {
-			readCount = is.read(
-			                   dataBucket, 0, count < CACHE_SIZE ? count
-			                                                     : CACHE_SIZE
-			                   );
-			if (readCount == -1) { throw new EOFException(); }
-			os.write(dataBucket, 0, readCount);
-			count -= readCount;
+		final ReadableByteChannel in = Channels.newChannel(is);
+		final WritableByteChannel out = Channels.newChannel(os);
+		//create buffer with save size as count, so we won't miss anything
+		final ByteBuffer buffer = ByteBuffer.allocateDirect(count);
+		int read = 0;
+		//read the required amount of data to buffer
+		while (count > 0 && (read = in.read(buffer)) != -1) {
+			count -= read;
+		}
+		buffer.flip();
+		//write all of it to output stream
+		while (buffer.hasRemaining()) {
+			out.write(buffer);
 		}
 	}
 
+
+	/**
+	 * Converts byte array to hex string (example: {0x01, 0x12} -> [ 01 12 ])
+	 *
+	 * @param array
+	 *
+	 * @return
+	 */
+	public static String toHexString(byte[] array) {
+		if (array == null || array.length == 0) { return "[]"; }
+		StringWriter sw = new StringWriter(array.length * 2 + 2);
+		sw.append("[");
+		for (int i = 0; i < array.length; i++) {
+			sw.append(String.format(" %02X", array[i]));
+		}
+		sw.append(" ]");
+		return sw.toString();
+	}
 }

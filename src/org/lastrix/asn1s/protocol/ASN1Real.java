@@ -35,12 +35,12 @@ import java.io.OutputStream;
 public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 	private final static Logger logger = Logger.getLogger(ASN1Real.class);
 
-	public static final  byte   TAG_REAL    = 0x09;
-	private static final Header REAL_HEADER = new Header(TAG_REAL, Tag.CLASS_UNIVERSAL, false, 10);
+	public static final  byte   TAG    = 0x09;
+	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 10);
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!REAL_HEADER.isSame(header)) {
+		if (!HEADER.isSame(header)) {
 			throw new ASN1ProtocolException("Parameter 'header' is not valid Real type header.");
 		}
 
@@ -78,7 +78,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			} else {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) mantisLength);
 
-				Utils.fillOutputStream(is, bos, (int) mantisLength);
+				Utils.transfer(is, bos, (int) mantisLength);
 				// IA5 == ASCII...?
 				String nrRep = new String(bos.toByteArray(), "US-ASCII");
 				// this will swallow NR(1-3) and give proper double :)
@@ -146,14 +146,14 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		// we don't need to make anything else
 		if (Double.isNaN(value) || value == 0d) {
 			//write length (that is all)
-			os.write(REAL_HEADER.tagToByteArray());
+			os.write(HEADER.tagToByteArray());
 			//write length
 			os.write(0x00);
 			return;
 
 		} else if (Double.isInfinite(value)) {
 			//tag
-			os.write(REAL_HEADER.tagToByteArray());
+			os.write(HEADER.tagToByteArray());
 			//write length
 			os.write(0x01);
 			//write info octet
@@ -161,18 +161,19 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			return;
 		}
 
-		os.write(REAL_HEADER.tagToByteArray());
+		os.write(HEADER.tagToByteArray());
 
 		long valueBits = Double.doubleToLongBits(value);
 
 		//extract exponent
 		long exponent = (valueBits >> 52) & 0x7FF;
-		final int exponentBytesCount = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(exponent)) / Utils.LOG_256)), 1);
+		final int exponentBytesCount = Utils.getMinimumBytes(exponent);
+
 		//extract mantis
 		long mantis = valueBits & 0xFFFFFFFFFFFFFL;
 		mantis <<= 12;
 		mantis = Long.reverseBytes(mantis);
-		final int mantisBytesCount = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(mantis)) / Utils.LOG_256)), 1);
+		final int mantisBytesCount = Utils.getMinimumBytes(mantis);
 
 		//now we got all required information
 		final byte[] exponentBytes = extractBytes(exponent, exponentBytesCount);

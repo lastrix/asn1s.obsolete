@@ -33,14 +33,14 @@ import java.util.BitSet;
  * Time: 6:15 PM
  */
 public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
-	public static final byte TAG_BIT_STRING = 0x03;
+	public static final byte TAG = 0x03;
 
-	private static final Header BIT_STRING_HEADER = new Header(TAG_BIT_STRING, Tag.CLASS_UNIVERSAL, false, 0);
+	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
 
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!BIT_STRING_HEADER.isSame(header)) {
+		if (!HEADER.isSame(header)) {
 			throw new ASN1ProtocolException("Parameter 'header' is not valid BitString header.");
 		}
 		final int pad = is.read();
@@ -79,7 +79,7 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		if (!(value instanceof BitSet)) {
 			throw new ASN1ProtocolException("Parameter 'value' is not BitSet instance.");
 		}
-		os.write(BIT_STRING_HEADER.tagToByteArray());
+		os.write(HEADER.tagToByteArray());
 		BitSet bs = (BitSet) value;
 		final int bitCount = bs.length();
 		final int rest = bitCount % 8;

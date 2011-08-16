@@ -36,11 +36,20 @@ public class ASN1OutputStream extends FilterOutputStream {
 
 
 	public void write(Object o) throws ASN1ProtocolException, IOException {
-
+		//try primitive encoder
 		PrimitiveEncoder encoder = ASN1Types.getPrimitiveTypeEncoder(o);
-		if (encoder == null) {
-			throw new ASN1ProtocolException("No encoder for '" + o + "'");
+		if (encoder != null) {
+			encoder.encode(this, o);
+
+		} else {
+			//try constructed encoder
+			ConstructedEncoder cEncoder = ASN1Types.getConstructedTypeEncoder(o);
+			if (cEncoder != null) {
+				cEncoder.encode(this, o);
+
+			} else {
+				throw new ASN1ProtocolException("No encoder for '" + o + "'");
+			}
 		}
-		encoder.encode(this, o);
 	}
 }

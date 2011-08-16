@@ -37,7 +37,7 @@ public class ASN1NullTest extends TestCase {
 		final ASN1Null n = new ASN1Null();
 		byte[] data = new byte[]{};
 		ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object o = n.decode(is, ASN1Null.NULL_HEADER);
+		Object o = n.decode(is, ASN1Null.HEADER);
 		assertNull(o);
 	}
 
@@ -46,6 +46,6 @@ public class ASN1NullTest extends TestCase {
 		final ASN1Null n = new ASN1Null();
 		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
 		n.encode(os, null);
-		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1Null.TAG_NULL, 0x00}));
+		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1Null.TAG, 0x00}));
 	}
 }

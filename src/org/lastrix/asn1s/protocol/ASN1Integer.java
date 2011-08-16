@@ -37,12 +37,12 @@ import java.nio.ByteBuffer;
 public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 
-	public final static byte TAG_INTEGER = 0x02;
+	public final static byte TAG = 0x02;
 
 	/**
 	 * Integer has default header as any primitive
 	 */
-	public final static Header INTEGER_HEADER = new Header(TAG_INTEGER, (byte) Tag.CLASS_UNIVERSAL, false, 2);
+	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 2);
 
 	/**
 	 * Create default integer encoder/decoder
@@ -52,7 +52,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!INTEGER_HEADER.isSame(header)) {
+		if (!HEADER.isSame(header)) {
 			throw new ASN1ProtocolException("Supplied header is not valid Integer header.");
 		}
 		long value = 0;
@@ -88,7 +88,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 
 
 		//write the header
-		int size = Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_256)), 1);
+		int size = Utils.getMinimumBytes(value);
 
 
 		ByteBuffer bb = ByteBuffer.allocate(8);
@@ -106,13 +106,13 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 		if (!negative && (data[0] & 0x80) > 0) {
 			size++;
 		}
-		if (INTEGER_HEADER.getLength() != size) {
+		if (HEADER.getLength() != size) {
 			//handle them separated
-			os.write(INTEGER_HEADER.tagToByteArray());
+			os.write(HEADER.tagToByteArray());
 			Header.writeLength(os, size);
 		} else {
 			//yeah! we could use cached one
-			os.write(INTEGER_HEADER.toByteArray());
+			os.write(HEADER.toByteArray());
 		}
 
 

@@ -18,7 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.EOFException;
 import java.io.FilterInputStream;
@@ -38,7 +38,6 @@ public class ASN1InputStream extends FilterInputStream {
 
 	@Override
 	public int read() throws IOException {
-		// TODO: unimplemented method stub
 		final int result = super.read();
 
 		if (result == -1) {
@@ -48,77 +47,15 @@ public class ASN1InputStream extends FilterInputStream {
 		return result;
 	}
 
-	public Header readHeader() throws ASN1Exception {
-		return readHeader(false);
-	}
-
-	public Header readHeader(final boolean putMark) throws ASN1Exception {
-
-		if (putMark) {
-			//put mark, so user could reset to start if something bad happen.
-			this.mark(java.lang.Integer.MAX_VALUE);
-		}
-
-		//tag reading
-		int temp = 0;
-		try {
-			temp = read();
-		} catch (IOException e) {
-			//no header
-			return null;
-		}
-		final byte tagClass = (byte) (temp & Tag.CLASS_MASK);
-		final boolean constructed = ((temp & Tag.PC_MASK) >> 5) > 0;
-		long tag = temp & Tag.TAG_MASK;
-
-		/*
-			We have here tag with additional octets
-		 */
-		if (tag == Tag.TAG_MASK) {
-			//zeroing is necessary, since first octet has a flag, not real data.
-			tag = 0;
-			do {
-				try {
-					temp = read();
-				} catch (IOException e) {
-					throw new ASN1Exception("Unexpected EOF found.", e);
-				}
-				tag = (tag << 7) | (temp & Tag.TAG_MASK_EXTENDED);
-			} while ((temp & Tag.TAG_EXTEND_MASK) > 0);
-		}
-
-		/*
-			Read the length
-		 */
-		try {
-			temp = read();
-		} catch (IOException e) {
-			throw new ASN1Exception("Unexpected EOF found.", e);
-		}
-
-		long length = 0;
-
-		if ((temp & Length.FORM_MASK) == 0) {
-			//this is short definite form
-			length = temp & Length.LENGTH_MASK;
-		} else {
-			if ((temp & Length.LENGTH_MASK) == 0) {
-				//this is an indefinite form
-				length = 0;
-			} else {
-				//this is an definite long form
-				final int count = temp & Length.LENGTH_MASK;
-				try {
-					for (int i = 0; i < count; i++) {
-						temp = read();
-						length = (length << 8) | ((long) temp & 0xFFL);
-					}
-				} catch (IOException e) {
-					throw new ASN1Exception("Unexpected EOF found.", e);
-				}
-			}
-		}
-		return new Header(tag, tagClass, constructed, length);
+	/**
+	 * Read header from input stream (redirects to {@link Header#readHeader(InputStream)})
+	 *
+	 * @return header
+	 *
+	 * @throws ASN1ProtocolException
+	 */
+	public Header readHeader() throws ASN1ProtocolException {
+		return Header.readHeader(this);
 	}
 
 	/**
@@ -127,19 +64,33 @@ public class ASN1InputStream extends FilterInputStream {
 	 * @param header - the header
 	 *
 	 * @return an object
+	 *
+	 * @throws ASN1ProtocolException if no handlers found or caught an exception from decoder
 	 */
-	public Object read(Header header) throws ASN1Exception {
+	public Object read(Header header) throws ASN1ProtocolException {
 		if (header.isConstructed()) {
-			throw new IllegalStateException("Header tells, that content doesn't contain any primitive");
-		}
-		PrimitiveDecoder decoder = ASN1Types.getPrimitiveDecoder(header);
-		if (decoder == null) {
-			throw new ASN1Exception("No handler found for tag " + header.getTag() + " class " + header.getTagClass() + ".");
-		}
-		try {
-			return decoder.decode(this, header);
-		} catch (IOException e) {
-			throw new ASN1Exception("Unexpected EOF found.", e);
+			//for constructed
+			ConstructedDecoder decoder = ASN1Types.getConstructedDecoder(header);
+			if (decoder == null) {
+				throw new ASN1ProtocolException(String.format("No handlers found for '%s'", header));
+			}
+			try {
+				return decoder.decode(this, header);
+			} catch (IOException e) {
+				throw new ASN1ProtocolException(e);
+			}
+
+		} else {
+			//for primitive
+			PrimitiveDecoder decoder = ASN1Types.getPrimitiveDecoder(header);
+			if (decoder == null) {
+				throw new ASN1ProtocolException(String.format("No handlers found for '%s'", header));
+			}
+			try {
+				return decoder.decode(this, header);
+			} catch (IOException e) {
+				throw new ASN1ProtocolException(e);
+			}
 		}
 	}
 

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Interface for primitive decoder see X.690-0207 8.1.2.3 for more information
+ * Interface for primitive decoder see X.690-0207 8.1.2.5 for more information
  *
  * @author: lastrix
  * Date: 8/15/11

@@ -36,16 +36,16 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 	/**
 	 * Boolean type id (tag)
 	 */
-	public static final byte TAG_BOOLEAN = 0x01;
-	public static final byte TRUE        = (byte) 0xFF;
-	public static final byte FALSE       = 0x00;
+	public static final byte TAG   = 0x01;
+	public static final byte TRUE  = (byte) 0xFF;
+	public static final byte FALSE = 0x00;
 
 
 	/**
 	 * No point in generation header many times, so just make default one.
 	 * It also helps sometimes.
 	 */
-	public final static Header BOOLEAN_HEADER = new Header(TAG_BOOLEAN, (byte) Tag.CLASS_UNIVERSAL, false, 1);
+	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 1);
 
 	/**
 	 * Create ber boolean handler
@@ -55,7 +55,7 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!BOOLEAN_HEADER.equals(header)) {
+		if (!HEADER.equals(header)) {
 			throw new ASN1ProtocolException("Incompatible header.");
 		}
 		//just read one octet which is actually the value
@@ -68,7 +68,7 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 			throw new ASN1ProtocolException(String.format(getClass().getSimpleName() + ": can not handle object '%s'", value));
 		}
 		//write header
-		os.write(BOOLEAN_HEADER.toByteArray());
+		os.write(HEADER.toByteArray());
 		//and value
 		os.write(((Boolean) value) ? TRUE : FALSE);
 	}

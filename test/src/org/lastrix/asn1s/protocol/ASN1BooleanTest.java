@@ -37,10 +37,10 @@ public class ASN1BooleanTest extends TestCase {
 		final ASN1Boolean b = new ASN1Boolean();
 		byte[] data = new byte[]{ASN1Boolean.TRUE, ASN1Boolean.FALSE};
 		ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object result = b.decode(is, ASN1Boolean.BOOLEAN_HEADER);
+		Object result = b.decode(is, ASN1Boolean.HEADER);
 		assertNotNull(result);
 		assertTrue((Boolean) result);
-		result = b.decode(is, ASN1Boolean.BOOLEAN_HEADER);
+		result = b.decode(is, ASN1Boolean.HEADER);
 		assertNotNull(result);
 		assertFalse((Boolean) result);
 	}
@@ -54,8 +54,8 @@ public class ASN1BooleanTest extends TestCase {
 		assertTrue(
 		          Arrays.equals(
 		                       bos.toByteArray(), new byte[]{
-		                                                    (byte) ASN1Boolean.TAG_BOOLEAN, 0x01, ASN1Boolean.TRUE,
-		                                                    (byte) ASN1Boolean.TAG_BOOLEAN, 0x01, ASN1Boolean.FALSE
+		                                                    (byte) ASN1Boolean.TAG, 0x01, ASN1Boolean.TRUE,
+		                                                    (byte) ASN1Boolean.TAG, 0x01, ASN1Boolean.FALSE
 		          }
 		                       )
 		          );

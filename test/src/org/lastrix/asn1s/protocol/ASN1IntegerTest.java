@@ -45,7 +45,7 @@ public class ASN1IntegerTest extends TestCase {
 		long[] result = new long[size];
 		int[] sizes = new int[]{2, 3, 2, 2};
 		for (int i = 0; i < size; i++) {
-			Object o = integer.decode(is, new Header(ASN1Integer.TAG_INTEGER, Tag.CLASS_UNIVERSAL, false, sizes[i]));
+			Object o = integer.decode(is, new Header(ASN1Integer.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
 			if (o instanceof Long) {
 				result[i] = (Long) o;
 			} else {
@@ -70,12 +70,12 @@ public class ASN1IntegerTest extends TestCase {
 		          Arrays.equals(
 		                       os.toByteArray(),
 		                       new byte[]{
-		                                 ASN1Integer.TAG_INTEGER, 0x01, 0x00,
-		                                 ASN1Integer.TAG_INTEGER, 0x01, (byte) 0xFF,
-		                                 ASN1Integer.TAG_INTEGER, 0x01, 0x02,
-		                                 ASN1Integer.TAG_INTEGER, 0x02, 0x00, (byte) 0xFF,
-		                                 ASN1Integer.TAG_INTEGER, 0x02, 0x04, 0x00,
-		                                 ASN1Integer.TAG_INTEGER, 0x03, 0x10, 0x00, 0x00
+		                                 ASN1Integer.TAG, 0x01, 0x00,
+		                                 ASN1Integer.TAG, 0x01, (byte) 0xFF,
+		                                 ASN1Integer.TAG, 0x01, 0x02,
+		                                 ASN1Integer.TAG, 0x02, 0x00, (byte) 0xFF,
+		                                 ASN1Integer.TAG, 0x02, 0x04, 0x00,
+		                                 ASN1Integer.TAG, 0x03, 0x10, 0x00, 0x00
 		                       }
 		                       )
 		          );

@@ -32,12 +32,12 @@ import java.io.OutputStream;
  */
 public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 
-	public final static byte   TAG_OCTET_STRING    = 0x04;
-	public final static Header OCTET_STRING_HEADER = new Header(TAG_OCTET_STRING, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+	public final static byte   TAG    = 0x04;
+	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!OCTET_STRING_HEADER.isSame(header)) {
+		if (!HEADER.isSame(header)) {
 			throw new ASN1ProtocolException("Parameter 'header' is not valid octet string header.");
 		}
 		if (header.getLength() == 0) {
@@ -45,7 +45,7 @@ public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 		}
 
 		//infinite
-		if (header.getLength() == Length.FORM_MASK) {
+		if (header.getLength() == Tag.FORM_INDEFINITE) {
 			//damn infinite form
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			int b = -1;
@@ -80,7 +80,7 @@ public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 			throw new ASN1ProtocolException("Parameter 'value' should be byte array " + value.getClass());
 		}
 		byte[] array = (byte[]) value;
-		os.write(OCTET_STRING_HEADER.tagToByteArray());
+		os.write(HEADER.tagToByteArray());
 		os.write(array.length);
 		os.write(array);
 	}

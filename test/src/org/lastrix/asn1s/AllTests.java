@@ -42,7 +42,7 @@ public class AllTests {
 		suite.addTest(org.lastrix.asn1s.protocol.AllTests.suite());
 		suite.addTest(org.lastrix.asn1s.schema.AllTests.suite());
 		suite.addTest(org.lastrix.asn1s.tools.AllTests.suite());
-		suite.addTest(org.lastrix.asn1s.utils.AllTests.suite());
+		suite.addTest(org.lastrix.asn1s.util.AllTests.suite());
 
 		// Make sure that we run the tests using the english locale
 		final TestSetup wrapper = new TestSetup(suite) {

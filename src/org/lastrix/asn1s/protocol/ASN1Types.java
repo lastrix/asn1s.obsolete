@@ -18,8 +18,6 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.lastrix.asn1s.exception.ASN1Exception;
-
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +28,10 @@ import java.util.Map;
  * Time: 7:23 PM
  */
 public class ASN1Types {
-	public static Map<Byte, Map<Long, PrimitiveDecoder>> primitiveDecoders   = null;
-	public static Map<Class, PrimitiveEncoder>           primitiveEncoders   = null;
-	public static Map<Class, ConstructedEncoder>         constructedEncoders = null;
+	public static Map<Byte, Map<Long, PrimitiveDecoder>>   primitiveDecoders   = null;
+	public static Map<Class, PrimitiveEncoder>             primitiveEncoders   = null;
+	public static Map<Byte, Map<Long, ConstructedDecoder>> constructedDecoders = null;
+	public static Map<Class, ConstructedEncoder>           constructedEncoders = null;
 	public static PrimitiveEncoder nullEncoder;
 
 	public final static void init() {
@@ -41,15 +40,16 @@ public class ASN1Types {
 
 		primitiveDecoders = new HashMap<Byte, Map<Long, PrimitiveDecoder>>();
 		primitiveEncoders = new HashMap<Class, PrimitiveEncoder>();
+		constructedDecoders = new HashMap<Byte, Map<Long, ConstructedDecoder>>();
 		constructedEncoders = new HashMap<Class, ConstructedEncoder>();
 
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Boolean.TAG_BOOLEAN, new ASN1Boolean(), Boolean.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Real.TAG_REAL, new ASN1Real(), Double.class, Float.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Integer.TAG_INTEGER, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Null.TAG_NULL, new ASN1Null());
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1BitString.TAG_BIT_STRING, new ASN1BitString(), BitSet.class);
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Boolean.TAG, new ASN1Boolean(), Boolean.class);
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Real.TAG, new ASN1Real(), Double.class, Float.class);
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Integer.TAG, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Null.TAG, new ASN1Null());
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1BitString.TAG, new ASN1BitString(), BitSet.class);
 		byte[] arr = new byte[0];
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1OctString.TAG_OCTET_STRING, new ASN1OctString(), arr.getClass());
+		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1OctString.TAG, new ASN1OctString(), arr.getClass());
 	}
 
 	private static void addPrimitive(final byte clazz, final long tag, final Object object, Class... classes) {
@@ -86,14 +86,24 @@ public class ASN1Types {
 	 * @param header - the header
 	 *
 	 * @return an ValueHandler handler
-	 *
-	 * @throws ASN1Exception
 	 */
-	public static PrimitiveDecoder getPrimitiveDecoder(Header header) throws ASN1Exception {
-		if (header.isEOC()) {
-			throw new ASN1Exception("An EOC marker");
-		}
+	public static PrimitiveDecoder getPrimitiveDecoder(Header header) {
 		Map<Long, PrimitiveDecoder> map = primitiveDecoders.get(header.getTagClass());
+		if (map != null) {
+			return map.get(header.getTag());
+		}
+		return null;
+	}
+
+	/**
+	 * Return constructed decoder that should handle specified <code>header</code>
+	 *
+	 * @param header - the header
+	 *
+	 * @return an ConstructedDecoder
+	 */
+	public static ConstructedDecoder getConstructedDecoder(Header header) {
+		Map<Long, ConstructedDecoder> map = constructedDecoders.get(header.getTagClass());
 		if (map != null) {
 			return map.get(header.getTag());
 		}

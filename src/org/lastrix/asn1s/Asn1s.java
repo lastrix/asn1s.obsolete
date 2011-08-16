@@ -24,8 +24,12 @@ import org.lastrix.asn1s.protocol.ASN1InputStream;
 import org.lastrix.asn1s.protocol.ASN1OutputStream;
 import org.lastrix.asn1s.protocol.ASN1Types;
 import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.util.Utils;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -94,7 +98,7 @@ public class Asn1s {
 		}
 
 		final byte[] bytes = baos.toByteArray();
-		logger.warn("\n" + makeHexString(bytes));
+		logger.warn("\n" + Utils.toHexString(bytes));
 		ASN1InputStream bis = new ASN1InputStream(new ByteArrayInputStream(bytes));
 		try {
 			while (true) {
@@ -114,17 +118,4 @@ public class Asn1s {
 		}
 	}
 
-	public static String makeHexString(byte[] array) {
-		if (array == null || array.length == 0) { return "[]"; }
-		StringWriter sw = new StringWriter(array.length * 2 + 2);
-		sw.append("[");
-		for (int i = 0; i < array.length; i++) {
-			sw.append(String.format(" 0x%02X", array[i]));
-			if (i < array.length - 1) {
-				sw.append(",");
-			}
-		}
-		sw.append(" ]");
-		return sw.toString();
-	}
 }
