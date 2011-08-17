@@ -88,6 +88,7 @@ public class Asn1s {
 		                                     -10000d,
 		                                     10d,
 		                                     0d,
+		                                     0.001d,
 		                                     Double.NEGATIVE_INFINITY,
 		                                     Double.POSITIVE_INFINITY,
 		                                     0,

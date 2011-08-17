@@ -116,4 +116,28 @@ public class Utils {
 		sw.append(" ]");
 		return sw.toString();
 	}
+
+	/**
+	 * Extracts bytes from <code>value</code>, you may specify from > to and to > from to choose LE or BE
+	 *
+	 * @param value - the value
+	 * @param from  - start point
+	 * @param to    - end point
+	 *
+	 * @return the byte array
+	 */
+	public static byte[] extractBytes(long value, int from, int to) {
+		final int bCount = Math.abs(to - from);
+		final byte[] bytes = new byte[bCount];
+		if (from > to) {
+			for (int i = from - 1; i >= to; i--) {
+				bytes[from - i - 1] = (byte) ((value >> i * 8) & 0xFF);
+			}
+		} else {
+			for (int i = from; i < to; i++) {
+				bytes[to - i - 1] = (byte) ((value >> i * 8) & 0xFF);
+			}
+		}
+		return bytes;
+	}
 }

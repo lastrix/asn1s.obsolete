@@ -35,8 +35,8 @@ public class ASN1RealTest extends TestCase {
 	public void testDecode() throws Exception {
 		final int COUNT = 4;
 		//we don't need headers, because of arch
-		byte[] data = new byte[]{/*0x09, 0x05,*/ (byte) 0xC1, 0x04, 0x0C, (byte) 0x80, 0x38,//-10000d
-		                         /*0x09, 0x04,*/ (byte) 0x81, 0x04, 0x02, 0x40,//10d
+		byte[] data = new byte[]{/*0x09, 0x05,*/ (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
+		                         /*0x09, 0x04,*/ (byte) 0x81, 0x04, 0x02, 0x04,//10d
 		                         /*0x09, 0x01,*/ 0x41,//-inf
 		                         /*0x09, 0x01,*/ 0x40//+inf
 		};
@@ -66,8 +66,8 @@ public class ASN1RealTest extends TestCase {
 		assertTrue(
 		          Arrays.equals(
 		                       os.toByteArray(), new byte[]{
-		                                                   0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, (byte) 0x80, 0x38,//-10000d
-		                                                   0x09, 0x04, (byte) 0x81, 0x04, 0x02, 0x40,//10d
+		                                                   0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
+		                                                   0x09, 0x04, (byte) 0x81, 0x04, 0x02, 0x04,//10d
 		                                                   0x09, 0x01, 0x41,//-inf
 		                                                   0x09, 0x01, 0x40//+inf
 		          }

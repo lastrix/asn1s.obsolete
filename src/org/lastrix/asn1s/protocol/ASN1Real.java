@@ -116,8 +116,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			temp = is.read();
 			mantis = (mantis << 8) | (temp & 0xFF);
 		}
-		mantis = Long.reverseBytes(mantis);
-		mantis >>= 12;
+		mantis <<= (7 - mantisLength) * 8;
 		mantis *= scale;
 		if (mantis > 0xFFFFFFFFFFFFFL) {
 			throw new ASN1ProtocolException(String.format("Mantis overflow (%X)", mantis));
@@ -144,7 +143,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		}
 
 		// we don't need to make anything else
-		if (Double.isNaN(value) || value == 0d) {
+		if (value == 0d) {
 			//write length (that is all)
 			os.write(HEADER.tagToByteArray());
 			//write length
@@ -171,13 +170,12 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 
 		//extract mantis
 		long mantis = valueBits & 0xFFFFFFFFFFFFFL;
-		mantis <<= 12;
-		mantis = Long.reverseBytes(mantis);
-		final int mantisBytesCount = Utils.getMinimumBytes(mantis);
+		//to determine how much bytes we need, just shift to end and reverse bytes order, that's all!
+		final int mantisBytesCount = Utils.getMinimumBytes(Long.reverseBytes(mantis << 12));
 
 		//now we got all required information
-		final byte[] exponentBytes = extractBytes(exponent, exponentBytesCount);
-		final byte[] mantisBytes = extractBytes(mantis, mantisBytesCount);
+		final byte[] exponentBytes = Utils.extractBytes(exponent, 0, exponentBytesCount);
+		final byte[] mantisBytes = Utils.extractBytes(mantis, 7, 7 - mantisBytesCount);
 
 		//write length octet
 		os.write(mantisBytesCount + exponentBytesCount + 1);
@@ -186,14 +184,6 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		os.write(0x80 | ((exponentBytesCount == 1) ? 0x00 : 0x01) | ((int) (valueBits >> 57) & 0x40));
 		os.write(exponentBytes);
 		os.write(mantisBytes);
-	}
-
-	private byte[] extractBytes(long value, int bCount) {
-		final byte[] bytes = new byte[bCount];
-		for (int i = 0; i < bCount; i++) {
-			bytes[bCount - i - 1] = (byte) ((value >> i * 8) & 0xFF);
-		}
-		return bytes;
 	}
 
 }
