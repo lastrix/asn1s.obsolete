@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.lastrix.asn1s.CustomTestCase;
 
@@ -31,7 +32,10 @@ import java.util.Arrays;
  * @author lastrix
  * @version 1.0
  */
+@SuppressWarnings({"ALL"})
 public class ASN1OIDCoderTest extends CustomTestCase {
+
+	private final static Logger logger = Logger.getLogger(ASN1OIDCoderTest.class);
 
 	@Test
 	public void testDecode() throws Exception {

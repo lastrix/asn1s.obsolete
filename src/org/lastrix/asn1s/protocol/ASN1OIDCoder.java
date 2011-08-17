@@ -32,9 +32,10 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
+	@SuppressWarnings({"UnusedDeclaration"})
 	private final static Logger logger = Logger.getLogger(ASN1OIDCoder.class);
 	public final static  long   TAG    = 0x06;
-	public final static  Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
+	private final static Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
 
 	public ASN1OIDCoder() {
 	}
@@ -46,9 +47,11 @@ public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 		int count = 2;
 
 		final byte[] data = new byte[(int) (header.getLength() - 1)];
-		is.read(data);
-		for (int i = 0; i < data.length; i++) {
-			if ((data[i] & Tag.MORE_BYTES) == 0) {
+		if (is.read(data) <= data.length) {
+			throw new ASN1ProtocolException("Can not read data.");
+		}
+		for (byte aData : data) {
+			if ((aData & Tag.MORE_BYTES) == 0) {
 				count++;
 			}
 		}

@@ -206,8 +206,8 @@ public final class Utils {
 
 	/**
 	 * Make gaps between bytes, so if you got
-	 * <code>10100101 10010110</code> and you need to gap 3 bits, you'll get
-	 * <code>00000001 00001001 00001100 00010110</code>.
+	 * {@code 10100101 10010110} and you need to gap 3 bits, you'll get
+	 * {@code 00000001 00001001 00001100 00010110}.
 	 * Highest bits would be missed probably.
 	 *
 	 * @param value   - the value
