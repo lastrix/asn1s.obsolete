@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
@@ -27,18 +28,21 @@ import java.io.OutputStream;
 /**
  * Boolean value encoder/decoder
  *
- * @author: lastrix
- * Date: 8/14/11
- * Time: 1:30 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 1:30 PM
+ * @version 1.0
  */
 public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1Boolean.class);
 	/**
 	 * Boolean type id (tag)
 	 */
-	public static final byte TAG   = 0x01;
-	public static final byte TRUE  = (byte) 0xFF;
-	public static final byte FALSE = 0x00;
+	public static final  byte   TAG    = 0x01;
+	public static final  byte   TRUE   = (byte) 0xFF;
+	public static final  byte   FALSE  = 0x00;
 
 
 	/**
@@ -58,8 +62,8 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 		if (!HEADER.equals(header)) {
 			throw new ASN1ProtocolException("Incompatible header.");
 		}
-		//just read one octet which is actually the value
-		return new Boolean(is.read() > 0);
+		//just readAs one octet which is actually the value
+		return is.read() > 0;
 	}
 
 	@Override

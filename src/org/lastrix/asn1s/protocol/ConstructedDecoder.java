@@ -26,9 +26,10 @@ import java.io.IOException;
  * Constructed objects handler (like user objects or arrays, or something like that)
  * see 8.1.2.5 from X.690-0207 for more info
  *
- * @author: lastrix
- * Date: 8/15/11
- * Time: 1:54 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 1:54 PM
+ * @version 1.0
  */
 public interface ConstructedDecoder {
 
@@ -37,12 +38,12 @@ public interface ConstructedDecoder {
 	 * may fetch additional data ( even constructed ).
 	 *
 	 * @param is     - the input stream
-	 * @param header - the header fetched from <code>is</code>
+	 * @param header - the header fetched from {@code is}
 	 *
 	 * @return the object
 	 *
-	 * @throws ASN1ProtocolException
-	 * @throws IOException
+	 * @throws ASN1ProtocolException - if header is not valid or object can not be read
+	 * @throws IOException           - from read() calls
 	 */
 	public Object decode(ASN1InputStream is, Header header) throws ASN1ProtocolException, IOException;
 }

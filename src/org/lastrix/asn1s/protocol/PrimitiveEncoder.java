@@ -26,9 +26,10 @@ import java.io.OutputStream;
 /**
  * Interface for primitive encoder see X.690-0207 8.1.2.5 for more information
  *
- * @author: lastrix
- * Date: 8/15/11
- * Time: 1:53 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 1:53 PM
+ * @version 1.0
  */
 public interface PrimitiveEncoder {
 
@@ -38,7 +39,8 @@ public interface PrimitiveEncoder {
 	 * @param os    - the output stream
 	 * @param value - the value
 	 *
-	 * @throws ASN1ProtocolException
+	 * @throws ASN1ProtocolException - if encoding is not supported for {@code value} or if value can not be encoded
+	 * @throws IOException           - from write() calls
 	 */
 	public void encode(OutputStream os, Object value) throws ASN1ProtocolException, IOException;
 }

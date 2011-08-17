@@ -23,6 +23,7 @@ package org.lastrix.asn1s.exception;
  * Date: 8/15/11
  * Time: 1:58 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1ProtocolException extends ASN1Exception {
 	public ASN1ProtocolException(final Throwable cause) {
 		super(cause);

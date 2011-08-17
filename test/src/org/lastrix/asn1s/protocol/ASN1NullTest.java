@@ -30,6 +30,7 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 11:38 AM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1NullTest extends TestCase {
 
 	@Test

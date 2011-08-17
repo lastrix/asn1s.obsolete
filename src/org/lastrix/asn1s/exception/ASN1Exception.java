@@ -23,7 +23,10 @@ package org.lastrix.asn1s.exception;
  * Date: 8/14/11
  * Time: 1:53 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1Exception extends Exception {
+
+	private static final long serialVersionUID = -4672356654247932286L;
 
 	public ASN1Exception(final Throwable cause) {
 		super(cause);

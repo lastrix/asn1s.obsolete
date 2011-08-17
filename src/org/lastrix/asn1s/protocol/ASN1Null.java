@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
@@ -27,14 +28,17 @@ import java.io.OutputStream;
 /**
  * Null value encoder/decoder
  *
- * @author: lastrix
- * Date: 8/14/11
- * Time: 7:20 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 7:20 PM
+ * @version 1.0
  */
-public class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
+public final class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
 
-	public static final byte   TAG    = 0x05;
-	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1Null.class);
+	public static final  byte   TAG    = 0x05;
+	public final static  Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
 
 	/**
 	 * Create default null value encoder/decoder

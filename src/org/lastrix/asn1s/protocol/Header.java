@@ -30,12 +30,14 @@ import java.io.OutputStream;
 /**
  * Class for holding, handling and simple processing header information (BER).
  *
- * @author: lastrix
- * Date: 8/14/11
- * Time: 12:29 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 12:29 PM
+ * @version 1.0
  */
-public class Header {
-	private static final Logger logger = Logger.getLogger(Header.class);
+public final class Header {
+	private static final Logger logger            = Logger.getLogger(Header.class);
+	public static final  int    MORE_LENGTH_BYTES = 0x80;
 
 	private final byte    tagClass;
 	private final boolean constructed;
@@ -95,22 +97,22 @@ public class Header {
 		final long tagBits = Long.highestOneBit(getTag());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(Utils.getMinimumBytes(getTag()) + Utils.getMinimumBytes(getLength()) + 1);
 
-		if (tagBits > 0x1FL) {
+		if (tagBits > Tag.TAG_MASK) {
 			//write XX X 11111
-			bos.write(0x1F | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
+			bos.write(Tag.TAG_MASK | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 
 			long mTag = 0;
 			long tag = getTag();
 			for (int i = 0; i < 8; i++) {
-				mTag |= (tag >> (i * 7) & 0x7F) << i * 8;
+				mTag |= (tag >> (i * 7) & Tag.TAG_MASK_EXTENDED) << i * 8;
 			}
 			final int bytesCount = Utils.getMinimumBytes(mTag);
 			for (int i = bytesCount - 1; i > 0; i--) {
-				bos.write((int) ((mTag >> (i * 8)) & 0xFF) | 0x80);
+				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | MORE_LENGTH_BYTES);
 			}
-			bos.write((int) (mTag & 0xFF));
+			bos.write((int) (mTag & Utils.BYTE_MASK));
 		} else {
-			bos.write(((int) getTag()) & 0x1F | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
+			bos.write(((int) getTag()) & Tag.TAG_MASK | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 		}
 
 		//save tag bytes
@@ -135,21 +137,21 @@ public class Header {
 	 * @param os     - the output stream
 	 * @param length - the length
 	 *
-	 * @throws IOException
+	 * @throws IOException - from write() calls
 	 */
-	public static final void writeLength(OutputStream os, long length) throws IOException {
+	public static void writeLength(OutputStream os, long length) throws IOException {
 		if (length == Tag.FORM_INDEFINITE) {
 			os.write(Tag.FORM_INDEFINITE);
-		} else if (length > 0x7FL) {
+		} else if (length > Tag.LENGTH_MASK) {
 			final int bytesCount = Utils.getMinimumBytes(length);
 			//as 8.1.3.5 in X.690-0207 says in 1st content octet bit 8 should be 1 and 7 to 1 should encode amount of bytes,
 			// the others - length as unsigned integer LE!
 			os.write(bytesCount | Tag.FORM_INDEFINITE);
 			for (int i = bytesCount - 1; i >= 0; i--) {
-				os.write((int) (length >> (i * 8)) & 0xFF);
+				os.write((int) (length >> (i * 8)) & Utils.BYTE_MASK);
 			}
 		} else {
-			os.write(((int) length) & 0x7F);
+			os.write(((int) length) & Tag.LENGTH_MASK);
 		}
 	}
 
@@ -157,19 +159,21 @@ public class Header {
 	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
-		} else if (obj instanceof Header) {
-			return getLength() == ((Header) obj).getLength()
-			       && getTag() == ((Header) obj).getTag()
-			       && getTagClass() == ((Header) obj).getTagClass()
-			       && isConstructed() == ((Header) obj).isConstructed();
-		}
+		} else //noinspection InstanceofInterfaces
+			if (obj instanceof Header) {
+				final Header header = (Header) obj;
+				return getLength() == header.getLength()
+				       && getTag() == header.getTag()
+				       && getTagClass() == header.getTagClass()
+				       && isConstructed() == header.isConstructed();
+			}
 		return false;
 	}
 
 	/**
 	 * Checks if tag, tagClass and constructed fields are equal
 	 *
-	 * @param header
+	 * @param header - the header
 	 *
 	 * @return an boolean
 	 */
@@ -196,11 +200,11 @@ public class Header {
 	 *
 	 * @return read Header
 	 *
-	 * @throws ASN1ProtocolException
+	 * @throws ASN1ProtocolException - if header can not be read
 	 */
 	public static Header readHeader(InputStream is) throws ASN1ProtocolException {
 		//tag reading
-		int temp = 0;
+		int temp;
 		try {
 			temp = is.read();
 		} catch (IOException e) {
@@ -228,8 +232,13 @@ public class Header {
 		}
 
 		/*
-			Read the length
+			Read the length and create header
 		 */
+		return new Header(tag, tagClass, constructed, readLength(is));
+	}
+
+	private static long readLength(final InputStream is) throws ASN1ProtocolException {
+		int temp;
 		try {
 			temp = is.read();
 		} catch (IOException e) {
@@ -238,26 +247,24 @@ public class Header {
 
 		long length = 0;
 
-		if ((temp & Tag.FORM_MASK) == 0) {
+		if (temp == Tag.FORM_INDEFINITE) {
+			//this is an indefinite form
+			length = 0;
+		} else if ((temp & Tag.FORM_MASK) == 0) {
 			//this is short definite form
 			length = temp & Tag.LENGTH_MASK;
 		} else {
-			if ((temp & Tag.LENGTH_MASK) == 0) {
-				//this is an indefinite form
-				length = 0;
-			} else {
-				//this is an definite long form
-				final int count = temp & Tag.LENGTH_MASK;
-				try {
-					for (int i = 0; i < count; i++) {
-						temp = is.read();
-						length = (length << 8) | ((long) temp & 0xFFL);
-					}
-				} catch (IOException e) {
-					throw new ASN1ProtocolException("Unexpected EOF found.", e);
+			//this is an definite long form
+			final int count = temp & Tag.LENGTH_MASK;
+			try {
+				for (int i = 0; i < count; i++) {
+					temp = is.read();
+					length = (length << 8) | ((long) temp & Utils.BYTE_MASK);
 				}
+			} catch (IOException e) {
+				throw new ASN1ProtocolException("Unexpected EOF found.", e);
 			}
 		}
-		return new Header(tag, tagClass, constructed, length);
+		return length;
 	}
 }

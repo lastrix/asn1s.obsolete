@@ -19,13 +19,15 @@
 package org.lastrix.asn1s.util;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 1:36 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 1:36 PM
+ * @version 1.0
  */
-public class Pair<L, R> {
-	private L left;
-	private R right;
+@SuppressWarnings({"WeakerAccess", "UnusedDeclaration", "ClassWithoutLogger"})
+public final class Pair<L, R> {
+	private final L left;
+	private final R right;
 
 	public Pair(final L left, final R right) {
 		this.left = left;
@@ -38,5 +40,13 @@ public class Pair<L, R> {
 
 	public R getRight() {
 		return right;
+	}
+
+	@Override
+	public String toString() {
+		return "Pair{" +
+		       "left=" + left +
+		       ", right=" + right +
+		       '}';
 	}
 }

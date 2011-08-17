@@ -30,6 +30,7 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 11:30 AM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1BooleanTest extends TestCase {
 
 	@Test
@@ -54,8 +55,8 @@ public class ASN1BooleanTest extends TestCase {
 		assertTrue(
 		          Arrays.equals(
 		                       bos.toByteArray(), new byte[]{
-		                                                    (byte) ASN1Boolean.TAG, 0x01, ASN1Boolean.TRUE,
-		                                                    (byte) ASN1Boolean.TAG, 0x01, ASN1Boolean.FALSE
+		                                                    ASN1Boolean.TAG, 0x01, ASN1Boolean.TRUE,
+		                                                    ASN1Boolean.TAG, 0x01, ASN1Boolean.FALSE
 		          }
 		                       )
 		          );

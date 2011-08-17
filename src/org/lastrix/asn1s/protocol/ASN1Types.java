@@ -18,23 +18,30 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
+
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 7:23 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 7:23 PM
+ * @version 1.0
  */
+@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ClassWithoutConstructor"})
 public class ASN1Types {
-	public static Map<Byte, Map<Long, PrimitiveDecoder>>   primitiveDecoders   = null;
-	public static Map<Class, PrimitiveEncoder>             primitiveEncoders   = null;
-	public static Map<Byte, Map<Long, ConstructedDecoder>> constructedDecoders = null;
-	public static Map<Class, ConstructedEncoder>           constructedEncoders = null;
-	public static PrimitiveEncoder nullEncoder;
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1Types.class);
 
-	public final static void init() {
+	private static Map<Byte, Map<Long, PrimitiveDecoder>>   primitiveDecoders   = null;
+	private static Map<Class, PrimitiveEncoder>             primitiveEncoders   = null;
+	private static Map<Byte, Map<Long, ConstructedDecoder>> constructedDecoders = null;
+	private static Map<Class, ConstructedEncoder>           constructedEncoders = null;
+	private static PrimitiveEncoder                         nullEncoder         = null;
+
+	public static void init() {
 
 		nullEncoder = new ASN1Null();
 
@@ -43,13 +50,13 @@ public class ASN1Types {
 		constructedDecoders = new HashMap<Byte, Map<Long, ConstructedDecoder>>();
 		constructedEncoders = new HashMap<Class, ConstructedEncoder>();
 
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Boolean.TAG, new ASN1Boolean(), Boolean.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Real.TAG, new ASN1Real(), Double.class, Float.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Integer.TAG, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1Null.TAG, new ASN1Null());
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1BitString.TAG, new ASN1BitString(), BitSet.class);
-		byte[] arr = new byte[0];
-		addPrimitive((byte) Tag.CLASS_UNIVERSAL, ASN1OctString.TAG, new ASN1OctString(), arr.getClass());
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Boolean.TAG, new ASN1Boolean(), Boolean.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Real.TAG, new ASN1Real(), Double.class, Float.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Integer.TAG, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Null.TAG, new ASN1Null());
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1BitString.TAG, new ASN1BitString(), BitSet.class);
+		byte[] arr = new byte[1];
+		addPrimitive((byte) 0x00, ASN1OctString.TAG, new ASN1OctString(), arr.getClass());
 	}
 
 	private static void addPrimitive(final byte clazz, final long tag, final Object object, Class... classes) {
@@ -96,7 +103,7 @@ public class ASN1Types {
 	}
 
 	/**
-	 * Return constructed decoder that should handle specified <code>header</code>
+	 * Return constructed decoder that should handle specified {@code header}
 	 *
 	 * @param header - the header
 	 *

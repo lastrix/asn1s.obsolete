@@ -35,14 +35,17 @@ import java.util.BitSet;
 import java.util.Properties;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 11:52 AM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 11:52 AM
+ * @version 1.0
  */
+@SuppressWarnings({"WeakerAccess", "ClassWithoutConstructor"})
 public class Asn1s {
 	private final static Logger logger = Logger.getLogger(Asn1s.class);
 
-	private static       String logPropertiesFile = "resources/log4j.properties";
+	@SuppressWarnings({"FieldCanBeLocal"})
+	private static final String logPropertiesFile = "resources/log4j.properties";
 	private static final String REVISION          = "0.0.1";
 
 	private static void initLogging() {
@@ -72,11 +75,11 @@ public class Asn1s {
 		}
 	}
 
-	private static String getRevision() {
+	public static String getRevision() {
 		return REVISION;
 	}
 
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		initLogging();
 		ASN1Types.init();
 		final BitSet bs = new BitSet(8);
@@ -100,8 +103,8 @@ public class Asn1s {
 		                                     null,
 		                                     bs
 		};
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(64);
-		ASN1OutputStream os = new ASN1OutputStream(baos);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(64);
+		ASN1OutputStream os = new ASN1OutputStream(byteArrayOutputStream);
 		try {
 			for (Object o : objects) {
 				os.write(o);
@@ -111,7 +114,7 @@ public class Asn1s {
 			return;
 		}
 
-		final byte[] bytes = baos.toByteArray();
+		final byte[] bytes = byteArrayOutputStream.toByteArray();
 		logger.warn("\n" + Utils.toHexString(bytes));
 		ASN1InputStream bis = new ASN1InputStream(new ByteArrayInputStream(bytes));
 		try {
@@ -120,11 +123,11 @@ public class Asn1s {
 				if (header == null) {
 					break;
 				}
-				Object o = bis.read(header);
+				Object o = bis.readAs(header);
 				if (o != null && o.getClass().isArray()) {
-					logger.warn(String.format("Object read: %s", Arrays.toString((byte[]) o)));
+					logger.warn(String.format("Object readAs: %s", Arrays.toString((byte[]) o)));
 				} else {
-					logger.warn(String.format("Object read: %s", o));
+					logger.warn(String.format("Object readAs: %s", o));
 				}
 			}
 		} catch (Exception e) {

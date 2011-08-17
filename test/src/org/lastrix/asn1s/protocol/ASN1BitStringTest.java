@@ -31,6 +31,7 @@ import java.util.BitSet;
  * Date: 8/16/11
  * Time: 1:10 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1BitStringTest extends TestCase {
 	@Test
 	public void testDecode() throws Exception {

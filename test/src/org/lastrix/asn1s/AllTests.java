@@ -29,6 +29,7 @@ import java.util.Locale;
  * Date: 8/16/11
  * Time: 11:25 AM
  */
+@SuppressWarnings({"ALL"})
 public class AllTests {
 
 	/**
@@ -45,13 +46,11 @@ public class AllTests {
 		suite.addTest(org.lastrix.asn1s.util.AllTests.suite());
 
 		// Make sure that we run the tests using the english locale
-		final TestSetup wrapper = new TestSetup(suite) {
+		return new TestSetup(suite) {
 			@Override
 			public void setUp() {
 				Locale.setDefault(Locale.US);
 			}
 		};
-		return wrapper;
-
 	}
 }

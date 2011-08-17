@@ -30,6 +30,7 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 4:40 PM
  */
+@SuppressWarnings({"ALL"})
 public class UtilsTest extends TestCase {
 	@Test
 	public void testGetMinimumBytesShort() throws Exception {

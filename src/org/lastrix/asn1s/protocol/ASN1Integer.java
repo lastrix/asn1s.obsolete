@@ -30,11 +30,13 @@ import java.nio.ByteBuffer;
 /**
  * Integer encoder/decoder
  *
- * @author: lastrix
- * Date: 8/14/11
- * Time: 2:22 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 2:22 PM
+ * @version 1.0
  */
-public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
+public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
+	@SuppressWarnings({"UnusedDeclaration"})
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 
 	public final static byte TAG = 0x02;
@@ -42,6 +44,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	/**
 	 * Integer has default header as any primitive
 	 */
+	@SuppressWarnings({"WeakerAccess"})
 	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 2);
 
 	/**
@@ -58,15 +61,15 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 		long value = 0;
 		//extract sign
 		int temp = is.read();
-		if ((temp & 0x80) != 0) {
+		if ((temp & Utils.BYTE_SIGN_MASK) != 0) {
 			//set value to all ones, so we get an negative value
 			value = Long.MIN_VALUE | Long.MAX_VALUE;
 		}
 		//now we could extract all other octets
-		value = (value << 8) | ((long) temp & 0x00FFL);
+		value = (value << 8) | ((long) temp & Utils.BYTE_MASK);
 		for (int i = 1; i < header.getLength(); i++) {
 			temp = is.read();
-			value = (value << 8) | ((long) temp & 0x00FFL);
+			value = (value << 8) | ((long) temp & Utils.BYTE_MASK);
 		}
 		return value;
 	}
@@ -79,7 +82,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 		    && !(object instanceof Short)) {
 			throw new ASN1ProtocolException("Object is not byte, short, integer or long.");
 		}
-		long value = numberToLong(object);
+		long value = Utils.numberToLong(object);
 
 		boolean negative = value < 0;
 		if (negative) {
@@ -103,7 +106,7 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 		byte[] data = new byte[size];
 		bb.get(data);
 
-		if (!negative && (data[0] & 0x80) > 0) {
+		if (!negative && (data[0] & Utils.BYTE_SIGN_MASK) > 0) {
 			size++;
 		}
 		if (HEADER.getLength() != size) {
@@ -119,33 +122,11 @@ public class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 		//write data now
 		if (!negative) {
 			//we should check, that our data won't be counted as negative, so add trailing 0x00 octet
-			if ((data[0] & 0x80) > 0) {
+			if ((data[0] & Utils.BYTE_SIGN_MASK) > 0) {
 				os.write(0x00);
 			}
 		}
 		os.write(data);
-	}
-
-	/**
-	 * Converts Byte, Short, Integer or Long to long
-	 *
-	 * @param o
-	 *
-	 * @return
-	 */
-	private long numberToLong(final Object o) {
-		if (o instanceof Byte) {
-			Byte b = (Byte) o;
-			return b;
-		} else if (o instanceof Short) {
-			Short s = (Short) o;
-			return s;
-		} else if (o instanceof Integer) {
-			Integer i = (Integer) o;
-			return i;
-		}
-		Long l = (Long) o;
-		return l;
 	}
 
 

@@ -30,6 +30,7 @@ import java.util.BitSet;
  * Date: 8/16/11
  * Time: 7:41 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1InputStreamTest extends TestCase {
 
 	static final byte[] data = new byte[]{
@@ -76,7 +77,7 @@ public class ASN1InputStreamTest extends TestCase {
 			while (is.available() > 0) {
 				final Header h = is.readHeader();
 				assertNotNull(h);
-				result = is.read(h);
+				result = is.readAs(h);
 				if (result != null) {
 					if (result.getClass().isArray()) {
 						assertTrue(Arrays.equals((byte[]) result, (byte[]) objects[i]));
@@ -94,7 +95,6 @@ public class ASN1InputStreamTest extends TestCase {
 				i++;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail("Exception occurred.");
 		}
 	}

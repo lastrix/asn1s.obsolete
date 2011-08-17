@@ -30,6 +30,7 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 5:07 PM
  */
+@SuppressWarnings({"ALL"})
 public class HeaderTest extends TestCase {
 	@Test
 	public void testIsEOC() throws Exception {

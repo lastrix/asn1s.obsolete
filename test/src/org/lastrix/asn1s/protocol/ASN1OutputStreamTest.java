@@ -29,13 +29,14 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 8:06 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1OutputStreamTest extends TestCase {
 	@Test
 	public void testWork() throws Exception {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1OutputStream asnos = new ASN1OutputStream(os);
+		final ASN1OutputStream asn1OutputStream = new ASN1OutputStream(os);
 		for (Object o : ASN1InputStreamTest.objects) {
-			asnos.write(o);
+			asn1OutputStream.write(o);
 		}
 		assertTrue(Arrays.equals(os.toByteArray(), ASN1InputStreamTest.data));
 	}

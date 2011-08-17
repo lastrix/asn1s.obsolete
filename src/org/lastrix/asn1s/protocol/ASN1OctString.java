@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.ByteArrayOutputStream;
@@ -26,14 +27,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * @author: lastrix
- * Date: 8/15/11
- * Time: 5:29 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 5:29 PM
+ * @version 1.0
  */
-public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
+public final class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 
-	public final static byte   TAG    = 0x04;
-	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1OctString.class);
+	public final static  byte   TAG    = 0x04;
+	@SuppressWarnings({"WeakerAccess"})
+	public final static  Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
+
+	public ASN1OctString() {}
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
@@ -41,14 +48,15 @@ public class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 			throw new ASN1ProtocolException("Parameter 'header' is not valid octet string header.");
 		}
 		if (header.getLength() == 0) {
-			return new Byte[0];
+			//noinspection ZeroLengthArrayAllocation
+			return new byte[0];
 		}
 
 		//infinite
 		if (header.getLength() == Tag.FORM_INDEFINITE) {
 			//damn infinite form
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			int b = -1;
+			int b;
 			int b0 = -1;
 			while (true) {
 				b = is.read();

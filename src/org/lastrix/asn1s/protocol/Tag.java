@@ -19,10 +19,12 @@
 package org.lastrix.asn1s.protocol;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 12:34 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 12:34 PM
+ * @version 1.0
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public interface Tag {
 
 	/**
@@ -63,7 +65,7 @@ public interface Tag {
 
 	public static final int FORM_INDEFINITE = 0x80;
 
-	public static final int FORM_MASK       = 0x80;
+	public static final int FORM_MASK = 0x80;
 
-	public static final int LENGTH_MASK     = 0x1F;
+	public static final int LENGTH_MASK = 0x7F;
 }

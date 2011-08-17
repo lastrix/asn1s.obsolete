@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.FilterOutputStream;
@@ -25,13 +26,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 1:46 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 1:46 PM
+ * @version 1.0
  */
-public class ASN1OutputStream extends FilterOutputStream {
-	public ASN1OutputStream(final OutputStream out) {
-		super(out);
+public final class ASN1OutputStream extends FilterOutputStream {
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1OutputStream.class);
+
+	public ASN1OutputStream(final OutputStream outputStream) {
+		super(outputStream);
 	}
 
 

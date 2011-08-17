@@ -28,15 +28,37 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 3:18 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 3:18 PM
+ * @version 1.0
  */
-public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
+public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
+	@SuppressWarnings({"UnusedDeclaration"})
 	private final static Logger logger = Logger.getLogger(ASN1Real.class);
 
-	public static final  byte   TAG    = 0x09;
-	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 10);
+	public static final  byte   TAG                             = 0x09;
+	private static final Header HEADER                          = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 10);
+	public static final  int    REAL_BASE_MASK                  = 0x30;
+	public static final  int    REAL_BASE_8                     = 0x10;
+	public static final  int    REAL_BASE_16                    = 0x20;
+	public static final  int    REAL_BASE_2                     = 0;
+	public static final  int    SPECIAL_REAL_VALUE              = 0x40;
+	public static final  int    SPECIAL_REAL_VALUE_NEGATIVE_INF = 0x41;
+	public static final  int    SPECIAL_REAL_VALUE_POSITIVE_INF = 0x40;
+	public static final  int    SCALE_MASK                      = 0x0C;
+	public static final  int    EXPONENT_TYPE                   = 0x3;
+	public static final  int    EXPONENT_MASK                   = 0x7FF;
+	public static final  long   MANTIS_MASK                     = 0xFFFFFFFFFFFFFL;
+	public static final  int    REAL_BINARY_MASK                = 0x80;
+	public static final  int    BASE_2                          = 2;
+	public static final  int    BASE_8                          = 8;
+	public static final  int    BASE_16                         = 16;
+	public static final  int    REAL_SIGN_MASK                  = 0x40;
+	public static final  int    DOUBLE_EXPONENT_POSITION        = 52;
+	public static final  long   DOUBLE_SIGN_MASK                = 0x8000000000000000L;
+
+	public ASN1Real() {}
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
@@ -46,7 +68,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 
 		//test for zero value
 		if (header.getLength() == 0) {
-			return new Double(0d);
+			return 0d;
 		}
 
 		final int info = is.read();
@@ -55,24 +77,26 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		//bad news
 		final long base;
 		//binary base
-		if ((info & 0x80) > 0) {
-			if ((info & 0x30) == 0) {
-				base = 2;
-			} else if ((info & 0x30) == 0x10) {
-				base = 8;
-			} else if ((info & 0x30) == 0x20) {
-				base = 16;
+		if ((info & REAL_BINARY_MASK) > 0) {
+			if ((info & REAL_BASE_MASK) == REAL_BASE_2) {
+				base = BASE_2;
+			} else if ((info & REAL_BASE_MASK) == REAL_BASE_8) {
+				base = BASE_8;
+			} else if ((info & REAL_BASE_MASK) == REAL_BASE_16) {
+				base = BASE_16;
 			} else {
 				//this should not happen
 				throw new ASN1ProtocolException("Invalid value for binary base (11)");
 			}
 		} else {
 			//decimal or something special
-			if ((info & 0x40) > 0) {
+			if ((info & SPECIAL_REAL_VALUE) > 0) {
 				if (header.getLength() > 1) {
 					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
 				}
-				if (info == 0x40) { return Double.POSITIVE_INFINITY; } else if (info == 0x41) { return Double.NEGATIVE_INFINITY; } else {
+				if (info == SPECIAL_REAL_VALUE) { return Double.POSITIVE_INFINITY; } else if (info == SPECIAL_REAL_VALUE_NEGATIVE_INF) {
+					return Double.NEGATIVE_INFINITY;
+				} else {
 					throw new ASN1ProtocolException("Invalid real format for -inf/+inf");
 				}
 			} else {
@@ -86,11 +110,11 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			}
 		}
 		//calculate scale
-		final long scale = (long) Math.pow(base, (info & 0x0C) >> 2);
+		final long scale = (long) Math.pow(base, (info & SCALE_MASK) >> 2);
 
 		//extract exponent
-		int exponent = 0;
-		int exponentType = info & 0x3;
+		long exponent = 0;
+		int exponentType = info & EXPONENT_TYPE;
 		if (exponentType == 0) {
 			exponent = is.read();
 			mantisLength--;
@@ -98,9 +122,9 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			int temp;
 			for (int i = 0; i < 2 + exponentType - 1; i++) {
 				temp = is.read();
-				exponent = (exponent << 8) | (temp & 0xFF);
+				exponent = (exponent << 8) | (temp & Utils.BYTE_MASK);
 			}
-			if (exponent > 0x7FF) {
+			if (exponent > EXPONENT_MASK) {
 				throw new ASN1ProtocolException("Exponent overflow.");
 			}
 			mantisLength -= 2 + exponentType - 1;
@@ -114,16 +138,16 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		int temp;
 		for (int i = 0; i < mantisLength; i++) {
 			temp = is.read();
-			mantis = (mantis << 8) | (temp & 0xFF);
+			mantis = (mantis << 8) | (temp & Utils.BYTE_MASK);
 		}
 		mantis <<= (7 - mantisLength) * 8;
 		mantis *= scale;
-		if (mantis > 0xFFFFFFFFFFFFFL) {
+		if (mantis > MANTIS_MASK) {
 			throw new ASN1ProtocolException(String.format("Mantis overflow (%X)", mantis));
 		}
-		long rawDouble = ((info & 0x40) != 0) ? (0x1L << 63) : 0;
-		rawDouble |= (exponent & 0x7FFL) << 52;
-		rawDouble |= mantis & 0xFFFFFFFFFFFFFL;
+		long rawDouble = ((info & REAL_SIGN_MASK) != 0) ? DOUBLE_SIGN_MASK : 0;
+		rawDouble |= (exponent & EXPONENT_MASK) << DOUBLE_EXPONENT_POSITION;
+		rawDouble |= mantis & MANTIS_MASK;
 		return Double.longBitsToDouble(rawDouble);
 	}
 
@@ -133,11 +157,11 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			throw new NullPointerException("object == null.");
 		}
 		double value;
+		//noinspection ChainOfInstanceofChecks
 		if (object instanceof Double) {
 			value = (Double) object;
 		} else if (object instanceof Float) {
-			Float f = (Float) object;
-			value = f;
+			value = (Float) object;
 		} else {
 			throw new ASN1ProtocolException("Only 'Double' and 'Float' supported by ASN1Real ( has '" + object + "').");
 		}
@@ -156,7 +180,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 			//write length
 			os.write(0x01);
 			//write info octet
-			os.write(0x40 | ((value < 0) ? 0x01 : 0x00));
+			os.write(((value < 0) ? SPECIAL_REAL_VALUE_NEGATIVE_INF : SPECIAL_REAL_VALUE_POSITIVE_INF));
 			return;
 		}
 
@@ -165,11 +189,11 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		long valueBits = Double.doubleToLongBits(value);
 
 		//extract exponent
-		long exponent = (valueBits >> 52) & 0x7FF;
+		long exponent = (valueBits >> DOUBLE_EXPONENT_POSITION) & EXPONENT_MASK;
 		final int exponentBytesCount = Utils.getMinimumBytes(exponent);
 
 		//extract mantis
-		long mantis = valueBits & 0xFFFFFFFFFFFFFL;
+		long mantis = valueBits & MANTIS_MASK;
 		//to determine how much bytes we need, just shift to end and reverse bytes order, that's all!
 		final int mantisBytesCount = Utils.getMinimumBytes(Long.reverseBytes(mantis << 12));
 
@@ -181,7 +205,7 @@ public class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 		os.write(mantisBytesCount + exponentBytesCount + 1);
 
 		//write info octet (we could only have here 1 or 2 exponent octets)
-		os.write(0x80 | ((exponentBytesCount == 1) ? 0x00 : 0x01) | ((int) (valueBits >> 57) & 0x40));
+		os.write(REAL_BINARY_MASK | ((exponentBytesCount == 1) ? 0x00 : 0x01) | ((int) (valueBits >> 57) & REAL_SIGN_MASK));
 		os.write(exponentBytes);
 		os.write(mantisBytes);
 	}

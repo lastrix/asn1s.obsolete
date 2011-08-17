@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
@@ -28,14 +29,19 @@ import java.util.BitSet;
 /**
  * BitSet encoder/decoder
  *
- * @author: lastrix
- * Date: 8/14/11
- * Time: 6:15 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 6:15 PM
+ * @version 1.0
  */
-public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
-	public static final byte TAG = 0x03;
+public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
+	public static final  byte   TAG    = 0x03;
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1BitString.class);
 
 	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
+
+	public ASN1BitString() {}
 
 
 	@Override
@@ -62,7 +68,7 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		//handle pad
 		if (pad > 0) {
 			temp = is.read();
-			temp = temp >> pad;
+			temp >>= pad;
 			final int end = (int) ((header.getLength() - 1) * 8 - pad);
 			for (int i = (int) ((header.getLength() - 2) * 8); i < end; i++) {
 				if ((temp & 0x01) > 0) {
@@ -104,7 +110,7 @@ public class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 	private byte getByte(final BitSet bs, final int sIndex, final int eIndex) {
 		int result = 0;
 		for (int i = eIndex - 1; i >= sIndex; i--) {
-			result = result << 1;
+			result <<= 1;
 			if (bs.get(i)) {
 				result |= 1;
 			}

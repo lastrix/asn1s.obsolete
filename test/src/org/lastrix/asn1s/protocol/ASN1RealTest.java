@@ -30,6 +30,7 @@ import java.util.Arrays;
  * Date: 8/16/11
  * Time: 12:05 PM
  */
+@SuppressWarnings({"ALL"})
 public class ASN1RealTest extends TestCase {
 	@Test
 	public void testDecode() throws Exception {

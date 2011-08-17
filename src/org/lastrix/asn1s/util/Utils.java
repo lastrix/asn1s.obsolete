@@ -18,6 +18,8 @@
 
 package org.lastrix.asn1s.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,13 +30,21 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * @author: lastrix
- * Date: 8/15/11
- * Time: 2:14 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 2:14 PM
+ * @version 1.0
  */
+@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ClassWithoutConstructor"})
 public class Utils {
 
-	public final static double LOG_255 = Math.log(255);
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(Utils.class);
+
+	@SuppressWarnings({"WeakerAccess"})
+	public final static double LOG_255        = Math.log(255);
+	public static final int    BYTE_MASK      = 0x00FF;
+	public static final int    BYTE_SIGN_MASK = 0x80;
 
 	/**
 	 * Returns minimum bytes required to hold value
@@ -43,7 +53,7 @@ public class Utils {
 	 *
 	 * @return number of bytes
 	 */
-	public final static int getMinimumBytes(long value) {
+	public static int getMinimumBytes(long value) {
 		return Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
@@ -54,7 +64,7 @@ public class Utils {
 	 *
 	 * @return number of bytes
 	 */
-	public final static int getMinimumBytes(int value) {
+	public static int getMinimumBytes(int value) {
 		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
@@ -65,28 +75,29 @@ public class Utils {
 	 *
 	 * @return number of bytes
 	 */
-	public final static int getMinimumBytes(short value) {
+	public static int getMinimumBytes(short value) {
 		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
 	/**
-	 * Transfers <code>length</code> bytes from <code>is</code> to <code>os</code>
+	 * Transfers {@code length} bytes from {@code is} to {@code os}
 	 * Please note: count is amount of memory to use by buffer. This function uses NIO channels.
 	 *
 	 * @param is    - the input
 	 * @param os    - the output
 	 * @param count - bytes count
 	 *
-	 * @throws IOException
+	 * @throws IOException - from read() calls
 	 */
-	public static final void transfer(InputStream is, OutputStream os, int count)
+	@SuppressWarnings({"AssignmentToMethodParameter", "NestedAssignment"})
+	public static void transfer(InputStream is, OutputStream os, int count)
 	throws IOException {
 		final ReadableByteChannel in = Channels.newChannel(is);
 		final WritableByteChannel out = Channels.newChannel(os);
 		//create buffer with save size as count, so we won't miss anything
 		final ByteBuffer buffer = ByteBuffer.allocateDirect(count);
-		int read = 0;
-		//read the required amount of data to buffer
+		int read;
+		//readAs the required amount of data to buffer
 		while (count > 0 && (read = in.read(buffer)) != -1) {
 			count -= read;
 		}
@@ -101,24 +112,23 @@ public class Utils {
 	/**
 	 * Converts byte array to hex string (example: {0x01, 0x12} -> [ 01 12 ])
 	 *
-	 * @param array
+	 * @param array - the byte array
 	 *
-	 * @return
+	 * @return hex string in form of [ 00 01 12 ]
 	 */
-	public static String toHexString(byte[] array) {
+	public static String toHexString(byte... array) {
 		if (array == null || array.length == 0) { return "[]"; }
 		StringWriter sw = new StringWriter(array.length * 2 + 2);
 		sw.append("[");
-		for (int i = 0; i < array.length; i++) {
-			sw.append(String.format(" 0x%02X", array[i]));
-			if (i < array.length - 1) { sw.append(","); }
+		for (byte anArray : array) {
+			sw.append(String.format(" %02X", anArray));
 		}
 		sw.append(" ]");
 		return sw.toString();
 	}
 
 	/**
-	 * Extracts bytes from <code>value</code>, you may specify from > to and to > from to choose LE or BE
+	 * Extracts bytes from {@code value}, you may specify from > to and to > from to choose LE or BE
 	 *
 	 * @param value - the value
 	 * @param from  - start point
@@ -131,13 +141,32 @@ public class Utils {
 		final byte[] bytes = new byte[bCount];
 		if (from > to) {
 			for (int i = from - 1; i >= to; i--) {
-				bytes[from - i - 1] = (byte) ((value >> i * 8) & 0xFF);
+				bytes[from - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
 			}
 		} else {
 			for (int i = from; i < to; i++) {
-				bytes[to - i - 1] = (byte) ((value >> i * 8) & 0xFF);
+				bytes[to - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
 			}
 		}
 		return bytes;
+	}
+
+	/**
+	 * Converts Byte, Short, Integer or Long to long
+	 *
+	 * @param o - the number object
+	 *
+	 * @return long
+	 */
+	public static long numberToLong(final Object o) {
+		//noinspection ChainOfInstanceofChecks
+		if (o instanceof Byte) {
+			return (Byte) o;
+		} else if (o instanceof Short) {
+			return (Short) o;
+		} else if (o instanceof Integer) {
+			return (Integer) o;
+		}
+		return (Long) o;
 	}
 }

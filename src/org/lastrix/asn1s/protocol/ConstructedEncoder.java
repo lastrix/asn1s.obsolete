@@ -26,9 +26,10 @@ import java.io.IOException;
  * Constructed object encoder (like user objects or arrays, or something like that)
  * see 8.1.2.5 from X.690-0207 for more info
  *
- * @author: lastrix
- * Date: 8/15/11
- * Time: 1:54 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 1:54 PM
+ * @version 1.0
  */
 public interface ConstructedEncoder {
 
@@ -39,8 +40,8 @@ public interface ConstructedEncoder {
 	 * @param os    - the output stream
 	 * @param value - the value to encode
 	 *
-	 * @throws ASN1ProtocolException
-	 * @throws IOException
+	 * @throws ASN1ProtocolException - if object can not be encoded
+	 * @throws IOException           - from write() calls
 	 */
 	public void encode(ASN1OutputStream os, Object value) throws ASN1ProtocolException, IOException;
 }

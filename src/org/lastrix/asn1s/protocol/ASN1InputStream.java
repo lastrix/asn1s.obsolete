@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.EOFException;
@@ -26,14 +27,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author: lastrix
- * Date: 8/14/11
- * Time: 12:21 PM
+ * @author lastrix
+ *         Date: 8/14/11
+ *         Time: 12:21 PM
+ * @version 1.0
  */
-public class ASN1InputStream extends FilterInputStream {
+public final class ASN1InputStream extends FilterInputStream {
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1InputStream.class);
 
-	public ASN1InputStream(final InputStream in) {
-		super(in);
+	public ASN1InputStream(final InputStream inputStream) {
+		super(inputStream);
 	}
 
 	@Override
@@ -52,7 +56,7 @@ public class ASN1InputStream extends FilterInputStream {
 	 *
 	 * @return header
 	 *
-	 * @throws ASN1ProtocolException
+	 * @throws ASN1ProtocolException - thrown by {@link Header#readHeader(InputStream)}
 	 */
 	public Header readHeader() throws ASN1ProtocolException {
 		return Header.readHeader(this);
@@ -67,7 +71,7 @@ public class ASN1InputStream extends FilterInputStream {
 	 *
 	 * @throws ASN1ProtocolException if no handlers found or caught an exception from decoder
 	 */
-	public Object read(Header header) throws ASN1ProtocolException {
+	public Object readAs(Header header) throws ASN1ProtocolException {
 		if (header.isConstructed()) {
 			//for constructed
 			ConstructedDecoder decoder = ASN1Types.getConstructedDecoder(header);

@@ -26,9 +26,10 @@ import java.io.InputStream;
 /**
  * Interface for primitive decoder see X.690-0207 8.1.2.5 for more information
  *
- * @author: lastrix
- * Date: 8/15/11
- * Time: 1:53 PM
+ * @author lastrix
+ *         Date: 8/15/11
+ *         Time: 1:53 PM
+ * @version 1.0
  */
 public interface PrimitiveDecoder {
 
@@ -40,7 +41,8 @@ public interface PrimitiveDecoder {
 	 *
 	 * @return the object
 	 *
-	 * @throws ASN1ProtocolException
+	 * @throws ASN1ProtocolException - if header is not valid, or if object can not be read (invalid encoding)
+	 * @throws IOException           - from read() calls
 	 */
 	public Object decode(InputStream is, Header header) throws ASN1ProtocolException, IOException;
 }
