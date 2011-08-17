@@ -26,29 +26,54 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * Tests for {@link ASN1OctString}.
+ * Tests for {@link ASN1RealCoder}.
  *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1OctStringTest extends CustomTestCase {
+public class ASN1RealCoderTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
-		final byte[] oct = new byte[]{/*ASN1OctString.TAG, 0x04,*/ 0x11, 0x22, 0x33, 0x44};
-		final ByteArrayInputStream is = new ByteArrayInputStream(oct);
-		final ASN1OctString oStr = new ASN1OctString();
-		Object o = oStr.decode(is, new Header(ASN1OctString.TAG, Tag.CLASS_UNIVERSAL, false, 0x04));
-		assertNotNull(o);
-		assertTrue(Arrays.equals((byte[]) o, new byte[]{0x11, 0x22, 0x33, 0x44}));
+		final int COUNT = 4;
+		//we don't need headers, because of arch
+		byte[] data = new byte[]{/*0x09, 0x05,*/ (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
+		                         /*0x09, 0x04,*/ (byte) 0x81, 0x04, 0x02, 0x04,//10d
+		                         /*0x09, 0x01,*/ 0x41,//-inf
+		                         /*0x09, 0x01,*/ 0x40//+inf
+		};
+		byte[] sizes = new byte[]{5, 4, 1, 1};
+		final ASN1RealCoder realCoder = new ASN1RealCoder();
+		final ByteArrayInputStream is = new ByteArrayInputStream(data);
+		double doubles[] = new double[COUNT];
+		for (int i = 0; i < COUNT; i++) {
+			final Object o = realCoder.decode(is, new Header(ASN1RealCoder.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
+			if (o instanceof Double) {
+				doubles[i] = (Double) o;
+			} else {
+				fail("Double expected.");
+			}
+		}
+		assertTrue(Arrays.equals(doubles, new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY}));
 	}
 
 	@Test
 	public void testEncode() throws Exception {
-		final byte[] oct = new byte[]{0x11, 0x22, 0x33, 0x44};
+		final double[] values = new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1OctString o = new ASN1OctString();
-		o.encode(os, oct);
-		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1OctString.TAG, 0x04, 0x11, 0x22, 0x33, 0x44}));
+		final ASN1RealCoder realCoder = new ASN1RealCoder();
+		for (double d : values) {
+			realCoder.encode(os, d);
+		}
+		assertTrue(
+		          Arrays.equals(
+		                       os.toByteArray(), new byte[]{
+		                                                   0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
+		                                                   0x09, 0x04, (byte) 0x81, 0x04, 0x02, 0x04,//10d
+		                                                   0x09, 0x01, 0x41,//-inf
+		                                                   0x09, 0x01, 0x40//+inf
+		          }
+		                       )
+		          );
 	}
 }

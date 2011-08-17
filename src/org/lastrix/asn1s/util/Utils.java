@@ -109,7 +109,8 @@ public final class Utils {
 
 
 	/**
-	 * Converts byte array to hex string (example: {0x01, 0x12} -> [ 01 12 ])
+	 * Converts byte array to hex string (example: {0x01, 0x12} ->  01 12 ),
+	 * it will add \n before each 16th byte and insert 3 whitespaces between columns of 8 bytes
 	 *
 	 * @param array - the byte array
 	 *
@@ -118,11 +119,15 @@ public final class Utils {
 	public static String toHexString(byte... array) {
 		if (array == null || array.length == 0) { return "[]"; }
 		StringWriter sw = new StringWriter(array.length * 2 + 2);
-		sw.append("[");
-		for (byte anArray : array) {
-			sw.append(String.format(" %02X", anArray));
+		for (int i = 0; i < array.length; i++) {
+			if (i % 16 == 0 && i != 0) {
+				sw.append("\n");
+			}
+			if (i % 8 == 0 && i % 16 != 0 && i != 0) {
+				sw.append("   ");
+			}
+			sw.append(String.format(" %02X", array[i]));
 		}
-		sw.append(" ]");
 		return sw.toString();
 	}
 
@@ -197,5 +202,26 @@ public final class Utils {
 			return (Float) o;
 		}
 		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
+	}
+
+	/**
+	 * Make gaps between bytes, so if you got
+	 * <code>10100101 10010110</code> and you need to gap 3 bits, you'll get
+	 * <code>00000001 00001001 00001100 00010110</code>.
+	 * Highest bits would be missed probably.
+	 *
+	 * @param value   - the value
+	 * @param gapSize - an int between 1 and 7
+	 * @param MASK    - mask to extract byte
+	 *
+	 * @return an long
+	 */
+	public static long makeByteGaps(long value, int gapSize, int MASK) {
+		if (gapSize < 1 || gapSize > 7) { throw new IllegalArgumentException("Parameter 'gapSize' should be in [1,7]"); }
+		long result = 0;
+		for (int i = 0; i < 8; i++) {
+			result |= (value >> (i * (8 - gapSize)) & MASK) << (i * 8);
+		}
+		return result;
 	}
 }

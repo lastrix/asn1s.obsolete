@@ -72,7 +72,7 @@ public final class ASN1InputStream extends FilterInputStream {
 	public Object readAs(Header header) throws ASN1ProtocolException {
 		if (header.isConstructed()) {
 			//for constructed
-			ConstructedDecoder decoder = ASN1Types.getConstructedDecoder(header);
+			ConstructedDecoder decoder = ASN1Coders.getConstructedDecoder(header);
 			if (decoder == null) {
 				throw new ASN1ProtocolException(String.format("No handlers found for '%s'", header));
 			}
@@ -84,7 +84,7 @@ public final class ASN1InputStream extends FilterInputStream {
 
 		} else {
 			//for primitive
-			PrimitiveDecoder decoder = ASN1Types.getPrimitiveDecoder(header);
+			PrimitiveDecoder decoder = ASN1Coders.getPrimitiveDecoder(header);
 			if (decoder == null) {
 				throw new ASN1ProtocolException(String.format("No handlers found for '%s'", header));
 			}

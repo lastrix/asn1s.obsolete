@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.protocol;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.lastrix.asn1s.CustomTestCase;
 
@@ -26,54 +27,62 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * Tests for {@link ASN1Real}.
+ * Test for {@link ASN1IntegerCoder}.
  *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1RealTest extends CustomTestCase {
+public class ASN1IntegerCoderTest extends CustomTestCase {
+	private final static Logger logger = Logger.getLogger(ASN1IntegerCoderTest.class);
+
 	@Test
 	public void testDecode() throws Exception {
-		final int COUNT = 4;
-		//we don't need headers, because of arch
-		byte[] data = new byte[]{/*0x09, 0x05,*/ (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
-		                         /*0x09, 0x04,*/ (byte) 0x81, 0x04, 0x02, 0x04,//10d
-		                         /*0x09, 0x01,*/ 0x41,//-inf
-		                         /*0x09, 0x01,*/ 0x40//+inf
+		final int size = 4;
+		byte[] data = new byte[]{
+		                        0x0F, (byte) 0xA0,
+		                        0x01, 0x11, 0x11,
+		                        0x7F, 0x5D,
+		                        (byte) 0xF0, 0x0F
 		};
-		byte[] sizes = new byte[]{5, 4, 1, 1};
-		final ASN1Real real = new ASN1Real();
-		final ByteArrayInputStream is = new ByteArrayInputStream(data);
-		double doubles[] = new double[COUNT];
-		for (int i = 0; i < COUNT; i++) {
-			final Object o = real.decode(is, new Header(ASN1Real.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
-			if (o instanceof Double) {
-				doubles[i] = (Double) o;
+		ByteArrayInputStream is = new ByteArrayInputStream(data);
+		final ASN1IntegerCoder integer = new ASN1IntegerCoder();
+		long[] result = new long[size];
+		int[] sizes = new int[]{2, 3, 2, 2};
+		for (int i = 0; i < size; i++) {
+			Object o = integer.decode(is, new Header(ASN1IntegerCoder.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
+			if (o instanceof Long) {
+				result[i] = (Long) o;
 			} else {
-				fail("Double expected.");
+				fail("Type is not Long.");
 			}
 		}
-		assertTrue(Arrays.equals(doubles, new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY}));
+		assertTrue(Arrays.equals(result, new long[]{0x0FA0L, 0x011111L, 0x7F5DL, 0xFFFFFFFFFFFFF00FL}));
 	}
 
 	@Test
 	public void testEncode() throws Exception {
-		final double[] values = new double[]{-10000d, 10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1Real real = new ASN1Real();
-		for (double d : values) {
-			real.encode(os, d);
-		}
+		final ASN1IntegerCoder integer = new ASN1IntegerCoder();
+		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
+		integer.encode(os, 0);
+		integer.encode(os, -(byte) 1);
+		integer.encode(os, (short) 2);
+		integer.encode(os, 255);
+		integer.encode(os, 1024);
+		integer.encode(os, 1024 * 1024L);
 		assertTrue(
 		          Arrays.equals(
-		                       os.toByteArray(), new byte[]{
-		                                                   0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88,//-10000d
-		                                                   0x09, 0x04, (byte) 0x81, 0x04, 0x02, 0x04,//10d
-		                                                   0x09, 0x01, 0x41,//-inf
-		                                                   0x09, 0x01, 0x40//+inf
-		          }
+		                       os.toByteArray(),
+		                       new byte[]{
+		                                 ASN1IntegerCoder.TAG, 0x01, 0x00,
+		                                 ASN1IntegerCoder.TAG, 0x01, (byte) 0xFF,
+		                                 ASN1IntegerCoder.TAG, 0x01, 0x02,
+		                                 ASN1IntegerCoder.TAG, 0x02, 0x00, (byte) 0xFF,
+		                                 ASN1IntegerCoder.TAG, 0x02, 0x04, 0x00,
+		                                 ASN1IntegerCoder.TAG, 0x03, 0x10, 0x00, 0x00
+		                       }
 		                       )
 		          );
+
 	}
 }

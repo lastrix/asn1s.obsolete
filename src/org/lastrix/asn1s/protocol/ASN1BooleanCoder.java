@@ -18,36 +18,53 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.junit.Test;
-import org.lastrix.asn1s.CustomTestCase;
+import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
- * Tests for {@link ASN1Null}.
+ * See X.690-0207 8.2 for more information
  *
+ * @author lastrix
  * @version 1.0
- * @author: lastrix
  */
-@SuppressWarnings({"ALL"})
-public class ASN1NullTest extends CustomTestCase {
+public final class ASN1BooleanCoder implements PrimitiveDecoder, PrimitiveEncoder {
 
-	@Test
-	public void testDecode() throws Exception {
-		final ASN1Null n = new ASN1Null();
-		byte[] data = new byte[]{};
-		ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object o = n.decode(is, ASN1Null.HEADER);
-		assertNull(o);
+	@SuppressWarnings({"UnusedDeclaration"})
+	private final static Logger logger = Logger.getLogger(ASN1BooleanCoder.class);
+	/**
+	 * Boolean type id (tag)
+	 */
+	public static final  byte   TAG    = 0x01;
+	public static final  byte   TRUE   = (byte) 0xFF;
+	public static final  byte   FALSE  = 0x00;
+
+
+	/**
+	 * No point in generation header many times, so just make default one.
+	 * It also helps sometimes.
+	 */
+	public final static Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 1);
+
+	/**
+	 * Create ber boolean handler
+	 */
+	public ASN1BooleanCoder() {
 	}
 
-	@Test
-	public void testEncode() throws Exception {
-		final ASN1Null n = new ASN1Null();
-		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
-		n.encode(os, null);
-		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1Null.TAG, 0x00}));
+	@Override
+	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
+		return is.read() > 0;
+	}
+
+	@Override
+	public void encode(final OutputStream os, final Object value) throws IOException {
+		//write header
+		os.write(HEADER.toByteArray());
+		//and value
+		os.write(((Boolean) value) ? TRUE : FALSE);
 	}
 }

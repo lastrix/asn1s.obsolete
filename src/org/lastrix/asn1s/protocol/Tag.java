@@ -68,4 +68,6 @@ public interface Tag {
 	public static final int FORM_MASK = 0x80;
 
 	public static final int LENGTH_MASK = 0x7F;
+
+	public static final int MORE_BYTES = 0x80;
 }

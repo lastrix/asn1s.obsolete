@@ -35,8 +35,7 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public final class Header {
-	private static final Logger logger            = Logger.getLogger(Header.class);
-	private static final int    MORE_LENGTH_BYTES = 0x80;
+	private static final Logger logger = Logger.getLogger(Header.class);
 
 	private final byte    tagClass;
 	private final boolean constructed;
@@ -101,13 +100,10 @@ public final class Header {
 			//write XX X 11111
 			bos.write(Tag.TAG_MASK | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 
-			long mTag = 0;
-			for (int i = 0; i < 8; i++) {
-				mTag |= (getTag() >> (i * 7) & Tag.TAG_MASK_EXTENDED) << i * 8;
-			}
+			long mTag = Utils.makeByteGaps(getTag(), 1, Tag.TAG_MASK_EXTENDED);
 			final int bytesCount = Utils.getMinimumBytes(mTag);
 			for (int i = bytesCount - 1; i > 0; i--) {
-				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | MORE_LENGTH_BYTES);
+				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Tag.MORE_BYTES);
 			}
 			bos.write((int) (mTag & Utils.BYTE_MASK));
 		} else {

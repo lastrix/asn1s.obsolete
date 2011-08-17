@@ -103,6 +103,6 @@ public class ASN1InputStreamTest extends CustomTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ASN1Types.init();
+		ASN1Coders.init();
 	}
 }

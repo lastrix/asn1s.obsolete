@@ -33,9 +33,9 @@ import java.util.Map;
  * @see ASN1OutputStream
  */
 @SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ClassWithoutConstructor"})
-public class ASN1Types {
+public class ASN1Coders {
 	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1Types.class);
+	private final static Logger logger = Logger.getLogger(ASN1Coders.class);
 
 	private static Map<Byte, Map<Long, PrimitiveDecoder>>   primitiveDecoders   = null;
 	private static Map<Class, PrimitiveEncoder>             primitiveEncoders   = null;
@@ -45,20 +45,22 @@ public class ASN1Types {
 
 	public static void init() {
 
-		nullEncoder = new ASN1Null();
+		nullEncoder = new ASN1NullCoder();
 
 		primitiveDecoders = new HashMap<Byte, Map<Long, PrimitiveDecoder>>();
 		primitiveEncoders = new HashMap<Class, PrimitiveEncoder>();
 		constructedDecoders = new HashMap<Byte, Map<Long, ConstructedDecoder>>();
 		constructedEncoders = new HashMap<Class, ConstructedEncoder>();
 
-		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Boolean.TAG, new ASN1Boolean(), Boolean.class);
-		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Real.TAG, new ASN1Real(), Double.class, Float.class);
-		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Integer.TAG, new ASN1Integer(), Integer.class, Byte.class, Short.class, Long.class);
-		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1Null.TAG, new ASN1Null());
-		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1BitString.TAG, new ASN1BitString(), BitSet.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1BooleanCoder.TAG, new ASN1BooleanCoder(), Boolean.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1RealCoder.TAG, new ASN1RealCoder(), Double.class, Float.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1IntegerCoder.TAG, new ASN1IntegerCoder(), Integer.class, Byte.class, Short.class, Long.class);
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1NullCoder.TAG, new ASN1NullCoder());
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1BitStringCoder.TAG, new ASN1BitStringCoder(), BitSet.class);
 		byte[] arr = new byte[1];
-		addPrimitive((byte) 0x00, ASN1OctString.TAG, new ASN1OctString(), arr.getClass());
+		addPrimitive((byte) 0x00, ASN1OctStringCoder.TAG, new ASN1OctStringCoder(), arr.getClass());
+		long[] arr2 = new long[1];
+		addPrimitive(Tag.CLASS_UNIVERSAL, ASN1OIDCoder.TAG, new ASN1OIDCoder(), arr2.getClass());
 	}
 
 	private static void addPrimitive(final byte clazz, final long tag, final Object object, Class... classes) {

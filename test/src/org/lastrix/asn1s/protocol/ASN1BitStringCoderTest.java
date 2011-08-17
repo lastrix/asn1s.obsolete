@@ -18,71 +18,68 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.BitSet;
 
 /**
- * Test for {@link ASN1Integer}.
+ * Test for {@link ASN1BitStringCoder}.
  *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1IntegerTest extends CustomTestCase {
-	private final static Logger logger = Logger.getLogger(ASN1IntegerTest.class);
-
+public class ASN1BitStringCoderTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
-		final int size = 4;
-		byte[] data = new byte[]{
-		                        0x0F, (byte) 0xA0,
-		                        0x01, 0x11, 0x11,
-		                        0x7F, 0x5D,
-		                        (byte) 0xF0, 0x0F
-		};
-		ByteArrayInputStream is = new ByteArrayInputStream(data);
-		final ASN1Integer integer = new ASN1Integer();
-		long[] result = new long[size];
-		int[] sizes = new int[]{2, 3, 2, 2};
-		for (int i = 0; i < size; i++) {
-			Object o = integer.decode(is, new Header(ASN1Integer.TAG, Tag.CLASS_UNIVERSAL, false, sizes[i]));
-			if (o instanceof Long) {
-				result[i] = (Long) o;
-			} else {
-				fail("Type is not Long.");
-			}
-		}
-		assertTrue(Arrays.equals(result, new long[]{0x0FA0L, 0x011111L, 0x7F5DL, 0xFFFFFFFFFFFFF00FL}));
+		final byte[] data = new byte[]{0x02, (byte) 0xC4, 0x04, (byte) 0x89, (byte) 0x80};
+		final ASN1BitStringCoder bs = new ASN1BitStringCoder();
+		final ByteArrayInputStream is = new ByteArrayInputStream(data);
+		Object o = bs.decode(is, new Header(ASN1BitStringCoder.TAG, Tag.CLASS_UNIVERSAL, false, 2));
+		assertNotNull(o);
+		assertTrue(o instanceof BitSet);
+		BitSet b = new BitSet(8);
+		b.set(0);
+		b.set(4);
+		b.set(5);
+		assertTrue(b.equals(o));
+		o = bs.decode(is, new Header(ASN1BitStringCoder.TAG, Tag.CLASS_UNIVERSAL, false, 3));
+		assertNotNull(o);
+		assertTrue(o instanceof BitSet);
+		b = new BitSet(16);
+		b.set(0);
+		b.set(3);
+		b.set(7);
+		b.set(11);
+		assertTrue(b.equals(o));
 	}
 
 	@Test
 	public void testEncode() throws Exception {
-		final ASN1Integer integer = new ASN1Integer();
+		BitSet b = new BitSet(8);
+		b.set(0);
+		b.set(4);
+		b.set(5);
+		final ASN1BitStringCoder bs = new ASN1BitStringCoder();
 		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
-		integer.encode(os, 0);
-		integer.encode(os, -(byte) 1);
-		integer.encode(os, (short) 2);
-		integer.encode(os, 255);
-		integer.encode(os, 1024);
-		integer.encode(os, 1024 * 1024L);
+		bs.encode(os, b);
+		b = new BitSet(16);
+		b.set(0);
+		b.set(3);
+		b.set(7);
+		b.set(11);
+		bs.encode(os, b);
 		assertTrue(
 		          Arrays.equals(
-		                       os.toByteArray(),
-		                       new byte[]{
-		                                 ASN1Integer.TAG, 0x01, 0x00,
-		                                 ASN1Integer.TAG, 0x01, (byte) 0xFF,
-		                                 ASN1Integer.TAG, 0x01, 0x02,
-		                                 ASN1Integer.TAG, 0x02, 0x00, (byte) 0xFF,
-		                                 ASN1Integer.TAG, 0x02, 0x04, 0x00,
-		                                 ASN1Integer.TAG, 0x03, 0x10, 0x00, 0x00
-		                       }
+		                       os.toByteArray(), new byte[]{
+		                                                   ASN1BitStringCoder.TAG, 0x02, 0x02, (byte) 0xC4,
+		                                                   ASN1BitStringCoder.TAG, 0x03, 0x04, (byte) 0x89, (byte) 0x80
+		          }
 		                       )
 		          );
-
 	}
 }

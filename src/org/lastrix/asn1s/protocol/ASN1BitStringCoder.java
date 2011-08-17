@@ -32,14 +32,14 @@ import java.util.BitSet;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
+public final class ASN1BitStringCoder implements PrimitiveDecoder, PrimitiveEncoder {
 	public static final  byte   TAG    = 0x03;
 	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1BitString.class);
+	private final static Logger logger = Logger.getLogger(ASN1BitStringCoder.class);
 
 	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
 
-	public ASN1BitString() {}
+	public ASN1BitStringCoder() {}
 
 
 	@Override

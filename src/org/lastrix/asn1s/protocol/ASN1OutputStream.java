@@ -40,13 +40,13 @@ public final class ASN1OutputStream extends FilterOutputStream {
 
 	public void write(Object o) throws ASN1ProtocolException, IOException {
 		//try primitive encoder
-		PrimitiveEncoder encoder = ASN1Types.getPrimitiveTypeEncoder(o);
+		PrimitiveEncoder encoder = ASN1Coders.getPrimitiveTypeEncoder(o);
 		if (encoder != null) {
 			encoder.encode(this, o);
 
 		} else {
 			//try constructed encoder
-			ConstructedEncoder cEncoder = ASN1Types.getConstructedTypeEncoder(o);
+			ConstructedEncoder cEncoder = ASN1Coders.getConstructedTypeEncoder(o);
 			if (cEncoder != null) {
 				cEncoder.encode(this, o);
 

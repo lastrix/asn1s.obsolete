@@ -24,62 +24,31 @@ import org.lastrix.asn1s.CustomTestCase;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
-import java.util.BitSet;
 
 /**
- * Test for {@link ASN1BitString}.
+ * Tests for {@link ASN1OctStringCoder}.
  *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1BitStringTest extends CustomTestCase {
+public class ASN1OctStringCoderTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
-		final byte[] data = new byte[]{0x02, (byte) 0xC4, 0x04, (byte) 0x89, (byte) 0x80};
-		final ASN1BitString bs = new ASN1BitString();
-		final ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object o = bs.decode(is, new Header(ASN1BitString.TAG, Tag.CLASS_UNIVERSAL, false, 2));
+		final byte[] oct = new byte[]{/*ASN1OctStringCoder.TAG, 0x04,*/ 0x11, 0x22, 0x33, 0x44};
+		final ByteArrayInputStream is = new ByteArrayInputStream(oct);
+		final ASN1OctStringCoder oStr = new ASN1OctStringCoder();
+		Object o = oStr.decode(is, new Header(ASN1OctStringCoder.TAG, Tag.CLASS_UNIVERSAL, false, 0x04));
 		assertNotNull(o);
-		assertTrue(o instanceof BitSet);
-		BitSet b = new BitSet(8);
-		b.set(0);
-		b.set(4);
-		b.set(5);
-		assertTrue(b.equals(o));
-		o = bs.decode(is, new Header(ASN1BitString.TAG, Tag.CLASS_UNIVERSAL, false, 3));
-		assertNotNull(o);
-		assertTrue(o instanceof BitSet);
-		b = new BitSet(16);
-		b.set(0);
-		b.set(3);
-		b.set(7);
-		b.set(11);
-		assertTrue(b.equals(o));
+		assertTrue(Arrays.equals((byte[]) o, new byte[]{0x11, 0x22, 0x33, 0x44}));
 	}
 
 	@Test
 	public void testEncode() throws Exception {
-		BitSet b = new BitSet(8);
-		b.set(0);
-		b.set(4);
-		b.set(5);
-		final ASN1BitString bs = new ASN1BitString();
-		final ByteArrayOutputStream os = new ByteArrayOutputStream(2);
-		bs.encode(os, b);
-		b = new BitSet(16);
-		b.set(0);
-		b.set(3);
-		b.set(7);
-		b.set(11);
-		bs.encode(os, b);
-		assertTrue(
-		          Arrays.equals(
-		                       os.toByteArray(), new byte[]{
-		                                                   ASN1BitString.TAG, 0x02, 0x02, (byte) 0xC4,
-		                                                   ASN1BitString.TAG, 0x03, 0x04, (byte) 0x89, (byte) 0x80
-		          }
-		                       )
-		          );
+		final byte[] oct = new byte[]{0x11, 0x22, 0x33, 0x44};
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		final ASN1OctStringCoder o = new ASN1OctStringCoder();
+		o.encode(os, oct);
+		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1OctStringCoder.TAG, 0x04, 0x11, 0x22, 0x33, 0x44}));
 	}
 }

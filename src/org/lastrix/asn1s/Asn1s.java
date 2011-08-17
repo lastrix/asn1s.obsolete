@@ -20,9 +20,9 @@ package org.lastrix.asn1s;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.lastrix.asn1s.protocol.ASN1Coders;
 import org.lastrix.asn1s.protocol.ASN1InputStream;
 import org.lastrix.asn1s.protocol.ASN1OutputStream;
-import org.lastrix.asn1s.protocol.ASN1Types;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.util.Utils;
 
@@ -94,13 +94,16 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
-		ASN1Types.init();
+		ASN1Coders.init();
 		final BitSet bs = new BitSet(8);
 		bs.set(1);
 		bs.set(3);
 		bs.set(5);
-		bs.set(7);
+		bs.set(7);//06 09 2A 8C E6 84 00 90 00 80 00
 		final Object[] objects = new Object[]{
+		                                     new long[]{1, 2},
+		                                     new long[]{1, 2, 140, 230, 1024, 4096, 32768},
+		                                     new long[]{1, 2, 140},
 		                                     -10000d,
 		                                     10d,
 		                                     0d,
@@ -138,7 +141,11 @@ public class Asn1s {
 				}
 				Object o = bis.readAs(header);
 				if (o != null && o.getClass().isArray()) {
-					logger.warn(String.format("Object readAs: %s", Arrays.toString((byte[]) o)));
+					try {
+						logger.warn(String.format("Object readAs: %s", Arrays.toString((byte[]) o)));
+					} catch (Exception e) {
+						logger.warn(String.format("Object readAs: %s", Arrays.toString((long[]) o)));
+					}
 				} else {
 					logger.warn(String.format("Object readAs: %s", o));
 				}

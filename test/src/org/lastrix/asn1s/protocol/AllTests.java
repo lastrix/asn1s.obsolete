@@ -41,15 +41,16 @@ public class AllTests {
 	public static junit.framework.Test suite() {
 		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.protocol");
 
-		suite.addTestSuite(ASN1BooleanTest.class);
-		suite.addTestSuite(ASN1NullTest.class);
-		suite.addTestSuite(ASN1IntegerTest.class);
-		suite.addTestSuite(ASN1RealTest.class);
-		suite.addTestSuite(ASN1BitStringTest.class);
-		suite.addTestSuite(ASN1OctStringTest.class);
+		suite.addTestSuite(ASN1BooleanCoderTest.class);
+		suite.addTestSuite(ASN1NullCoderTest.class);
+		suite.addTestSuite(ASN1IntegerCoderTest.class);
+		suite.addTestSuite(ASN1RealCoderTest.class);
+		suite.addTestSuite(ASN1BitStringCoderTest.class);
+		suite.addTestSuite(ASN1OctStringCoderTest.class);
 		suite.addTestSuite(HeaderTest.class);
 		suite.addTestSuite(ASN1InputStreamTest.class);
 		suite.addTestSuite(ASN1OutputStreamTest.class);
+		suite.addTestSuite(ASN1OIDCoderTest.class);
 
 		// Make sure that we run the tests using the english locale
 		return new TestSetup(suite) {

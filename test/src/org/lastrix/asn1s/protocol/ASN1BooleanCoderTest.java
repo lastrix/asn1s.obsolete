@@ -26,23 +26,23 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * Test for {@link ASN1Boolean}.
+ * Test for {@link ASN1BooleanCoder}.
  *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1BooleanTest extends CustomTestCase {
+public class ASN1BooleanCoderTest extends CustomTestCase {
 
 	@Test
 	public void testDecode() throws Exception {
-		final ASN1Boolean b = new ASN1Boolean();
-		byte[] data = new byte[]{ASN1Boolean.TRUE, ASN1Boolean.FALSE};
+		final ASN1BooleanCoder b = new ASN1BooleanCoder();
+		byte[] data = new byte[]{ASN1BooleanCoder.TRUE, ASN1BooleanCoder.FALSE};
 		ByteArrayInputStream is = new ByteArrayInputStream(data);
-		Object result = b.decode(is, ASN1Boolean.HEADER);
+		Object result = b.decode(is, ASN1BooleanCoder.HEADER);
 		assertNotNull(result);
 		assertTrue((Boolean) result);
-		result = b.decode(is, ASN1Boolean.HEADER);
+		result = b.decode(is, ASN1BooleanCoder.HEADER);
 		assertNotNull(result);
 		assertFalse((Boolean) result);
 	}
@@ -50,14 +50,14 @@ public class ASN1BooleanTest extends CustomTestCase {
 	@Test
 	public void testEncode() throws Exception {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
-		final ASN1Boolean b = new ASN1Boolean();
+		final ASN1BooleanCoder b = new ASN1BooleanCoder();
 		b.encode(bos, Boolean.TRUE);
 		b.encode(bos, Boolean.FALSE);
 		assertTrue(
 		          Arrays.equals(
 		                       bos.toByteArray(), new byte[]{
-		                                                    ASN1Boolean.TAG, 0x01, ASN1Boolean.TRUE,
-		                                                    ASN1Boolean.TAG, 0x01, ASN1Boolean.FALSE
+		                                                    ASN1BooleanCoder.TAG, 0x01, ASN1BooleanCoder.TRUE,
+		                                                    ASN1BooleanCoder.TAG, 0x01, ASN1BooleanCoder.FALSE
 		          }
 		                       )
 		          );

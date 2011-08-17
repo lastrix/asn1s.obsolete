@@ -32,9 +32,9 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
+public final class ASN1IntegerCoder implements PrimitiveDecoder, PrimitiveEncoder {
 	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
+	private final static Logger logger = Logger.getLogger(ASN1IntegerCoder.class);
 
 	public final static byte TAG = 0x02;
 
@@ -47,7 +47,7 @@ public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	/**
 	 * Create default integer encoder/decoder
 	 */
-	public ASN1Integer() {
+	public ASN1IntegerCoder() {
 	}
 
 	@Override

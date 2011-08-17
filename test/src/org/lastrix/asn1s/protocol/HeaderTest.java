@@ -112,8 +112,8 @@ public class HeaderTest extends CustomTestCase {
 		Header h = Header.readHeader(is);
 		assertTrue(h.isEOC());
 		h = Header.readHeader(is);
-		assertTrue(ASN1Boolean.HEADER.equals(h));
+		assertTrue(ASN1BooleanCoder.HEADER.equals(h));
 		h = Header.readHeader(is);
-		assertTrue(ASN1Null.HEADER.equals(h));
+		assertTrue(ASN1NullCoder.HEADER.equals(h));
 	}
 }

@@ -33,9 +33,9 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
+public final class ASN1RealCoder implements PrimitiveEncoder, PrimitiveDecoder {
 	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1Real.class);
+	private final static Logger logger = Logger.getLogger(ASN1RealCoder.class);
 
 	public static final  byte   TAG                             = 0x09;
 	private static final Header HEADER                          = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 10);
@@ -58,7 +58,7 @@ public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 	private static final int    DOUBLE_EXPONENT_POSITION        = 52;
 	private static final long   DOUBLE_SIGN_MASK                = 0x8000000000000000L;
 
-	public ASN1Real() {}
+	public ASN1RealCoder() {}
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
