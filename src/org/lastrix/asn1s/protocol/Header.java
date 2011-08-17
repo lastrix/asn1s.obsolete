@@ -29,15 +29,14 @@ import java.io.OutputStream;
 
 /**
  * Class for holding, handling and simple processing header information (BER).
+ * See X.690-0207 8.1 for more information
  *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 12:29 PM
  * @version 1.0
  */
 public final class Header {
 	private static final Logger logger            = Logger.getLogger(Header.class);
-	public static final  int    MORE_LENGTH_BYTES = 0x80;
+	private static final int    MORE_LENGTH_BYTES = 0x80;
 
 	private final byte    tagClass;
 	private final boolean constructed;
@@ -54,6 +53,7 @@ public final class Header {
 	 * @param constructed - constructed or primitive
 	 * @param length      - the length
 	 */
+	@SuppressWarnings({"ParameterHidesMemberVariable"})
 	public Header(final long tag, final byte tagClass, final boolean constructed, final long length) {
 		this.tag = tag;
 		this.tagClass = tagClass;
@@ -102,9 +102,8 @@ public final class Header {
 			bos.write(Tag.TAG_MASK | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 
 			long mTag = 0;
-			long tag = getTag();
 			for (int i = 0; i < 8; i++) {
-				mTag |= (tag >> (i * 7) & Tag.TAG_MASK_EXTENDED) << i * 8;
+				mTag |= (getTag() >> (i * 7) & Tag.TAG_MASK_EXTENDED) << i * 8;
 			}
 			final int bytesCount = Utils.getMinimumBytes(mTag);
 			for (int i = bytesCount - 1; i > 0; i--) {
@@ -134,24 +133,24 @@ public final class Header {
 	/**
 	 * Writes the length into output stream
 	 *
-	 * @param os     - the output stream
-	 * @param length - the length
+	 * @param os    - the output stream
+	 * @param value - the length
 	 *
 	 * @throws IOException - from write() calls
 	 */
-	public static void writeLength(OutputStream os, long length) throws IOException {
-		if (length == Tag.FORM_INDEFINITE) {
+	public static void writeLength(OutputStream os, long value) throws IOException {
+		if (value == Tag.FORM_INDEFINITE) {
 			os.write(Tag.FORM_INDEFINITE);
-		} else if (length > Tag.LENGTH_MASK) {
-			final int bytesCount = Utils.getMinimumBytes(length);
+		} else if (value > Tag.LENGTH_MASK) {
+			final int bytesCount = Utils.getMinimumBytes(value);
 			//as 8.1.3.5 in X.690-0207 says in 1st content octet bit 8 should be 1 and 7 to 1 should encode amount of bytes,
 			// the others - length as unsigned integer LE!
 			os.write(bytesCount | Tag.FORM_INDEFINITE);
 			for (int i = bytesCount - 1; i >= 0; i--) {
-				os.write((int) (length >> (i * 8)) & Utils.BYTE_MASK);
+				os.write((int) (value >> (i * 8)) & Utils.BYTE_MASK);
 			}
 		} else {
-			os.write(((int) length) & Tag.LENGTH_MASK);
+			os.write(((int) value) & Tag.LENGTH_MASK);
 		}
 	}
 

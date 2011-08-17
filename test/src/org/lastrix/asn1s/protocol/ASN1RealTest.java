@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 12:05 PM
+ * Tests for {@link ASN1Real}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1RealTest extends TestCase {
+public class ASN1RealTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
 		final int COUNT = 4;

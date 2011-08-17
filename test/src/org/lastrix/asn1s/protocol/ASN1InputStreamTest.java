@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.BitSet;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 7:41 PM
+ * Test for {@link ASN1InputStream}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1InputStreamTest extends TestCase {
+public class ASN1InputStreamTest extends CustomTestCase {
 
 	static final byte[] data = new byte[]{
 	                                     0x09, 0x05, (byte) 0xC1, 0x04, 0x0C, 0x03, (byte) 0x88, 0x09,

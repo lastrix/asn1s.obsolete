@@ -16,29 +16,34 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s;
 
-import org.junit.Test;
-import org.lastrix.asn1s.CustomTestCase;
+import junit.framework.TestCase;
+import org.apache.log4j.PropertyConfigurator;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 /**
- * Tests for {@link ASN1OutputStream}.
+ * Special class to allow tests use {@link org.apache.log4j.Logger}.
  *
  * @author lastrix
  * @version 1.0
  */
-@SuppressWarnings({"ALL"})
-public class ASN1OutputStreamTest extends CustomTestCase {
-	@Test
-	public void testWork() throws Exception {
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final ASN1OutputStream asn1OutputStream = new ASN1OutputStream(os);
-		for (Object o : ASN1InputStreamTest.objects) {
-			asn1OutputStream.write(o);
-		}
-		assertTrue(Arrays.equals(os.toByteArray(), ASN1InputStreamTest.data));
+@SuppressWarnings({"ClassWithoutLogger"})
+public class CustomTestCase extends TestCase {
+	private static final String logPropertiesFile = "resources/log4j_test.properties";
+
+	public CustomTestCase() {}
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		final Properties logProperties = new Properties();
+		final FileInputStream fis = new FileInputStream(logPropertiesFile);
+		// load our log4j properties / configuration file
+		logProperties.load(fis);
+		PropertyConfigurator.configure(logProperties);
+		fis.close();
 	}
 }

@@ -18,8 +18,6 @@
 
 package org.lastrix.asn1s.protocol;
 
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -27,8 +25,6 @@ import java.io.OutputStream;
  * Interface for primitive encoder see X.690-0207 8.1.2.5 for more information
  *
  * @author lastrix
- *         Date: 8/15/11
- *         Time: 1:53 PM
  * @version 1.0
  */
 public interface PrimitiveEncoder {
@@ -39,8 +35,9 @@ public interface PrimitiveEncoder {
 	 * @param os    - the output stream
 	 * @param value - the value
 	 *
-	 * @throws ASN1ProtocolException - if encoding is not supported for {@code value} or if value can not be encoded
-	 * @throws IOException           - from write() calls
+	 * @throws IOException              - from write() calls
+	 * @throws IllegalArgumentException - if object is not acceptable
+	 * @throws NullPointerException     - if object is null and null is not valid object for this encoder
 	 */
-	public void encode(OutputStream os, Object value) throws ASN1ProtocolException, IOException;
+	public void encode(OutputStream os, Object value) throws IOException, IllegalArgumentException, NullPointerException;
 }

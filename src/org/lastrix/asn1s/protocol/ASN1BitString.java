@@ -27,11 +27,9 @@ import java.io.OutputStream;
 import java.util.BitSet;
 
 /**
- * BitSet encoder/decoder
+ * See X.690-0207 8.6 for more information
  *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 6:15 PM
  * @version 1.0
  */
 public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
@@ -46,13 +44,11 @@ public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.isSame(header)) {
-			throw new ASN1ProtocolException("Parameter 'header' is not valid BitString header.");
-		}
 		final int pad = is.read();
 		if (pad > 7) {
 			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
 		}
+
 		BitSet bs = new BitSet((int) ((header.getLength() - 1) * 8));
 		int temp;
 		final int size = (int) (header.getLength() - 1 - ((pad > 0) ? 1 : 0));
@@ -65,6 +61,7 @@ public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 				temp >>= 1;
 			}
 		}
+
 		//handle pad
 		if (pad > 0) {
 			temp = is.read();
@@ -81,22 +78,25 @@ public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
-		if (!(value instanceof BitSet)) {
-			throw new ASN1ProtocolException("Parameter 'value' is not BitSet instance.");
-		}
+	public void encode(final OutputStream os, final Object value) throws IOException {
+		//write tag
 		os.write(HEADER.tagToByteArray());
+
 		BitSet bs = (BitSet) value;
 		final int bitCount = bs.length();
 		final int rest = bitCount % 8;
 		final int bytesCount = bitCount / 8 + ((rest > 0) ? 1 : 0) + 1;
+
+		//write length
 		Header.writeLength(os, bytesCount);
+
 		//write pad settings
 		if (rest == 0) {
 			os.write(0x00);
 		} else {
 			os.write(8 - rest);
 		}
+		//write bytes
 		for (int i = 0; i < bytesCount - 2; i++) {
 			os.write(getByte(bs, i * 8, (i + 1) * 8));
 		}
@@ -104,10 +104,20 @@ public final class ASN1BitString implements PrimitiveDecoder, PrimitiveEncoder {
 		if (rest > 0) {
 			lastByte <<= (8 - rest);
 		}
+		//write last byte
 		os.write(lastByte);
 	}
 
-	private byte getByte(final BitSet bs, final int sIndex, final int eIndex) {
+	/**
+	 * Extracts 1 byte from {@link BitSet}
+	 *
+	 * @param bs     - the BitSet
+	 * @param sIndex - start index
+	 * @param eIndex - end index
+	 *
+	 * @return an byte
+	 */
+	private static byte getByte(final BitSet bs, final int sIndex, final int eIndex) {
 		int result = 0;
 		for (int i = eIndex - 1; i >= sIndex; i--) {
 			result <<= 1;

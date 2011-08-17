@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
+ * Tests for {@link ASN1Null}.
+ *
+ * @version 1.0
  * @author: lastrix
- * Date: 8/16/11
- * Time: 11:38 AM
  */
 @SuppressWarnings({"ALL"})
-public class ASN1NullTest extends TestCase {
+public class ASN1NullTest extends CustomTestCase {
 
 	@Test
 	public void testDecode() throws Exception {

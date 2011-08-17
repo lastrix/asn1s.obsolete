@@ -26,11 +26,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Null value encoder/decoder
+ * See X.690-0207 8.8 for more information
  *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 7:20 PM
  * @version 1.0
  */
 public final class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
@@ -48,17 +46,11 @@ public final class ASN1Null implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.equals(header)) {
-			throw new ASN1ProtocolException("Header is not valid for 'null'.");
-		}
 		return null;
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
-		if (value != null) {
-			throw new ASN1ProtocolException("Supplied value is not null.");
-		}
+	public void encode(final OutputStream os, final Object value) throws IOException {
 		//just write the header
 		os.write(HEADER.toByteArray());
 	}

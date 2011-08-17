@@ -18,20 +18,24 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
+import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 11:46 AM
+ * Test for {@link ASN1Integer}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1IntegerTest extends TestCase {
+public class ASN1IntegerTest extends CustomTestCase {
+	private final static Logger logger = Logger.getLogger(ASN1IntegerTest.class);
+
 	@Test
 	public void testDecode() throws Exception {
 		final int size = 4;
@@ -66,7 +70,6 @@ public class ASN1IntegerTest extends TestCase {
 		integer.encode(os, 255);
 		integer.encode(os, 1024);
 		integer.encode(os, 1024 * 1024L);
-
 		assertTrue(
 		          Arrays.equals(
 		                       os.toByteArray(),

@@ -27,8 +27,6 @@ import java.io.IOException;
  * see 8.1.2.5 from X.690-0207 for more info
  *
  * @author lastrix
- *         Date: 8/15/11
- *         Time: 1:54 PM
  * @version 1.0
  */
 public interface ConstructedDecoder {

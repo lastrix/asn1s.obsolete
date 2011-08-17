@@ -26,11 +26,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Boolean value encoder/decoder
+ * See X.690-0207 8.2 for more information
  *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 1:30 PM
  * @version 1.0
  */
 public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
@@ -59,18 +57,11 @@ public final class ASN1Boolean implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.equals(header)) {
-			throw new ASN1ProtocolException("Incompatible header.");
-		}
-		//just readAs one octet which is actually the value
 		return is.read() > 0;
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
-		if (!(value instanceof Boolean)) {
-			throw new ASN1ProtocolException(String.format(getClass().getSimpleName() + ": can not handle object '%s'", value));
-		}
+	public void encode(final OutputStream os, final Object value) throws IOException {
 		//write header
 		os.write(HEADER.toByteArray());
 		//and value

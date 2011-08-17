@@ -27,8 +27,6 @@ import java.io.InputStream;
  * Interface for primitive decoder see X.690-0207 8.1.2.5 for more information
  *
  * @author lastrix
- *         Date: 8/15/11
- *         Time: 1:53 PM
  * @version 1.0
  */
 public interface PrimitiveDecoder {

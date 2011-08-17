@@ -25,9 +25,10 @@ import org.junit.Test;
 import java.util.Locale;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 11:25 AM
+ * All tests for package org.lastrix.asn1s.util.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
 public class AllTests {

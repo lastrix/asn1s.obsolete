@@ -25,14 +25,11 @@ import org.lastrix.asn1s.util.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 
 /**
- * Integer encoder/decoder
+ * See X.690-0207 8.3 for more information
  *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 2:22 PM
  * @version 1.0
  */
 public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
@@ -55,9 +52,6 @@ public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.isSame(header)) {
-			throw new ASN1ProtocolException("Supplied header is not valid Integer header.");
-		}
 		long value = 0;
 		//extract sign
 		int temp = is.read();
@@ -75,58 +69,23 @@ public final class ASN1Integer implements PrimitiveDecoder, PrimitiveEncoder {
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object object) throws ASN1ProtocolException, IOException {
-		if (!(object instanceof Integer)
-		    && !(object instanceof Byte)
-		    && !(object instanceof Long)
-		    && !(object instanceof Short)) {
-			throw new ASN1ProtocolException("Object is not byte, short, integer or long.");
-		}
-		long value = Utils.numberToLong(object);
+	public void encode(final OutputStream os, final Object object) throws IOException {
+		final long value = Utils.numberToLong(object);
 
-		boolean negative = value < 0;
-		if (negative) {
-			value = -value;
-		}
+		int size = Utils.getMinimumBytes((value < 0) ? -value : value);
 
-
-		//write the header
-		int size = Utils.getMinimumBytes(value);
-
-
-		ByteBuffer bb = ByteBuffer.allocate(8);
-		if (negative) {
-			value = -value;
-		}
-		bb.putLong(value);
-		bb.flip();
-		for (int i = 0; i < 8 - size; i++) {
-			bb.get();
-		}
-		byte[] data = new byte[size];
-		bb.get(data);
-
-		if (!negative && (data[0] & Utils.BYTE_SIGN_MASK) > 0) {
+		//if highest bit of highest byte is 1 then we should increase size to add
+		// trailing zero
+		if (value > 0 && ((value >> ((size - 1) * 8 + 7)) & 0x01) > 0) {
 			size++;
 		}
-		if (HEADER.getLength() != size) {
-			//handle them separated
-			os.write(HEADER.tagToByteArray());
-			Header.writeLength(os, size);
-		} else {
-			//yeah! we could use cached one
-			os.write(HEADER.toByteArray());
-		}
 
-
-		//write data now
-		if (!negative) {
-			//we should check, that our data won't be counted as negative, so add trailing 0x00 octet
-			if ((data[0] & Utils.BYTE_SIGN_MASK) > 0) {
-				os.write(0x00);
-			}
-		}
-		os.write(data);
+		//write header
+		os.write(HEADER.tagToByteArray());
+		//write length
+		Header.writeLength(os, size);
+		//write integer data
+		os.write(Utils.extractBytes(value, 0, size));
 	}
 
 

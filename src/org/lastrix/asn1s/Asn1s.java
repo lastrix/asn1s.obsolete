@@ -26,18 +26,15 @@ import org.lastrix.asn1s.protocol.ASN1Types;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.util.Utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Properties;
 
 /**
+ * The main of ASN1S.
+ *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 11:52 AM
  * @version 1.0
  */
 @SuppressWarnings({"WeakerAccess", "ClassWithoutConstructor"})
@@ -50,9 +47,18 @@ public class Asn1s {
 
 	private static void initLogging() {
 		final Properties logProperties = new Properties();
+
+		final FileInputStream fis;
+		//open file
+		try {
+			fis = new FileInputStream(logPropertiesFile);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Unable to load logging property " + logPropertiesFile);
+		}
+		//load properties
 		try {
 			// load our log4j properties / configuration file
-			logProperties.load(new FileInputStream(logPropertiesFile));
+			logProperties.load(fis);
 			PropertyConfigurator.configure(logProperties);
 			// print short summary
 			logger.debug(
@@ -72,6 +78,13 @@ public class Asn1s {
 			            );
 		} catch (final IOException e) {
 			throw new RuntimeException("Unable to load logging property " + logPropertiesFile);
+		} finally {
+			//now we could close it
+			try {
+				fis.close();
+			} catch (IOException e) {
+				logger.warn("Exception:", e);
+			}
 		}
 	}
 

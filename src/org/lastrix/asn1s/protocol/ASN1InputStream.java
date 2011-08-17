@@ -28,8 +28,6 @@ import java.io.InputStream;
 
 /**
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 12:21 PM
  * @version 1.0
  */
 public final class ASN1InputStream extends FilterInputStream {

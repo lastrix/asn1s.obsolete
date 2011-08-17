@@ -25,10 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Holds all basic ASN.1 type encoders and decoders.
+ *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 7:23 PM
  * @version 1.0
+ * @see ASN1InputStream
+ * @see ASN1OutputStream
  */
 @SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ClassWithoutConstructor"})
 public class ASN1Types {

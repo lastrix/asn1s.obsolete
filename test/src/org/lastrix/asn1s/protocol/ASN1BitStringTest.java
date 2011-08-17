@@ -18,8 +18,8 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,12 +27,13 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 1:10 PM
+ * Test for {@link ASN1BitString}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1BitStringTest extends TestCase {
+public class ASN1BitStringTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
 		final byte[] data = new byte[]{0x02, (byte) 0xC4, 0x04, (byte) 0x89, (byte) 0x80};

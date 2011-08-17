@@ -19,9 +19,9 @@
 package org.lastrix.asn1s.util;
 
 /**
+ * Implements pair object
+ *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 1:36 PM
  * @version 1.0
  */
 @SuppressWarnings({"WeakerAccess", "UnusedDeclaration", "ClassWithoutLogger"})
@@ -29,6 +29,7 @@ public final class Pair<L, R> {
 	private final L left;
 	private final R right;
 
+	@SuppressWarnings({"ParameterHidesMemberVariable"})
 	public Pair(final L left, final R right) {
 		this.left = left;
 		this.right = right;

@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.util;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 4:40 PM
+ * Tests for {@link Utils}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class UtilsTest extends TestCase {
+public class UtilsTest extends CustomTestCase {
 	@Test
 	public void testGetMinimumBytesShort() throws Exception {
 		assertTrue(Utils.getMinimumBytes((short) 1) == 1);

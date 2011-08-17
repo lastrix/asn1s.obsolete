@@ -19,9 +19,9 @@
 package org.lastrix.asn1s.protocol;
 
 /**
+ * Special constants highly used in whole org.lastrix.asn1s.protocol package and its subpackages.
+ *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 12:34 PM
  * @version 1.0
  */
 @SuppressWarnings({"UnusedDeclaration"})

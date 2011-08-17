@@ -28,9 +28,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * See X.690-0207 8.5 for more information
+ *
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 3:18 PM
  * @version 1.0
  */
 public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
@@ -39,32 +39,29 @@ public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 
 	public static final  byte   TAG                             = 0x09;
 	private static final Header HEADER                          = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 10);
-	public static final  int    REAL_BASE_MASK                  = 0x30;
-	public static final  int    REAL_BASE_8                     = 0x10;
-	public static final  int    REAL_BASE_16                    = 0x20;
-	public static final  int    REAL_BASE_2                     = 0;
-	public static final  int    SPECIAL_REAL_VALUE              = 0x40;
-	public static final  int    SPECIAL_REAL_VALUE_NEGATIVE_INF = 0x41;
-	public static final  int    SPECIAL_REAL_VALUE_POSITIVE_INF = 0x40;
-	public static final  int    SCALE_MASK                      = 0x0C;
-	public static final  int    EXPONENT_TYPE                   = 0x3;
-	public static final  int    EXPONENT_MASK                   = 0x7FF;
-	public static final  long   MANTIS_MASK                     = 0xFFFFFFFFFFFFFL;
-	public static final  int    REAL_BINARY_MASK                = 0x80;
-	public static final  int    BASE_2                          = 2;
-	public static final  int    BASE_8                          = 8;
-	public static final  int    BASE_16                         = 16;
-	public static final  int    REAL_SIGN_MASK                  = 0x40;
-	public static final  int    DOUBLE_EXPONENT_POSITION        = 52;
-	public static final  long   DOUBLE_SIGN_MASK                = 0x8000000000000000L;
+	private static final int    REAL_BASE_MASK                  = 0x30;
+	private static final int    REAL_BASE_8                     = 0x10;
+	private static final int    REAL_BASE_16                    = 0x20;
+	private static final int    REAL_BASE_2                     = 0;
+	private static final int    SPECIAL_REAL_VALUE              = 0x40;
+	private static final int    SPECIAL_REAL_VALUE_NEGATIVE_INF = 0x41;
+	private static final int    SPECIAL_REAL_VALUE_POSITIVE_INF = 0x40;
+	private static final int    SCALE_MASK                      = 0x0C;
+	private static final int    EXPONENT_TYPE                   = 0x3;
+	private static final int    EXPONENT_MASK                   = 0x7FF;
+	private static final long   MANTIS_MASK                     = 0xFFFFFFFFFFFFFL;
+	private static final int    REAL_BINARY_MASK                = 0x80;
+	private static final int    BASE_2                          = 2;
+	private static final int    BASE_8                          = 8;
+	private static final int    BASE_16                         = 16;
+	private static final int    REAL_SIGN_MASK                  = 0x40;
+	private static final int    DOUBLE_EXPONENT_POSITION        = 52;
+	private static final long   DOUBLE_SIGN_MASK                = 0x8000000000000000L;
 
 	public ASN1Real() {}
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.isSame(header)) {
-			throw new ASN1ProtocolException("Parameter 'header' is not valid Real type header.");
-		}
 
 		//test for zero value
 		if (header.getLength() == 0) {
@@ -100,6 +97,7 @@ public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 					throw new ASN1ProtocolException("Invalid real format for -inf/+inf");
 				}
 			} else {
+				//TODO: check this, code is copy-pasted.
 				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) mantisLength);
 
 				Utils.transfer(is, bos, (int) mantisLength);
@@ -152,39 +150,26 @@ public final class ASN1Real implements PrimitiveEncoder, PrimitiveDecoder {
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object object) throws ASN1ProtocolException, IOException {
-		if (object == null) {
-			throw new NullPointerException("object == null.");
-		}
-		double value;
-		//noinspection ChainOfInstanceofChecks
-		if (object instanceof Double) {
-			value = (Double) object;
-		} else if (object instanceof Float) {
-			value = (Float) object;
-		} else {
-			throw new ASN1ProtocolException("Only 'Double' and 'Float' supported by ASN1Real ( has '" + object + "').");
-		}
+	public void encode(final OutputStream os, final Object object) throws IOException {
+
+		final double value = Utils.numberToDouble(object);
+
+		//write the header
+		os.write(HEADER.tagToByteArray());
 
 		// we don't need to make anything else
 		if (value == 0d) {
-			//write length (that is all)
-			os.write(HEADER.tagToByteArray());
 			//write length
 			os.write(0x00);
 			return;
 
 		} else if (Double.isInfinite(value)) {
-			//tag
-			os.write(HEADER.tagToByteArray());
 			//write length
 			os.write(0x01);
 			//write info octet
 			os.write(((value < 0) ? SPECIAL_REAL_VALUE_NEGATIVE_INF : SPECIAL_REAL_VALUE_POSITIVE_INF));
 			return;
 		}
-
-		os.write(HEADER.tagToByteArray());
 
 		long valueBits = Double.doubleToLongBits(value);
 

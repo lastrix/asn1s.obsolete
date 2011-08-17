@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 5:07 PM
+ * Tests for {@link Header}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class HeaderTest extends TestCase {
+public class HeaderTest extends CustomTestCase {
 	@Test
 	public void testIsEOC() throws Exception {
 		final byte[] data = new byte[]{0x00, 0x00};

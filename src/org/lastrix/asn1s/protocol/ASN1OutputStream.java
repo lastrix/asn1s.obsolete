@@ -27,8 +27,6 @@ import java.io.OutputStream;
 
 /**
  * @author lastrix
- *         Date: 8/14/11
- *         Time: 1:46 PM
  * @version 1.0
  */
 public final class ASN1OutputStream extends FilterOutputStream {

@@ -25,9 +25,10 @@ import org.junit.Test;
 import java.util.Locale;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 11:25 AM
+ * Main class for test. Holds all tests for project.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
 public class AllTests {

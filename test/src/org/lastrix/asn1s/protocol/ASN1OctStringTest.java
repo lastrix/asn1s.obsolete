@@ -18,20 +18,21 @@
 
 package org.lastrix.asn1s.protocol;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * @author: lastrix
- * Date: 8/16/11
- * Time: 1:54 PM
+ * Tests for {@link ASN1OctString}.
+ *
+ * @author lastrix
+ * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class ASN1OctStringTest extends TestCase {
+public class ASN1OctStringTest extends CustomTestCase {
 	@Test
 	public void testDecode() throws Exception {
 		final byte[] oct = new byte[]{/*ASN1OctString.TAG, 0x04,*/ 0x11, 0x22, 0x33, 0x44};

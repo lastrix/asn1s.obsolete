@@ -27,9 +27,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * See X.690-0207 8.7 for more information
+ *
  * @author lastrix
- *         Date: 8/15/11
- *         Time: 5:29 PM
  * @version 1.0
  */
 public final class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
@@ -44,9 +44,6 @@ public final class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (!HEADER.isSame(header)) {
-			throw new ASN1ProtocolException("Parameter 'header' is not valid octet string header.");
-		}
 		if (header.getLength() == 0) {
 			//noinspection ZeroLengthArrayAllocation
 			return new byte[0];
@@ -67,6 +64,7 @@ public final class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 				b0 = b;
 			}
 			byte[] result = new byte[bos.size() - 1];
+
 			System.arraycopy(bos.toByteArray(), 0, result, 0, result.length);
 			return result;
 		}
@@ -76,17 +74,12 @@ public final class ASN1OctString implements PrimitiveEncoder, PrimitiveDecoder {
 		for (int i = 0; i < header.getLength(); i++) {
 			bos.write(is.read());
 		}
+
 		return bos.toByteArray();
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws ASN1ProtocolException, IOException {
-		if (value == null) {
-			throw new NullPointerException();
-		}
-		if (!value.getClass().isArray() || !byte.class.equals(value.getClass().getComponentType())) {
-			throw new ASN1ProtocolException("Parameter 'value' should be byte array " + value.getClass());
-		}
+	public void encode(final OutputStream os, final Object value) throws IOException {
 		byte[] array = (byte[]) value;
 		os.write(HEADER.tagToByteArray());
 		os.write(array.length);

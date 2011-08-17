@@ -19,9 +19,8 @@
 package org.lastrix.asn1s.exception;
 
 /**
+ * @version 1.0
  * @author: lastrix
- * Date: 8/15/11
- * Time: 1:58 PM
  */
 @SuppressWarnings({"ALL"})
 public class ASN1ProtocolException extends ASN1Exception {

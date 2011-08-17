@@ -30,21 +30,20 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
+ * Holds special functions required for project
+ *
  * @author lastrix
- *         Date: 8/15/11
- *         Time: 2:14 PM
  * @version 1.0
  */
-@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ClassWithoutConstructor"})
-public class Utils {
+@SuppressWarnings({"ClassWithoutConstructor"})
+public final class Utils {
 
 	@SuppressWarnings({"UnusedDeclaration"})
 	private final static Logger logger = Logger.getLogger(Utils.class);
 
-	@SuppressWarnings({"WeakerAccess"})
-	public final static double LOG_255        = Math.log(255);
-	public static final int    BYTE_MASK      = 0x00FF;
-	public static final int    BYTE_SIGN_MASK = 0x80;
+	private final static double LOG_255        = Math.log(255);
+	public static final  int    BYTE_MASK      = 0x00FF;
+	public static final  int    BYTE_SIGN_MASK = 0x80;
 
 	/**
 	 * Returns minimum bytes required to hold value
@@ -159,6 +158,9 @@ public class Utils {
 	 * @return long
 	 */
 	public static long numberToLong(final Object o) {
+		if (o == null) {
+			throw new NullPointerException();
+		}
 		//noinspection ChainOfInstanceofChecks
 		if (o instanceof Byte) {
 			return (Byte) o;
@@ -166,7 +168,34 @@ public class Utils {
 			return (Short) o;
 		} else if (o instanceof Integer) {
 			return (Integer) o;
+		} else if (o instanceof Long) {
+			return (Long) o;
 		}
-		return (Long) o;
+		throw new IllegalArgumentException(
+		                                  String.format(
+		                                               "Object 'o' should be 'Byte', 'Short', 'Integer' or 'Long', has '%s'.",
+		                                               o.getClass().getSimpleName()
+		                                               )
+		);
+	}
+
+	/**
+	 * Convert Float or Double to double
+	 *
+	 * @param o - Float or Double value
+	 *
+	 * @return double value
+	 */
+	public static double numberToDouble(final Object o) {
+		if (o == null) {
+			throw new NullPointerException();
+		}
+		//noinspection ChainOfInstanceofChecks
+		if (o instanceof Double) {
+			return (Double) o;
+		} else if (o instanceof Float) {
+			return (Float) o;
+		}
+		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
 	}
 }
