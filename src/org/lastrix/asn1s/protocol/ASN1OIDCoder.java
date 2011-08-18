@@ -47,7 +47,7 @@ public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 		int count = 2;
 
 		final byte[] data = new byte[(int) (header.getLength() - 1)];
-		if (is.read(data) <= data.length) {
+		if (data.length > 0 && is.read(data) < data.length) {
 			throw new ASN1ProtocolException("Can not read data.");
 		}
 		for (byte aData : data) {
