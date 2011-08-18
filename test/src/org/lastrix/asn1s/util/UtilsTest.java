@@ -33,19 +33,6 @@ import java.util.Arrays;
  */
 @SuppressWarnings({"ALL"})
 public class UtilsTest extends CustomTestCase {
-	@Test
-	public void testGetMinimumBytesShort() throws Exception {
-		assertTrue(Utils.getMinimumBytes((short) 1) == 1);
-		assertTrue(Utils.getMinimumBytes((short) 0x100) == 2);
-	}
-
-	@Test
-	public void testGetMinimumBytesInt() throws Exception {
-		assertTrue(Utils.getMinimumBytes(1) == 1);
-		assertTrue(Utils.getMinimumBytes(0x100) == 2);
-		assertTrue(Utils.getMinimumBytes(0x10000) == 3);
-		assertTrue(Utils.getMinimumBytes(0x1000000) == 4);
-	}
 
 	@Test
 	public void testGetMinimumBytesLong() throws Exception {

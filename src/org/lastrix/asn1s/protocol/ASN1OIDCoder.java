@@ -31,11 +31,12 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
+public final class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1OIDCoder.class);
-	public final static  long   TAG    = 0x06;
-	private final static Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
+	private final static Logger logger     = Logger.getLogger(ASN1OIDCoder.class);
+	public final static  long   TAG        = 0x06;
+	private final static Header HEADER     = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
+	private static final int    MULTIPLIER = 40;
 
 	public ASN1OIDCoder() {
 	}
@@ -51,21 +52,21 @@ public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 			throw new ASN1ProtocolException("Can not read data.");
 		}
 		for (byte aData : data) {
-			if ((aData & Tag.MORE_BYTES) == 0) {
+			if ((aData & Utils.BYTE_SIGN_MASK) == 0) {
 				count++;
 			}
 		}
 		final long[] oids = new long[count];
-		oids[0] = fOid / 40;
-		oids[1] = fOid % 40;
+		oids[0] = fOid / MULTIPLIER;
+		oids[1] = fOid % MULTIPLIER;
 		int pos = -1;
 		long temp;
 		for (int i = 2; i < count; i++) {
 			temp = 0;
 			do {
 				pos++;
-				temp = (temp << 7) | ((int) data[pos] & 0x007F);
-			} while ((data[pos] & Tag.MORE_BYTES) != 0);
+				temp = (temp << 7) | ((int) data[pos] & Utils.UNSIGNED_BYTE_MASK);
+			} while ((data[pos] & Utils.BYTE_SIGN_MASK) != 0);
 			oids[i] = temp;
 		}
 		return oids;
@@ -82,7 +83,7 @@ public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 
 		//write oids to buffer first, so we could get a
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		bos.write((int) (oid[0] * 40 + oid[1]));
+		bos.write((int) (oid[0] * MULTIPLIER + oid[1]));
 		for (int i = 2; i < oid.length; i++) {
 			writeOid(oid[i], bos);
 		}
@@ -105,10 +106,10 @@ public class ASN1OIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
 	 * @throws IOException - from write() calls
 	 */
 	private static void writeOid(final long value, OutputStream os) throws IOException {
-		final long mValue = Utils.makeByteGaps(value, 1, 0x7F);
+		final long mValue = Utils.makeByteGaps(value, 1, Utils.UNSIGNED_BYTE_MASK);
 		final int bytesCount = Utils.getMinimumBytes(mValue);
 		for (int i = bytesCount - 1; i > 0; i--) {
-			os.write((int) ((mValue >> (i * 8)) & Utils.BYTE_MASK) | Tag.MORE_BYTES);
+			os.write((int) ((mValue >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
 		}
 		os.write((int) (mValue & Utils.BYTE_MASK));
 	}

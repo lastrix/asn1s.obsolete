@@ -100,10 +100,10 @@ public final class Header {
 			//write XX X 11111
 			bos.write(Tag.TAG_MASK | getTagClass() | ((isConstructed()) ? Tag.PC_MASK : 0));
 
-			long mTag = Utils.makeByteGaps(getTag(), 1, Tag.TAG_MASK_EXTENDED);
+			long mTag = Utils.makeByteGaps(getTag(), 1, Utils.UNSIGNED_BYTE_MASK);
 			final int bytesCount = Utils.getMinimumBytes(mTag);
 			for (int i = bytesCount - 1; i > 0; i--) {
-				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Tag.MORE_BYTES);
+				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
 			}
 			bos.write((int) (mTag & Utils.BYTE_MASK));
 		} else {
@@ -137,7 +137,7 @@ public final class Header {
 	public static void writeLength(OutputStream os, long value) throws IOException {
 		if (value == Tag.FORM_INDEFINITE) {
 			os.write(Tag.FORM_INDEFINITE);
-		} else if (value > Tag.LENGTH_MASK) {
+		} else if (value > Utils.UNSIGNED_BYTE_MASK) {
 			final int bytesCount = Utils.getMinimumBytes(value);
 			//as 8.1.3.5 in X.690-0207 says in 1st content octet bit 8 should be 1 and 7 to 1 should encode amount of bytes,
 			// the others - length as unsigned integer LE!
@@ -146,7 +146,7 @@ public final class Header {
 				os.write((int) (value >> (i * 8)) & Utils.BYTE_MASK);
 			}
 		} else {
-			os.write(((int) value) & Tag.LENGTH_MASK);
+			os.write(((int) value) & Utils.UNSIGNED_BYTE_MASK);
 		}
 	}
 
@@ -222,8 +222,8 @@ public final class Header {
 				} catch (IOException e) {
 					throw new ASN1ProtocolException("Unexpected EOF found.", e);
 				}
-				tag = (tag << 7) | (temp & Tag.TAG_MASK_EXTENDED);
-			} while ((temp & Tag.TAG_EXTEND_MASK) > 0);
+				tag = (tag << 7) | (temp & Utils.UNSIGNED_BYTE_MASK);
+			} while ((temp & Utils.BYTE_SIGN_MASK) > 0);
 		}
 
 		/*
@@ -245,12 +245,12 @@ public final class Header {
 		if (temp == Tag.FORM_INDEFINITE) {
 			//this is an indefinite form
 			length = 0;
-		} else if ((temp & Tag.FORM_MASK) == 0) {
+		} else if ((temp & Utils.BYTE_SIGN_MASK) == 0) {
 			//this is short definite form
-			length = temp & Tag.LENGTH_MASK;
+			length = temp & Utils.UNSIGNED_BYTE_MASK;
 		} else {
 			//this is an definite long form
-			final int count = temp & Tag.LENGTH_MASK;
+			final int count = temp & Utils.UNSIGNED_BYTE_MASK;
 			try {
 				for (int i = 0; i < count; i++) {
 					temp = is.read();

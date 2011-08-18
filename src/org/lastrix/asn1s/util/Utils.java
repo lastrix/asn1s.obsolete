@@ -41,9 +41,12 @@ public final class Utils {
 	@SuppressWarnings({"UnusedDeclaration"})
 	private final static Logger logger = Logger.getLogger(Utils.class);
 
-	private final static double LOG_255        = Math.log(255);
-	public static final  int    BYTE_MASK      = 0x00FF;
-	public static final  int    BYTE_SIGN_MASK = 0x80;
+	private final static double LOG_255            = Math.log(255);
+	public static final  int    BYTE_MASK          = 0x00FF;
+	public static final  int    BYTE_SIGN_MASK     = 0x0080;
+	public static final  int    UNSIGNED_BYTE_MASK = 0x007F;
+	private static final int    BYTES_PER_NEW_LINE = 16;
+	private static final int    BYTES_PER_COLUMN   = 8;
 
 	/**
 	 * Returns minimum bytes required to hold value
@@ -54,28 +57,6 @@ public final class Utils {
 	 */
 	public static int getMinimumBytes(long value) {
 		return Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_255)), 1);
-	}
-
-	/**
-	 * Returns minimum bytes required to hold value
-	 *
-	 * @param value - the value
-	 *
-	 * @return number of bytes
-	 */
-	public static int getMinimumBytes(int value) {
-		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
-	}
-
-	/**
-	 * Returns minimum bytes required to hold value
-	 *
-	 * @param value - the value
-	 *
-	 * @return number of bytes
-	 */
-	public static int getMinimumBytes(short value) {
-		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
 	}
 
 	/**
@@ -120,10 +101,10 @@ public final class Utils {
 		if (array == null || array.length == 0) { return "[]"; }
 		StringWriter sw = new StringWriter(array.length * 2 + 2);
 		for (int i = 0; i < array.length; i++) {
-			if (i % 16 == 0 && i != 0) {
+			if (i % BYTES_PER_NEW_LINE == 0 && i != 0) {
 				sw.append("\n");
 			}
-			if (i % 8 == 0 && i % 16 != 0 && i != 0) {
+			if (i % BYTES_PER_COLUMN == 0 && i % BYTES_PER_NEW_LINE != 0 && i != 0) {
 				sw.append("   ");
 			}
 			sw.append(String.format(" %02X", array[i]));
@@ -153,55 +134,6 @@ public final class Utils {
 			}
 		}
 		return bytes;
-	}
-
-	/**
-	 * Converts Byte, Short, Integer or Long to long
-	 *
-	 * @param o - the number object
-	 *
-	 * @return long
-	 */
-	public static long numberToLong(final Object o) {
-		if (o == null) {
-			throw new NullPointerException();
-		}
-		//noinspection ChainOfInstanceofChecks
-		if (o instanceof Byte) {
-			return (Byte) o;
-		} else if (o instanceof Short) {
-			return (Short) o;
-		} else if (o instanceof Integer) {
-			return (Integer) o;
-		} else if (o instanceof Long) {
-			return (Long) o;
-		}
-		throw new IllegalArgumentException(
-		                                  String.format(
-		                                               "Object 'o' should be 'Byte', 'Short', 'Integer' or 'Long', has '%s'.",
-		                                               o.getClass().getSimpleName()
-		                                               )
-		);
-	}
-
-	/**
-	 * Convert Float or Double to double
-	 *
-	 * @param o - Float or Double value
-	 *
-	 * @return double value
-	 */
-	public static double numberToDouble(final Object o) {
-		if (o == null) {
-			throw new NullPointerException();
-		}
-		//noinspection ChainOfInstanceofChecks
-		if (o instanceof Double) {
-			return (Double) o;
-		} else if (o instanceof Float) {
-			return (Float) o;
-		}
-		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
 	}
 
 	/**

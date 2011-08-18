@@ -60,6 +60,26 @@ public final class ASN1RealCoder implements PrimitiveEncoder, PrimitiveDecoder {
 
 	public ASN1RealCoder() {}
 
+	/**
+	 * Convert Float or Double to double
+	 *
+	 * @param o - Float or Double value
+	 *
+	 * @return double value
+	 */
+	private static double numberToDouble(final Object o) {
+		if (o == null) {
+			throw new NullPointerException();
+		}
+		//noinspection ChainOfInstanceofChecks
+		if (o instanceof Double) {
+			return (Double) o;
+		} else if (o instanceof Float) {
+			return (Float) o;
+		}
+		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
+	}
+
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
 
@@ -152,7 +172,7 @@ public final class ASN1RealCoder implements PrimitiveEncoder, PrimitiveDecoder {
 	@Override
 	public void encode(final OutputStream os, final Object object) throws IOException {
 
-		final double value = Utils.numberToDouble(object);
+		final double value = numberToDouble(object);
 
 		//write the header
 		os.write(HEADER.tagToByteArray());

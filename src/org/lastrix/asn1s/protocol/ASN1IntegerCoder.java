@@ -50,6 +50,35 @@ public final class ASN1IntegerCoder implements PrimitiveDecoder, PrimitiveEncode
 	public ASN1IntegerCoder() {
 	}
 
+	/**
+	 * Converts Byte, Short, Integer or Long to long
+	 *
+	 * @param o - the number object
+	 *
+	 * @return long
+	 */
+	private static long numberToLong(final Object o) {
+		if (o == null) {
+			throw new NullPointerException();
+		}
+		//noinspection ChainOfInstanceofChecks
+		if (o instanceof Byte) {
+			return (Byte) o;
+		} else if (o instanceof Short) {
+			return (Short) o;
+		} else if (o instanceof Integer) {
+			return (Integer) o;
+		} else if (o instanceof Long) {
+			return (Long) o;
+		}
+		throw new IllegalArgumentException(
+		                                  String.format(
+		                                               "Object 'o' should be 'Byte', 'Short', 'Integer' or 'Long', has '%s'.",
+		                                               o.getClass().getSimpleName()
+		                                               )
+		);
+	}
+
 	@Override
 	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
 		long value = 0;
@@ -70,7 +99,7 @@ public final class ASN1IntegerCoder implements PrimitiveDecoder, PrimitiveEncode
 
 	@Override
 	public void encode(final OutputStream os, final Object object) throws IOException {
-		final long value = Utils.numberToLong(object);
+		final long value = numberToLong(object);
 
 		int size = Utils.getMinimumBytes((value < 0) ? -value : value);
 
