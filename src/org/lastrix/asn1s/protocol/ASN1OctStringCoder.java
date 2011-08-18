@@ -70,7 +70,7 @@ public final class ASN1OctStringCoder implements PrimitiveEncoder, PrimitiveDeco
 		}
 
 		//defined
-		ByteArrayOutputStream bos = new ByteArrayOutputStream((int) header.getLength());
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(header.getLength());
 		for (int i = 0; i < header.getLength(); i++) {
 			bos.write(is.read());
 		}

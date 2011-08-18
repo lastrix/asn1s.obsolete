@@ -49,9 +49,9 @@ public final class ASN1BitStringCoder implements PrimitiveDecoder, PrimitiveEnco
 			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
 		}
 
-		BitSet bs = new BitSet((int) ((header.getLength() - 1) * 8));
+		BitSet bs = new BitSet((header.getLength() - 1) * 8);
 		int temp;
-		final int size = (int) (header.getLength() - 1 - ((pad > 0) ? 1 : 0));
+		final int size = header.getLength() - 1 - ((pad > 0) ? 1 : 0);
 		for (int i = 0; i < size; i++) {
 			temp = is.read();
 			for (int k = i * 8; k < (i + 1) * 8; k++) {
@@ -66,8 +66,8 @@ public final class ASN1BitStringCoder implements PrimitiveDecoder, PrimitiveEnco
 		if (pad > 0) {
 			temp = is.read();
 			temp >>= pad;
-			final int end = (int) ((header.getLength() - 1) * 8 - pad);
-			for (int i = (int) ((header.getLength() - 2) * 8); i < end; i++) {
+			final int end = (header.getLength() - 1) * 8 - pad;
+			for (int i = (header.getLength() - 2) * 8; i < end; i++) {
 				if ((temp & 0x01) > 0) {
 					bs.set(i);
 				}

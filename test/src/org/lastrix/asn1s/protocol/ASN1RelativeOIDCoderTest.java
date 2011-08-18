@@ -16,7 +16,7 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.util;
+package org.lastrix.asn1s.protocol;
 
 import org.junit.Test;
 import org.lastrix.asn1s.CustomTestCase;
@@ -26,49 +26,27 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 /**
- * Tests for {@link Utils}.
- *
  * @author lastrix
  * @version 1.0
  */
 @SuppressWarnings({"ALL"})
-public class UtilsTest extends CustomTestCase {
+public class ASN1RelativeOIDCoderTest extends CustomTestCase {
 
 	@Test
-	public void testGetMinimumBytesInt() throws Exception {
-		assertTrue(Utils.getMinimumBytes(1) == 1);
-		assertTrue(Utils.getMinimumBytes(0x100) == 2);
-		assertTrue(Utils.getMinimumBytes(0x10000) == 3);
-		assertTrue(Utils.getMinimumBytes(0x1000000) == 4);
-	}
-
-	@Test
-	public void testGetMinimumBytesLong() throws Exception {
-		assertTrue(Utils.getMinimumBytes(1L) == 1);
-		assertTrue(Utils.getMinimumBytes(0x100L) == 2);
-		assertTrue(Utils.getMinimumBytes(0x10000L) == 3);
-		assertTrue(Utils.getMinimumBytes(0x1000000L) == 4);
-		assertTrue(Utils.getMinimumBytes(0x100000000L) == 5);
-		assertTrue(Utils.getMinimumBytes(0x10000000000L) == 6);
-		assertTrue(Utils.getMinimumBytes(0x1000000000000L) == 7);
-		assertTrue(Utils.getMinimumBytes(0x100000000000000L) == 8);
-	}
-
-	@Test
-	public void testTransfer() throws Exception {
-		final byte[] data = new byte[4096];
-		for (int i = 0; i < 4096; i++) {
-			data[i] = (byte) i;
-		}
+	public void testDecode() throws Exception {
+		final byte[] data = new byte[]{(byte) 0xC2, 0x7B, 0x03, 0x02};
 		final ByteArrayInputStream is = new ByteArrayInputStream(data);
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		for (int i = 0; i < 16; i++) {
-			is.read();
-		}
-		Utils.transfer(is, os, 1024);
-		assertTrue(Arrays.equals(os.toByteArray(), Arrays.copyOfRange(data, 16, 16 + 1024)));
-		final ByteArrayOutputStream os2 = new ByteArrayOutputStream();
-		Utils.transfer(is, os2, 1024);
-		assertTrue(Arrays.equals(os2.toByteArray(), Arrays.copyOfRange(data, 16 + 1024, 16 + 2 * 1024)));
+		final ASN1RelativeOIDCoder oidCoder = new ASN1RelativeOIDCoder();
+		long[] result = (long[]) oidCoder.decode(is, new Header(ASN1RelativeOIDCoder.TAG, Tag.CLASS_UNIVERSAL, false, 0x04));
+		assertNotNull(result);
+		assertTrue(Arrays.equals(result, new long[]{8571, 3, 2}));
+	}
+
+	@Test
+	public void testEncode() throws Exception {
+		final ByteArrayOutputStream os = new ByteArrayOutputStream(6);
+		final ASN1RelativeOIDCoder coder = new ASN1RelativeOIDCoder();
+		coder.encode(os, new long[]{8571, 3, 2});
+		assertTrue(Arrays.equals(os.toByteArray(), new byte[]{ASN1RelativeOIDCoder.TAG, 0x04, (byte) 0xC2, 0x7B, 0x03, 0x02}));
 	}
 }

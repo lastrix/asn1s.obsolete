@@ -40,7 +40,7 @@ public final class Header {
 	private final byte    tagClass;
 	private final boolean constructed;
 	private final long    tag;
-	private final long    length;
+	private final int     length;
 	private byte[] byteArray = null;
 	private byte[] tagBytes  = null;
 
@@ -53,7 +53,7 @@ public final class Header {
 	 * @param length      - the length
 	 */
 	@SuppressWarnings({"ParameterHidesMemberVariable"})
-	public Header(final long tag, final byte tagClass, final boolean constructed, final long length) {
+	public Header(final long tag, final byte tagClass, final boolean constructed, final int length) {
 		this.tag = tag;
 		this.tagClass = tagClass;
 		this.constructed = constructed;
@@ -61,7 +61,7 @@ public final class Header {
 	}
 
 
-	public long getLength() {
+	public int getLength() {
 		return length;
 	}
 
@@ -134,7 +134,7 @@ public final class Header {
 	 *
 	 * @throws IOException - from write() calls
 	 */
-	public static void writeLength(OutputStream os, long value) throws IOException {
+	public static void writeLength(OutputStream os, int value) throws IOException {
 		if (value == Tag.FORM_INDEFINITE) {
 			os.write(Tag.FORM_INDEFINITE);
 		} else if (value > Utils.UNSIGNED_BYTE_MASK) {
@@ -143,10 +143,10 @@ public final class Header {
 			// the others - length as unsigned integer LE!
 			os.write(bytesCount | Tag.FORM_INDEFINITE);
 			for (int i = bytesCount - 1; i >= 0; i--) {
-				os.write((int) (value >> (i * 8)) & Utils.BYTE_MASK);
+				os.write((value >> (i * 8)) & Utils.BYTE_MASK);
 			}
 		} else {
-			os.write(((int) value) & Utils.UNSIGNED_BYTE_MASK);
+			os.write(value & Utils.UNSIGNED_BYTE_MASK);
 		}
 	}
 
@@ -232,7 +232,7 @@ public final class Header {
 		return new Header(tag, tagClass, constructed, readLength(is));
 	}
 
-	private static long readLength(final InputStream is) throws ASN1ProtocolException {
+	private static int readLength(final InputStream is) throws ASN1ProtocolException {
 		int temp;
 		try {
 			temp = is.read();
@@ -240,7 +240,7 @@ public final class Header {
 			throw new ASN1ProtocolException("Unexpected EOF found.", e);
 		}
 
-		long length = 0;
+		int length = 0;
 
 		if (temp == Tag.FORM_INDEFINITE) {
 			//this is an indefinite form
@@ -254,7 +254,7 @@ public final class Header {
 			try {
 				for (int i = 0; i < count; i++) {
 					temp = is.read();
-					length = (length << 8) | ((long) temp & Utils.BYTE_MASK);
+					length = (length << 8) | (temp & Utils.BYTE_MASK);
 				}
 			} catch (IOException e) {
 				throw new ASN1ProtocolException("Unexpected EOF found.", e);

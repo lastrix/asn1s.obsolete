@@ -99,7 +99,7 @@ public class Asn1s {
 		bs.set(1);
 		bs.set(3);
 		bs.set(5);
-		bs.set(7);//06 09 2A 8C E6 84 00 90 00 80 00
+		bs.set(7);
 		final Object[] objects = new Object[]{
 		                                     new long[]{1, 2},
 		                                     new long[]{1, 2, 140, 230, 1024, 4096, 32768},

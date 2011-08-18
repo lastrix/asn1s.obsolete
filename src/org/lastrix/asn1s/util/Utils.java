@@ -60,6 +60,17 @@ public final class Utils {
 	}
 
 	/**
+	 * Returns minimum bytes required to hold value
+	 *
+	 * @param value - the value
+	 *
+	 * @return number of bytes
+	 */
+	public static int getMinimumBytes(int value) {
+		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
+	}
+
+	/**
 	 * Transfers {@code length} bytes from {@code is} to {@code os}
 	 * Please note: count is amount of memory to use by buffer. This function uses NIO channels.
 	 *

@@ -51,6 +51,7 @@ public class AllTests {
 		suite.addTestSuite(ASN1InputStreamTest.class);
 		suite.addTestSuite(ASN1OutputStreamTest.class);
 		suite.addTestSuite(ASN1OIDCoderTest.class);
+		suite.addTestSuite(ASN1RelativeOIDCoderTest.class);
 
 		// Make sure that we run the tests using the english locale
 		return new TestSetup(suite) {
