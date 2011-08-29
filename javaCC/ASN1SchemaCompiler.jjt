@@ -29,13 +29,13 @@ VISITOR=true;
 NODE_SCOPE_HOOK=true;
 }
 
-PARSER_BEGIN(ASN1Parser)
+PARSER_BEGIN(ASN1SchemaCompiler)
 package org.lastrix.asn1s.schema.parser;
 
 import java.io.*;
 import java.util.*;
 
-public class ASN1Parser {
+public class ASN1SchemaCompiler {
 
     static void jjtreeOpenNodeScope(Node n)
     {
@@ -46,7 +46,7 @@ public class ASN1Parser {
     }
 }
 
-PARSER_END(ASN1Parser)
+PARSER_END(ASN1SchemaCompiler)
 
 SKIP :
 {
