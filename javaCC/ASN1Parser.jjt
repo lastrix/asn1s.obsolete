@@ -81,6 +81,9 @@ TOKEN:
 {
     <TOKEN_DOT : ".">
     | <TOKEN_ASSIGNMENT : "::=">
+    | <TOKEN_MINUS : "-" >
+    | <TOKEN_REF : "@" >
+    | <TOKEN_STAR : "*" >
     | <TOKEN_RANGE : ".." >
     | <TOKEN_ELLIPSIS : "..." >
     | <TOKEN_LESS : "<">
@@ -221,23 +224,31 @@ TOKEN :
 }
 
 
+/**********  ENTRY POINT  *************/
+
 void Parse() : {}
 {
  (ModuleDefinition())*
 }
 
+
 void ModuleDefinition() : {}
 {
-    ModuleIdentifier() <RESERVED_DEFINITIONS> [TagDefault()] [ExtensionDefault()] <TOKEN_ASSIGNMENT>
+    ModuleIdentifier()
+    <RESERVED_DEFINITIONS> TagDefault() ExtensionDefault()
+        <TOKEN_ASSIGNMENT>
     <RESERVED_BEGIN> ModuleBody() <RESERVED_END>
 }
 
+/**********  MODULE IDENTIFIER PART  *************/
+
+
 void ModuleIdentifier(): {}
 {
-    <TYPE_IDENTIFIER> DefinitiveIdentifier()
+    ModuleReference() DefiniteIdentifier()
 }
 
-void DefinitiveIdentifier(): {}
+void DefiniteIdentifier(): {}
 {
      [<TOKEN_BRACE_LEFT> ObjIdComponentList() <TOKEN_BRACE_RIGHT> ]
 }
@@ -249,22 +260,27 @@ void ObjIdComponentList() : {}
 
 void ObjIdComponent() : {}
 {
-  ( <NUMBER> |   NameAndNumberForm())
+  ( NumberForm() |   NameAndNumberForm())
+}
+
+void NumberForm(): {}
+{
+    <NUMBER>
 }
 
 void NameAndNumberForm(): {}
 {
-    <VALUE_IDENTIFIER> [ <TOKEN_PAREN_LEFT> (<NUMBER> | DefinedValue()) <TOKEN_PAREN_RIGHT>]
+    identifier() [ <TOKEN_PAREN_LEFT> (NumberForm() | DefinedValue()) <TOKEN_PAREN_RIGHT>]
 }
 
 void TagDefault() : {}
 {
-    (<RESERVED_EXPLICIT> | <RESERVED_IMPLICIT>) <RESERVED_TAGS>
+    [ (<RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> | <RESERVED_AUTOMATIC>) <RESERVED_TAGS> ]
 }
 
 void ExtensionDefault(): {}
 {
-    <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED>
+    [ <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED> ]
 }
 
 void DefinedValue(): {}
@@ -272,33 +288,35 @@ void DefinedValue(): {}
     [ <TYPE_IDENTIFIER> <TOKEN_DOT> ] <VALUE_IDENTIFIER>
 }
 
+/**********  MODULE BODY PART  *************/
+
 void ModuleBody(): {}
 {
     [Exports() Imports() AssignmentList()]
 }
 
+/**********  EXPORTS PART  *************/
+
 void Exports(): {}
 {
-    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolList() ) <TOKEN_COMMA> ] <TOKEN_SEMICOLON>
+    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolsExported() ) <TOKEN_SEMICOLON> ]
 }
 
-void SymbolList(): {}
+void SymbolsExported(): {}
 {
-    Symbol() ([ <TOKEN_COMMA> Symbol()])*
-}
-
-/**
-    TODO: should check it
-*/
-void Symbol() : {}
-{
-   <TYPE_IDENTIFIER>
- | <VALUE_IDENTIFIER>
+   [ SymbolList() ]
 }
 
 void Imports(): {}
 {
-    <RESERVED_IMPORTS> [SymbolsFromModuleList() ] <TOKEN_SEMICOLON>
+    <RESERVED_IMPORTS> SymbolsImported() <TOKEN_SEMICOLON>
+}
+
+/**********  IMPORTS PART  *************/
+
+void SymbolsImported(): {}
+{
+    [ SymbolsFromModuleList() ]
 }
 
 void SymbolsFromModuleList(): {}
@@ -306,11 +324,41 @@ void SymbolsFromModuleList(): {}
     SymbolsFromModule() ( SymbolsFromModule() )*
 }
 
-void SymbolsFromModule(): {String module;}
+void SymbolsFromModule(): {}
 {
-    SymbolList() <RESERVED_FROM> ModuleIdentifier()
+    SymbolList() <RESERVED_FROM> GlobalModuleReference()
 }
 
+void GlobalModuleReference(): {}
+{
+    ModuleReference() AssignedIdentifier()
+}
+
+void AssignedIdentifier(): {}
+{
+    [ObjectIdentifierValue() | DefinedValue()]
+}
+
+void SymbolList(): {}
+{
+    Symbol() ([ <TOKEN_COMMA> Symbol()])*
+}
+
+void Symbol() : {}
+{
+   Reference() | ParametrizedReference()
+}
+
+void Reference(): {}
+{
+    TypeReference()
+    | ValueReference()
+    | ObjectClassReference()
+    | ObjectReference()
+    | ObjectSetReference()
+}
+
+/**********  ASSIGNMENTS LIST PART  *************/
 
 void AssignmentList() : {}
 {
@@ -319,101 +367,235 @@ void AssignmentList() : {}
 
 void Assignment() #void: {}
 {
-   LOOKAHEAD(2)  MacroDefinition() |  TypeAssignment() |  ValueAssignment()
+   LOOKAHEAD(2)
+   TypeAssignment()
+   | ValueAssignment()
+   | ValueSetTypeAssignment()
+   | ObjectClassAssignment()
+   | ObjectAssignment()
+   | ObjectSetAssignment()
+   | ParametrizedAssignment()
 }
 
-void TypeAssignment() : { }
+void DefinedType(): {}
 {
-   <TYPE_IDENTIFIER> <TOKEN_ASSIGNMENT>   GlobalType()
+    ExternalTypeReference()
+    | TypeReference()
+    | ParametrizedType()
+    | ParametrizedValueSetType()
 }
 
-void GlobalType() #void: { }
+void DefinedValue(): {}
 {
-  Type() |  DefinedMacroType()
+    ExternalValueReference()
+    | ValueReference()
+    | ParametrizedValue()
 }
 
-
-void Type() #void: { }
+void NonParametrizedTypeName(): {}
 {
-   (LOOKAHEAD(2) BuiltinType() |  DefinedType())  [LOOKAHEAD(2) SubtypeSpec()]
+    ExternalTypeReference()
+    | TypeReference()
+    | XMLASN1TypeName()
 }
 
-void DefinedType() : { }
+void ExternalTypeReference():{}
 {
-  [LOOKAHEAD(2) <TYPE_IDENTIFIER> <TOKEN_DOT>]  <TYPE_IDENTIFIER>
+    ModuleReference() <TOKEN_DOT> TypeReference()
 }
 
-
-void BuiltinType() : { int x; }
+void ExternalValueReference(): {}
 {
-  <NUMBER> { jjtThis.setType(0); }
-| <BIT_STRING>  { jjtThis.setType(1); }
-| LOOKAHEAD(2) x = SetOrSequenceType() { jjtThis.setType(x); }
-| x = SetOrSequenceOfType() { jjtThis.setType(x); }
-| ChoiceType() { jjtThis.setType(6); }
-| SelectionType() { jjtThis.setType(7); }
-| TaggedType() { jjtThis.setType(8); }
-| AnyType() { jjtThis.setType(9); }
-| EnumeratedType() { jjtThis.setType(10); }
-| <HEX_STRING> { jjtThis.setType(11); }
-| ObjectIdentifierType() { jjtThis.setType(12); }
-| <REAL> { jjtThis.setType(13); }
-| <BOOLEAN> { jjtThis.setType(14); }
-| <RESERVED_NULL> { jjtThis.setType(15); }
-| <RESERVED_EXTERNAL> { jjtThis.setType(16); }
+    ModuleReference() <TOKEN_DOT> ValueReference()
 }
 
-int SetOrSequenceType() : { int rc; }
+void AbsoluteReference(): {}
 {
-  ( ( <RESERVED_SET> { jjtThis.setType(ASTSetOrSequenceType.SET); rc = 2; }
-    | <RESERVED_SEQUENCE> { jjtThis.setType(ASTSetOrSequenceType.SEQUENCE); rc = 3; }
-    ) <TOKEN_BRACE_LEFT> [ ElementTypeList() ] <TOKEN_BRACE_RIGHT> ) { return rc; }
+    <TOKEN_REF> ModuleIdentifier() <TOKEN_DOT> ItemSpec()
 }
 
-int SetOrSequenceOfType() : { int rc; }
+void ItemSpec(): {}
 {
-   (
-    ( <RESERVED_SET> { rc = 4; }
-     | <RESERVED_SEQUENCE> { rc = 5; } )
-     [[<TOKEN_PAREN_LEFT>] SizeConstraint() [<TOKEN_PAREN_RIGHT>]] <RESERVED_OF>
-    )
-    Type() { return rc; }
+    (TypeReference())+  <TOKEN_DOT> ComponentId()
 }
 
-void ChoiceType() : { }
+void ComponentId(): {}
 {
-   <RESERVED_CHOICE> <TOKEN_BRACE_LEFT> ElementTypeList() <TOKEN_BRACE_RIGHT>
+    identifier()
+    | number()
+    | <TOKEN_STAR>
 }
 
-void ElementTypeList() #void: {}
+void TypeAssignment(): {}
 {
-   ElementType() (<TOKEN_COMMA> ElementType())*
+    TypeReference() <TOKEN_ASSIGNMENT> Type()
 }
 
-void ElementType() : {}
+void ValueAssignment(): {}
 {
-  ( NamedType()  [ ( <RESERVED_OPTIONAL> { jjtThis.setOptional(true); }  ) | ( <RESERVED_DEFAULT> NamedValue() ) ] )
-
-| ComponentsType()
+    ValueReference() Type() <TOKEN_ASSIGNMENT> Value()
 }
 
-void ComponentsType() : {  }
+void ValueSetTypeAssignment(): {}
 {
-  <COMPONENTS_TKN> <OF_TKN>  Type()
-
+    TypeReference() Type() <TOKEN_ASSIGNMENT> ValueSet()
 }
 
-void NamedType() #void: { }
+void ValueSet(): {}
 {
-  [LOOKAHEAD(2) VALUE_IDENTIFIER]  Type()
+    <TOKEN_BRACE_LEFT> ElementSetSpecs() <TOKEN_BRACE_RIGHT>
 }
 
-void NamedValue() : {}
+void Type(): {}
 {
-  [ LOOKAHEAD(2) VALUE_IDENTIFIER ] Value()
+    BuiltinType() | ReferencedType() | ConstrainedType()
 }
 
-void Value() : {}
+void BuiltinType(): {}
 {
-   LOOKAHEAD(2) BuiltinValue() | DefinedValue()
+    BitStringType()
+    | BooleanType()
+    | CharacterStringType()
+    | ChoiceType()
+    | EmbeddedPDVType()
+    | EnumeratedType()
+    | ExternalType()
+    | InstanceOfType()
+    | IntegerType()
+    | NullType()
+    | ObjectClassFieldType()
+    | ObjectIdentifierType()
+    | OctetStringType()
+    | RealType()
+    | RelativeOIDType()
+    | SequenceType()
+    | SequenceOfType()
+    | SetType()
+    | SetOfType()
+    | TaggedType()
+}
+
+void NamedType(): {}
+{
+    identifier() Type()
+}
+
+void ReferencedType(): {}
+{
+    DefinedType()
+    | UsefulType()
+    | SelectionType()
+    | TypeFromObject()
+    | ValueSetFromObjects()
+}
+
+void Value(): {}
+{
+    BuiltinValue()
+    | ReferencedValue()
+    | ObjectClassFieldValue()
+}
+
+void BuiltinValue(): {}
+{
+    BitStringValue()
+    | BooleanValue()
+    | CharacterStringValue()
+    | ChoiceValue()
+    | EmbeddedPDVValue()
+    | EnumeratedValue()
+    | ExternalValue()
+    | InstanceOfValue()
+    | IntegerValue()
+    | NullValue()
+    | ObjectClassFieldValue()
+    | ObjectIdentifierValue()
+    | OctetStringValue()
+    | RealValue()
+    | RelativeOIDValue()
+    | SequenceValue()
+    | SequenceOfValue()
+    | SetValue()
+    | SetOfValue()
+    | TaggedValue()
+}
+
+void ReferencedValue(): {}
+{
+    DefinedValue() | ValueFromObject()
+}
+
+void NamedValue(): {}
+{
+    identifier() Value()
+}
+
+void BooleanType(): {}
+{
+    <RESERVED_BOOLEAN>
+}
+
+void BooleanValue(): {}
+{
+    <RESERVED_TRUE> | <RESERVED_FALSE>
+}
+
+void IntegerType(): {}
+{
+    <RESERVED_INTEGER> [ <TOKEN_BRACE_LEFT> NamedNumberList() <TOKEN_BRACE_RIGHT> ]
+}
+
+void NamedNumberList(): {}
+{
+    NamedNumber()  (<TOKEN_COMMA> NamedNumber())*
+}
+
+void NamedNumber(): {}
+{
+    identifier() (DefinedValue() | SignedNumber() )
+}
+
+void SignedNumber(): {}
+{
+    [<TOKEN_MINUS>] number()
+}
+
+void IntegerValue(): {}
+{
+    SignedNumber() | identifier()
+}
+
+void EnumeratedType(): {}
+{
+    <RESERVED_ENUMERATED> <TOKEN_BRACE_LEFT> Enumerations() <TOKEN_BRACE_RIGHT>
+}
+
+void Enumerations(): {}
+{
+    RootEnumeration() [ <TOKEN_COMMA> <TOKEN_ELLIPSIS> ExceptionSpec() [ <TOKEN_COMMA> AdditionalEnumeration() ] ]
+}
+
+void RootEnumeration(): {}
+{
+    Enumeration()
+}
+
+void AdditionalEnumeration(): {}
+{
+    Enumeration()
+}
+
+void Enumeration(): {}
+{
+    EnumerationItem() (<TOKEN_COMMA> EnumerationItem() )*
+}
+
+void EnumerationItem(): {}
+{
+    identifier() | NamedNumber()
+}
+
+void EnumeratedValue(): {}
+{
+    identifier()
 }
