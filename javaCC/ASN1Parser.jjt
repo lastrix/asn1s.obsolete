@@ -1,0 +1,419 @@
+/******************************************************************************
+ * Copyright (C) 2010-2011 Lastrix                                            *
+ * This file is part of ASN1S.                                                *
+ *                                                                            *
+ * ASN1S is free software: you can redistribute it and/or modify              *
+ * it under the terms of the GNU General Public License as published by       *
+ * the Free Software Foundation, either version 2 of the License, or          *
+ * (at your option) any later version.                                        *
+ *                                                                            *
+ * ASN1S is distributed in the hope that it will be useful,                   *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the               *
+ * GNU General Public License for more details.                               *
+ *                                                                            *
+ * You should have received a copy of the GNU General Public License          *
+ * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
+ ******************************************************************************/
+
+/**
+*    This file has been taken from ASN.1 Compiler for Java project, see http://sourceforge.net/projects/jac-asn1/ for details.
+*/
+
+options {
+SANITY_CHECK=true;
+DEBUG_PARSER=false;
+DEBUG_TOKEN_MANAGER=false;
+MULTI=true;
+VISITOR=true;
+NODE_SCOPE_HOOK=true;
+}
+
+PARSER_BEGIN(ASN1Parser)
+package org.lastrix.asn1s.schema.parser;
+
+import java.io.*;
+import java.util.*;
+
+public class ASN1Parser {
+
+    static void jjtreeOpenNodeScope(Node n)
+    {
+    }
+
+    static void jjtreeCloseNodeScope(Node n)
+    {
+    }
+}
+
+PARSER_END(ASN1Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+SPECIAL_TOKEN :
+{
+  "--" : WithinASNComment
+}
+
+<WithinASNComment> SPECIAL_TOKEN :
+{
+  <("--" | "\n" | "\r" | "\r\n" )> : DEFAULT
+}
+
+<WithinASNComment> MORE :
+{
+  <~[]>
+}
+
+TOKEN:
+{
+    <TYPE_IDENTIFIER: ["A"-"Z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <VALUE_IDENTIFIER: ["a"-"z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+}
+
+TOKEN:
+{
+    <TOKEN_DOT : ".">
+    | <TOKEN_ASSIGNMENT : "::=">
+    | <TOKEN_RANGE : ".." >
+    | <TOKEN_ELLIPSIS : "..." >
+    | <TOKEN_LESS : "<">
+    | <TOKEN_MORE : ">">
+    | <TOKEN_COMMA : ",">
+    | <TOKEN_APOSTROPHE : "'">
+    | <TOKEN_BAR : "|">
+    | <TOKEN_COLON : ":">
+    | <TOKEN_SEMICOLON : ";">
+    | <TOKEN_BRACKET_LEFT : "[">
+    | <TOKEN_BRACKET_RIGHT : "]">
+    | <TOKEN_PAREN_LEFT : "(">
+    | <TOKEN_PAREN_RIGHT : ")">
+    | <TOKEN_BRACE_LEFT : "{">
+    | <TOKEN_BRACE_RIGHT : "}">
+}
+
+/**
+    Reserved words
+*/
+TOKEN:
+{
+    <RESERVED_ABSENT : "ABSENT">
+    | <RESERVED_ABSTRACT_SYNTAX : "ABSTRACT-SYNTAX">
+    | <RESERVED_ALL : "ALL">
+    | <RESERVED_APPLICATION : "APPLICATION">
+    | <RESERVED_AUTOMATIC : "AUTOMATIC">
+    | <RESERVED_BEGIN : "BEGIN">
+    | <RESERVED_BIT : "BIT">
+    | <RESERVED_BMP_STRING : "BMPString">
+    | <RESERVED_BOOLEAN : "BOOLEAN">
+    | <RESERVED_BY : "BY">
+    | <RESERVED_CHARACTER : "CHARACTER">
+    | <RESERVED_CHOICE : "CHOICE">
+    | <RESERVED_CLASS : "CLASS">
+    | <RESERVED_COMPONENT : "COMPONENT">
+    | <RESERVED_COMPONENTS : "COMPONENTS">
+    | <RESERVED_CONSTRAINED : "CONSTRAINED">
+    | <RESERVED_CONTAINING : "CONTAINING">
+    | <RESERVED_DEFAULT : "DEFAULT">
+    | <RESERVED_DEFINITIONS : "DEFINITIONS">
+    | <RESERVED_EMBEDDED : "EMBEDDED">
+    | <RESERVED_ENCODED : "ENCODED">
+    | <RESERVED_END : "END">
+    | <RESERVED_ENUMERATED : "ENUMERATED">
+    | <RESERVED_EXCEPT : "EXCEPT">
+    | <RESERVED_EXPLICIT : "EXPLICIT">
+    | <RESERVED_EXPORTS : "EXPORTS">
+    | <RESERVED_EXTENSIBILITY : "EXTENSIBILITY">
+    | <RESERVED_EXTERNAL : "EXTERNAL">
+    | <RESERVED_FALSE : "FALSE">
+    | <RESERVED_FROM : "FROM">
+    | <RESERVED_GENERALIZED_TIME : "GeneralizedTime">
+    | <RESERVED_GENERAL_STRING : "GeneralString">
+    | <RESERVED_GRAPHIC_STRING : "GraphicString">
+    | <RESERVED_IA5_STRING : "IA5String">
+    | <RESERVED_IDENTIFIER : "IDENTIFIER">
+    | <RESERVED_IMPLICIT : "IMPLICIT">
+    | <RESERVED_IMPLIED : "IMPLIED">
+    | <RESERVED_IMPORTS : "IMPORTS">
+    | <RESERVED_INCLUDES : "INCLUDES">
+    | <RESERVED_INSTANCE : "INSTANCE">
+    | <RESERVED_INTEGER : "INTEGER">
+    | <RESERVED_INTERSECTION : "INTERSECTION">
+    | <RESERVED_ISO646_STRING : "ISO646String">
+    | <RESERVED_MAX : "MAX">
+    | <RESERVED_MIN : "MIN">
+    | <RESERVED_MINUS_INFINITY : "MINUS-INFINITY">
+    | <RESERVED_NULL : "NULL">
+    | <RESERVED_NUMERIC_STRING : "NumericString">
+    | <RESERVED_OBJECT : "OBJECT">
+    | <RESERVED_OBJECT_DESCRIPTOR : "ObjectDescriptor">
+    | <RESERVED_OCTET : "OCTET">
+    | <RESERVED_OF : "OF">
+    | <RESERVED_OPTIONAL : "OPTIONAL">
+    | <RESERVED_PATTERN : "PATTERN">
+    | <RESERVED_PDV : "PDV">
+    | <RESERVED_PLUS_INFINITY : "PLUS-INFINITY">
+    | <RESERVED_PRESENT : "PRESENT">
+    | <RESERVED_PRINTABLE_STRING : "PrintableString">
+    | <RESERVED_PRIVATE : "PRIVATE">
+    | <RESERVED_REAL : "REAL">
+    | <RESERVED_RELATIVE_OID : "RELATIVE-OID">
+    | <RESERVED_SEQUENCE : "SEQUENCE">
+    | <RESERVED_SET : "SET">
+    | <RESERVED_SIZE : "SIZE">
+    | <RESERVED_STRING : "STRING">
+    | <RESERVED_SYNTAX : "SYNTAX">
+    | <RESERVED_T61_STRING : "T61String">
+    | <RESERVED_TAGS : "TAGS">
+    | <RESERVED_TELETEX_STRING : "TeletexString">
+    | <RESERVED_TRUE : "TRUE">
+    | <RESERVED_TYPE_IDENTIFIER : "TYPE-IDENTIFIER">
+    | <RESERVED_UNION : "UNION">
+    | <RESERVED_UNIQUE : "UNIQUE">
+    | <RESERVED_UNIVERSAL : "UNIVERSAL">
+    | <RESERVED_UNIVERSAL_STRING : "UniversalString">
+    | <RESERVED_UTC_TIME : "UTCTime">
+    | <RESERVED_UTF8_STRING : "UTF8String">
+    | <RESERVED_VIDEOTEX_STRING : "VideotexString">
+    | <RESERVED_VISIBLE_STRING : "VisibleString">
+    | <RESERVED_WITH : "WITH">
+}
+
+TOKEN:
+{
+    <NUMBER : "0" | ["1"-"9"](["0"-"9"])*>
+}
+
+TOKEN:
+{
+    <REAL : (<NUMBER> "." ("0")* <NUMBER> ("e" | "E") <NUMBER>) | (<NUMBER> ("e" | "E") <NUMBER>) >
+}
+
+TOKEN:
+{
+    <BIT_STRING : "'" (["0"-"1"])+ "'B">
+}
+
+TOKEN :
+{
+    <HEX_STRING: "'" (["0"-"9","A"-"F","a"-"f"])* "'H">
+}
+
+TOKEN :
+{
+    <STRING: "\"" ( ~["\""] )* "\"" >
+}
+
+TOKEN:
+{
+    <BOOLEAN: <RESERVED_TRUE> | <RESERVED_FALSE> >
+}
+
+TOKEN :
+{
+ <OBJECT_IDENTIFIER: <RESERVED_OBJECT> ([" ","\n","\t","\r"])? <RESERVED_IDENTIFIER>>
+}
+
+
+void Parse() : {}
+{
+ (ModuleDefinition())*
+}
+
+void ModuleDefinition() : {}
+{
+    ModuleIdentifier() <RESERVED_DEFINITIONS> [TagDefault()] [ExtensionDefault()] <TOKEN_ASSIGNMENT>
+    <RESERVED_BEGIN> ModuleBody() <RESERVED_END>
+}
+
+void ModuleIdentifier(): {}
+{
+    <TYPE_IDENTIFIER> DefinitiveIdentifier()
+}
+
+void DefinitiveIdentifier(): {}
+{
+     [<TOKEN_BRACE_LEFT> ObjIdComponentList() <TOKEN_BRACE_RIGHT> ]
+}
+
+void ObjIdComponentList() : {}
+{
+   ObjIdComponent() (ObjIdComponent())*
+}
+
+void ObjIdComponent() : {}
+{
+  ( <NUMBER> |   NameAndNumberForm())
+}
+
+void NameAndNumberForm(): {}
+{
+    <VALUE_IDENTIFIER> [ <TOKEN_PAREN_LEFT> (<NUMBER> | DefinedValue()) <TOKEN_PAREN_RIGHT>]
+}
+
+void TagDefault() : {}
+{
+    (<RESERVED_EXPLICIT> | <RESERVED_IMPLICIT>) <RESERVED_TAGS>
+}
+
+void ExtensionDefault(): {}
+{
+    <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED>
+}
+
+void DefinedValue(): {}
+{
+    [ <TYPE_IDENTIFIER> <TOKEN_DOT> ] <VALUE_IDENTIFIER>
+}
+
+void ModuleBody(): {}
+{
+    [Exports() Imports() AssignmentList()]
+}
+
+void Exports(): {}
+{
+    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolList() ) <TOKEN_COMMA> ] <TOKEN_SEMICOLON>
+}
+
+void SymbolList(): {}
+{
+    Symbol() ([ <TOKEN_COMMA> Symbol()])*
+}
+
+/**
+    TODO: should check it
+*/
+void Symbol() : {}
+{
+   <TYPE_IDENTIFIER>
+ | <VALUE_IDENTIFIER>
+}
+
+void Imports(): {}
+{
+    <RESERVED_IMPORTS> [SymbolsFromModuleList() ] <TOKEN_SEMICOLON>
+}
+
+void SymbolsFromModuleList(): {}
+{
+    SymbolsFromModule() ( SymbolsFromModule() )*
+}
+
+void SymbolsFromModule(): {String module;}
+{
+    SymbolList() <RESERVED_FROM> ModuleIdentifier()
+}
+
+
+void AssignmentList() : {}
+{
+  Assignment() [<TOKEN_SEMICOLON>] ( Assignment() [<TOKEN_SEMICOLON>] )*
+}
+
+void Assignment() #void: {}
+{
+   LOOKAHEAD(2)  MacroDefinition() |  TypeAssignment() |  ValueAssignment()
+}
+
+void TypeAssignment() : { }
+{
+   <TYPE_IDENTIFIER> <TOKEN_ASSIGNMENT>   GlobalType()
+}
+
+void GlobalType() #void: { }
+{
+  Type() |  DefinedMacroType()
+}
+
+
+void Type() #void: { }
+{
+   (LOOKAHEAD(2) BuiltinType() |  DefinedType())  [LOOKAHEAD(2) SubtypeSpec()]
+}
+
+void DefinedType() : { }
+{
+  [LOOKAHEAD(2) <TYPE_IDENTIFIER> <TOKEN_DOT>]  <TYPE_IDENTIFIER>
+}
+
+
+void BuiltinType() : { int x; }
+{
+  <NUMBER> { jjtThis.setType(0); }
+| <BIT_STRING>  { jjtThis.setType(1); }
+| LOOKAHEAD(2) x = SetOrSequenceType() { jjtThis.setType(x); }
+| x = SetOrSequenceOfType() { jjtThis.setType(x); }
+| ChoiceType() { jjtThis.setType(6); }
+| SelectionType() { jjtThis.setType(7); }
+| TaggedType() { jjtThis.setType(8); }
+| AnyType() { jjtThis.setType(9); }
+| EnumeratedType() { jjtThis.setType(10); }
+| <HEX_STRING> { jjtThis.setType(11); }
+| ObjectIdentifierType() { jjtThis.setType(12); }
+| <REAL> { jjtThis.setType(13); }
+| <BOOLEAN> { jjtThis.setType(14); }
+| <RESERVED_NULL> { jjtThis.setType(15); }
+| <RESERVED_EXTERNAL> { jjtThis.setType(16); }
+}
+
+int SetOrSequenceType() : { int rc; }
+{
+  ( ( <RESERVED_SET> { jjtThis.setType(ASTSetOrSequenceType.SET); rc = 2; }
+    | <RESERVED_SEQUENCE> { jjtThis.setType(ASTSetOrSequenceType.SEQUENCE); rc = 3; }
+    ) <TOKEN_BRACE_LEFT> [ ElementTypeList() ] <TOKEN_BRACE_RIGHT> ) { return rc; }
+}
+
+int SetOrSequenceOfType() : { int rc; }
+{
+   (
+    ( <RESERVED_SET> { rc = 4; }
+     | <RESERVED_SEQUENCE> { rc = 5; } )
+     [[<TOKEN_PAREN_LEFT>] SizeConstraint() [<TOKEN_PAREN_RIGHT>]] <RESERVED_OF>
+    )
+    Type() { return rc; }
+}
+
+void ChoiceType() : { }
+{
+   <RESERVED_CHOICE> <TOKEN_BRACE_LEFT> ElementTypeList() <TOKEN_BRACE_RIGHT>
+}
+
+void ElementTypeList() #void: {}
+{
+   ElementType() (<TOKEN_COMMA> ElementType())*
+}
+
+void ElementType() : {}
+{
+  ( NamedType()  [ ( <RESERVED_OPTIONAL> { jjtThis.setOptional(true); }  ) | ( <RESERVED_DEFAULT> NamedValue() ) ] )
+
+| ComponentsType()
+}
+
+void ComponentsType() : {  }
+{
+  <COMPONENTS_TKN> <OF_TKN>  Type()
+
+}
+
+void NamedType() #void: { }
+{
+  [LOOKAHEAD(2) VALUE_IDENTIFIER]  Type()
+}
+
+void NamedValue() : {}
+{
+  [ LOOKAHEAD(2) VALUE_IDENTIFIER ] Value()
+}
+
+void Value() : {}
+{
+   LOOKAHEAD(2) BuiltinValue() | DefinedValue()
+}

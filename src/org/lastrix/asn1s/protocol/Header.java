@@ -40,9 +40,11 @@ public final class Header {
 	private final byte    tagClass;
 	private final boolean constructed;
 	private final long    tag;
-	private final int     length;
-	private byte[] byteArray = null;
-	private byte[] tagBytes  = null;
+	private       int     length;
+	private final int     bytesRead;
+	private             byte[] byteArray = null;
+	private             byte[] tagBytes  = null;
+	public final static Header EOC       = new Header(0, (byte) 0, false, 0, 2);
 
 	/**
 	 * Create header
@@ -54,10 +56,24 @@ public final class Header {
 	 */
 	@SuppressWarnings({"ParameterHidesMemberVariable"})
 	public Header(final long tag, final byte tagClass, final boolean constructed, final int length) {
+		this(tag, tagClass, constructed, length, 0);
+	}
+
+	/**
+	 * Create header
+	 *
+	 * @param tag         - the tag
+	 * @param tagClass    - the class tag see Tag.CLASS_ for more info
+	 * @param constructed - constructed or primitive
+	 * @param length      - the length
+	 */
+	@SuppressWarnings({"ParameterHidesMemberVariable"})
+	public Header(final long tag, final byte tagClass, final boolean constructed, final int length, final int bytesRead) {
 		this.tag = tag;
 		this.tagClass = tagClass;
 		this.constructed = constructed;
 		this.length = length;
+		this.bytesRead = bytesRead;
 	}
 
 
@@ -199,9 +215,11 @@ public final class Header {
 	 */
 	public static Header readHeader(InputStream is) throws ASN1ProtocolException {
 		//tag reading
+		int bytesRead = 0;
 		int temp;
 		try {
 			temp = is.read();
+			bytesRead++;
 		} catch (IOException e) {
 			//no header
 			return null;
@@ -219,6 +237,7 @@ public final class Header {
 			do {
 				try {
 					temp = is.read();
+					bytesRead++;
 				} catch (IOException e) {
 					throw new ASN1ProtocolException("Unexpected EOF found.", e);
 				}
@@ -229,13 +248,9 @@ public final class Header {
 		/*
 			Read the length and create header
 		 */
-		return new Header(tag, tagClass, constructed, readLength(is));
-	}
-
-	private static int readLength(final InputStream is) throws ASN1ProtocolException {
-		int temp;
 		try {
 			temp = is.read();
+			bytesRead++;
 		} catch (IOException e) {
 			throw new ASN1ProtocolException("Unexpected EOF found.", e);
 		}
@@ -254,12 +269,21 @@ public final class Header {
 			try {
 				for (int i = 0; i < count; i++) {
 					temp = is.read();
+					bytesRead++;
 					length = (length << 8) | (temp & Utils.BYTE_MASK);
 				}
 			} catch (IOException e) {
 				throw new ASN1ProtocolException("Unexpected EOF found.", e);
 			}
 		}
-		return length;
+		return new Header(tag, tagClass, constructed, length, bytesRead);
+	}
+
+	public int getBytesRead() {
+		return bytesRead;
+	}
+
+	void setLength(final int length) {
+		this.length = length;
 	}
 }
