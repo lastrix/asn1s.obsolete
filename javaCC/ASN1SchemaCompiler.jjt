@@ -218,7 +218,17 @@ TOKEN:
 
 TOKEN:
 {
-    <EXPONENT: "e" | "E">
+    <UPPERCASE_START: (["A"-"Z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])*)>
+    | <LOWERCASE_START: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <UPPERCASE: ["A"-"Z"] ((<TOKEN_MINUS>["A"-"Z","0"-"9"])|["A"-"Z","0"-"9"])* >
+    | <LOWERCASE: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","0"-"9"])|["a"-"z","0"-"9"])* >
+    | <TYPE_FIELD_REFERENCE: "&" <UPPERCASE_START> >
+    | <VALUE_FIELD_REFERENCE: "&" <LOWERCASE_START> >
+}
+
+TOKEN:
+{
+    <#EXPONENT: "e" | "E">
 }
 
 TOKEN:
@@ -233,11 +243,11 @@ TOKEN:
 
 TOKEN:
 {
-    <REAL_EXPONENT: <EXPONENT> (( (["-","+"])? ["1"-"9"](["0"-"9"])*) | <ZERO>) >
+    <#REAL_EXPONENT: <EXPONENT> (( (["-","+"])? ["1"-"9"](["0"-"9"])*) | <ZERO>) >
 }
 TOKEN:
 {
-    <REAL: (( (["-"])? ["1"-"9"](["0"-"9"])*)|<ZERO>) ( "." (["0"-"9"])+)? (<REAL_EXPONENT>)? >
+    <REAL: (( (["-"])? ["1"-"9"](["0"-"9"])*)|<ZERO>) "." (["0"-"9"])+ (<REAL_EXPONENT>)? >
 }
 
 TOKEN:
@@ -260,15 +270,6 @@ TOKEN :
  <OBJECT_IDENTIFIER: <RESERVED_OBJECT> ([" ","\n","\t","\r"])? <RESERVED_IDENTIFIER>>
 }
 
-TOKEN:
-{
-    <UPPERCASE_START: ["A"-"Z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
-    | <LOWERCASE_START: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
-    | <UPPERCASE: ["A"-"Z"] ((<TOKEN_MINUS>["A"-"Z","0"-"9"])|["A"-"Z","0"-"9"])* >
-    | <LOWERCASE: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","0"-"9"])|["a"-"z","0"-"9"])* >
-    | <TYPE_FIELD_REFERENCE: "&" <UPPERCASE_START> >
-    | <VALUE_FIELD_REFERENCE: "&" <LOWERCASE_START> >
-}
 
 /**************************************/
 /**********  ENTRY POINT  *************/
@@ -283,7 +284,7 @@ void Parse() : {}
 void ModuleDefinition() : {}
 {
     ModuleIdentifier()
-    <RESERVED_DEFINITIONS> TagDefault() ExtensionDefault()
+    <RESERVED_DEFINITIONS> [TagDefault()] [ExtensionDefault()]
         <TOKEN_ASSIGNMENT>
     <RESERVED_BEGIN> ModuleBody() <RESERVED_END>
 }
@@ -295,7 +296,7 @@ void ExternalValueReference(): {}
 
 void SignedNumber(): {}
 {
-    [<TOKEN_MINUS>] Number()
+    ([<TOKEN_MINUS>] <NUMBER>) | <ZERO>
 }
 
 /*************************************************/
@@ -305,12 +306,12 @@ void SignedNumber(): {}
 
 void ModuleIdentifier(): {}
 {
-    ModuleReference() DefiniteIdentifier()
+    ModuleReference() [DefiniteIdentifier()]
 }
 
 void DefiniteIdentifier(): {}
 {
-     [<TOKEN_BRACE_LEFT> ObjIdComponentsList() <TOKEN_BRACE_RIGHT> ]
+     <TOKEN_BRACE_LEFT> ObjIdComponentsList() <TOKEN_BRACE_RIGHT>
 }
 
 void ObjIdComponentsList() : {}
@@ -328,7 +329,7 @@ void NumberForm(): {}
     Number()
 }
 
-void Number(): {}
+void Number() #void: {}
 {
     <NUMBER> | <ZERO>
 }
@@ -340,12 +341,12 @@ void NameAndNumberForm(): {}
 
 void TagDefault() : {}
 {
-    [ (<RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> | <RESERVED_AUTOMATIC>) <RESERVED_TAGS> ]
+    (<RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> | <RESERVED_AUTOMATIC>) <RESERVED_TAGS>
 }
 
 void ExtensionDefault(): {}
 {
-    [ <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED> ]
+    <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED>
 }
 
 /**********  MODULE BODY PART  *************/
@@ -490,7 +491,7 @@ void ValueSet(): {}
 
 void Type(): {}
 {
-    LOOKAHEAD(4) TypeWithConstraint() | ( (LOOKAHEAD(2) BuiltinType() | LOOKAHEAD(2)DefinedType()) [LOOKAHEAD(2)Constraint()] )
+    LOOKAHEAD(4) TypeWithConstraint() | ( (LOOKAHEAD(2) BuiltinType() | LOOKAHEAD(2)DefinedType()) [LOOKAHEAD(2) Constraint()] )
 }
 
 void BuiltinType(): {}
@@ -558,17 +559,7 @@ void EnumeratedType(): {}
 
 void Enumerations(): {}
 {
-    RootEnumeration() [ <TOKEN_COMMA> <TOKEN_ELLIPSIS> ExceptionSpec() [ <TOKEN_COMMA> AdditionalEnumeration() ] ]
-}
-
-void RootEnumeration(): {}
-{
-    Enumeration()
-}
-
-void AdditionalEnumeration(): {}
-{
-    Enumeration()
+    Enumeration() [LOOKAHEAD(2)  <TOKEN_COMMA> <TOKEN_ELLIPSIS> ExceptionSpec() [ <TOKEN_COMMA> Enumeration() ] ]
 }
 
 void Enumeration(): {}
@@ -578,7 +569,7 @@ void Enumeration(): {}
 
 void EnumerationItem(): {}
 {
-    LOOKAHEAD(2) identifier() | NamedNumber()
+    LOOKAHEAD(2) NamedNumber() | identifier()
 }
 
 void RealType(): {}
@@ -733,12 +724,12 @@ void SelectionType(): {}
 
 void TaggedType(): {}
 {
-    Tag() TaggingMethod() Type()
+    Tag() [TaggingMethod()] Type()
 }
 
 void TaggingMethod(): {}
 {
-    [ <RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> ]
+    <RESERVED_EXPLICIT> | <RESERVED_IMPLICIT>
 }
 
 void Tag(): {}
@@ -822,7 +813,34 @@ void Constraint(): {}
 
 void ConstraintSpec(): {}
 {
-    SubtypeConstraint() /*| GeneralConstraint()*/
+    LOOKAHEAD(3) SubtypeConstraint() | GeneralConstraint()
+}
+
+void GeneralConstraint(): {}
+{
+    UserDefinedConstraint() | /*TableConstraint() |*/ ContentsConstraint()
+}
+
+void UserDefinedConstraint(): {}
+{
+    <RESERVED_CONSTRAINED> <RESERVED_BY>
+    <TOKEN_BRACE_LEFT> UserDefinedConstraintParameter() (<TOKEN_COMMA> UserDefinedConstraintParameter())*  <TOKEN_BRACE_RIGHT>
+}
+
+void UserDefinedConstraintParameter(): {}
+{
+    LOOKAHEAD(3) (Governor() <TOKEN_COLON> Value())
+    | LOOKAHEAD(3) (Governor() <TOKEN_COLON>  ValueSet())
+    /*| (Governor() <TOKEN_COLON> Object() )
+    | LOOKAHEAD(3) (Governor() <TOKEN_COLON> ObjectSet())*/
+    | Type()
+    /*| DefinedObjectClass()*/
+}
+
+void ContentsConstraint(): {}
+{
+    (<RESERVED_CONTAINING> Type() [<RESERVED_ENCODED> <RESERVED_BY> Value()])
+    | (<RESERVED_ENCODED> <RESERVED_BY> Value())
 }
 
 void ExceptionSpec() : {}
@@ -868,7 +886,7 @@ void Intersections(): {}
 
 void IntersectionElements(): {}
 {
-    LOOKAHEAD(3) Elements() | ( Elements() Exclusions())
+    Elements() [LOOKAHEAD(2) Exclusions() ]
 }
 
 void Exclusions(): {}
@@ -895,9 +913,9 @@ void Elements(): {}
 
 void SubtypeElements(): {}
 {
-    LOOKAHEAD(2) Value()
+    LOOKAHEAD(2) ValueRange()
+    | LOOKAHEAD(2) Value()
     | LOOKAHEAD(2) ContainedSubtype()
-    | LOOKAHEAD(2) ValueRange()
     | LOOKAHEAD(2) PermittedAlphabet()
     | LOOKAHEAD(2) SizeConstraint()
     | LOOKAHEAD(2) TypeConstraint()
