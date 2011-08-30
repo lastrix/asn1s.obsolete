@@ -16,10 +16,6 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-/**
-*    This file has been taken from ASN.1 Compiler for Java project, see http://sourceforge.net/projects/jac-asn1/ for details.
-*/
-
 options {
 SANITY_CHECK=true;
 DEBUG_PARSER=false;
@@ -44,6 +40,16 @@ public class ASN1SchemaCompiler {
     static void jjtreeCloseNodeScope(Node n)
     {
     }
+
+    public final static String[] usefulTypes = new String[]{
+      "GeneralizedTime", "UTCTime", "ObjectDescriptor"
+    };
+
+    public final static String[] characterStringTypes = new String[]{
+      "NumericString", "PrintableString", "TeletexString", "T61String", "VideotexString",
+      "UniversalString", "VisibleString", "ISO646String", "IA5String", "GraphicString",
+      "GeneralString", "BMPString"
+    };
 }
 
 PARSER_END(ASN1SchemaCompiler)
@@ -73,8 +79,12 @@ SPECIAL_TOKEN :
 
 TOKEN:
 {
-    <TYPE_IDENTIFIER: ["A"-"Z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
-    | <VALUE_IDENTIFIER: ["a"-"z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    <UPPERCASE_START: ["A"-"Z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <LOWERCASE_START: ["a"-"z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <UPPERCASE: ["A"-"Z"] (("-"["A"-"Z","0"-"9"])|["A"-"Z","0"-"9"])* >
+    | <LOWERCASE: ["a"-"z"] (("-"["a"-"z","0"-"9"])|["a"-"z","0"-"9"])* >
+    | <TYPE_FIELD_REFERENCE: "&" <UPPERCASE_START> >
+    | <VALUE_FIELD_REFERENCE: "&" <LOWERCASE_START> >
 }
 
 TOKEN:
@@ -176,7 +186,7 @@ TOKEN:
     | <RESERVED_TAGS : "TAGS">
     | <RESERVED_TELETEX_STRING : "TeletexString">
     | <RESERVED_TRUE : "TRUE">
-    | <RESERVED_TYPE_IDENTIFIER : "TYPE-IDENTIFIER">
+    | <RESERVED_UPPERCASE_START : "TYPE-IDENTIFIER">
     | <RESERVED_UNION : "UNION">
     | <RESERVED_UNIQUE : "UNIQUE">
     | <RESERVED_UNIVERSAL : "UNIVERSAL">
@@ -195,7 +205,12 @@ TOKEN:
 
 TOKEN:
 {
-    <REAL : (<NUMBER> "." ("0")* <NUMBER> ("e" | "E") <NUMBER>) | (<NUMBER> ("e" | "E") <NUMBER>) >
+    <SIGNED_NUMBER : (["-"] <NUMBER>) >
+}
+
+TOKEN:
+{
+    <REAL : (<SIGNED_NUMBER> "." ("0")* <SIGNED_NUMBER> ("e" | "E") <SIGNED_NUMBER>) | (<SIGNED_NUMBER> ("e" | "E") <SIGNED_NUMBER>) >
 }
 
 TOKEN:
@@ -236,7 +251,7 @@ void ModuleDefinition() : {}
 {
     ModuleIdentifier()
     <RESERVED_DEFINITIONS> TagDefault() ExtensionDefault()
-        <TOKEN_ASSIGNMENT>
+        "::="
     <RESERVED_BEGIN> ModuleBody() <RESERVED_END>
 }
 
@@ -250,17 +265,17 @@ void ModuleIdentifier(): {}
 
 void DefiniteIdentifier(): {}
 {
-     [<TOKEN_BRACE_LEFT> ObjIdComponentList() <TOKEN_BRACE_RIGHT> ]
+     ["{" ObjIdComponentsList() "}" ]
 }
 
-void ObjIdComponentList() : {}
+void ObjIdComponentsList() : {}
 {
    ObjIdComponent() (ObjIdComponent())*
 }
 
 void ObjIdComponent() : {}
 {
-  ( NumberForm() |   NameAndNumberForm())
+  ( LOOKAHEAD(2) NameAndNumberForm() | NumberForm() | LOOKAHEAD(2) DefinedValue() | LOOKAHEAD(2) identifier() )
 }
 
 void NumberForm(): {}
@@ -268,9 +283,14 @@ void NumberForm(): {}
     <NUMBER>
 }
 
+void Number(): {}
+{
+    <NUMBER>
+}
+
 void NameAndNumberForm(): {}
 {
-    identifier() [ <TOKEN_PAREN_LEFT> (NumberForm() | DefinedValue()) <TOKEN_PAREN_RIGHT>]
+    identifier() [ "(" (NumberForm() | DefinedValue()) ")"]
 }
 
 void TagDefault() : {}
@@ -283,23 +303,19 @@ void ExtensionDefault(): {}
     [ <RESERVED_EXTENSIBILITY> <RESERVED_IMPLIED> ]
 }
 
-void DefinedValue(): {}
-{
-    [ <TYPE_IDENTIFIER> <TOKEN_DOT> ] <VALUE_IDENTIFIER>
-}
-
 /**********  MODULE BODY PART  *************/
 
 void ModuleBody(): {}
 {
-    [Exports() Imports() AssignmentList()]
+    /*[Exports() Imports() AssignmentList()]*/
 }
+
 
 /**********  EXPORTS PART  *************/
 
 void Exports(): {}
 {
-    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolsExported() ) <TOKEN_SEMICOLON> ]
+    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolsExported() ) ";" ]
 }
 
 void SymbolsExported(): {}
@@ -309,7 +325,7 @@ void SymbolsExported(): {}
 
 void Imports(): {}
 {
-    <RESERVED_IMPORTS> SymbolsImported() <TOKEN_SEMICOLON>
+    <RESERVED_IMPORTS> SymbolsImported() ";"
 }
 
 /**********  IMPORTS PART  *************/
@@ -336,17 +352,17 @@ void GlobalModuleReference(): {}
 
 void AssignedIdentifier(): {}
 {
-    [ObjectIdentifierValue() | DefinedValue()]
+    [LOOKAHEAD(2) ObjectIdentifierValue() | LOOKAHEAD(2) DefinedValue()]
 }
 
 void SymbolList(): {}
 {
-    Symbol() ([ <TOKEN_COMMA> Symbol()])*
+    Symbol() ( "," Symbol())*
 }
 
 void Symbol() : {}
 {
-   Reference() | ParametrizedReference()
+   Reference() /*| ParametrizedReference()*/
 }
 
 void Reference(): {}
@@ -355,14 +371,14 @@ void Reference(): {}
     | ValueReference()
     | ObjectClassReference()
     | ObjectReference()
-    | ObjectSetReference()
+    /*| ObjectSetReference()*/
 }
 
 /**********  ASSIGNMENTS LIST PART  *************/
 
 void AssignmentList() : {}
 {
-  Assignment() [<TOKEN_SEMICOLON>] ( Assignment() [<TOKEN_SEMICOLON>] )*
+  Assignment() [";"] ( Assignment() [";"] )*
 }
 
 void Assignment() #void: {}
@@ -371,9 +387,9 @@ void Assignment() #void: {}
    TypeAssignment()
    | ValueAssignment()
    | ValueSetTypeAssignment()
-   | ObjectClassAssignment()
+   /*| ObjectClassAssignment()
    | ObjectAssignment()
-   | ObjectSetAssignment()
+   | ObjectSetAssignment()*/
    | ParametrizedAssignment()
 }
 
@@ -392,63 +408,56 @@ void DefinedValue(): {}
     | ParametrizedValue()
 }
 
-void NonParametrizedTypeName(): {}
-{
-    ExternalTypeReference()
-    | TypeReference()
-    | XMLASN1TypeName()
-}
-
 void ExternalTypeReference():{}
 {
-    ModuleReference() <TOKEN_DOT> TypeReference()
+    ModuleReference() "." TypeReference()
 }
 
 void ExternalValueReference(): {}
 {
-    ModuleReference() <TOKEN_DOT> ValueReference()
+    ModuleReference() "." ValueReference()
 }
 
 void AbsoluteReference(): {}
 {
-    <TOKEN_REF> ModuleIdentifier() <TOKEN_DOT> ItemSpec()
+    "@" ModuleIdentifier() "." ItemSpec()
 }
 
 void ItemSpec(): {}
 {
-    (TypeReference())+  <TOKEN_DOT> ComponentId()
+    (TypeReference())+  "." ComponentId()
 }
 
 void ComponentId(): {}
 {
     identifier()
-    | number()
-    | <TOKEN_STAR>
+    | Number()
+    | "*"
 }
 
 void TypeAssignment(): {}
 {
-    TypeReference() <TOKEN_ASSIGNMENT> Type()
+    TypeReference() "::=" Type()
 }
 
 void ValueAssignment(): {}
 {
-    ValueReference() Type() <TOKEN_ASSIGNMENT> Value()
+    ValueReference() Type() "::=" Value()
 }
 
 void ValueSetTypeAssignment(): {}
 {
-    TypeReference() Type() <TOKEN_ASSIGNMENT> ValueSet()
+    TypeReference() Type() "::=" ValueSet()
 }
 
 void ValueSet(): {}
 {
-    <TOKEN_BRACE_LEFT> ElementSetSpecs() <TOKEN_BRACE_RIGHT>
+    "{" ElementSetSpecs() "}"
 }
 
 void Type(): {}
 {
-    BuiltinType() | ReferencedType() | ConstrainedType()
+    LOOKAHEAD(4) TypeWithConstraint() | ( (LOOKAHEAD(2) BuiltinType() | DefinedType()) [Constraint()] )
 }
 
 void BuiltinType(): {}
@@ -460,10 +469,10 @@ void BuiltinType(): {}
     | EmbeddedPDVType()
     | EnumeratedType()
     | ExternalType()
-    | InstanceOfType()
+    /*| InstanceOfType()*/
     | IntegerType()
     | NullType()
-    | ObjectClassFieldType()
+    /*| ObjectClassFieldType()*/
     | ObjectIdentifierType()
     | OctetStringType()
     | RealType()
@@ -485,15 +494,15 @@ void ReferencedType(): {}
     DefinedType()
     | UsefulType()
     | SelectionType()
-    | TypeFromObject()
-    | ValueSetFromObjects()
+    /*| TypeFromObject()*/
+    /*| ValueSetFromObjects()*/
 }
 
 void Value(): {}
 {
-    BuiltinValue()
+    LOOKAHEAD(2) BuiltinValue()
     | ReferencedValue()
-    | ObjectClassFieldValue()
+    /*| ObjectClassFieldValue()*/
 }
 
 void BuiltinValue(): {}
@@ -505,10 +514,10 @@ void BuiltinValue(): {}
     | EmbeddedPDVValue()
     | EnumeratedValue()
     | ExternalValue()
-    | InstanceOfValue()
+    /*| InstanceOfValue()*/
     | IntegerValue()
     | NullValue()
-    | ObjectClassFieldValue()
+    /*| ObjectClassFieldValue()*/
     | ObjectIdentifierValue()
     | OctetStringValue()
     | RealValue()
@@ -517,12 +526,11 @@ void BuiltinValue(): {}
     | SequenceOfValue()
     | SetValue()
     | SetOfValue()
-    | TaggedValue()
 }
 
 void ReferencedValue(): {}
 {
-    DefinedValue() | ValueFromObject()
+    DefinedValue() /*| ValueFromObject()*/
 }
 
 void NamedValue(): {}
@@ -542,12 +550,12 @@ void BooleanValue(): {}
 
 void IntegerType(): {}
 {
-    <RESERVED_INTEGER> [ <TOKEN_BRACE_LEFT> NamedNumberList() <TOKEN_BRACE_RIGHT> ]
+    <RESERVED_INTEGER> [ "{" NamedNumberList() "}" ]
 }
 
 void NamedNumberList(): {}
 {
-    NamedNumber()  (<TOKEN_COMMA> NamedNumber())*
+    NamedNumber()  ("," NamedNumber())*
 }
 
 void NamedNumber(): {}
@@ -557,7 +565,7 @@ void NamedNumber(): {}
 
 void SignedNumber(): {}
 {
-    [<TOKEN_MINUS>] number()
+    <SIGNED_NUMBER>
 }
 
 void IntegerValue(): {}
@@ -567,12 +575,12 @@ void IntegerValue(): {}
 
 void EnumeratedType(): {}
 {
-    <RESERVED_ENUMERATED> <TOKEN_BRACE_LEFT> Enumerations() <TOKEN_BRACE_RIGHT>
+    <RESERVED_ENUMERATED> "{" Enumerations() "}"
 }
 
 void Enumerations(): {}
 {
-    RootEnumeration() [ <TOKEN_COMMA> <TOKEN_ELLIPSIS> ExceptionSpec() [ <TOKEN_COMMA> AdditionalEnumeration() ] ]
+    RootEnumeration() [ "," "..." ExceptionSpec() [ "," AdditionalEnumeration() ] ]
 }
 
 void RootEnumeration(): {}
@@ -587,7 +595,7 @@ void AdditionalEnumeration(): {}
 
 void Enumeration(): {}
 {
-    EnumerationItem() (<TOKEN_COMMA> EnumerationItem() )*
+    EnumerationItem() ("," EnumerationItem() )*
 }
 
 void EnumerationItem(): {}
@@ -598,4 +606,787 @@ void EnumerationItem(): {}
 void EnumeratedValue(): {}
 {
     identifier()
+}
+
+void RealType(): {}
+{
+    <RESERVED_REAL>
+}
+
+void RealValue(): {}
+{
+    NumericRealValue() | SpecialRealValue()
+}
+
+void NumericRealValue(): {}
+{
+    <REAL> | SequenceValue()
+}
+
+void SpecialRealValue(): {}
+{
+    <RESERVED_MINUS_INFINITY> | <RESERVED_PLUS_INFINITY>
+}
+
+void BitStringType(): {}
+{
+    <RESERVED_BIT> <RESERVED_STRING> ["{" NamedBitList() "}"]
+}
+
+void NamedBitList(): {}
+{
+    NamedBit() ("," NamedBit())*
+}
+
+void NamedBit(): {}
+{
+    identifier() "(" (Number() | DefinedValue()) ")"
+}
+
+void BitStringValue(): {}
+{
+    <BIT_STRING>
+    | <HEX_STRING>
+    | ("{" IdentifierList() "}")
+    | ("{" "}")
+    | (<RESERVED_CONTAINING> Value())
+}
+
+void IdentifierList(): {}
+{
+    identifier() ( "," identifier() )*
+}
+
+void OctetStringType(): {}
+{
+    <RESERVED_OCTET> <RESERVED_STRING>
+}
+
+void OctetStringValue(): {}
+{
+    <BIT_STRING>
+    | <HEX_STRING>
+    | (<RESERVED_CONTAINING> Value())
+}
+
+void NullType(): {}
+{
+    <RESERVED_NULL>
+}
+
+void NullValue(): {}
+{
+    <RESERVED_NULL>
+}
+
+void SequenceType(): {}
+{
+    <RESERVED_SEQUENCE> "{" [(ExtensionAndException() OptionalExtensionMarker()) | ComponentTypeLists()] "}"
+}
+
+void ExtensionAndException(): {}
+{
+    "..." ExceptionSpec()
+}
+
+void OptionalExtensionMarker(): {}
+{
+    ["," "..." ]
+}
+
+void ComponentTypeLists(): {}
+{
+   ( ComponentTypeList()
+            [ "," ExtensionAndException() ExtensionAdditions()
+                                (OptionalExtensionMarker() | (ExtensionEndMarker() "," ComponentTypeList() ) )
+            ] )
+   | ExtensionAndException() ExtensionAdditions() (OptionalExtensionMarker() | (ExtensionEndMarker() "," ComponentTypeList() ))
+}
+
+void ExtensionEndMarker(): {}
+{
+    "," "..."
+}
+
+void ExtensionAdditions(): {}
+{
+    ["," ExtensionAdditionsList()]
+}
+
+void ExtensionAdditionsList(): {}
+{
+    ExtensionAddition() ( "," ExtensionAddition() )*
+}
+
+void ExtensionAddition(): {}
+{
+    ComponentType() | ExtensionAdditionGroup()
+}
+
+void ExtensionAdditionGroup(): {}
+{
+    "[[" VersionNumber() ComponentTypeList() "]]"
+}
+
+void VersionNumber(): {}
+{
+    [Number() ":"]
+}
+
+void ComponentTypeList(): {}
+{
+    ComponentType() ( "," ComponentType() )*
+}
+
+void ComponentType(): {}
+{
+    (NamedType() [ <RESERVED_OPTIONAL> | (<RESERVED_DEFAULT> Value()) ])
+    | (<RESERVED_COMPONENTS> <RESERVED_OF> Type())
+}
+
+void SequenceValue(): {}
+{
+    "{" [ComponentValueList()] "}"
+}
+
+void ComponentValueList(): {}
+{
+    NamedValue() ( "," NamedValue() )*
+}
+
+void SequenceOfType(): {}
+{
+    <RESERVED_SEQUENCE> <RESERVED_OF> ( Type() | NamedType() )
+}
+
+void SequenceOfValue(): {}
+{
+    "{" [ ValueList() | NamedValueList() ] "}"
+}
+
+void ValueList(): {}
+{
+    Value() ( "," Value() )*
+}
+
+void NamedValueList(): {}
+{
+    NamedValue() ( "," NamedValue() )*
+}
+
+void SetType(): {}
+{
+    <RESERVED_SET> "{" [ComponentTypeLists() | (ExtensionAndException() OptionalExtensionMarker() )] "}"
+}
+
+void SetValue(): {}
+{
+    "{" [ComponentValueList()] "}"
+}
+
+void SetOfType(): {}
+{
+    <RESERVED_SET> <RESERVED_OF> ( Type() | NamedType() )
+}
+
+void SetOfValue(): {}
+{
+    "{" [ ValueList() | NamedValueList() ] "}"
+}
+
+void ChoiceType(): {}
+{
+    <RESERVED_CHOICE> "{" AlternativeTypeLists() "}"
+}
+
+void AlternativeTypeLists(): {}
+{
+    AlternativeTypeList() [ "," ExtensionAndException() ExtensionAdditionAlternatives() OptionalExtensionMarker() ]
+}
+
+void ExtensionAdditionAlternatives(): {}
+{
+    [ "," ExtensionAdditionAlternativesList() ]
+}
+
+void ExtensionAdditionAlternativesList(): {}
+{
+    ExtensionAdditionAlternative() ( "," ExtensionAdditionAlternative() )*
+}
+
+void ExtensionAdditionAlternative(): {}
+{
+    NamedType() | ExtensionAdditionAlternativesGroup()
+}
+
+void ExtensionAdditionAlternativesGroup(): {}
+{
+    "[[" VersionNumber() AlternativeTypeList() "]]"
+}
+
+void AlternativeTypeList(): {}
+{
+    NamedType() ( "," NamedType() )*
+}
+
+void ChoiceValue(): {}
+{
+    identifier() ":" Value()
+}
+
+void SelectionType(): {}
+{
+    identifier() "<" Type()
+}
+
+void TaggedType(): {}
+{
+    Tag() [ <RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> ] Type()
+}
+
+void Tag(): {}
+{
+    "[" Class() ClassNumber() "]"
+}
+
+void ClassNumber(): {}
+{
+    Number() | DefinedValue()
+}
+
+void Class(): {}
+{
+    [<RESERVED_UNIVERSAL> | <RESERVED_APPLICATION> | <RESERVED_PRIVATE> ]
+}
+
+void EmbeddedPDVType(): {}
+{
+    <RESERVED_EMBEDDED> <RESERVED_PDV>
+}
+
+void EmbeddedPDVValue(): {}
+{
+    SequenceValue()
+}
+
+void ExternalType(): {}
+{
+    <RESERVED_EXTERNAL>
+}
+
+void ExternalValue(): {}
+{
+    SequenceValue()
+}
+
+void ObjectIdentifierType(): {}
+{
+    <RESERVED_OBJECT> <RESERVED_IDENTIFIER>
+}
+
+void ObjectIdentifierValue(): {}
+{
+    "{" (ObjIdComponentsList() | ( DefinedValue() ObjIdComponentsList() ) ) "}"
+}
+
+void RelativeOIDType(): {}
+{
+    <RESERVED_RELATIVE_OID>
+}
+
+void RelativeOIDValue(): {}
+{
+    "{" RelativeOIDComponentsList() "}"
+}
+
+void RelativeOIDComponentsList(): {}
+{
+    RelativeOIDComponents() ( RelativeOIDComponents() )*
+}
+
+void RelativeOIDComponents(): {}
+{
+    NumberForm() | NameAndNumberForm() | DefinedValue()
+}
+
+void CharacterStringType(): {}
+{
+    RestrictedCharacterStringType() | UnrestrictedCharacterStringType()
+}
+
+void RestrictedCharacterStringType(): {}
+{
+    <RESERVED_BMP_STRING>
+    | <RESERVED_GENERAL_STRING>
+    | <RESERVED_GRAPHIC_STRING>
+    | <RESERVED_IA5_STRING>
+    | <RESERVED_ISO646_STRING>
+    | <RESERVED_NUMERIC_STRING>
+    | <RESERVED_PRINTABLE_STRING>
+    | <RESERVED_TELETEX_STRING>
+    | <RESERVED_T61_STRING>
+    | <RESERVED_UNIVERSAL_STRING>
+    | <RESERVED_UTF8_STRING>
+    | <RESERVED_VIDEOTEX_STRING>
+    | <RESERVED_VISIBLE_STRING>
+}
+
+void RestrictedCharacterStringValue(): {}
+{
+    <STRING> | CharacterStringList() | Quadruple() | Tuple()
+}
+
+void CharacterStringList(): {}
+{
+    "{" CharSyms() "}"
+}
+
+void CharSyms(): {}
+{
+    CharsDefn() ( "," CharsDefn() )*
+}
+
+void CharsDefn(): {}
+{
+    <STRING> | Quadruple() | Tuple() | DefinedValue()
+}
+
+void Quadruple(): {}
+{
+    "{" Group() "," Plane() "," Row() "," Cell() "}"
+}
+
+void Group(): {}
+{
+    Number()
+}
+
+void Plane(): {}
+{
+    Number()
+}
+
+void Row(): {}
+{
+    Number()
+}
+
+void Cell(): {}
+{
+    Number()
+}
+
+void Tuple(): {}
+{
+    "{" TableColumn() "," TableRow() "}"
+}
+
+void TableColumn(): {}
+{
+    Number()
+}
+
+void TableRow(): {}
+{
+    Number()
+}
+
+void UnrestrictedCharacterStringType(): {}
+{
+    <RESERVED_CHARACTER> <RESERVED_STRING>
+}
+
+void CharacterStringValue(): {}
+{
+    RestrictedCharacterStringValue() | UnrestrictedCharacterStringValue()
+}
+
+void UnrestrictedCharacterStringValue(): {}
+{
+    SequenceValue()
+}
+
+void UsefulType(): {}
+{
+    TypeReference()
+}
+
+void TypeWithConstraint(): {}
+{
+    (<RESERVED_SET> (Constraint() | SizeConstraint() ) <RESERVED_OF> (Type() | NamedType()))
+    | (<RESERVED_SEQUENCE> (Constraint() | SizeConstraint() ) <RESERVED_OF> (Type() | NamedType()))
+}
+
+void Constraint(): {}
+{
+    "(" ConstraintSpec() ExceptionSpec() ")"
+}
+
+void ConstraintSpec(): {}
+{
+    SubtypeConstraint() /*| GeneralConstraint()*/
+}
+
+void ExceptionSpec() : {}
+{
+    ["!" ExceptionIdentification()]
+}
+
+void ExceptionIdentification(): {}
+{
+    SignedNumber() | DefinedValue() | (Type() ":" Value())
+}
+
+void SubtypeConstraint(): {}
+{
+    ElementSetSpecs()
+}
+
+void ElementSetSpecs(): {}
+{
+    ElementSetSpec() ["," "..." ["," AdditionalElementSetSpec()]]
+}
+
+void AdditionalElementSetSpec(): {}
+{
+    ElementSetSpec()
+}
+
+void ElementSetSpec(): {}
+{
+    Unions() | (<RESERVED_ALL> Exclusions())
+}
+
+void Unions(): {}
+{
+   ([ UnionMark() ] Intersections())+
+}
+
+
+void Intersections(): {}
+{
+    ([ IntersectionMark() ] IntersectionElements())+
+}
+
+void IntersectionElements(): {}
+{
+    Elements() | ( Elems() Exclusions())
+}
+
+void Elems(): {}
+{
+    Elements()
+}
+
+void Exclusions(): {}
+{
+    <RESERVED_EXCEPT> Elements()
+}
+
+void UnionMark(): {}
+{
+    "|" | <RESERVED_UNION>
+}
+
+void IntersectionMark(): {}
+{
+    "^" | <RESERVED_INTERSECTION>
+}
+
+void Elements(): {}
+{
+    SubtypeElements()
+    /*| ObjectSetElements()*/
+    | ( "(" ElementSetSpec() ")" )
+}
+
+void SubtypeElements(): {}
+{
+    Value()
+    | ContainedSubtype()
+    | ValueRange()
+    | PermittedAlphabet()
+    | SizeConstraint()
+    | TypeConstraint()
+    | InnerTypeConstraints()
+    | PatternConstraint()
+}
+
+void ContainedSubtype(): {}
+{
+    [<RESERVED_INCLUDES>] Type()
+}
+
+void ValueRange(): {}
+{
+    LowerEndpoint() ".." UpperEndpoint()
+}
+
+void LowerEndpoint(): {}
+{
+    LowerEndValue() ["<"]
+}
+
+void UpperEndpoint(): {}
+{
+    ["<"] UpperEndValue()
+}
+
+void LowerEndValue(): {}
+{
+    <RESERVED_MIN> | Value()
+}
+
+void UpperEndValue(): {}
+{
+    <RESERVED_MAX> | Value()
+}
+
+void SizeConstraint(): {}
+{
+    <RESERVED_SIZE> Constraint()
+}
+
+void PermittedAlphabet(): {}
+{
+    <RESERVED_FROM> Constraint()
+}
+
+void TypeConstraint(): {}
+{
+    Type()
+}
+
+void InnerTypeConstraints(): {}
+{
+    <RESERVED_WITH> ( (<RESERVED_COMPONENT> SingleTypeConstraint() ) | (<RESERVED_COMPONENTS> MultipleTypeConstraint() ) )
+}
+
+void SingleTypeConstraint(): {}
+{
+    Constraint()
+}
+
+void MultipleTypeConstraint(): {}
+{
+    FullSpecification() | PartialSpecification()
+}
+
+void FullSpecification(): {}
+{
+    "{" TypeConstraints() "}"
+}
+
+void PartialSpecification(): {}
+{
+    "{" "..." "," TypeConstraints() "}"
+}
+
+void TypeConstraints(): {}
+{
+    NamedConstraint() ( "," NamedConstraint() )*
+}
+
+void NamedConstraint(): {}
+{
+    identifier() ComponentConstraint()
+}
+
+void ComponentConstraint(): {}
+{
+    ValueConstraint() PresenceConstraint()
+}
+
+void ValueConstraint(): {}
+{
+    [Constraint()]
+}
+
+void PresenceConstraint(): {}
+{
+    [<RESERVED_PRESENT> | <RESERVED_ABSENT> | <RESERVED_OPTIONAL>]
+}
+
+void PatternConstraint(): {}
+{
+    <RESERVED_PATTERN> Value()
+}
+
+void TypeReference(): {}
+{
+    <UPPERCASE_START>
+}
+
+void identifier(): {}
+{
+    <LOWERCASE_START>
+}
+
+void ValueReference(): {}
+{
+    identifier()
+}
+
+void ModuleReference(): {}
+{
+    <UPPERCASE_START>
+}
+
+void ObjectClassReference(): {}
+{
+    <UPPERCASE>
+}
+
+void ObjectReference(): {}
+{
+    identifier()
+}
+
+void TypeFieldReference(): {}
+{
+    <TYPE_FIELD_REFERENCE>
+}
+
+void ValueFieldReference(): {}
+{
+    <VALUE_FIELD_REFERENCE>
+}
+
+void ValueSetFieldReference(): {}
+{
+    <TYPE_FIELD_REFERENCE>
+}
+
+void ObjectFieldReference(): {}
+{
+    <VALUE_FIELD_REFERENCE>
+}
+
+void ParametrizedAssignment(): {}
+{
+    ParametrizedTypeAssignment()
+    | ParametrizedTypeAssignment()
+    | ParametrizedValueAssignment()
+    | ParametrizedValueSetTypeAssignment()
+    /*| ParametrizedObjectClassAssignment()
+    | ParametrizedObjectAssignment()
+    | ParametrizedObjectSetAssignment()*/
+}
+
+void ParametrizedTypeAssignment(): {}
+{
+    TypeReference() ParameterList() "::=" Type()
+}
+
+void ParametrizedValueAssignment(): {}
+{
+    ValueReference() ParameterList() "::=" Value()
+}
+
+void ParametrizedValueSetTypeAssignment(): {}
+{
+    TypeReference() ParameterList() "::=" ValueSet()
+}
+
+/*
+void ParametrizedObjectClassAssignment(): {}
+{
+    ObjectClassReference() ParameterList() DefinedObjectClass() "::=" ObjectClass()
+}
+
+void ParametrizedObjectAssignment(): {}
+{
+    ObjectReference() ParameterList() DefinedObjectClass() "::=" Object()
+}
+
+void ParametrizedObjectSetAssignment(): {}
+{
+    ObjectSetReference() ParameterList() DefinedObjectClass() "::=" ObjectSet()
+}
+*/
+
+void ParameterList(): {}
+{
+    "{" Parameter() ("," Parameter())* "}"
+}
+
+void Parameter(): {}
+{
+    [ParamGovernor() ":"] DummyReference()
+}
+
+void ParamGovernor(): {}
+{
+    Governor() | DummyGovernor()
+}
+
+void Governor(): {}
+{
+    Type() /*| DefinedObjectClass()*/
+}
+
+void DummyGovernor(): {}
+{
+    DummyReference()
+}
+
+void DummyReference(): {}
+{
+    Reference()
+}
+
+void ParametrizedType(): {}
+{
+    SimpleDefinedType() ActualParameterList()
+}
+
+void SimpleDefinedType(): {}
+{
+    ExternalTypeReference() | TypeReference()
+}
+
+void ParametrizedValue(): {}
+{
+    SimpleDefinedValue() ActualParameterList()
+}
+
+void SimpleDefinedValue(): {}
+{
+    ExternalValueReference() | ValueReference()
+}
+
+void ParametrizedValueSetType(): {}
+{
+    SimpleDefinedType() ActualParameterList()
+}
+
+/*
+void ParametrizedObjectClass(): {}
+{
+    DefinedObjectClass() ActualParameterList()
+}
+
+void ParametrizedObjectSet(): {}
+{
+    DefinedObjectSet() ActualParameterList()
+}
+
+void ParametrizedObject(): {}
+{
+    DefinedObject() ActualParameterList()
+}
+*/
+void ActualParameterList(): {}
+{
+    "{" ActualParameter() ("," ActualParameter() )* "}"
+}
+
+void ActualParameter(): {}
+{
+    Type()
+    | Value()
+    | ValueSet()
+    /*| DefinedObjectClass()
+    | Object()
+    | ObjectSet()*/
 }
