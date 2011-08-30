@@ -26,15 +26,43 @@ NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(ASN1SchemaCompiler)
-package org.lastrix.asn1s.schema.parser;
+//package org.lastrix.asn1s.schema.parser;
 
 import java.io.*;
 import java.util.*;
 
 public class ASN1SchemaCompiler {
 
+	    public static void main(String args[]) throws ParseException
+    	{
+    		boolean showUsage = true;
+
+    		ASN1SchemaCompiler parser;
+    		try
+    		{
+    			int i;
+    			for(i = 0; i < args.length; i++)
+                {
+
+    				parser = new ASN1SchemaCompiler(new FileInputStream(args[i]));
+    				parser.Parse();
+    				System.out.println("ASN.1 file parsed successfully.");
+
+
+    				SimpleNode root = (SimpleNode)jjtree.rootNode();
+    				root.dump("\t");
+    			}
+    		}
+    		catch(Exception e)
+    		{
+    			e.printStackTrace();
+    		}
+    	}
+
+
     static void jjtreeOpenNodeScope(Node n)
     {
+        ((SimpleNode)n).first_token = getToken(1);
     }
 
     static void jjtreeCloseNodeScope(Node n)
@@ -79,23 +107,13 @@ SPECIAL_TOKEN :
 
 TOKEN:
 {
-    <UPPERCASE_START: ["A"-"Z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
-    | <LOWERCASE_START: ["a"-"z"] (("-"["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
-    | <UPPERCASE: ["A"-"Z"] (("-"["A"-"Z","0"-"9"])|["A"-"Z","0"-"9"])* >
-    | <LOWERCASE: ["a"-"z"] (("-"["a"-"z","0"-"9"])|["a"-"z","0"-"9"])* >
-    | <TYPE_FIELD_REFERENCE: "&" <UPPERCASE_START> >
-    | <VALUE_FIELD_REFERENCE: "&" <LOWERCASE_START> >
-}
-
-TOKEN:
-{
     <TOKEN_DOT : ".">
     | <TOKEN_ASSIGNMENT : "::=">
-    | <TOKEN_MINUS : "-" >
+    | <TOKEN_MINUS : "-">
     | <TOKEN_REF : "@" >
     | <TOKEN_STAR : "*" >
     | <TOKEN_RANGE : ".." >
-    | <TOKEN_ELLIPSIS : "..." >
+    | <TOKEN_ELLIPSIS : "...">
     | <TOKEN_LESS : "<">
     | <TOKEN_MORE : ">">
     | <TOKEN_COMMA : ",">
@@ -200,27 +218,36 @@ TOKEN:
 
 TOKEN:
 {
-    <NUMBER : "0" | ["1"-"9"](["0"-"9"])*>
+    <EXPONENT: "e" | "E">
 }
 
 TOKEN:
 {
-    <SIGNED_NUMBER : (["-"] <NUMBER>) >
+    <ZERO: "0">
 }
 
 TOKEN:
 {
-    <REAL : (<SIGNED_NUMBER> "." ("0")* <SIGNED_NUMBER> ("e" | "E") <SIGNED_NUMBER>) | (<SIGNED_NUMBER> ("e" | "E") <SIGNED_NUMBER>) >
+    <NUMBER : ["1"-"9"](["0"-"9"])*>
 }
 
 TOKEN:
 {
-    <BIT_STRING : "'" (["0"-"1"])+ "'B">
+    <REAL_EXPONENT: <EXPONENT> (( (["-","+"])? ["1"-"9"](["0"-"9"])*) | <ZERO>) >
+}
+TOKEN:
+{
+    <REAL: (( (["-"])? ["1"-"9"](["0"-"9"])*)|<ZERO>) ( "." (["0"-"9"])+)? (<REAL_EXPONENT>)? >
+}
+
+TOKEN:
+{
+    <BIT_STRING : <TOKEN_APOSTROPHE> (["0"-"1"])+ "'B">
 }
 
 TOKEN :
 {
-    <HEX_STRING: "'" (["0"-"9","A"-"F","a"-"f"])* "'H">
+    <HEX_STRING: <TOKEN_APOSTROPHE> (["0"-"9","A"-"F","a"-"f"])* "'H">
 }
 
 TOKEN :
@@ -228,18 +255,24 @@ TOKEN :
     <STRING: "\"" ( ~["\""] )* "\"" >
 }
 
-TOKEN:
-{
-    <BOOLEAN: <RESERVED_TRUE> | <RESERVED_FALSE> >
-}
-
 TOKEN :
 {
  <OBJECT_IDENTIFIER: <RESERVED_OBJECT> ([" ","\n","\t","\r"])? <RESERVED_IDENTIFIER>>
 }
 
+TOKEN:
+{
+    <UPPERCASE_START: ["A"-"Z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <LOWERCASE_START: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","A"-"Z","0"-"9"])|["a"-"z","A"-"Z","0"-"9"])* >
+    | <UPPERCASE: ["A"-"Z"] ((<TOKEN_MINUS>["A"-"Z","0"-"9"])|["A"-"Z","0"-"9"])* >
+    | <LOWERCASE: ["a"-"z"] ((<TOKEN_MINUS>["a"-"z","0"-"9"])|["a"-"z","0"-"9"])* >
+    | <TYPE_FIELD_REFERENCE: "&" <UPPERCASE_START> >
+    | <VALUE_FIELD_REFERENCE: "&" <LOWERCASE_START> >
+}
 
+/**************************************/
 /**********  ENTRY POINT  *************/
+/**************************************/
 
 void Parse() : {}
 {
@@ -251,11 +284,23 @@ void ModuleDefinition() : {}
 {
     ModuleIdentifier()
     <RESERVED_DEFINITIONS> TagDefault() ExtensionDefault()
-        "::="
+        <TOKEN_ASSIGNMENT>
     <RESERVED_BEGIN> ModuleBody() <RESERVED_END>
 }
 
+void ExternalValueReference(): {}
+{
+    ModuleReference() "." ValueReference()
+}
+
+void SignedNumber(): {}
+{
+    [<TOKEN_MINUS>] Number()
+}
+
+/*************************************************/
 /**********  MODULE IDENTIFIER PART  *************/
+/*************************************************/
 
 
 void ModuleIdentifier(): {}
@@ -265,7 +310,7 @@ void ModuleIdentifier(): {}
 
 void DefiniteIdentifier(): {}
 {
-     ["{" ObjIdComponentsList() "}" ]
+     [<TOKEN_BRACE_LEFT> ObjIdComponentsList() <TOKEN_BRACE_RIGHT> ]
 }
 
 void ObjIdComponentsList() : {}
@@ -280,17 +325,17 @@ void ObjIdComponent() : {}
 
 void NumberForm(): {}
 {
-    <NUMBER>
+    Number()
 }
 
 void Number(): {}
 {
-    <NUMBER>
+    <NUMBER> | <ZERO>
 }
 
 void NameAndNumberForm(): {}
 {
-    identifier() [ "(" (NumberForm() | DefinedValue()) ")"]
+    identifier() [ <TOKEN_PAREN_LEFT> (NumberForm() | DefinedValue()) <TOKEN_PAREN_RIGHT>]
 }
 
 void TagDefault() : {}
@@ -307,7 +352,7 @@ void ExtensionDefault(): {}
 
 void ModuleBody(): {}
 {
-    /*[Exports() Imports() AssignmentList()]*/
+    [[Exports()] [Imports()] AssignmentList()]
 }
 
 
@@ -315,7 +360,7 @@ void ModuleBody(): {}
 
 void Exports(): {}
 {
-    [<RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolsExported() ) ";" ]
+    <RESERVED_EXPORTS> ( <RESERVED_ALL> | SymbolsExported() ) <TOKEN_SEMICOLON>
 }
 
 void SymbolsExported(): {}
@@ -325,7 +370,7 @@ void SymbolsExported(): {}
 
 void Imports(): {}
 {
-    <RESERVED_IMPORTS> SymbolsImported() ";"
+    <RESERVED_IMPORTS> SymbolsImported() <TOKEN_SEMICOLON>
 }
 
 /**********  IMPORTS PART  *************/
@@ -347,17 +392,17 @@ void SymbolsFromModule(): {}
 
 void GlobalModuleReference(): {}
 {
-    ModuleReference() AssignedIdentifier()
+    ModuleReference() [LOOKAHEAD(5) AssignedIdentifier()]
 }
 
 void AssignedIdentifier(): {}
 {
-    [LOOKAHEAD(2) ObjectIdentifierValue() | LOOKAHEAD(2) DefinedValue()]
+    ObjectIdentifierValue() | DefinedValue()
 }
 
 void SymbolList(): {}
 {
-    Symbol() ( "," Symbol())*
+    Symbol() ( <TOKEN_COMMA> Symbol())*
 }
 
 void Symbol() : {}
@@ -367,10 +412,10 @@ void Symbol() : {}
 
 void Reference(): {}
 {
-    TypeReference()
-    | ValueReference()
-    | ObjectClassReference()
-    | ObjectReference()
+    LOOKAHEAD(2) TypeReference()
+    | LOOKAHEAD(2) ValueReference()
+    | LOOKAHEAD(2) ObjectClassReference()
+    | LOOKAHEAD(2) ObjectReference()
     /*| ObjectSetReference()*/
 }
 
@@ -378,34 +423,27 @@ void Reference(): {}
 
 void AssignmentList() : {}
 {
-  Assignment() [";"] ( Assignment() [";"] )*
+  Assignment() [<TOKEN_SEMICOLON>] ( Assignment() [<TOKEN_SEMICOLON>] )*
 }
 
 void Assignment() #void: {}
 {
    LOOKAHEAD(2)
    TypeAssignment()
-   | ValueAssignment()
-   | ValueSetTypeAssignment()
+   | LOOKAHEAD(2) ValueAssignment()
+   | LOOKAHEAD(2) ValueSetTypeAssignment()
    /*| ObjectClassAssignment()
-   | ObjectAssignment()
-   | ObjectSetAssignment()*/
-   | ParametrizedAssignment()
+   | LOOKAHEAD(2) ObjectAssignment()
+   | LOOKAHEAD(2) ObjectSetAssignment()*/
+   | LOOKAHEAD(2) ParametrizedAssignment()
 }
 
 void DefinedType(): {}
 {
-    ExternalTypeReference()
-    | TypeReference()
-    | ParametrizedType()
-    | ParametrizedValueSetType()
-}
-
-void DefinedValue(): {}
-{
-    ExternalValueReference()
-    | ValueReference()
-    | ParametrizedValue()
+    LOOKAHEAD(2) ExternalTypeReference()
+    | LOOKAHEAD(2) TypeReference()
+    | LOOKAHEAD(2) ParametrizedType()
+    | LOOKAHEAD(2) ParametrizedValueSetType()
 }
 
 void ExternalTypeReference():{}
@@ -413,14 +451,9 @@ void ExternalTypeReference():{}
     ModuleReference() "." TypeReference()
 }
 
-void ExternalValueReference(): {}
-{
-    ModuleReference() "." ValueReference()
-}
-
 void AbsoluteReference(): {}
 {
-    "@" ModuleIdentifier() "." ItemSpec()
+    <TOKEN_REF> ModuleIdentifier() "." ItemSpec()
 }
 
 void ItemSpec(): {}
@@ -432,32 +465,32 @@ void ComponentId(): {}
 {
     identifier()
     | Number()
-    | "*"
+    | <TOKEN_STAR>
 }
 
 void TypeAssignment(): {}
 {
-    TypeReference() "::=" Type()
+    TypeReference() <TOKEN_ASSIGNMENT> Type()
 }
 
 void ValueAssignment(): {}
 {
-    ValueReference() Type() "::=" Value()
+    ValueReference() Type() <TOKEN_ASSIGNMENT> Value()
 }
 
 void ValueSetTypeAssignment(): {}
 {
-    TypeReference() Type() "::=" ValueSet()
+    TypeReference() Type() <TOKEN_ASSIGNMENT> ValueSet()
 }
 
 void ValueSet(): {}
 {
-    "{" ElementSetSpecs() "}"
+    <TOKEN_BRACE_LEFT> ElementSetSpecs() <TOKEN_BRACE_RIGHT>
 }
 
 void Type(): {}
 {
-    LOOKAHEAD(4) TypeWithConstraint() | ( (LOOKAHEAD(2) BuiltinType() | DefinedType()) [Constraint()] )
+    LOOKAHEAD(4) TypeWithConstraint() | ( (LOOKAHEAD(2) BuiltinType() | LOOKAHEAD(2)DefinedType()) [LOOKAHEAD(2)Constraint()] )
 }
 
 void BuiltinType(): {}
@@ -470,17 +503,17 @@ void BuiltinType(): {}
     | EnumeratedType()
     | ExternalType()
     /*| InstanceOfType()*/
-    | IntegerType()
+    | LOOKAHEAD(3) IntegerType()
     | NullType()
     /*| ObjectClassFieldType()*/
     | ObjectIdentifierType()
     | OctetStringType()
     | RealType()
     | RelativeOIDType()
-    | SequenceType()
-    | SequenceOfType()
-    | SetType()
-    | SetOfType()
+    | LOOKAHEAD(3) SequenceType()
+    | LOOKAHEAD(3) SequenceOfType()
+    | LOOKAHEAD(3) SetType()
+    | LOOKAHEAD(3) SetOfType()
     | TaggedType()
 }
 
@@ -491,51 +524,11 @@ void NamedType(): {}
 
 void ReferencedType(): {}
 {
-    DefinedType()
+    LOOKAHEAD(2) DefinedType()
     | UsefulType()
     | SelectionType()
     /*| TypeFromObject()*/
     /*| ValueSetFromObjects()*/
-}
-
-void Value(): {}
-{
-    LOOKAHEAD(2) BuiltinValue()
-    | ReferencedValue()
-    /*| ObjectClassFieldValue()*/
-}
-
-void BuiltinValue(): {}
-{
-    BitStringValue()
-    | BooleanValue()
-    | CharacterStringValue()
-    | ChoiceValue()
-    | EmbeddedPDVValue()
-    | EnumeratedValue()
-    | ExternalValue()
-    /*| InstanceOfValue()*/
-    | IntegerValue()
-    | NullValue()
-    /*| ObjectClassFieldValue()*/
-    | ObjectIdentifierValue()
-    | OctetStringValue()
-    | RealValue()
-    | RelativeOIDValue()
-    | SequenceValue()
-    | SequenceOfValue()
-    | SetValue()
-    | SetOfValue()
-}
-
-void ReferencedValue(): {}
-{
-    DefinedValue() /*| ValueFromObject()*/
-}
-
-void NamedValue(): {}
-{
-    identifier() Value()
 }
 
 void BooleanType(): {}
@@ -543,44 +536,29 @@ void BooleanType(): {}
     <RESERVED_BOOLEAN>
 }
 
-void BooleanValue(): {}
-{
-    <RESERVED_TRUE> | <RESERVED_FALSE>
-}
-
 void IntegerType(): {}
 {
-    <RESERVED_INTEGER> [ "{" NamedNumberList() "}" ]
+    <RESERVED_INTEGER> [ LOOKAHEAD(2) <TOKEN_BRACE_LEFT> NamedNumberList() <TOKEN_BRACE_RIGHT> ]
 }
 
 void NamedNumberList(): {}
 {
-    NamedNumber()  ("," NamedNumber())*
+    NamedNumber()  (<TOKEN_COMMA> NamedNumber())*
 }
 
 void NamedNumber(): {}
 {
-    identifier() (DefinedValue() | SignedNumber() )
-}
-
-void SignedNumber(): {}
-{
-    <SIGNED_NUMBER>
-}
-
-void IntegerValue(): {}
-{
-    SignedNumber() | identifier()
+    identifier() <TOKEN_PAREN_LEFT> ( SignedNumber() | DefinedValue() ) <TOKEN_PAREN_RIGHT>
 }
 
 void EnumeratedType(): {}
 {
-    <RESERVED_ENUMERATED> "{" Enumerations() "}"
+    <RESERVED_ENUMERATED> <TOKEN_BRACE_LEFT> Enumerations() <TOKEN_BRACE_RIGHT>
 }
 
 void Enumerations(): {}
 {
-    RootEnumeration() [ "," "..." ExceptionSpec() [ "," AdditionalEnumeration() ] ]
+    RootEnumeration() [ <TOKEN_COMMA> <TOKEN_ELLIPSIS> ExceptionSpec() [ <TOKEN_COMMA> AdditionalEnumeration() ] ]
 }
 
 void RootEnumeration(): {}
@@ -595,17 +573,12 @@ void AdditionalEnumeration(): {}
 
 void Enumeration(): {}
 {
-    EnumerationItem() ("," EnumerationItem() )*
+    EnumerationItem() (LOOKAHEAD(2) <TOKEN_COMMA> EnumerationItem() )*
 }
 
 void EnumerationItem(): {}
 {
-    identifier() | NamedNumber()
-}
-
-void EnumeratedValue(): {}
-{
-    identifier()
+    LOOKAHEAD(2) identifier() | NamedNumber()
 }
 
 void RealType(): {}
@@ -613,48 +586,19 @@ void RealType(): {}
     <RESERVED_REAL>
 }
 
-void RealValue(): {}
-{
-    NumericRealValue() | SpecialRealValue()
-}
-
-void NumericRealValue(): {}
-{
-    <REAL> | SequenceValue()
-}
-
-void SpecialRealValue(): {}
-{
-    <RESERVED_MINUS_INFINITY> | <RESERVED_PLUS_INFINITY>
-}
-
 void BitStringType(): {}
 {
-    <RESERVED_BIT> <RESERVED_STRING> ["{" NamedBitList() "}"]
+    <RESERVED_BIT> <RESERVED_STRING> [LOOKAHEAD(2) <TOKEN_BRACE_LEFT> NamedBitList() <TOKEN_BRACE_RIGHT>]
 }
 
 void NamedBitList(): {}
 {
-    NamedBit() ("," NamedBit())*
+    NamedBit() (<TOKEN_COMMA> NamedBit())*
 }
 
 void NamedBit(): {}
 {
-    identifier() "(" (Number() | DefinedValue()) ")"
-}
-
-void BitStringValue(): {}
-{
-    <BIT_STRING>
-    | <HEX_STRING>
-    | ("{" IdentifierList() "}")
-    | ("{" "}")
-    | (<RESERVED_CONTAINING> Value())
-}
-
-void IdentifierList(): {}
-{
-    identifier() ( "," identifier() )*
+    identifier() <TOKEN_PAREN_LEFT> (Number() | DefinedValue()) <TOKEN_PAREN_RIGHT>
 }
 
 void OctetStringType(): {}
@@ -662,60 +606,48 @@ void OctetStringType(): {}
     <RESERVED_OCTET> <RESERVED_STRING>
 }
 
-void OctetStringValue(): {}
-{
-    <BIT_STRING>
-    | <HEX_STRING>
-    | (<RESERVED_CONTAINING> Value())
-}
-
 void NullType(): {}
-{
-    <RESERVED_NULL>
-}
-
-void NullValue(): {}
 {
     <RESERVED_NULL>
 }
 
 void SequenceType(): {}
 {
-    <RESERVED_SEQUENCE> "{" [(ExtensionAndException() OptionalExtensionMarker()) | ComponentTypeLists()] "}"
+    <RESERVED_SEQUENCE> <TOKEN_BRACE_LEFT> [LOOKAHEAD(3) (ExtensionAndException() OptionalExtensionMarker()) | ComponentTypeLists()] <TOKEN_BRACE_RIGHT>
 }
 
 void ExtensionAndException(): {}
 {
-    "..." ExceptionSpec()
+    <TOKEN_ELLIPSIS> ExceptionSpec()
 }
 
 void OptionalExtensionMarker(): {}
 {
-    ["," "..." ]
+    [<TOKEN_COMMA> <TOKEN_ELLIPSIS> ]
 }
 
 void ComponentTypeLists(): {}
 {
    ( ComponentTypeList()
-            [ "," ExtensionAndException() ExtensionAdditions()
-                                (OptionalExtensionMarker() | (ExtensionEndMarker() "," ComponentTypeList() ) )
+            [ <TOKEN_COMMA> ExtensionAndException() ExtensionAdditions()
+                                (LOOKAHEAD(3) OptionalExtensionMarker() | (ExtensionEndMarker() <TOKEN_COMMA> ComponentTypeList() ) )
             ] )
-   | ExtensionAndException() ExtensionAdditions() (OptionalExtensionMarker() | (ExtensionEndMarker() "," ComponentTypeList() ))
+   | ExtensionAndException() ExtensionAdditions() (LOOKAHEAD(3) OptionalExtensionMarker() | (ExtensionEndMarker() <TOKEN_COMMA> ComponentTypeList() ))
 }
 
 void ExtensionEndMarker(): {}
 {
-    "," "..."
+    <TOKEN_COMMA> <TOKEN_ELLIPSIS>
 }
 
 void ExtensionAdditions(): {}
 {
-    ["," ExtensionAdditionsList()]
+    [LOOKAHEAD(2) <TOKEN_COMMA> ExtensionAdditionsList()]
 }
 
 void ExtensionAdditionsList(): {}
 {
-    ExtensionAddition() ( "," ExtensionAddition() )*
+    ExtensionAddition() (LOOKAHEAD(2)  <TOKEN_COMMA> ExtensionAddition() )*
 }
 
 void ExtensionAddition(): {}
@@ -730,12 +662,12 @@ void ExtensionAdditionGroup(): {}
 
 void VersionNumber(): {}
 {
-    [Number() ":"]
+    [Number() <TOKEN_COLON>]
 }
 
 void ComponentTypeList(): {}
 {
-    ComponentType() ( "," ComponentType() )*
+    ComponentType() (LOOKAHEAD(2)  <TOKEN_COMMA> ComponentType() )*
 }
 
 void ComponentType(): {}
@@ -744,44 +676,14 @@ void ComponentType(): {}
     | (<RESERVED_COMPONENTS> <RESERVED_OF> Type())
 }
 
-void SequenceValue(): {}
-{
-    "{" [ComponentValueList()] "}"
-}
-
-void ComponentValueList(): {}
-{
-    NamedValue() ( "," NamedValue() )*
-}
-
 void SequenceOfType(): {}
 {
     <RESERVED_SEQUENCE> <RESERVED_OF> ( Type() | NamedType() )
 }
 
-void SequenceOfValue(): {}
-{
-    "{" [ ValueList() | NamedValueList() ] "}"
-}
-
-void ValueList(): {}
-{
-    Value() ( "," Value() )*
-}
-
-void NamedValueList(): {}
-{
-    NamedValue() ( "," NamedValue() )*
-}
-
 void SetType(): {}
 {
-    <RESERVED_SET> "{" [ComponentTypeLists() | (ExtensionAndException() OptionalExtensionMarker() )] "}"
-}
-
-void SetValue(): {}
-{
-    "{" [ComponentValueList()] "}"
+    <RESERVED_SET> <TOKEN_BRACE_LEFT> [LOOKAHEAD(3) ComponentTypeLists() | (ExtensionAndException() OptionalExtensionMarker() )] <TOKEN_BRACE_RIGHT>
 }
 
 void SetOfType(): {}
@@ -789,29 +691,24 @@ void SetOfType(): {}
     <RESERVED_SET> <RESERVED_OF> ( Type() | NamedType() )
 }
 
-void SetOfValue(): {}
-{
-    "{" [ ValueList() | NamedValueList() ] "}"
-}
-
 void ChoiceType(): {}
 {
-    <RESERVED_CHOICE> "{" AlternativeTypeLists() "}"
+    <RESERVED_CHOICE> <TOKEN_BRACE_LEFT> AlternativeTypeLists() <TOKEN_BRACE_RIGHT>
 }
 
 void AlternativeTypeLists(): {}
 {
-    AlternativeTypeList() [ "," ExtensionAndException() ExtensionAdditionAlternatives() OptionalExtensionMarker() ]
+    AlternativeTypeList() [ <TOKEN_COMMA> ExtensionAndException() ExtensionAdditionAlternatives() OptionalExtensionMarker() ]
 }
 
 void ExtensionAdditionAlternatives(): {}
 {
-    [ "," ExtensionAdditionAlternativesList() ]
+    [LOOKAHEAD(2)  <TOKEN_COMMA> ExtensionAdditionAlternativesList() ]
 }
 
 void ExtensionAdditionAlternativesList(): {}
 {
-    ExtensionAdditionAlternative() ( "," ExtensionAdditionAlternative() )*
+    ExtensionAdditionAlternative() (LOOKAHEAD(2)  <TOKEN_COMMA> ExtensionAdditionAlternative() )*
 }
 
 void ExtensionAdditionAlternative(): {}
@@ -826,27 +723,27 @@ void ExtensionAdditionAlternativesGroup(): {}
 
 void AlternativeTypeList(): {}
 {
-    NamedType() ( "," NamedType() )*
-}
-
-void ChoiceValue(): {}
-{
-    identifier() ":" Value()
+    NamedType() (LOOKAHEAD(2)  <TOKEN_COMMA> NamedType() )*
 }
 
 void SelectionType(): {}
 {
-    identifier() "<" Type()
+    identifier() <TOKEN_LESS> Type()
 }
 
 void TaggedType(): {}
 {
-    Tag() [ <RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> ] Type()
+    Tag() TaggingMethod() Type()
+}
+
+void TaggingMethod(): {}
+{
+    [ <RESERVED_EXPLICIT> | <RESERVED_IMPLICIT> ]
 }
 
 void Tag(): {}
 {
-    "[" Class() ClassNumber() "]"
+    <TOKEN_BRACKET_LEFT> [Class()] ClassNumber() <TOKEN_BRACKET_RIGHT>
 }
 
 void ClassNumber(): {}
@@ -856,7 +753,7 @@ void ClassNumber(): {}
 
 void Class(): {}
 {
-    [<RESERVED_UNIVERSAL> | <RESERVED_APPLICATION> | <RESERVED_PRIVATE> ]
+    <RESERVED_UNIVERSAL> | <RESERVED_APPLICATION> | <RESERVED_PRIVATE>
 }
 
 void EmbeddedPDVType(): {}
@@ -864,49 +761,9 @@ void EmbeddedPDVType(): {}
     <RESERVED_EMBEDDED> <RESERVED_PDV>
 }
 
-void EmbeddedPDVValue(): {}
-{
-    SequenceValue()
-}
-
 void ExternalType(): {}
 {
     <RESERVED_EXTERNAL>
-}
-
-void ExternalValue(): {}
-{
-    SequenceValue()
-}
-
-void ObjectIdentifierType(): {}
-{
-    <RESERVED_OBJECT> <RESERVED_IDENTIFIER>
-}
-
-void ObjectIdentifierValue(): {}
-{
-    "{" (ObjIdComponentsList() | ( DefinedValue() ObjIdComponentsList() ) ) "}"
-}
-
-void RelativeOIDType(): {}
-{
-    <RESERVED_RELATIVE_OID>
-}
-
-void RelativeOIDValue(): {}
-{
-    "{" RelativeOIDComponentsList() "}"
-}
-
-void RelativeOIDComponentsList(): {}
-{
-    RelativeOIDComponents() ( RelativeOIDComponents() )*
-}
-
-void RelativeOIDComponents(): {}
-{
-    NumberForm() | NameAndNumberForm() | DefinedValue()
 }
 
 void CharacterStringType(): {}
@@ -931,65 +788,6 @@ void RestrictedCharacterStringType(): {}
     | <RESERVED_VISIBLE_STRING>
 }
 
-void RestrictedCharacterStringValue(): {}
-{
-    <STRING> | CharacterStringList() | Quadruple() | Tuple()
-}
-
-void CharacterStringList(): {}
-{
-    "{" CharSyms() "}"
-}
-
-void CharSyms(): {}
-{
-    CharsDefn() ( "," CharsDefn() )*
-}
-
-void CharsDefn(): {}
-{
-    <STRING> | Quadruple() | Tuple() | DefinedValue()
-}
-
-void Quadruple(): {}
-{
-    "{" Group() "," Plane() "," Row() "," Cell() "}"
-}
-
-void Group(): {}
-{
-    Number()
-}
-
-void Plane(): {}
-{
-    Number()
-}
-
-void Row(): {}
-{
-    Number()
-}
-
-void Cell(): {}
-{
-    Number()
-}
-
-void Tuple(): {}
-{
-    "{" TableColumn() "," TableRow() "}"
-}
-
-void TableColumn(): {}
-{
-    Number()
-}
-
-void TableRow(): {}
-{
-    Number()
-}
 
 void UnrestrictedCharacterStringType(): {}
 {
@@ -998,7 +796,7 @@ void UnrestrictedCharacterStringType(): {}
 
 void CharacterStringValue(): {}
 {
-    RestrictedCharacterStringValue() | UnrestrictedCharacterStringValue()
+    LOOKAHEAD(3) RestrictedCharacterStringValue() | UnrestrictedCharacterStringValue()
 }
 
 void UnrestrictedCharacterStringValue(): {}
@@ -1019,7 +817,7 @@ void TypeWithConstraint(): {}
 
 void Constraint(): {}
 {
-    "(" ConstraintSpec() ExceptionSpec() ")"
+    <TOKEN_PAREN_LEFT> ConstraintSpec() ExceptionSpec() <TOKEN_PAREN_RIGHT>
 }
 
 void ConstraintSpec(): {}
@@ -1034,7 +832,7 @@ void ExceptionSpec() : {}
 
 void ExceptionIdentification(): {}
 {
-    SignedNumber() | DefinedValue() | (Type() ":" Value())
+    LOOKAHEAD(2) SignedNumber() | LOOKAHEAD(2) DefinedValue() | (Type() <TOKEN_COLON> Value())
 }
 
 void SubtypeConstraint(): {}
@@ -1044,7 +842,7 @@ void SubtypeConstraint(): {}
 
 void ElementSetSpecs(): {}
 {
-    ElementSetSpec() ["," "..." ["," AdditionalElementSetSpec()]]
+    ElementSetSpec() [<TOKEN_COMMA> <TOKEN_ELLIPSIS> [<TOKEN_COMMA> AdditionalElementSetSpec()]]
 }
 
 void AdditionalElementSetSpec(): {}
@@ -1065,17 +863,12 @@ void Unions(): {}
 
 void Intersections(): {}
 {
-    ([ IntersectionMark() ] IntersectionElements())+
+    (LOOKAHEAD(2) [ IntersectionMark() ] IntersectionElements())+
 }
 
 void IntersectionElements(): {}
 {
-    Elements() | ( Elems() Exclusions())
-}
-
-void Elems(): {}
-{
-    Elements()
+    LOOKAHEAD(3) Elements() | ( Elements() Exclusions())
 }
 
 void Exclusions(): {}
@@ -1085,7 +878,7 @@ void Exclusions(): {}
 
 void UnionMark(): {}
 {
-    "|" | <RESERVED_UNION>
+    <TOKEN_BAR> | <RESERVED_UNION>
 }
 
 void IntersectionMark(): {}
@@ -1097,19 +890,19 @@ void Elements(): {}
 {
     SubtypeElements()
     /*| ObjectSetElements()*/
-    | ( "(" ElementSetSpec() ")" )
+    | ( <TOKEN_PAREN_LEFT> ElementSetSpec() <TOKEN_PAREN_RIGHT> )
 }
 
 void SubtypeElements(): {}
 {
-    Value()
-    | ContainedSubtype()
-    | ValueRange()
-    | PermittedAlphabet()
-    | SizeConstraint()
-    | TypeConstraint()
-    | InnerTypeConstraints()
-    | PatternConstraint()
+    LOOKAHEAD(2) Value()
+    | LOOKAHEAD(2) ContainedSubtype()
+    | LOOKAHEAD(2) ValueRange()
+    | LOOKAHEAD(2) PermittedAlphabet()
+    | LOOKAHEAD(2) SizeConstraint()
+    | LOOKAHEAD(2) TypeConstraint()
+    | LOOKAHEAD(2) InnerTypeConstraints()
+    | LOOKAHEAD(2) PatternConstraint()
 }
 
 void ContainedSubtype(): {}
@@ -1119,17 +912,17 @@ void ContainedSubtype(): {}
 
 void ValueRange(): {}
 {
-    LowerEndpoint() ".." UpperEndpoint()
+    LowerEndpoint() <TOKEN_RANGE> UpperEndpoint()
 }
 
 void LowerEndpoint(): {}
 {
-    LowerEndValue() ["<"]
+    LowerEndValue() [<TOKEN_LESS>]
 }
 
 void UpperEndpoint(): {}
 {
-    ["<"] UpperEndValue()
+    [<TOKEN_LESS>] UpperEndValue()
 }
 
 void LowerEndValue(): {}
@@ -1169,22 +962,22 @@ void SingleTypeConstraint(): {}
 
 void MultipleTypeConstraint(): {}
 {
-    FullSpecification() | PartialSpecification()
+    LOOKAHEAD(2) FullSpecification() | PartialSpecification()
 }
 
 void FullSpecification(): {}
 {
-    "{" TypeConstraints() "}"
+    <TOKEN_BRACE_LEFT> TypeConstraints() <TOKEN_BRACE_RIGHT>
 }
 
 void PartialSpecification(): {}
 {
-    "{" "..." "," TypeConstraints() "}"
+    <TOKEN_BRACE_LEFT> <TOKEN_ELLIPSIS> <TOKEN_COMMA> TypeConstraints() <TOKEN_BRACE_RIGHT>
 }
 
 void TypeConstraints(): {}
 {
-    NamedConstraint() ( "," NamedConstraint() )*
+    NamedConstraint() ( <TOKEN_COMMA> NamedConstraint() )*
 }
 
 void NamedConstraint(): {}
@@ -1201,6 +994,128 @@ void ValueConstraint(): {}
 {
     [Constraint()]
 }
+
+
+void ParametrizedAssignment(): {}
+{
+    LOOKAHEAD(2) ParametrizedTypeAssignment()
+    | LOOKAHEAD(2) ParametrizedTypeAssignment()
+    | LOOKAHEAD(2) ParametrizedValueAssignment()
+    | LOOKAHEAD(2) ParametrizedValueSetTypeAssignment()
+    /*| LOOKAHEAD(2) ParametrizedObjectClassAssignment()
+    | LOOKAHEAD(2) ParametrizedObjectAssignment()
+    | LOOKAHEAD(2) ParametrizedObjectSetAssignment()*/
+}
+
+void ParametrizedTypeAssignment(): {}
+{
+    TypeReference() ParameterList() <TOKEN_ASSIGNMENT> Type()
+}
+
+void ParametrizedValueAssignment(): {}
+{
+    ValueReference() ParameterList() <TOKEN_ASSIGNMENT> Value()
+}
+
+void ParametrizedValueSetTypeAssignment(): {}
+{
+    TypeReference() ParameterList() <TOKEN_ASSIGNMENT> ValueSet()
+}
+
+/*
+void ParametrizedObjectClassAssignment(): {}
+{
+    ObjectClassReference() ParameterList() DefinedObjectClass() <TOKEN_ASSIGNMENT> ObjectClass()
+}
+
+void ParametrizedObjectAssignment(): {}
+{
+    ObjectReference() ParameterList() DefinedObjectClass() <TOKEN_ASSIGNMENT> Object()
+}
+
+void ParametrizedObjectSetAssignment(): {}
+{
+    ObjectSetReference() ParameterList() DefinedObjectClass() <TOKEN_ASSIGNMENT> ObjectSet()
+}
+*/
+
+void ParameterList(): {}
+{
+    <TOKEN_BRACE_LEFT> Parameter() (<TOKEN_COMMA> Parameter())* <TOKEN_BRACE_RIGHT>
+}
+
+void Parameter(): {}
+{
+    [LOOKAHEAD(2) ParamGovernor() <TOKEN_COLON>] DummyReference()
+}
+
+void ParamGovernor(): {}
+{
+    LOOKAHEAD(2) Governor() | DummyGovernor()
+}
+
+void Governor(): {}
+{
+    Type() /*| DefinedObjectClass()*/
+}
+
+void DummyGovernor(): {}
+{
+    DummyReference()
+}
+
+void DummyReference(): {}
+{
+    Reference()
+}
+
+void ParametrizedType(): {}
+{
+    SimpleDefinedType() ActualParameterList()
+}
+
+void SimpleDefinedType(): {}
+{
+    LOOKAHEAD(2) ExternalTypeReference() | LOOKAHEAD(2) TypeReference()
+}
+
+
+void ParametrizedValueSetType(): {}
+{
+    SimpleDefinedType() ActualParameterList()
+}
+
+/*
+void ParametrizedObjectClass(): {}
+{
+    DefinedObjectClass() ActualParameterList()
+}
+
+void ParametrizedObjectSet(): {}
+{
+    DefinedObjectSet() ActualParameterList()
+}
+
+void ParametrizedObject(): {}
+{
+    DefinedObject() ActualParameterList()
+}
+*/
+void ActualParameterList(): {}
+{
+    <TOKEN_BRACE_LEFT> ActualParameter() (<TOKEN_COMMA> ActualParameter() )* <TOKEN_BRACE_RIGHT>
+}
+
+void ActualParameter(): {}
+{
+    LOOKAHEAD(3) Type()
+    | LOOKAHEAD(3) Value()
+    | LOOKAHEAD(3) ValueSet()
+    /*| LOOKAHEAD(3) DefinedObjectClass()
+    | LOOKAHEAD(3) Object()
+    | LOOKAHEAD(3) ObjectSet()*/
+}
+
 
 void PresenceConstraint(): {}
 {
@@ -1262,87 +1177,184 @@ void ObjectFieldReference(): {}
     <VALUE_FIELD_REFERENCE>
 }
 
-void ParametrizedAssignment(): {}
+void Value(): {}
 {
-    ParametrizedTypeAssignment()
-    | ParametrizedTypeAssignment()
-    | ParametrizedValueAssignment()
-    | ParametrizedValueSetTypeAssignment()
-    /*| ParametrizedObjectClassAssignment()
-    | ParametrizedObjectAssignment()
-    | ParametrizedObjectSetAssignment()*/
+    LOOKAHEAD(2) BuiltinValue()
+    | ReferencedValue()
+    /*| ObjectClassFieldValue()*/
 }
 
-void ParametrizedTypeAssignment(): {}
+void DefinedValue(): {}
 {
-    TypeReference() ParameterList() "::=" Type()
+    LOOKAHEAD(2) ExternalValueReference()
+    | LOOKAHEAD(2) ValueReference()
+    | LOOKAHEAD(2) ParametrizedValue()
 }
 
-void ParametrizedValueAssignment(): {}
+void ObjectIdentifierType(): {}
 {
-    ValueReference() ParameterList() "::=" Value()
+    <RESERVED_OBJECT> <RESERVED_IDENTIFIER>
 }
 
-void ParametrizedValueSetTypeAssignment(): {}
+void ObjectIdentifierValue(): {}
 {
-    TypeReference() ParameterList() "::=" ValueSet()
+    <TOKEN_BRACE_LEFT> (LOOKAHEAD(3) ObjIdComponentsList() | ( DefinedValue() ObjIdComponentsList() ) ) <TOKEN_BRACE_RIGHT>
 }
 
-/*
-void ParametrizedObjectClassAssignment(): {}
+void RelativeOIDType(): {}
 {
-    ObjectClassReference() ParameterList() DefinedObjectClass() "::=" ObjectClass()
+    <RESERVED_RELATIVE_OID>
 }
 
-void ParametrizedObjectAssignment(): {}
+void RelativeOIDValue(): {}
 {
-    ObjectReference() ParameterList() DefinedObjectClass() "::=" Object()
+    <TOKEN_BRACE_LEFT> RelativeOIDComponentsList() <TOKEN_BRACE_RIGHT>
 }
 
-void ParametrizedObjectSetAssignment(): {}
+void RelativeOIDComponentsList(): {}
 {
-    ObjectSetReference() ParameterList() DefinedObjectClass() "::=" ObjectSet()
-}
-*/
-
-void ParameterList(): {}
-{
-    "{" Parameter() ("," Parameter())* "}"
+    RelativeOIDComponents() ( RelativeOIDComponents() )*
 }
 
-void Parameter(): {}
+void RelativeOIDComponents(): {}
 {
-    [ParamGovernor() ":"] DummyReference()
+    LOOKAHEAD(2) NumberForm() | LOOKAHEAD(2) NameAndNumberForm() | DefinedValue()
 }
 
-void ParamGovernor(): {}
+void BuiltinValue(): {}
 {
-    Governor() | DummyGovernor()
+    LOOKAHEAD(2) BitStringValue()
+    | BooleanValue()
+    | LOOKAHEAD(2) CharacterStringValue()
+    | LOOKAHEAD(2) ChoiceValue()
+    | LOOKAHEAD(2) EmbeddedPDVValue()
+    | LOOKAHEAD(2) EnumeratedValue()
+    | LOOKAHEAD(2) ExternalValue()
+    /*| InstanceOfValue()*/
+    | LOOKAHEAD(3) IntegerValue()
+    | LOOKAHEAD(2) RealValue()
+    | NullValue()
+    /*| ObjectClassFieldValue()*/
+    | LOOKAHEAD(3) ObjectIdentifierValue()
+    | LOOKAHEAD(3) OctetStringValue()
+    | LOOKAHEAD(3) RelativeOIDValue()
+    | LOOKAHEAD(3) SequenceValue()
+    | LOOKAHEAD(3) SequenceOfValue()
+    | LOOKAHEAD(2) SetValue()
+    | LOOKAHEAD(2) SetOfValue()
 }
 
-void Governor(): {}
+void ReferencedValue(): {}
 {
-    Type() /*| DefinedObjectClass()*/
+    DefinedValue() /*| ValueFromObject()*/
 }
 
-void DummyGovernor(): {}
+void NamedValue(): {}
 {
-    DummyReference()
+    identifier() Value()
 }
 
-void DummyReference(): {}
+void BooleanValue(): {}
 {
-    Reference()
+    <RESERVED_TRUE> | <RESERVED_FALSE>
 }
 
-void ParametrizedType(): {}
+void EnumeratedValue(): {}
 {
-    SimpleDefinedType() ActualParameterList()
+    identifier()
 }
 
-void SimpleDefinedType(): {}
+void IntegerValue(): {}
 {
-    ExternalTypeReference() | TypeReference()
+    SignedNumber() | identifier()
+}
+
+double RealValue(): {double x;}
+{
+    x = NumericRealValue(){return x;}
+    | x = SpecialRealValue(){return x;}
+}
+
+double NumericRealValue(): {}
+{
+    <REAL>{return Double.parseDouble(token.image);} /* | SequenceValue())*/
+}
+
+double SpecialRealValue(): {}
+{
+    <RESERVED_MINUS_INFINITY>{return Double.NEGATIVE_INFINITY;}
+    | <RESERVED_PLUS_INFINITY>{return Double.POSITIVE_INFINITY;}
+}
+
+void BitStringValue(): {}
+{
+    <BIT_STRING>
+    | <HEX_STRING>
+    | (<TOKEN_BRACE_LEFT> [IdentifierList()] <TOKEN_BRACE_RIGHT>)
+    | (<RESERVED_CONTAINING> Value())
+}
+
+void ChoiceValue(): {}
+{
+    identifier() <TOKEN_COLON> Value()
+}
+
+
+void ExternalValue(): {}
+{
+    SequenceValue()
+}
+
+void SetOfValue(): {}
+{
+    <TOKEN_BRACE_LEFT> [ LOOKAHEAD(3) ValueList() | NamedValueList() ] <TOKEN_BRACE_RIGHT>
+}
+
+void SetValue(): {}
+{
+    <TOKEN_BRACE_LEFT> [ComponentValueList()] <TOKEN_BRACE_RIGHT>
+}
+
+void SequenceOfValue(): {}
+{
+    <TOKEN_BRACE_LEFT> [ LOOKAHEAD(3) ValueList() | NamedValueList() ] <TOKEN_BRACE_RIGHT>
+}
+
+void ValueList(): {}
+{
+    Value() ( <TOKEN_COMMA> Value() )*
+}
+
+void NamedValueList(): {}
+{
+    NamedValue() ( <TOKEN_COMMA> NamedValue() )*
+}
+
+void SequenceValue(): {}
+{
+    <TOKEN_BRACE_LEFT> [ComponentValueList()] <TOKEN_BRACE_RIGHT>
+}
+
+void ComponentValueList(): {}
+{
+    NamedValue() ( <TOKEN_COMMA> NamedValue() )*
+}
+
+void OctetStringValue(): {}
+{
+    <BIT_STRING>
+    | <HEX_STRING>
+    | (<RESERVED_CONTAINING> Value())
+}
+
+void NullValue(): {}
+{
+    <RESERVED_NULL>
+}
+
+void IdentifierList(): {}
+{
+    identifier() ( <TOKEN_COMMA> identifier() )*
 }
 
 void ParametrizedValue(): {}
@@ -1355,38 +1367,67 @@ void SimpleDefinedValue(): {}
     ExternalValueReference() | ValueReference()
 }
 
-void ParametrizedValueSetType(): {}
+void RestrictedCharacterStringValue(): {}
 {
-    SimpleDefinedType() ActualParameterList()
+    <STRING> | LOOKAHEAD(2) CharacterStringList() | LOOKAHEAD(5) Quadruple() | Tuple()
 }
 
-/*
-void ParametrizedObjectClass(): {}
+void CharacterStringList(): {}
 {
-    DefinedObjectClass() ActualParameterList()
+    <TOKEN_BRACE_LEFT> CharSyms() <TOKEN_BRACE_RIGHT>
 }
 
-void ParametrizedObjectSet(): {}
+void CharSyms(): {}
 {
-    DefinedObjectSet() ActualParameterList()
+    CharsDefn() ( <TOKEN_COMMA> CharsDefn() )*
 }
 
-void ParametrizedObject(): {}
+void CharsDefn(): {}
 {
-    DefinedObject() ActualParameterList()
-}
-*/
-void ActualParameterList(): {}
-{
-    "{" ActualParameter() ("," ActualParameter() )* "}"
+    <STRING> | LOOKAHEAD(5) Quadruple() | Tuple() | DefinedValue()
 }
 
-void ActualParameter(): {}
+void Quadruple(): {}
 {
-    Type()
-    | Value()
-    | ValueSet()
-    /*| DefinedObjectClass()
-    | Object()
-    | ObjectSet()*/
+    <TOKEN_BRACE_LEFT> Group() <TOKEN_COMMA> Plane() <TOKEN_COMMA> Row() <TOKEN_COMMA> Cell() <TOKEN_BRACE_RIGHT>
+}
+
+void Group(): {}
+{
+    Number()
+}
+
+void Plane(): {}
+{
+    Number()
+}
+
+void Row(): {}
+{
+    Number()
+}
+
+void Cell(): {}
+{
+    Number()
+}
+
+void Tuple(): {}
+{
+    <TOKEN_BRACE_LEFT> TableColumn() <TOKEN_COMMA> TableRow() <TOKEN_BRACE_RIGHT>
+}
+
+void TableColumn(): {}
+{
+    Number()
+}
+
+void TableRow(): {}
+{
+    Number()
+}
+
+void EmbeddedPDVValue(): {}
+{
+    SequenceValue()
 }
