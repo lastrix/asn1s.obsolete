@@ -1,0 +1,14 @@
+
+XYZ DEFINITIONS IMPLICIT TAGS  ::=  BEGIN
+
+MySeq ::= SEQUENCE {
+       myChoice     [1]  MyChoice,
+       someElement      [2]  OCTET STRING
+}
+
+MyChoice ::= CHOICE {
+      myString11    [APPLICATION 5]     EXPLICIT     OCTET STRING,
+      myString22   [APPLICATION 6]   EXPLICIT    OCTET STRING
+}
+
+END

@@ -26,7 +26,7 @@ NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(ASN1SchemaCompiler)
-//package org.lastrix.asn1s.schema.parser;
+package org.lastrix.asn1s.schema.parser;
 
 import java.io.*;
 import java.util.*;
@@ -67,6 +67,7 @@ public class ASN1SchemaCompiler {
 
     static void jjtreeCloseNodeScope(Node n)
     {
+        ((SimpleNode)n).last_token = getToken(0);
     }
 
     public final static String[] usefulTypes = new String[]{
@@ -329,7 +330,7 @@ void NumberForm(): {}
     Number()
 }
 
-void Number() #void: {}
+void Number(): {}
 {
     <NUMBER> | <ZERO>
 }
