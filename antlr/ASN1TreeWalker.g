@@ -5,6 +5,10 @@ options {
   filter = true;
 }
 
+@header{
+package org.lastrix.asn1s.schema.compiler;
+}
+
 @members {
 
 public enum TagClass {
@@ -224,7 +228,12 @@ topdown		:
 	| falseValue
 	| numberValue
 	| defaultTaggingMethod
-	| extensionEndMarkerPvt;
+	| extensionEndMarkerPvt
+	| integerType
+	| booleanType
+	| realType
+	| oidType
+	| cstringType;
 
 bottomup	:
 	exitModule
@@ -286,11 +295,7 @@ enterTypeAssignment:
 	{openTypeAssignment($ID.text);};
 
 enterType	:	
-	(TYPE integerType
-	| booleanType
-	| realType
-	| oidType
-	| cstringType)
+	^(TYPE .*)
 	{openType();};
 
 enterValue	:	

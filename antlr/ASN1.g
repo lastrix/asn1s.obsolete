@@ -28,6 +28,11 @@ BOOLEAN;
 INTEGER;
 REAL;
 OID;
+BIT_STRING;
+ENUMERATION;
+ENUMERATION_ITEM;
+OCTET_STRING;
+SELECTION_TYPE;
 NAMED_NUMBER;
 PLUS_INFINITY;
 MINUS_INFINITY;
@@ -68,10 +73,11 @@ CONSTRAINT_TYPE;
 CONSTRAINT_INNER_TYPE;
 NAMED_CONSTRAINT;
 ENDPOINT;
+TYPE_REFERENCE;
 }
 
 @header {
-//package org.lastrix.asn1s.schema.compiler;
+package org.lastrix.asn1s.schema.compiler;
 
 //import org.lastrix.asn1s.schema.compiler.*;
 //import java.util.List;
@@ -79,7 +85,7 @@ ENDPOINT;
 }
 
 @lexer::header{
-//package org.lastrix.asn1s.schema.compiler;
+package org.lastrix.asn1s.schema.compiler;
 }
 
 @rulecatch{
@@ -107,7 +113,7 @@ definitiveIdentifier	:
 
 
 definitiveObjIdComponent:
-		ID '(' INT ')' -> ^(NAME_NUMBER_FORM ID INT)
+		nameNumberForm
 	|	ID -> ^(NAME_FORM ID)
 	|	INT -> ^(NUMBER_FORM INT);
 
@@ -159,7 +165,7 @@ assignmentList			:
 		assignment+ -> ^(VEC assignment+);
 
 assignment			:
-		typeAssignment
+		( ID '::=' )=> typeAssignment
 	|	valueAssignment;
 
 valueAssignment			:
@@ -193,17 +199,52 @@ type				:
 	|	realType -> ^(TYPE realType)
 	|	integerType -> ^(TYPE integerType)
 	|	taggedType -> ^(TYPE taggedType)
-	|	sequenceOfType -> ^(TYPE sequenceOfType)
+	|	('SEQUENCE' constraint? 'OF' ) => sequenceOfType -> ^(TYPE sequenceOfType)
 	|	sequenceType -> ^(TYPE sequenceType)
-	|	setOfType -> ^(TYPE setOfType)
+	|	('SET' constraint? 'OF' ) =>setOfType -> ^(TYPE setOfType)
 	|	setType -> ^(TYPE setType)
 	|	choiceType -> ^(TYPE choiceType)
 	|	'OBJECT' 'IDENTIFIER' -> ^(TYPE OID)
-	|	characterStringType -> ^(TYPE characterStringType);
+	|	characterStringType -> ^(TYPE characterStringType)
+	|	bitStringType -> ^(TYPE bitStringType)
+	|	enumeratedType -> ^(TYPE enumeratedType)
+	|	'OCTET' 'STRING' -> ^(TYPE OCTET_STRING)
+	|	definedType -> ^(TYPE definedType)
+	|	selectionType -> ^(TYPE selectionType);
+
+//TODO: 
+definedType			:
+		(ID '.')? ID constraint? -> ^(TYPE_REFERENCE ID ID? constraint?)
+		| restrictedStringType constraint? -> ^(CSTRING restrictedStringType constraint?);
+
+selectionType			:
+		ID '<' type -> ^(SELECTION_TYPE ID type);
+
+enumeratedType			:
+		'ENUMERATED' '{' enumerations '}'
+		-> ^(ENUMERATION enumerations);
+
+enumerations			:
+		enumerationItem (',' enumerationItem)* -> ^(VEC enumerationItem+);
+
+enumerationItem			:
+		(namedNumber) => namedNumber
+	|	ID -> ^(ENUMERATION_ITEM ID);
+
+bitStringType			:
+		'BIT' 'STRING' namedBitList? -> ^(BIT_STRING namedBitList);
+
+namedBitList			:
+		'{' nameNumberForm (',' nameNumberForm)* '}'
+		-> ^(VEC nameNumberForm+);
+
+//TODO: defined value here
+nameNumberForm			:
+		ID '(' INT ')' -> ^(NAME_NUMBER_FORM ID INT);
 
 characterStringType		:
-		'CHARACTER' 'STRING' constraint?-> ^( CSTRING UNRESTRICTED_CSTRING constraint?)
-		| restrictedStringType constraint?-> ^(CSTRING restrictedStringType constraint?);
+		'CHARACTER' 'STRING' constraint?-> ^( CSTRING UNRESTRICTED_CSTRING constraint?);
+//		| restrictedStringType constraint?-> ^(CSTRING restrictedStringType constraint?);
 		
 restrictedStringType
 	:	
@@ -248,7 +289,7 @@ setOfType			:
 		'SET' constraint? 'OF' sOfComponentType -> ^(SETOF sOfComponentType constraint?);
 
 sOfComponentType
-	:	(ID) => namedType | type;
+	:	(VALUE_ID)=>namedType | type;
 
 sequenceType			:
 //	|	'SEQUENCE' '{' '...' exceptionSpec extensionEndMarker? '}' -> ^(SEQUENCE exceptionSpec extensionEndMarker?)
@@ -360,7 +401,7 @@ elements			:
 	|	'(' elementSetSpec ')';
 
 subtypeElements			:
-		value
+		(value)=>value
 	|	valueRange
 	|	sizeConstraint
 	|	typeConstraint
@@ -420,7 +461,8 @@ intersectionMark			:
 		('^' | 'INTERSECTION' );
 
 
-
+fragment
+VALUE_ID	:	('a'..'z') ('-'?('a'..'z'|'A'..'Z'|'0'..'9'))*;
 ID		:	('a'..'z'|'A'..'Z') ('-'?('a'..'z'|'A'..'Z'|'0'..'9'))*;
 
 INT		:	'0' | '-'? ('1'..'9')('0'..'9')*;
