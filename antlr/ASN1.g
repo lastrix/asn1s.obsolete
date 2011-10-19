@@ -64,7 +64,7 @@ UNRESTRICTED_CSTRING;
 CSTRING;
 CONSTRAINT;
 UNION;
-INTERSECTION_ELEMENTS;
+INTERSECTION_ELEMENT;
 EXCEPT;
 CONSTRAINT_PATTERN;
 CONSTRAINT_SIZE;
@@ -208,7 +208,7 @@ type				:
 	|	characterStringType -> ^(TYPE characterStringType)
 	|	bitStringType -> ^(TYPE bitStringType)
 	|	enumeratedType -> ^(TYPE enumeratedType)
-	|	'OCTET' 'STRING' -> ^(TYPE OCTET_STRING)
+	|	'OCTET' 'STRING' constraint?-> ^(TYPE OCTET_STRING constraint?)
 	|	definedType -> ^(TYPE definedType)
 	|	selectionType -> ^(TYPE selectionType);
 
@@ -378,27 +378,27 @@ elementSetSpecs			:
 
 elementSetSpec			:
 		unions -> ^(UNION unions)
-		| 'ALL' exclusions;
+		| 'ALL' exclusions -> ^(UNION 'ALL' exclusions);
 
 exclusions			:
 		'EXCEPT' elements
-		-> ^(EXCEPT elements);
+		-> ^(elements);
 
 unions				:	
 		intersections (unionMark intersections)*
 		-> ^(VEC intersections+);
 
 intersections			:
-		intersectionElements (intersectionMark intersectionElements)*
-		-> ^(VEC intersectionElements+);
+		intersectionElement (intersectionMark intersectionElement)*
+		-> ^(VEC intersectionElement+);
 
-intersectionElements		:
+intersectionElement		:
 		elements exclusions?
-		-> ^(INTERSECTION_ELEMENTS elements exclusions?);
+		-> ^(INTERSECTION_ELEMENT elements exclusions?);
 
 elements			:
-		(subtypeElements) => subtypeElements
-	|	'(' elementSetSpec ')';
+		('(') => '(' elementSetSpec ')' -> ^(elementSetSpec)
+	|	subtypeElements;
 
 subtypeElements			:
 		(value)=>value
@@ -419,7 +419,7 @@ typeConstraints			:
 
 namedConstraint			:
 		ID constraint? presenceConstraint?
-		-> ^(NAMED_CONSTRAINT ID constraint? presenceConstraint?);
+		-> ^(NAMED_CONSTRAINT ID presenceConstraint? constraint? );
 
 presenceConstraint		:
 		'PRESENT' | 'ABSENT' | 'OPTIONAL';
@@ -468,6 +468,6 @@ ID		:	('a'..'z'|'A'..'Z') ('-'?('a'..'z'|'A'..'Z'|'0'..'9'))*;
 INT		:	'0' | '-'? ('1'..'9')('0'..'9')*;
 REAL_NUMBER	:	INT '.' ('0'..'9')+ (('e'|'E') (('-')=>'-'|'+')? INT )?;
 
-WS		:	(' ' | '\t' | '\n' | '\r') {$channel=HIDDEN;};
 COMMENT_LINE	:	'--'(options { greedy = false; } : .)* '\n' { $channel = HIDDEN; };
 ML_COMMENT	:	'/*' (options {greedy=false;} : .)* '*/' {$channel=HIDDEN;};
+WS		:	(' ' | '\t' | '\n' | '\r') {$channel=HIDDEN;};

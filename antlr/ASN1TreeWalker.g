@@ -10,6 +10,11 @@ package org.lastrix.asn1s.schema.compiler;
 }
 
 @members {
+public enum Presence {
+	PRESENT,
+	ABSENT,
+	OPTIONAL
+}
 
 public enum TagClass {
 	UNIVERSAL,
@@ -164,6 +169,45 @@ protected void openEndpoint(boolean min, boolean max){System.out.println("Open e
 
 protected void closeEndpoint(){System.out.println("Close endpoint." );}
 
+
+protected void openUnion(boolean except){System.out.println("Open union " + except );}
+
+protected void closeUnion(){System.out.println("Close union." );}
+
+
+protected void openIntersectionElement(){System.out.println("Open IntersectionElement." );}
+
+protected void closeIntersectionElement(){System.out.println("Close IntersectionElement." );}
+
+
+protected void openSizeConstraint(){System.out.println("Open SizeConstraint." );}
+
+protected void closeSizeConstraint(){System.out.println("Close SizeConstraint." );}
+
+
+protected void openTypeConstraint(boolean includes){System.out.println("Open TypeConstraint. " + includes );}
+
+protected void closeTypeConstraint(){System.out.println("Close TypeConstraint." );}
+
+
+protected void openInnerTypeConstraint(boolean dots){System.out.println("Open InnerTypeConstraint. " + dots );}
+
+protected void closeInnerTypeConstraint(){System.out.println("Close InnerTypeConstraint." );}
+
+
+protected void openNamedConstraint(String name, Presence presence){System.out.println("Open NamedConstraint. " + name + " " + presence );}
+
+protected void closeNamedConstraint(){System.out.println("Close NamedConstraint." );}
+
+
+protected void openSelectionType(String id){System.out.println("Open SelectionType. " + id );}
+
+protected void closeSelectionType(){System.out.println("Close SelectionType." );}
+
+
+protected void openEnumeration(){System.out.println("Open Enumeration." );}
+
+protected void closeEnumeration(){System.out.println("Close Enumeration." );}
 // MISC methods
 protected void numberForm(int number){System.out.println("Number form " + number);}
 protected void nameNumberForm(String name, int number){System.out.println("NameNumber form " + name + "(" + number + ")");}
@@ -190,6 +234,8 @@ protected void taggingMethod(TaggingMethod tm){System.out.println("TaggingMethod
 protected void extensionEndMarker(){System.out.println("Extension end marker.");};
 
 protected void extensionAndException(){System.out.println("Extension and exception.");}
+
+protected void enumerationItem(String text){System.out.println("Enumeration item " + text);};
 
 }
 
@@ -218,7 +264,15 @@ topdown		:
 	| enterNamedType
 	| enterConstraint
 	| enterConstraintValueRange
+	| enterConstraintSize
+	| enterConstraintType
+	| enterConstraintInnerType
 	| enterEndpoint
+	| enterUnion
+	| enterIntersectionElement
+	| enterNamedConstraint
+	| enterSelectionType
+	| enterEnumeration
 	| nameForm
 	| nameNumberForm
 	| numberForm
@@ -233,7 +287,8 @@ topdown		:
 	| booleanType
 	| realType
 	| oidType
-	| cstringType;
+	| cstringType
+	| enumerationItemPvt;
 
 bottomup	:
 	exitModule
@@ -260,7 +315,15 @@ bottomup	:
 	| exitNamedType
 	| exitConstraint
 	| exitConstraintValueRange
-	| exitEndpoint;
+	| exitConstraintSize
+	| exitConstraintType
+	| exitConstraintInnerType
+	| exitEndpoint
+	| exitUnion
+	| exitIntersectionElement
+	| exitNamedConstraint
+	| exitSelectionType
+	| exitEnumeration;
 	
 enterModule	:
 	^( MODULE .*)
@@ -358,12 +421,43 @@ enterConstraintValueRange:
 	^(CONSTRAINT_VALUE_RANGE .*)
 	{openConstraintValueRange();};
 
+enterConstraintSize	:	
+	^(CONSTRAINT_SIZE .* )
+	{openSizeConstraint();};
+
+enterConstraintType	:	
+	^(CONSTRAINT_TYPE a='INCLUDES'? .* )
+	{openTypeConstraint($a!=null);};
+
+enterConstraintInnerType:	
+	^(CONSTRAINT_INNER_TYPE a='...'? .*)
+	{openInnerTypeConstraint($a==null);};
+
 enterEndpoint		:	
 	^(ENDPOINT (('MIN')=>min='MIN')? (('MAX')=>max='MAX')? .*)
 	{openEndpoint($min!=null, $max!=null);};
 
+enterUnion		:	
+	^(UNION a='ALL'? .*)
+	{openUnion($a!=null);};
 	
-	
+enterIntersectionElement:	
+	^(INTERSECTION_ELEMENT .*)
+	{openIntersectionElement();};	
+
+enterNamedConstraint	:	
+	^(NAMED_CONSTRAINT ID (pc=presenceConstraint)? .*)
+	{openNamedConstraint($ID.text, pc);};
+
+enterSelectionType	:	
+	^(SELECTION_TYPE ID .* )
+	{openSelectionType($ID.text);};
+
+enterEnumeration	:	
+	^(ENUMERATION .* )
+	{openEnumeration();};
+
+
 	
 exitModule	:	
 	MODULE
@@ -462,9 +556,41 @@ exitConstraintValueRange:
 	CONSTRAINT_VALUE_RANGE
 	{closeConstraintValueRange();};
 
+exitConstraintSize	:	
+	CONSTRAINT_SIZE
+	{closeSizeConstraint();};
+
+exitConstraintType	:	
+	CONSTRAINT_TYPE
+	{closeTypeConstraint();};
+
+exitConstraintInnerType	:	
+	CONSTRAINT_INNER_TYPE
+	{closeInnerTypeConstraint();};
+
 exitEndpoint		:	
 	ENDPOINT
 	{closeEndpoint();};
+
+exitUnion		:	
+	UNION
+	{closeUnion();};
+
+exitIntersectionElement	:	
+	INTERSECTION_ELEMENT
+	{closeIntersectionElement();};
+
+exitNamedConstraint	:	
+	NAMED_CONSTRAINT
+	{closeNamedConstraint();};
+
+exitSelectionType	:	
+	SELECTION_TYPE
+	{closeSelectionType();};
+
+exitEnumeration		:	
+	ENUMERATION
+	{closeEnumeration();};
 
 
 
@@ -525,6 +651,10 @@ numberValue	:
 	| ^(NUMBER PLUS_INFINITY){number(Double.POSITIVE_INFINITY);}
 	| ^(NUMBER MINUS_INFINITY){number(Double.NEGATIVE_INFINITY);};	
 	
+presenceConstraint returns [Presence pr]:	
+	'PRESENT' {$pr = Presence.PRESENT;}
+	| 'ABSENT'  {$pr = Presence.ABSENT;}
+	| 'OPTIONAL' {$pr = Presence.OPTIONAL;};
 	
 tagClassPvt returns [TagClass tc]:
 	'UNIVERSAL' {$tc = TagClass.UNIVERSAL;}
@@ -566,4 +696,9 @@ cstringSubtype returns [RestrictedCString type]:
 	|	'UniversalString' {$type = RestrictedCString.UniversalString;}
 	|	'UTF8String' {$type = RestrictedCString.UTF8String;}
 	|	'VideotexString' {$type = RestrictedCString.VideotexString;}
-	|	'VisibleString' {$type = RestrictedCString.VisibleString;};		
+	|	'VisibleString' {$type = RestrictedCString.VisibleString;};	
+	
+enumerationItemPvt		:	
+	^(ENUMERATION_ITEM ID)
+	{enumerationItem($ID.text);};	
+		
