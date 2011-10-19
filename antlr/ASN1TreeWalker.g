@@ -237,6 +237,7 @@ protected void extensionAndException(){System.out.println("Extension and excepti
 
 protected void enumerationItem(String text){System.out.println("Enumeration item " + text);};
 
+protected void extensibilityImplied(){System.out.println("Extensibility implied.");}
 }
 
 topdown		:
@@ -288,7 +289,8 @@ topdown		:
 	| realType
 	| oidType
 	| cstringType
-	| enumerationItemPvt;
+	| enumerationItemPvt
+	| extensibilityImpliedPvt;
 
 bottomup	:
 	exitModule
@@ -658,7 +660,7 @@ presenceConstraint returns [Presence pr]:
 	
 tagClassPvt returns [TagClass tc]:
 	'UNIVERSAL' {$tc = TagClass.UNIVERSAL;}
-	| 'APPLICATION'  {$tc = TagClass.UNIVERSAL;}
+	| 'APPLICATION'  {$tc = TagClass.APPLICATION;}
 	| 'PRIVATE' {$tc = TagClass.PRIVATE;};
 	
 tagNumber returns [int tagNumber]
@@ -701,4 +703,8 @@ cstringSubtype returns [RestrictedCString type]:
 enumerationItemPvt		:	
 	^(ENUMERATION_ITEM ID)
 	{enumerationItem($ID.text);};	
+	
+extensibilityImpliedPvt		:	
+	EXTENSIBILITY_IMPLIED
+	{extensibilityImplied();};	
 		

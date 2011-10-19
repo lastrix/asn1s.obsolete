@@ -19,16 +19,28 @@
 package org.lastrix.asn1s.schema.compiler;
 
 import org.antlr.runtime.tree.TreeNodeStream;
-import org.lastrix.asn1s.schema.Module;
+import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
+import org.lastrix.asn1s.schema.*;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 /**
  * @author lastrix
  * @version 1.0
  */
 public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
+	private final static Logger logger = Logger.getLogger(ASN1TreeWalkerImpl.class);
+
 	private enum BlockTag {
+		MODULE,
+		VECTOR,
+		TYPE_DEFINITION,
+		CONSTRAINT,
+		TYPE,
+		TAGGED_TYPE,
+		UNION,
 		MODULE_ID
 	}
 
@@ -38,54 +50,74 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		super(input);
 	}
 
+	protected final LinkedList<Object> transferTill(final Object o) {
+		final LinkedList<Object> cStack = new LinkedList<Object>();
+		Object tmp = stack.poll();
+		while (tmp != o) {
+			cStack.push(tmp);
+			tmp = stack.poll();
+			if (tmp == null && stack.size() == 0) {
+				throw new IllegalStateException("Stack depleted.");
+			}
+		}
+		return cStack;
+	}
+
+
 	@Override
 	protected void openModule() {
-		super.openModule();
-		stack.push(new Module());
+//		super.openModule();
+		stack.push(BlockTag.MODULE);
 	}
 
 	@Override
 	protected void closeModule() {
 		super.closeModule();
-		final Object tmp = stack.poll();
-		if (tmp instanceof Module) {
-			System.out.println("Got module here " + tmp);
+		final LinkedList<Object> moduleStack = transferTill(BlockTag.MODULE);
+		final Module module = new Module();
+		final String moduleId = (String) moduleStack.poll();
+		if (moduleId == null) {
+			throw new NullPointerException();
 		}
+		module.setModuleId(moduleId);
+		logger.info("Values left: " + moduleStack);
+		stack.push(module);
 	}
 
 	@Override
 	protected void openModuleId(final String id) {
-		super.openModuleId(id);
+//		super.openModuleId(id);
 		stack.push(BlockTag.MODULE_ID);
 		stack.push(id);
 	}
 
 	@Override
 	protected void closeModuleId() {
-		super.closeModuleId();
-		Object o1 = stack.poll();
-		Object o2 = stack.poll();
-		if (o2 == BlockTag.MODULE_ID && o1 instanceof String) {
-			// all is good
-			o2 = stack.peek();
-			if (o2 instanceof Module) {
-				((Module) o2).setModuleId((String) o1);
-				return;
-			}
+//		super.closeModuleId();
+		final LinkedList<Object> moduleIdStack = transferTill(BlockTag.MODULE_ID);
+		final String id = (String) moduleIdStack.poll();
+		if (id == null) {
+			throw new NullPointerException();
 		}
-		System.out.println("VERY BAD!!!");
+		//TODO: add name validation
+
+		//return it back (cos we can not make OID now)
+		stack.push(id);
 	}
 
 	@Override
 	protected void openVector() {
-		// TODO: unimplemented method stub
 		super.openVector();
+		stack.push(BlockTag.VECTOR);
 	}
 
 	@Override
 	protected void closeVector() {
-		// TODO: unimplemented method stub
 		super.closeVector();
+		final LinkedList<Object> vectorStack = transferTill(BlockTag.VECTOR);
+		final Vector<Object> vector = new Vector<Object>(vectorStack);
+		stack.push(vector);
+		logger.warn("Created vector: " + vector);
 	}
 
 	@Override
@@ -138,26 +170,43 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openTypeAssignment(final String name) {
-		// TODO: unimplemented method stub
-		super.openTypeAssignment(name);
+//		super.openTypeAssignment(name);
+		stack.push(BlockTag.TYPE_DEFINITION);
+		stack.push(name);
 	}
 
 	@Override
 	protected void closeTypeAssignment() {
-		// TODO: unimplemented method stub
-		super.closeTypeAssignment();
+//		super.closeTypeAssignment();
+		final LinkedList<Object> typeDefStack = transferTill(BlockTag.TYPE_DEFINITION);
+
+		final String typeName = (String) typeDefStack.poll();
+		final ASN1Type type = (ASN1Type) typeDefStack.poll();
+
+		stack.push(new ASN1UserType(typeName, type, (Constraint) typeDefStack.poll()));
 	}
 
 	@Override
 	protected void openType() {
-		// TODO: unimplemented method stub
-		super.openType();
+//		super.openType();
+		stack.push(BlockTag.TYPE);
 	}
 
 	@Override
 	protected void closeType() {
-		// TODO: unimplemented method stub
-		super.closeType();
+//		super.closeType();
+		final LinkedList<Object> typeStack = transferTill(BlockTag.TYPE);
+		final Object type = typeStack.poll();
+		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
+
+		stack.push(asn1type);
+		if (typeStack.size() == 1) {
+			try {
+				asn1type.setConstraint((Constraint) typeStack.poll());
+			} catch (ASN1ConstraintUsageException e) {
+				logger.warn("Exception:", e);
+			}
+		}
 	}
 
 	@Override
@@ -174,14 +223,25 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openTaggedType(final int tagNumber, final TagClass tc, final TaggingMethod tm) {
-		// TODO: unimplemented method stub
-		super.openTaggedType(tagNumber, tc, tm);
+//		super.openTaggedType(tagNumber, tc, tm);
+		stack.push(BlockTag.TAGGED_TYPE);
+		stack.push(tagNumber);
+		stack.push(tc);
+		stack.push(tm);
 	}
 
 	@Override
 	protected void closeTaggedType() {
-		// TODO: unimplemented method stub
-		super.closeTaggedType();
+//		super.closeTaggedType();
+		final LinkedList<Object> taggedTypeStack = transferTill(BlockTag.TAGGED_TYPE);
+		//there should be type and after that required values
+		final Integer tagNumber = (Integer) taggedTypeStack.poll();
+		final TagClass tagClass = (TagClass) taggedTypeStack.poll();
+		final TaggingMethod taggingMethod = (TaggingMethod) taggedTypeStack.poll();
+		final Object type = taggedTypeStack.poll();
+		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
+		//and create new type
+		stack.push(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod, (Constraint) taggedTypeStack.poll()));
 	}
 
 	@Override
@@ -324,14 +384,16 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openConstraint() {
-		// TODO: unimplemented method stub
 		super.openConstraint();
+		stack.push(BlockTag.CONSTRAINT);
 	}
 
 	@Override
 	protected void closeConstraint() {
-		// TODO: unimplemented method stub
 		super.closeConstraint();
+		final LinkedList<Object> constraintStack = transferTill(BlockTag.CONSTRAINT);
+		//TODO: add constraint generation
+		stack.push(new Constraint());
 	}
 
 	@Override
@@ -357,6 +419,111 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		// TODO: unimplemented method stub
 		super.closeEndpoint();
 	}
+
+	@Override
+	protected void openUnion(final boolean except) {
+		super.openUnion(except);
+		stack.push(BlockTag.UNION);
+		stack.push(except);
+	}
+
+	@Override
+	protected void closeUnion() {
+		super.closeUnion();
+		final LinkedList<Object> unionStack = transferTill(BlockTag.UNION);
+		logger.info("Union created: " + unionStack);
+	}
+
+	@Override
+	protected void openIntersectionElement() {
+		// TODO: unimplemented method stub
+		super.openIntersectionElement();
+	}
+
+	@Override
+	protected void closeIntersectionElement() {
+		// TODO: unimplemented method stub
+		super.closeIntersectionElement();
+	}
+
+	@Override
+	protected void openSizeConstraint() {
+		// TODO: unimplemented method stub
+		super.openSizeConstraint();
+	}
+
+	@Override
+	protected void closeSizeConstraint() {
+		// TODO: unimplemented method stub
+		super.closeSizeConstraint();
+	}
+
+	@Override
+	protected void openTypeConstraint(final boolean includes) {
+		// TODO: unimplemented method stub
+		super.openTypeConstraint(includes);
+	}
+
+	@Override
+	protected void closeTypeConstraint() {
+		// TODO: unimplemented method stub
+		super.closeTypeConstraint();
+	}
+
+	@Override
+	protected void openInnerTypeConstraint(final boolean dots) {
+		// TODO: unimplemented method stub
+		super.openInnerTypeConstraint(dots);
+	}
+
+	@Override
+	protected void closeInnerTypeConstraint() {
+		// TODO: unimplemented method stub
+		super.closeInnerTypeConstraint();
+	}
+
+	@Override
+	protected void openNamedConstraint(final String name, final Presence presence) {
+		// TODO: unimplemented method stub
+		super.openNamedConstraint(name, presence);
+	}
+
+	@Override
+	protected void closeNamedConstraint() {
+		// TODO: unimplemented method stub
+		super.closeNamedConstraint();
+	}
+
+	@Override
+	protected void openSelectionType(final String id) {
+		// TODO: unimplemented method stub
+		super.openSelectionType(id);
+	}
+
+	@Override
+	protected void closeSelectionType() {
+		// TODO: unimplemented method stub
+		super.closeSelectionType();
+	}
+
+	@Override
+	protected void openEnumeration() {
+		// TODO: unimplemented method stub
+		super.openEnumeration();
+	}
+
+	@Override
+	protected void closeEnumeration() {
+		// TODO: unimplemented method stub
+		super.closeEnumeration();
+	}
+
+	@Override
+	protected void enumerationItem(final String text) {
+		// TODO: unimplemented method stub
+		super.enumerationItem(text);
+	}
+
 
 	@Override
 	protected void numberForm(final int number) {
@@ -390,20 +557,20 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void typeInteger() {
-		// TODO: unimplemented method stub
-		super.typeInteger();
+//		super.typeInteger();
+		stack.push(Integer.class);
 	}
 
 	@Override
 	protected void typeBoolean() {
-		// TODO: unimplemented method stub
-		super.typeBoolean();
+//		super.typeBoolean();
+		stack.push(Boolean.class);
 	}
 
 	@Override
 	protected void typeReal() {
-		// TODO: unimplemented method stub
-		super.typeReal();
+//		super.typeReal();
+		stack.push(Double.class);
 	}
 
 	@Override
@@ -426,32 +593,32 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void putTrue() {
-		// TODO: unimplemented method stub
-		super.putTrue();
+//		super.putTrue();
+		stack.push(true);
 	}
 
 	@Override
 	protected void putFalse() {
-		// TODO: unimplemented method stub
-		super.putFalse();
+//		super.putFalse();
+		stack.push(false);
 	}
 
 	@Override
 	protected void number(final int value) {
-		// TODO: unimplemented method stub
-		super.number(value);
+//		super.number(value);
+		stack.push(value);
 	}
 
 	@Override
 	protected void number(final double value) {
-		// TODO: unimplemented method stub
-		super.number(value);
+//		super.number(value);
+		stack.push(value);
 	}
 
 	@Override
 	protected void taggingMethod(final TaggingMethod tm) {
-		// TODO: unimplemented method stub
-		super.taggingMethod(tm);
+//		super.taggingMethod(tm);
+		stack.push(tm);
 	}
 
 	@Override
@@ -464,5 +631,11 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void extensionAndException() {
 		// TODO: unimplemented method stub
 		super.extensionAndException();
+	}
+
+	@Override
+	protected void extensibilityImplied() {
+//		super.extensibilityImplied();
+		stack.push(true);
 	}
 }
