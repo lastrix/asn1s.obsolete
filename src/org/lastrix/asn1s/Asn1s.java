@@ -18,16 +18,9 @@
 
 package org.lastrix.asn1s;
 
-import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
-import org.lastrix.asn1s.schema.compiler.ASN1Parser;
-import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
-import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
+import org.lastrix.asn1s.schema.ASN1Schema;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -97,23 +90,7 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
-
-		try {
-			ASN1Lexer lex = new ASN1Lexer(new ANTLRFileStream("/home/lastrix/dev/java/ASN1S/antlr/output/__Test___input.txt", "UTF8"));
-			CommonTokenStream tokens = new CommonTokenStream(lex);
-
-
-			ASN1Parser parser = new ASN1Parser(tokens);
-			ASN1Parser.parse_return r = parser.parse();
-			CommonTree t = (CommonTree) r.getTree();
-			CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
-
-
-			ASN1TreeWalker walker = new ASN1TreeWalkerImpl(nodes);
-			walker.downup(t);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ASN1Schema.loadSchema("/home/lastrix/dev/java/ASN1S/antlr/output/__Test___input.txt");
 	}
 
 }

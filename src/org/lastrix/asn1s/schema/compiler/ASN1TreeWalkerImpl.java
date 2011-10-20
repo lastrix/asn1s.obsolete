@@ -23,8 +23,7 @@ import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 import org.lastrix.asn1s.schema.*;
 
-import java.util.LinkedList;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * @author lastrix
@@ -58,6 +57,36 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		}
 	}
 
+	private static class Exports {
+		final Vector  exports;
+		final boolean all;
+
+		private Exports(final boolean all, final Vector exports) {
+			this.all = all;
+			this.exports = exports;
+		}
+
+		@Override
+		public String toString() {
+			return "Exports{" + ((all) ? "ALL" : exports) +
+			       '}';
+		}
+	}
+
+	private static class Imports {
+		final Vector imports;
+
+		private Imports(final Vector imports) {
+			this.imports = imports;
+		}
+
+		@Override
+		public String toString() {
+			return "Imports{" + imports +
+			       '}';
+		}
+	}
+
 	private enum BlockTag {
 		MODULE,
 		VECTOR,
@@ -72,6 +101,9 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		CONSTRAINT_VALUE,
 		INTERSECTION,
 		CONSTRAINT_SIZE,
+		SYMBOLS_FROM_MODULE,
+		IMPORTS,
+		EXPORTS,
 		MODULE_ID
 	}
 
@@ -94,6 +126,22 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		return cStack;
 	}
 
+	/**
+	 * Return collection of modules
+	 *
+	 * @return
+	 */
+	public Collection<Module> getModules() {
+		List<Module> list = new ArrayList<Module>();
+		while (stack.size() > 0) {
+			final Module m = (Module) stack.poll();
+			if (m == null) {
+				throw new IllegalStateException();
+			}
+			list.add(m);
+		}
+		return list;
+	}
 
 	@Override
 	protected void openModule() {
@@ -105,13 +153,17 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void closeModule() {
 //		super.closeModule();
 		final LinkedList<Object> moduleStack = transferTill(BlockTag.MODULE);
-		final Module module = new Module();
 		final String moduleId = (String) moduleStack.poll();
-		if (moduleId == null) {
-			throw new NullPointerException();
-		}
-		module.setModuleId(moduleId);
-		logger.info("Values left: " + moduleStack);
+		final TaggingMethod defaultTaggingMethod = (moduleStack.peek() instanceof TaggingMethod) ?
+		                                           (TaggingMethod) moduleStack.poll() :
+		                                           TaggingMethod.AUTOMATIC;
+		final Boolean extensibilityImplied = (moduleStack.peek() instanceof Boolean) ? (Boolean) moduleStack.poll() : false;
+		final Exports e = (moduleStack.peek() instanceof Exports) ? (Exports) moduleStack.poll() : null;
+		final Imports i = (moduleStack.peek() instanceof Imports) ? (Imports) moduleStack.poll() : null;
+		final Vector assignments = (Vector) moduleStack.poll();
+
+		final Module module = (e.all) ? new Module(moduleId, defaultTaggingMethod, extensibilityImplied, true, i.imports, assignments)
+		                              : new Module(moduleId, defaultTaggingMethod, extensibilityImplied, e.exports, i.imports, assignments);
 		stack.push(module);
 	}
 
@@ -148,43 +200,48 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> vectorStack = transferTill(BlockTag.VECTOR);
 		final Vector<Object> vector = new Vector<Object>(vectorStack);
 		stack.push(vector);
-		logger.warn("Created vector: " + vector);
+//		logger.warn("Created vector: " + vector);
 	}
 
 	@Override
 	protected void openExports(final boolean all) {
-		// TODO: unimplemented method stub
-		super.openExports(all);
+//		super.openExports(all);
+		stack.push(BlockTag.EXPORTS);
+		stack.push(all);
 	}
 
 	@Override
 	protected void closeExports() {
-		// TODO: unimplemented method stub
-		super.closeExports();
+//		super.closeExports();
+		final LinkedList<Object> eStack = transferTill(BlockTag.EXPORTS);
+		final Boolean all = (Boolean) eStack.poll();
+		stack.push(new Exports(all, (Vector) eStack.poll()));
 	}
 
 	@Override
 	protected void openImports() {
-		// TODO: unimplemented method stub
-		super.openImports();
+//		super.openImports();
+		stack.push(BlockTag.IMPORTS);
 	}
 
 	@Override
 	protected void closeImports() {
-		// TODO: unimplemented method stub
-		super.closeImports();
+//		super.closeImports();
+		final LinkedList<Object> iStack = transferTill(BlockTag.IMPORTS);
+		stack.push(new Imports((Vector) iStack.poll()));
 	}
 
 	@Override
 	protected void openSymbolsFromModule() {
-		// TODO: unimplemented method stub
-		super.openSymbolsFromModule();
+//		super.openSymbolsFromModule();
+		stack.push(BlockTag.SYMBOLS_FROM_MODULE);
 	}
 
 	@Override
 	protected void closeSymbolsFromModule() {
-		// TODO: unimplemented method stub
-		super.closeSymbolsFromModule();
+//		super.closeSymbolsFromModule();
+		final LinkedList<Object> sfmStack = transferTill(BlockTag.SYMBOLS_FROM_MODULE);
+		stack.push(new SymbolsFromModule((String) sfmStack.poll(), (Vector) sfmStack.poll()));
 	}
 
 	@Override
@@ -631,14 +688,16 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void symbol(final String name) {
-		// TODO: unimplemented method stub
-		super.symbol(name);
+//		super.symbol(name);
+		stack.push(name);
+		//TODO: validation
 	}
 
 	@Override
 	protected void globalModuleReference(final String name) {
-		// TODO: unimplemented method stub
-		super.globalModuleReference(name);
+//		super.globalModuleReference(name);
+		//TODO: validation
+		stack.push(name);
 	}
 
 	@Override

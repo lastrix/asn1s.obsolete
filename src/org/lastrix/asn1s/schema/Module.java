@@ -18,6 +18,10 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
+
+import java.util.Vector;
+
 /**
  * ASN1 Module with type definitions
  *
@@ -26,35 +30,62 @@ package org.lastrix.asn1s.schema;
  */
 public class Module {
 
-	private String moduleId;
+	private final String                       moduleId;
+	private final ASN1TreeWalker.TaggingMethod defaultTaggingMethod;
+	private final boolean                      extensibilityImplied;
+	private final boolean                      exportAll;
+	private final Vector<String>               exports;
+	private final Vector<SymbolsFromModule>    imports;
+	private final Vector                       types;
 
-	/**
-	 * Create new empty module.
-	 */
-	public Module() {
+	public Module(
+	             final String moduleId,
+	             final ASN1TreeWalker.TaggingMethod defaultTaggingMethod,
+	             final boolean extensibilityImplied,
+	             final boolean exportAll,
+	             final Vector<SymbolsFromModule> imports,
+	             final Vector types
+	             ) {
+		this.moduleId = moduleId;
+		this.defaultTaggingMethod = defaultTaggingMethod;
+		this.extensibilityImplied = extensibilityImplied;
+		this.exportAll = exportAll;
+		this.exports = null;
+		this.imports = imports;
+		this.types = types;
 	}
 
-	/**
-	 * Create new module with specified ID.
-	 *
-	 * @param moduleId
-	 */
-	public Module(final String moduleId) {
+	public Module(
+	             final String moduleId,
+	             final ASN1TreeWalker.TaggingMethod defaultTaggingMethod,
+	             final boolean extensibilityImplied,
+	             final Vector<String> exports,
+	             final Vector<SymbolsFromModule> imports,
+	             final Vector types
+	             ) {
 		this.moduleId = moduleId;
+		this.defaultTaggingMethod = defaultTaggingMethod;
+		this.extensibilityImplied = extensibilityImplied;
+		this.exportAll = false;
+		this.exports = exports;
+		this.imports = imports;
+		this.types = types;
 	}
 
 	public String getModuleId() {
 		return moduleId;
 	}
 
-	public void setModuleId(final String moduleId) {
-		this.moduleId = moduleId;
-	}
-
 	@Override
 	public String toString() {
 		return "Module{" +
 		       "moduleId='" + moduleId + '\'' +
+		       ", defaultTaggingMethod=" + defaultTaggingMethod +
+		       ", extensibilityImplied=" + extensibilityImplied +
+		       ", exportAll=" + exportAll +
+		       ", exports=" + exports +
+		       ", imports=" + imports +
+		       ", types=" + types +
 		       '}';
 	}
 }
