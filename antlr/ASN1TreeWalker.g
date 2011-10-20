@@ -164,8 +164,12 @@ protected void openConstraintValueRange(){System.out.println("Open value range."
 
 protected void closeConstraintValueRange(){System.out.println("Close value range." );}
 
+protected void openConstraintValue(){System.out.println("Open value." );}
 
-protected void openEndpoint(boolean min, boolean max){System.out.println("Open endpoint." + min + " " + max );}
+protected void closeConstraintValue(){System.out.println("Close value." );}
+
+
+protected void openEndpoint(boolean less, boolean min, boolean max){System.out.println("Open endpoint." + less + " " + min + " " + max );}
 
 protected void closeEndpoint(){System.out.println("Close endpoint." );}
 
@@ -265,6 +269,7 @@ topdown		:
 	| enterNamedType
 	| enterConstraint
 	| enterConstraintValueRange
+	| enterConstraintValue
 	| enterConstraintSize
 	| enterConstraintType
 	| enterConstraintInnerType
@@ -317,6 +322,7 @@ bottomup	:
 	| exitNamedType
 	| exitConstraint
 	| exitConstraintValueRange
+	| exitConstraintValue
 	| exitConstraintSize
 	| exitConstraintType
 	| exitConstraintInnerType
@@ -423,6 +429,10 @@ enterConstraintValueRange:
 	^(CONSTRAINT_VALUE_RANGE .*)
 	{openConstraintValueRange();};
 
+enterConstraintValue:	
+	^(CONSTRAINT_VALUE .*)
+	{openConstraintValue();};
+
 enterConstraintSize	:	
 	^(CONSTRAINT_SIZE .* )
 	{openSizeConstraint();};
@@ -436,8 +446,8 @@ enterConstraintInnerType:
 	{openInnerTypeConstraint($a==null);};
 
 enterEndpoint		:	
-	^(ENDPOINT (('MIN')=>min='MIN')? (('MAX')=>max='MAX')? .*)
-	{openEndpoint($min!=null, $max!=null);};
+	^(ENDPOINT (lessSignR=lessSign)? (('MIN')=>min='MIN' | ('MAX')=>max='MAX')? .*)
+	{openEndpoint($lessSignR.result, $min!=null, $max!=null);};
 
 enterUnion		:	
 	^(UNION a='ALL'? .*)
@@ -557,6 +567,10 @@ exitConstraint		:
 exitConstraintValueRange:	
 	CONSTRAINT_VALUE_RANGE
 	{closeConstraintValueRange();};
+
+exitConstraintValue:	
+	CONSTRAINT_VALUE
+	{closeConstraintValue();};
 
 exitConstraintSize	:	
 	CONSTRAINT_SIZE
@@ -708,3 +722,6 @@ extensibilityImpliedPvt		:
 	EXTENSIBILITY_IMPLIED
 	{extensibilityImplied();};	
 		
+lessSign returns [boolean result]
+@init{$result = false;}:	
+	'<' {$result = true;};		

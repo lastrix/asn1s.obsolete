@@ -33,6 +33,31 @@ import java.util.Vector;
 public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	private final static Logger logger = Logger.getLogger(ASN1TreeWalkerImpl.class);
 
+	private static class Endpoint {
+		final boolean                            less;
+		final ValueRangeConstraint.EndpointState sp;
+		final Object                             value;
+
+		private Endpoint(final boolean less, final Object value) {
+			this(less, value, ValueRangeConstraint.EndpointState.NONE);
+		}
+
+		private Endpoint(final boolean less, final Object value, final ValueRangeConstraint.EndpointState sp) {
+			this.less = less;
+			this.sp = sp;
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "Endpoint{" +
+			       "less=" + less +
+			       ", value=" + value +
+			       ", sp=" + sp +
+			       '}';
+		}
+	}
+
 	private enum BlockTag {
 		MODULE,
 		VECTOR,
@@ -41,6 +66,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		TYPE,
 		TAGGED_TYPE,
 		UNION,
+		CONSTRAINT_VALUE_RANGE,
+		ENDPOINT,
+		VALUE,
+		CONSTRAINT_VALUE,
+		INTERSECTION,
+		CONSTRAINT_SIZE,
 		MODULE_ID
 	}
 
@@ -72,7 +103,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void closeModule() {
-		super.closeModule();
+//		super.closeModule();
 		final LinkedList<Object> moduleStack = transferTill(BlockTag.MODULE);
 		final Module module = new Module();
 		final String moduleId = (String) moduleStack.poll();
@@ -107,13 +138,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openVector() {
-		super.openVector();
+//		super.openVector();
 		stack.push(BlockTag.VECTOR);
 	}
 
 	@Override
 	protected void closeVector() {
-		super.closeVector();
+//		super.closeVector();
 		final LinkedList<Object> vectorStack = transferTill(BlockTag.VECTOR);
 		final Vector<Object> vector = new Vector<Object>(vectorStack);
 		stack.push(vector);
@@ -211,14 +242,19 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openValue() {
-		// TODO: unimplemented method stub
-		super.openValue();
+//		super.openValue();
+		stack.push(BlockTag.VALUE);
 	}
 
 	@Override
 	protected void closeValue() {
-		// TODO: unimplemented method stub
-		super.closeValue();
+//		super.closeValue();
+		//actually there is nothing to do, except validation
+		final LinkedList<Object> valueStack = transferTill(BlockTag.VALUE);
+		if (valueStack.size() != 1) {
+			throw new IllegalStateException();
+		}
+		stack.push(valueStack.poll());
 	}
 
 	@Override
@@ -384,78 +420,128 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openConstraint() {
-		super.openConstraint();
+//		super.openConstraint();
 		stack.push(BlockTag.CONSTRAINT);
 	}
 
 	@Override
 	protected void closeConstraint() {
-		super.closeConstraint();
+//		super.closeConstraint();
 		final LinkedList<Object> constraintStack = transferTill(BlockTag.CONSTRAINT);
-		//TODO: add constraint generation
-		stack.push(new Constraint());
+//		logger.warn(constraintStack);
+		Object o = constraintStack.poll();
+		if (o instanceof Constraint) {
+			stack.push(o);
+		} else {
+			stack.push(new RootConstraint((Union) o));
+		}
 	}
 
 	@Override
 	protected void openConstraintValueRange() {
-		// TODO: unimplemented method stub
-		super.openConstraintValueRange();
+//		super.openConstraintValueRange();
+		stack.push(BlockTag.CONSTRAINT_VALUE_RANGE);
 	}
 
 	@Override
 	protected void closeConstraintValueRange() {
-		// TODO: unimplemented method stub
-		super.closeConstraintValueRange();
+//		super.closeConstraintValueRange();
+		final LinkedList<Object> cvrStack = transferTill(BlockTag.CONSTRAINT_VALUE_RANGE);
+		final Endpoint lowerEP = (Endpoint) cvrStack.poll();
+		final Endpoint upperEP = (Endpoint) cvrStack.poll();
+		stack.push(new ValueRangeConstraint(lowerEP.value, lowerEP.less, lowerEP.sp, upperEP.value, upperEP.less, upperEP.sp));
 	}
 
 	@Override
-	protected void openEndpoint(final boolean min, final boolean max) {
-		// TODO: unimplemented method stub
-		super.openEndpoint(min, max);
+	protected void openEndpoint(final boolean less, final boolean min, final boolean max) {
+//		super.openEndpoint(less, min, max);
+		stack.push(BlockTag.ENDPOINT);
+		stack.push(less);
+		if (min | max) {
+			if (min && max) throw new IllegalStateException();
+
+			if (min) stack.push(ValueRangeConstraint.EndpointState.MIN);
+			if (max) stack.push(ValueRangeConstraint.EndpointState.MAX);
+		} else {
+			stack.push(ValueRangeConstraint.EndpointState.NONE);
+		}
 	}
 
 	@Override
 	protected void closeEndpoint() {
-		// TODO: unimplemented method stub
-		super.closeEndpoint();
+//		super.closeEndpoint();
+		final LinkedList<Object> epStack = transferTill(BlockTag.ENDPOINT);
+		Boolean less = (Boolean) epStack.poll();
+		ValueRangeConstraint.EndpointState mm = (ValueRangeConstraint.EndpointState) epStack.poll();
+		Object value = epStack.poll();
+		stack.push(new Endpoint(less, value, mm));
+	}
+
+	@Override
+	protected void openConstraintValue() {
+//		super.openConstraintValue();
+		stack.push(BlockTag.CONSTRAINT_VALUE);
+	}
+
+	@Override
+	protected void closeConstraintValue() {
+//		super.closeConstraintValue();
+		final LinkedList<Object> cvStack = transferTill(BlockTag.CONSTRAINT_VALUE);
+		final Object value = cvStack.poll();
+		stack.push(new ValueConstraint(value));
 	}
 
 	@Override
 	protected void openUnion(final boolean except) {
-		super.openUnion(except);
+//		super.openUnion(except);
 		stack.push(BlockTag.UNION);
 		stack.push(except);
 	}
 
 	@Override
 	protected void closeUnion() {
-		super.closeUnion();
+//		super.closeUnion();
 		final LinkedList<Object> unionStack = transferTill(BlockTag.UNION);
-		logger.info("Union created: " + unionStack);
+		Boolean except = (Boolean) unionStack.poll();
+		Object o = unionStack.poll();
+		Vector ints;
+		if (o instanceof Union) {
+			ints = ((Union) o).getUnions();
+			except = !((Union) o).isExcept();
+		} else if (o instanceof Vector) {
+			ints = (Vector) o;
+		} else {
+			throw new IllegalStateException();
+		}
+		stack.push(new Union(except, ints));
 	}
 
 	@Override
 	protected void openIntersectionElement() {
-		// TODO: unimplemented method stub
-		super.openIntersectionElement();
+//		super.openIntersectionElement();
+		stack.push(BlockTag.INTERSECTION);
 	}
 
 	@Override
 	protected void closeIntersectionElement() {
-		// TODO: unimplemented method stub
-		super.closeIntersectionElement();
+//		super.closeIntersectionElement();
+		final LinkedList<Object> intStack = transferTill(BlockTag.INTERSECTION);
+		stack.push(new Intersection((Constraint) intStack.poll(), (Constraint) intStack.poll()));
 	}
 
 	@Override
 	protected void openSizeConstraint() {
-		// TODO: unimplemented method stub
-		super.openSizeConstraint();
+//		super.openSizeConstraint();
+		stack.push(BlockTag.CONSTRAINT_SIZE);
 	}
 
 	@Override
 	protected void closeSizeConstraint() {
-		// TODO: unimplemented method stub
-		super.closeSizeConstraint();
+//		super.closeSizeConstraint();
+		final LinkedList<Object> sizeStack = transferTill(BlockTag.CONSTRAINT_SIZE);
+		if (sizeStack.size() != 1) { throw new IllegalStateException(); }
+
+		stack.push(new SizeConstraint((Constraint) sizeStack.poll()));
 	}
 
 	@Override
@@ -558,7 +644,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void typeInteger() {
 //		super.typeInteger();
-		stack.push(Integer.class);
+		stack.push(Long.class);
 	}
 
 	@Override

@@ -66,6 +66,7 @@ CONSTRAINT;
 UNION;
 INTERSECTION_ELEMENT;
 EXCEPT;
+CONSTRAINT_VALUE;
 CONSTRAINT_PATTERN;
 CONSTRAINT_SIZE;
 CONSTRAINT_VALUE_RANGE;
@@ -401,7 +402,7 @@ elements			:
 	|	subtypeElements;
 
 subtypeElements			:
-		(value)=>value
+		(value)=>value -> ^(CONSTRAINT_VALUE value)
 	|	valueRange
 	|	sizeConstraint
 	|	typeConstraint

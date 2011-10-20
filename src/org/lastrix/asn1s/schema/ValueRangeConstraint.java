@@ -18,35 +18,44 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
-
 /**
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
+public class ValueRangeConstraint extends Constraint {
 
-	public static ASN1Type createTypeFor(Object clazz) {
-		if (clazz instanceof ASN1Type) {
-			//if this thing already ASN1Type - just return it back
-			return (ASN1Type) clazz;
-		} else if (clazz == Long.class) {
-			//create integer handler
-			return new ASN1Integer();
-		} else if (clazz != null && clazz instanceof String) {
-			//just return unresolved type
-			return new ASN1UnresolvedType((String) clazz, null);
-		}
-		//no type for such object
-		return null;
+	public enum EndpointState {
+		MIN,
+		MAX,
+		NONE
 	}
 
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	public abstract void setConstraint(Constraint constraint) throws ASN1ConstraintUsageException;
+	private final Object        lowerValue;
+	private final Object        upperValue;
+	private final boolean       lowerLess;
+	private final boolean       upperLess;
+	private final EndpointState lowerES;
+	private final EndpointState upperES;
+
+	public ValueRangeConstraint(
+	                           final Object lowerValue,
+	                           final boolean lowerLess,
+	                           final EndpointState lowerES,
+	                           final Object upperValue,
+	                           final boolean upperLess,
+	                           final EndpointState upperES
+	                           ) {
+		this.lowerValue = lowerValue;
+		this.lowerLess = lowerLess;
+		this.lowerES = lowerES;
+		this.upperValue = upperValue;
+		this.upperLess = upperLess;
+		this.upperES = upperES;
+	}
+
+	@Override
+	public String toString() {
+		return "ValueRangeConstraint{" + ((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : "")
+		       + " .. " + ((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES) + '}';
+	}
 }

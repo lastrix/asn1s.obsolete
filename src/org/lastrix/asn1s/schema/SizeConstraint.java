@@ -18,35 +18,21 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
-
 /**
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
+public class SizeConstraint extends Constraint {
+	private final Constraint constraint;
 
-	public static ASN1Type createTypeFor(Object clazz) {
-		if (clazz instanceof ASN1Type) {
-			//if this thing already ASN1Type - just return it back
-			return (ASN1Type) clazz;
-		} else if (clazz == Long.class) {
-			//create integer handler
-			return new ASN1Integer();
-		} else if (clazz != null && clazz instanceof String) {
-			//just return unresolved type
-			return new ASN1UnresolvedType((String) clazz, null);
-		}
-		//no type for such object
-		return null;
+	public SizeConstraint(final Constraint constraint) {
+		this.constraint = constraint;
 	}
 
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	public abstract void setConstraint(Constraint constraint) throws ASN1ConstraintUsageException;
+	@Override
+	public String toString() {
+		return "SizeConstraint{" +
+		       "constraint=" + constraint +
+		       '}';
+	}
 }
