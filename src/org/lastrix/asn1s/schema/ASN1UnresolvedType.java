@@ -27,7 +27,17 @@ import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 public class ASN1UnresolvedType extends ASN1Type {
 
 	public final String     name;
+	public final String     moduleName;
 	private      Constraint constraint;
+
+	public ASN1UnresolvedType(final String name, final String moduleName, final Constraint constraint) {
+		if (name == null) {
+			throw new NullPointerException();
+		}
+		this.name = name;
+		this.moduleName = moduleName;
+		this.constraint = constraint;
+	}
 
 	/**
 	 * Create unresolved type stub for later verification
@@ -35,11 +45,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 	 * @param name
 	 */
 	public ASN1UnresolvedType(final String name, final Constraint constraint) {
-		if (name == null) {
-			throw new NullPointerException();
-		}
-		this.name = name;
-		this.constraint = constraint;
+		this(name, null, constraint);
 	}
 
 	/**
@@ -52,5 +58,12 @@ public class ASN1UnresolvedType extends ASN1Type {
 	@Override
 	public void setConstraint(final Constraint constraint) throws ASN1ConstraintUsageException {
 		this.constraint = constraint;
+	}
+
+	@Override
+	public String toString() {
+		return "ASN1UnresolvedType{" + ((moduleName != null) ? moduleName + "." + name : name) +
+		       ", constraint=" + constraint +
+		       '}';
 	}
 }

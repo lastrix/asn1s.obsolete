@@ -104,6 +104,8 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		SYMBOLS_FROM_MODULE,
 		IMPORTS,
 		EXPORTS,
+		SEQUENCEOF,
+		TYPE_REFERENCE,
 		MODULE_ID
 	}
 
@@ -286,7 +288,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> typeStack = transferTill(BlockTag.TYPE);
 		final Object type = typeStack.poll();
 		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
-
+//		logger.info(type + " " + asn1type + "\n" + typeStack);
 		stack.push(asn1type);
 		if (typeStack.size() == 1) {
 			try {
@@ -334,19 +336,23 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final Object type = taggedTypeStack.poll();
 		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
 		//and create new type
+//		logger.info(String.format("Creating type for %d %s %s %s", tagNumber, tagClass, taggingMethod, type));
 		stack.push(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod, (Constraint) taggedTypeStack.poll()));
 	}
 
 	@Override
 	protected void openSequenceOf() {
-		// TODO: unimplemented method stub
-		super.openSequenceOf();
+//		super.openSequenceOf();
+		stack.push(BlockTag.SEQUENCEOF);
 	}
 
 	@Override
 	protected void closeSequenceOf() {
-		// TODO: unimplemented method stub
-		super.closeSequenceOf();
+//		super.closeSequenceOf();
+		final LinkedList<Object> sofStack = transferTill(BlockTag.SEQUENCEOF);
+		ASN1Type eType = (ASN1Type) sofStack.poll();
+		Constraint c = (Constraint) sofStack.poll();
+		stack.push(new ASN1SequenceOf(eType, c));
 	}
 
 	@Override
@@ -584,6 +590,29 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 //		super.closeIntersectionElement();
 		final LinkedList<Object> intStack = transferTill(BlockTag.INTERSECTION);
 		stack.push(new Intersection((Constraint) intStack.poll(), (Constraint) intStack.poll()));
+	}
+
+	@Override
+	protected void openTypeReference(final String a, final String b) {
+//		super.openTypeReference(a, b);
+		stack.push(BlockTag.TYPE_REFERENCE);
+		if (b == null) {
+			stack.push(null);
+			stack.push(a);
+		} else {
+			stack.push(a);
+			stack.push(b);
+		}
+	}
+
+	@Override
+	protected void closeTypeReference() {
+//		super.closeTypeReference();
+		final LinkedList<Object> trStack = transferTill(BlockTag.TYPE_REFERENCE);
+		String moduleName = (String) trStack.poll();
+		String typeName = (String) trStack.poll();
+		//TODO: validation
+		stack.push(new ASN1UnresolvedType(typeName, moduleName, (Constraint) trStack.poll()));
 	}
 
 	@Override

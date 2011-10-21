@@ -212,6 +212,12 @@ protected void closeSelectionType(){System.out.println("Close SelectionType." );
 protected void openEnumeration(){System.out.println("Open Enumeration." );}
 
 protected void closeEnumeration(){System.out.println("Close Enumeration." );}
+
+
+protected void openTypeReference(String a, String b){System.out.println("Open type reference " + ((b==null)?a:a + "." + b) );}
+
+protected void closeTypeReference(){System.out.println("Close type ." );}
+
 // MISC methods
 protected void numberForm(int number){System.out.println("Number form " + number);}
 protected void nameNumberForm(String name, int number){System.out.println("NameNumber form " + name + "(" + number + ")");}
@@ -279,6 +285,7 @@ topdown		:
 	| enterNamedConstraint
 	| enterSelectionType
 	| enterEnumeration
+	| enterTypeReference
 	| nameForm
 	| nameNumberForm
 	| numberForm
@@ -331,7 +338,8 @@ bottomup	:
 	| exitIntersectionElement
 	| exitNamedConstraint
 	| exitSelectionType
-	| exitEnumeration;
+	| exitEnumeration
+	| exitTypeReference;
 	
 enterModule	:
 	^( MODULE .*)
@@ -468,6 +476,10 @@ enterSelectionType	:
 enterEnumeration	:	
 	^(ENUMERATION .* )
 	{openEnumeration();};
+
+enterTypeReference	:	
+	^(TYPE_REFERENCE a=ID (b=ID?) .*)
+	{openTypeReference($a.text, ($b!=null)?$b.text:null);};
 
 
 	
@@ -607,6 +619,10 @@ exitSelectionType	:
 exitEnumeration		:	
 	ENUMERATION
 	{closeEnumeration();};
+
+exitTypeReference	:	
+	TYPE_REFERENCE
+	{closeTypeReference();};
 
 
 

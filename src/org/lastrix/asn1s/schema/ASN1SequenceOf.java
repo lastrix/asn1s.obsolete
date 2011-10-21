@@ -18,31 +18,20 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
-	private final static Logger logger = Logger.getLogger(ASN1Type.class);
+public class ASN1SequenceOf extends ASN1Type {
 
+	private final ASN1Type   componentType;
+	private       Constraint constraint;
 
-	public static ASN1Type createTypeFor(Object clazz) {
-//		logger.info("Requested class for '" + clazz + "'.");
-		if (clazz instanceof ASN1Type) {
-			//if this thing already ASN1Type - just return it back
-			return (ASN1Type) clazz;
-		} else if (clazz == Long.class) {
-			//create integer handler
-			return new ASN1Integer();
-		} else if (clazz != null && clazz instanceof String) {
-			//just return unresolved type
-			return new ASN1UnresolvedType((String) clazz, null);
-		}
-		//no type for such object
-		return null;
+	public ASN1SequenceOf(final ASN1Type componentType, final Constraint constraint) {
+		this.componentType = componentType;
+		this.constraint = constraint;
 	}
 
 	/**
@@ -52,5 +41,16 @@ public abstract class ASN1Type {
 	 *
 	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
 	 */
-	public abstract void setConstraint(Constraint constraint) throws ASN1ConstraintUsageException;
+	@Override
+	public void setConstraint(final Constraint constraint) throws ASN1ConstraintUsageException {
+		this.constraint = constraint;
+	}
+
+	@Override
+	public String toString() {
+		return "ASN1SequenceOf{" +
+		       "componentType=" + componentType +
+		       ", constraint=" + constraint +
+		       '}';
+	}
 }

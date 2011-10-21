@@ -65,7 +65,12 @@ public class ASN1Schema {
 
 	private ASN1Schema(Collection<Module> modules) {
 		this.modules.addAll(modules);
-		logger.warn("Created schema with starting modules:\n" + modules);
+		StringBuilder sb = new StringBuilder();
+		sb.append("Created schema with starting modules:\n");
+		for (Module m : modules) {
+			sb.append(m + "\n");
+		}
+		logger.info(sb);
 	}
 
 
