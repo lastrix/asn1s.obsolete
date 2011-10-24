@@ -24,6 +24,10 @@ package org.lastrix.asn1s.schema;
  */
 public class ASN1Integer extends ASN1Type {
 
+	public ASN1Integer() {
+		this.name = "INTEGER";
+	}
+
 	@Override
 	public String toString() {
 		return "ASN1IntegerType";

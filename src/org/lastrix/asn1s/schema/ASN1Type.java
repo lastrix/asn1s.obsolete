@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
  */
 public class ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Type.class);
+	protected String     name;
+	protected ASN1Module module;
 
 	public static ASN1Type createTypeFor(Object clazz) {
 //		logger.info("Requested class for '" + clazz + "'.");
@@ -41,5 +43,22 @@ public class ASN1Type {
 		}
 		//no type for such object
 		return null;
+	}
+
+	ASN1Module getModule() {
+		return module;
+	}
+
+	void setModule(final ASN1Module module) {
+//		logger.warn(String.format("Module set for %s (%s)", this, module));
+		this.module = module;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getTypeId() {
+		return module.getName() + "." + name;
 	}
 }

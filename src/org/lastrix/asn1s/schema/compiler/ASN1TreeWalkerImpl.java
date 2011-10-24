@@ -97,8 +97,8 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final Imports i = (moduleStack.peek() instanceof Imports) ? (Imports) moduleStack.poll() : new Imports(null);
 		final Vector assignments = (Vector) moduleStack.poll();
 
-		final Module module = (e.all) ? new Module(moduleId, defaultTaggingMethod, extensibilityImplied, true, i.imports, assignments)
-		                              : new Module(moduleId, defaultTaggingMethod, extensibilityImplied, e.exports, i.imports, assignments);
+		final ASN1Module module = (e.all) ? new ASN1Module(moduleId, defaultTaggingMethod, extensibilityImplied, true, i.imports, assignments)
+		                                  : new ASN1Module(moduleId, defaultTaggingMethod, extensibilityImplied, e.exports, i.imports, assignments);
 
 		//actually we have no need to store it in stack
 //		stack.push(module);
@@ -226,7 +226,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 //		super.closeType();
 		final LinkedList<Object> typeStack = transferTill(BlockTag.TYPE);
 		final Object type = typeStack.poll();
-		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
+		final ASN1Type asn1type = schema.findType(type);//ASN1Type.createTypeFor(type);
 		if (typeStack.size() == 1) {
 			stack.push(new ASN1ConstrainedType(asn1type, (Constraint) typeStack.poll()));
 		} else if (typeStack.isEmpty()) {
@@ -678,7 +678,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void typeInteger() {
 //		super.typeInteger();
-		stack.push(Long.class);
+		stack.push("INTEGER");
 	}
 
 	@Override

@@ -23,13 +23,16 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.ASN1Parser;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base class that should be used to save/load data from binary ASN1 notation format (*.asn1bin)
@@ -40,18 +43,46 @@ import java.util.List;
 public class ASN1Schema {
 	private static final Logger logger = Logger.getLogger(ASN1Schema.class);
 
-	private final List<Module>   modules = new ArrayList<Module>();
 	/**
-	 * List that holds every type exported from modules
+	 * Modules in this schema
+	 */
+	private final Map<String, ASN1Module> modules = new HashMap<String, ASN1Module>();
+
+	/**
+	 * Storage for all exports where key is [ModuleName].[TypeName]
 	 *
 	 * @see #modules
 	 */
-	private final List<ASN1Type> types   = new ArrayList<ASN1Type>();
+	private final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
 
+	/**
+	 * Storage for all exports where key is [TypeName]
+	 * If some types has same [TypeName] only last appear here.
+	 *
+	 * @see #types
+	 */
+	private final Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
+
+
+	/**
+	 * Create new schema and load modules into it
+	 *
+	 * @param fileName - the schema file
+	 *
+	 * @return ASN1Schema or null
+	 */
 	public static ASN1Schema loadSchema(String fileName) {
 		return loadSchema(fileName, null);
 	}
 
+	/**
+	 * Create new schema and load modules into it
+	 *
+	 * @param fileName - the schema file
+	 * @param s        - the schema where modules  should be stored
+	 *
+	 * @return ASN1Schema or null
+	 */
 	public static ASN1Schema loadSchema(String fileName, ASN1Schema s) {
 		final ASN1Schema schema = (s == null) ? new ASN1Schema() : s;
 		try {
@@ -70,10 +101,11 @@ public class ASN1Schema {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("Created schema with starting modules:\n");
-			for (Module m : schema.modules) {
+			for (ASN1Module m : schema.modules.values()) {
 				sb.append(m + "\n");
 			}
 			logger.info(sb);
+			schema.validate();
 			return schema;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,14 +114,19 @@ public class ASN1Schema {
 	}
 
 	private ASN1Schema() {
+		addModule(ASN1Module.defaultModule);
 		logger.info("Created new schema.");
 	}
 
-	private ASN1Schema(Collection<Module> modules) {
-		this.modules.addAll(modules);
+	private ASN1Schema(Collection<ASN1Module> modules) {
+		this();
+		for (ASN1Module m : modules) {
+			this.modules.put(m.getModuleId(), m);
+		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Created schema with starting modules:\n");
-		for (Module m : modules) {
+		for (ASN1Module m : modules) {
 			sb.append(m + "\n");
 		}
 		logger.info(sb);
@@ -110,7 +147,54 @@ public class ASN1Schema {
 	 *
 	 * @param module - the module to be added
 	 */
-	public void addModule(final Module module) {
-		modules.add(module);
+	public void addModule(final ASN1Module module) {
+		modules.put(module.getModuleId(), module);
+		module.setSchema(this);
+	}
+
+	/**
+	 * Register new type in schema scope
+	 *
+	 * @param type - the ASN1Type
+	 */
+	void addType(ASN1Type type) {
+		types.put(type.getTypeId(), type);
+		simpleIndexedTypes.put(type.getName(), type);
+	}
+
+	/**
+	 * Write object into OutputStream encoding it with ASN.1
+	 *
+	 * @param o  - the object to be saved
+	 * @param os - the output stream
+	 */
+	public void write(Object o, OutputStream os) throws ASN1ProtocolException {
+		//TODO: implement this
+	}
+
+	/**
+	 * Read object from InputStream decoding it with ASN.1
+	 *
+	 * @param is - the InputStream
+	 *
+	 * @return an Object
+	 */
+	public Object read(InputStream is) throws ASN1ProtocolException {
+		//TODO: implement this
+		return null;
+	}
+
+	public ASN1Type findType(final Object type) {
+		if (type instanceof String) {
+			ASN1Type t = types.get(type);
+			if (t == null) {
+				t = simpleIndexedTypes.get(type);
+			}
+			return t;
+		} else if (type instanceof ASN1Type) {
+			return (ASN1Type) type;
+		}
+		//i can not do anything here, i'm so sorry ;)
+		return null;
 	}
 }

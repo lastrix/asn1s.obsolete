@@ -29,6 +29,8 @@ public class ASN1ConstrainedType extends ASN1Type {
 	public ASN1ConstrainedType(final ASN1Type type, final Constraint constraint) {
 		this.type = type;
 		this.constraint = constraint;
+		//constrained type can not have it's own name, so get it from base
+		this.name = type.getName();
 	}
 
 	public Constraint getConstraint() {

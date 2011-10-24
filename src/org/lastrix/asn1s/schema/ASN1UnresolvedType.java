@@ -24,8 +24,7 @@ package org.lastrix.asn1s.schema;
  */
 public class ASN1UnresolvedType extends ASN1Type {
 
-	public final String name;
-	public final String moduleName;
+	private final String moduleName;
 
 	public ASN1UnresolvedType(final String name, final String moduleName) {
 		if (name == null) {
@@ -47,5 +46,9 @@ public class ASN1UnresolvedType extends ASN1Type {
 	@Override
 	public String toString() {
 		return "ASN1UnresolvedType{" + ((moduleName != null) ? moduleName + "." + name : name) + '}';
+	}
+
+	public String getModuleName() {
+		return moduleName;
 	}
 }

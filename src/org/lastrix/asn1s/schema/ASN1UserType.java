@@ -27,8 +27,6 @@ package org.lastrix.asn1s.schema;
 public class ASN1UserType extends ASN1Type {
 
 	private ASN1Type baseType;
-	private String   name;
-	private Module   module;
 
 
 	/**
@@ -54,23 +52,5 @@ public class ASN1UserType extends ASN1Type {
 		       name + '\'' +
 		       ", baseType=" + baseType +
 		       '}';
-	}
-
-	/**
-	 * Get module where this type is lying
-	 *
-	 * @return an Module
-	 */
-	public Module getModule() {
-		return module;
-	}
-
-	/**
-	 * Set type module
-	 *
-	 * @param module - the module
-	 */
-	public void setModule(final Module module) {
-		this.module = module;
 	}
 }
