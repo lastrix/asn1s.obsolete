@@ -290,9 +290,9 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		ASN1Type eType = (ASN1Type) sofStack.poll();
 		Constraint c = (Constraint) sofStack.poll();
 		if (c != null) {
-			stack.push(new ASN1ConstrainedType(new ASN1SequenceOf(eType), c));
+			stack.push(new ASN1ConstrainedType(new ASN1Sequence(new ASN1Type[]{eType}), c));
 		} else {
-			stack.push(new ASN1SequenceOf(eType));
+			stack.push(new ASN1Sequence(new ASN1Type[]{eType}));
 		}
 	}
 

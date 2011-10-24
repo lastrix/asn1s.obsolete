@@ -23,6 +23,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.ASN1Parser;
@@ -189,11 +190,11 @@ public class ASN1Schema {
 	 * @param o  - the object to be saved
 	 * @param os - the output stream
 	 */
-	public void write(Object o, OutputStream os) throws ASN1ProtocolException, IOException {
+	public void write(Object o, OutputStream os) throws ASN1Exception, IOException {
 		//TODO: implement this
 		ASN1Type type = getHandler(o);
-		logger.warn(String.format("Selected '%s' for %s", type, o));
-		type.write(o, os);
+		logger.warn(String.format("Selected '%s' for %s", type.getTypeId(), o));
+		type.write(o, os, true);
 	}
 
 	/**

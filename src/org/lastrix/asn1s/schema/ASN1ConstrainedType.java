@@ -18,6 +18,11 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.exception.ASN1Exception;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -50,5 +55,46 @@ public class ASN1ConstrainedType extends ASN1Type {
 		return "ASN1ConstrainedType{" + type + " " +
 		       constraint +
 		       '}';
+	}
+
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		//this is simple?
+		//FIXME: constraint checks?
+		type.write(o, os, header);
+	}
+
+	@Override
+	public boolean isConstructed() {
+		return type.isConstructed();
+	}
+
+	@Override
+	void setModule(final ASN1Module module) {
+		super.setModule(module);
+		if (type.getModule() == null) {
+			type.setModule(module);
+		}
+	}
+
+	/**
+	 * Validate this object
+	 */
+	@Override
+	public void validate() {
+		if (type instanceof ASN1UnresolvedType) {
+			type = getModule().getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+		} else {
+			type.validate();
+		}
 	}
 }

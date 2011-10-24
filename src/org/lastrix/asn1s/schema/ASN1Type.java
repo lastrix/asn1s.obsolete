@@ -19,6 +19,7 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,7 +28,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Type {
+public abstract class ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Type.class);
 	protected String     name;
 	protected ASN1Module module;
@@ -70,7 +71,21 @@ public class ASN1Type {
 		return getClass().getSimpleName();
 	}
 
-	public void write(final Object o, final OutputStream os) throws IOException {
-		//TODO: nothing to do?
-	}
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	public abstract void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception;
+
+	public abstract boolean isConstructed();
+
+	/**
+	 * Validate this object
+	 */
+	public abstract void validate();
 }

@@ -18,6 +18,8 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.exception.ASN1Exception;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -57,8 +59,42 @@ public class ASN1UserType extends ASN1Type {
 		       '}';
 	}
 
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
 	@Override
-	public void write(final Object o, final OutputStream os) throws IOException {
-		baseType.write(o, os);
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		baseType.write(o, os, header);
+	}
+
+	@Override
+	public boolean isConstructed() {
+		return baseType.isConstructed();
+	}
+
+	@Override
+	void setModule(final ASN1Module module) {
+		super.setModule(module);
+		if (baseType.getModule() == null) {
+			baseType.setModule(module);
+		}
+	}
+
+	/**
+	 * Validate this object
+	 */
+	@Override
+	public void validate() {
+		if (baseType instanceof ASN1UnresolvedType) {
+			baseType = getModule().getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
+		} else {
+			baseType.validate();
+		}
 	}
 }

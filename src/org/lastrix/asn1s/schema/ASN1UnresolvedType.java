@@ -18,6 +18,11 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.exception.ASN1Exception;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -48,7 +53,35 @@ public class ASN1UnresolvedType extends ASN1Type {
 		return "ASN1UnresolvedType{" + ((moduleName != null) ? moduleName + "." + name : name) + '}';
 	}
 
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		throw new UnsupportedOperationException();
+	}
+
 	public String getModuleName() {
 		return moduleName;
+	}
+
+	@Override
+	public boolean isConstructed() {
+		return false;
+	}
+
+	/**
+	 * Validate this object
+	 */
+	@Override
+	public void validate() {
+		// TODO: unimplemented method stub
+
 	}
 }

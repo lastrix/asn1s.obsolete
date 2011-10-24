@@ -188,10 +188,22 @@ public class ASN1Module {
 	 */
 	void validate() {
 		// TODO: unimplemented method stub
+		//replace all unresolved types with valid ones
+		for (ASN1Type t : types.values()) {
+			t.validate();
+		}
+
 		//check exports
 		for (String s : exports) {
 			if (!(typesExported.get(s) instanceof ASN1Type) || typesExported.get(s) instanceof ASN1UnresolvedType) {
 				logger.warn(String.format("Symbols '%s' declared in exports, but type is not found in this module.", s));
+			}
+		}
+
+		//find all unresolved types
+		for (ASN1Type t : types.values()) {
+			if (t instanceof ASN1UnresolvedType) {
+				logger.warn("Found unresolved type " + t.getTypeId());
 			}
 		}
 	}
@@ -237,5 +249,20 @@ public class ASN1Module {
 			return getSchema().getHandler(o);
 		}
 		return result;
+	}
+
+	public ASN1TreeWalker.TaggingMethod getDefaultTaggingMethod() {
+		return defaultTaggingMethod;
+	}
+
+	public ASN1Type getType(final String name, final String moduleId) {
+		if (moduleId != null && !getModuleId().equals(moduleId)) {
+			return null;
+		}
+		ASN1Type t = types.get(name);
+		if (t == null) {
+			return null;
+		}
+		return t;
 	}
 }
