@@ -18,18 +18,27 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.protocol.ASN1IntegerCoder;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
  */
 public class ASN1Integer extends ASN1Type {
 
+	public static final String NAME = "INTEGER";
+
 	public ASN1Integer() {
-		this.name = "INTEGER";
+		this.name = NAME;
 	}
 
 	@Override
-	public String toString() {
-		return "ASN1IntegerType";
+	public void write(final Object o, final OutputStream os) throws IOException {
+//		super.write(o, os);
+		ASN1IntegerCoder coder = new ASN1IntegerCoder();
+		coder.encode(os, o);
 	}
 }

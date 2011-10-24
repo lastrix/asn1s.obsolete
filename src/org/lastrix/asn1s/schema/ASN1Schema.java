@@ -28,8 +28,10 @@ import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.ASN1Parser;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +65,15 @@ public class ASN1Schema {
 	 */
 	private final Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
 
+	/**
+	 * Defines which ASN1Type should handle specified class
+	 */
+	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
+
+	/**
+	 * Defines which class handled by ASN1Type
+	 */
+	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
 
 	/**
 	 * Create new schema and load modules into it
@@ -104,6 +115,11 @@ public class ASN1Schema {
 			for (ASN1Module m : schema.modules.values()) {
 				sb.append(m + "\n");
 			}
+			//TestSeqOf
+			//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
+			schema.class2type.put(ArrayList.class, schema.simpleIndexedTypes.get("TestSeqOf"));
+			schema.type2class.put(schema.simpleIndexedTypes.get("TestSeqOf"), ArrayList.class);
+
 			logger.info(sb);
 			schema.validate();
 			return schema;
@@ -115,6 +131,11 @@ public class ASN1Schema {
 
 	private ASN1Schema() {
 		addModule(ASN1Module.defaultModule);
+
+		//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
+		class2type.put(Integer.class, simpleIndexedTypes.get(ASN1Integer.NAME));
+		type2class.put(simpleIndexedTypes.get(ASN1Integer.NAME), Integer.class);
+
 		logger.info("Created new schema.");
 	}
 
@@ -168,8 +189,11 @@ public class ASN1Schema {
 	 * @param o  - the object to be saved
 	 * @param os - the output stream
 	 */
-	public void write(Object o, OutputStream os) throws ASN1ProtocolException {
+	public void write(Object o, OutputStream os) throws ASN1ProtocolException, IOException {
 		//TODO: implement this
+		ASN1Type type = getHandler(o);
+		logger.warn(String.format("Selected '%s' for %s", type, o));
+		type.write(o, os);
 	}
 
 	/**
@@ -196,5 +220,9 @@ public class ASN1Schema {
 		}
 		//i can not do anything here, i'm so sorry ;)
 		return null;
+	}
+
+	public ASN1Type getHandler(final Object o) {
+		return class2type.get(o.getClass());
 	}
 }

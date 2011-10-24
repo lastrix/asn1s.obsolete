@@ -18,6 +18,9 @@
 
 package org.lastrix.asn1s.schema;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * Used to handle user defined types.
  *
@@ -52,5 +55,10 @@ public class ASN1UserType extends ASN1Type {
 		       name + '\'' +
 		       ", baseType=" + baseType +
 		       '}';
+	}
+
+	@Override
+	public void write(final Object o, final OutputStream os) throws IOException {
+		baseType.write(o, os);
 	}
 }

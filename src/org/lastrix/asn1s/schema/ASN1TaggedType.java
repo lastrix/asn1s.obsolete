@@ -20,6 +20,9 @@ package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -62,5 +65,11 @@ public class ASN1TaggedType extends ASN1Type {
 		       " " + tagNumber +
 		       "] " + subType +
 		       " " + taggingMethod + " }";
+	}
+
+	@Override
+	public void write(final Object o, final OutputStream os) throws IOException {
+		// TODO: unimplemented method stub
+		subType.write(o, os);
 	}
 }

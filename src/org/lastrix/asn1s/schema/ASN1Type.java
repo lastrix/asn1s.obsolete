@@ -20,6 +20,9 @@ package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -60,5 +63,14 @@ public class ASN1Type {
 
 	public String getTypeId() {
 		return module.getName() + "." + name;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
+
+	public void write(final Object o, final OutputStream os) throws IOException {
+		//TODO: nothing to do?
 	}
 }

@@ -18,11 +18,20 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.apache.log4j.Logger;
+import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.protocol.Tag;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
 /**
  * @author lastrix
  * @version 1.0
  */
 public class ASN1SequenceOf extends ASN1Type {
+	private final Logger logger = Logger.getLogger(ASN1SequenceOf.class);
 
 	private final ASN1Type componentType;
 
@@ -33,7 +42,24 @@ public class ASN1SequenceOf extends ASN1Type {
 
 	@Override
 	public String toString() {
-		return "ASN1SequenceOf{" + componentType +
-		       '}';
+		return "SEQUENCE OF " + componentType;
+	}
+
+	@Override
+	public void write(final Object o, final OutputStream os) throws IOException {
+		logger.warn("Writing " + o);
+		final List list = (List) o;
+		//write header
+		os.write(new Header(17, (byte) 0, true, Tag.FORM_INDEFINITE).toByteArray());
+
+		//write length (indefinite)
+		Header.writeLength(os, Tag.FORM_INDEFINITE);
+		for (Object lo : list) {
+			componentType.write(lo, os);
+			//getModule().get
+		}
+
+		//write EOC
+		os.write(Header.EOC.toByteArray());
 	}
 }

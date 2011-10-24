@@ -68,6 +68,15 @@ public class ASN1Module {
 	private final List<SymbolsFromModule>      imports;
 	private final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
 
+	/**
+	 * Defines which ASN1Type should handle specified class
+	 */
+	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
+
+	/**
+	 * Defines which class handled by ASN1Type
+	 */
+	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
 
 	/**
 	 * Storage for all exports where key is [TypeName]
@@ -220,5 +229,13 @@ public class ASN1Module {
 	 */
 	public String getName() {
 		return moduleId;
+	}
+
+	ASN1Type getHandler(Object o) {
+		ASN1Type result = class2type.get(o.getClass());
+		if (result == null) {
+			return getSchema().getHandler(o);
+		}
+		return result;
 	}
 }
