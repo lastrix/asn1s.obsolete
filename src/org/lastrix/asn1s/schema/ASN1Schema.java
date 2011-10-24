@@ -40,9 +40,20 @@ import java.util.List;
 public class ASN1Schema {
 	private static final Logger logger = Logger.getLogger(ASN1Schema.class);
 
-	private final List<Module> modules = new ArrayList<Module>();
+	private final List<Module>   modules = new ArrayList<Module>();
+	/**
+	 * List that holds every type exported from modules
+	 *
+	 * @see #modules
+	 */
+	private final List<ASN1Type> types   = new ArrayList<ASN1Type>();
 
 	public static ASN1Schema loadSchema(String fileName) {
+		return loadSchema(fileName, null);
+	}
+
+	public static ASN1Schema loadSchema(String fileName, ASN1Schema s) {
+		final ASN1Schema schema = (s == null) ? new ASN1Schema() : s;
 		try {
 			ASN1Lexer lex = new ASN1Lexer(new ANTLRFileStream(fileName, "UTF8"));
 			CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -54,13 +65,24 @@ public class ASN1Schema {
 			CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
 
 
-			ASN1TreeWalkerImpl walker = new ASN1TreeWalkerImpl(nodes);
+			ASN1TreeWalkerImpl walker = new ASN1TreeWalkerImpl(nodes, schema);
 			walker.downup(t);
-			return new ASN1Schema(walker.getModules());
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("Created schema with starting modules:\n");
+			for (Module m : schema.modules) {
+				sb.append(m + "\n");
+			}
+			logger.info(sb);
+			return schema;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private ASN1Schema() {
+		logger.info("Created new schema.");
 	}
 
 	private ASN1Schema(Collection<Module> modules) {
@@ -81,5 +103,14 @@ public class ASN1Schema {
 	 */
 	public boolean validate() {
 		return false;
+	}
+
+	/**
+	 * Add module to this schema, module should invalidated for schema after that.
+	 *
+	 * @param module - the module to be added
+	 */
+	public void addModule(final Module module) {
+		modules.add(module);
 	}
 }

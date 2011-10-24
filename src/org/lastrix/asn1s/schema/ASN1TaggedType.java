@@ -18,7 +18,6 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
 
 /**
@@ -31,7 +30,6 @@ public class ASN1TaggedType extends ASN1Type {
 	private final ASN1TreeWalker.TagClass      tagClass;
 	private final int                          tagNumber;
 	private final ASN1Type                     subType;
-	private       Constraint                   constraint;
 
 	public ASN1TaggedType(
 	                     final ASN1Type subType,
@@ -55,19 +53,6 @@ public class ASN1TaggedType extends ASN1Type {
 		} else {
 			this.taggingMethod = taggingMethod;
 		}
-		this.constraint = constraint;
-	}
-
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	@Override
-	public void setConstraint(final Constraint constraint) throws ASN1ConstraintUsageException {
-		this.constraint = constraint;
 	}
 
 
@@ -76,7 +61,6 @@ public class ASN1TaggedType extends ASN1Type {
 		return "ASN1TaggedType{ [" + ((tagClass != null) ? tagClass : "") +
 		       " " + tagNumber +
 		       "] " + subType +
-		       " " + taggingMethod +
-		       ((constraint != null) ? " ( " + constraint + " )" : "") + " }";
+		       " " + taggingMethod + " }";
 	}
 }

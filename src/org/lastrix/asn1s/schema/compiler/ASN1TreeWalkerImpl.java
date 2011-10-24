@@ -18,12 +18,12 @@
 
 package org.lastrix.asn1s.schema.compiler;
 
-import org.antlr.runtime.tree.TreeNodeStream;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 import org.lastrix.asn1s.schema.*;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Vector;
 
 /**
  * @author lastrix
@@ -32,89 +32,37 @@ import java.util.*;
 public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	private final static Logger logger = Logger.getLogger(ASN1TreeWalkerImpl.class);
 
-	private static class Endpoint {
-		final boolean                            less;
-		final ValueRangeConstraint.EndpointState sp;
-		final Object                             value;
+	/**
+	 * The schema where every valid module should be placed
+	 */
+	private final ASN1Schema schema;
 
-		private Endpoint(final boolean less, final Object value) {
-			this(less, value, ValueRangeConstraint.EndpointState.NONE);
-		}
-
-		private Endpoint(final boolean less, final Object value, final ValueRangeConstraint.EndpointState sp) {
-			this.less = less;
-			this.sp = sp;
-			this.value = value;
-		}
-
-		@Override
-		public String toString() {
-			return "Endpoint{" +
-			       "less=" + less +
-			       ", value=" + value +
-			       ", sp=" + sp +
-			       '}';
-		}
-	}
-
-	private static class Exports {
-		final Vector  exports;
-		final boolean all;
-
-		private Exports(final boolean all, final Vector exports) {
-			this.all = all;
-			this.exports = exports;
-		}
-
-		@Override
-		public String toString() {
-			return "Exports{" + ((all) ? "ALL" : exports) +
-			       '}';
-		}
-	}
-
-	private static class Imports {
-		final Vector imports;
-
-		private Imports(final Vector imports) {
-			this.imports = imports;
-		}
-
-		@Override
-		public String toString() {
-			return "Imports{" + imports +
-			       '}';
-		}
-	}
-
-	private enum BlockTag {
-		MODULE,
-		VECTOR,
-		TYPE_DEFINITION,
-		CONSTRAINT,
-		TYPE,
-		TAGGED_TYPE,
-		UNION,
-		CONSTRAINT_VALUE_RANGE,
-		ENDPOINT,
-		VALUE,
-		CONSTRAINT_VALUE,
-		INTERSECTION,
-		CONSTRAINT_SIZE,
-		SYMBOLS_FROM_MODULE,
-		IMPORTS,
-		EXPORTS,
-		SEQUENCEOF,
-		TYPE_REFERENCE,
-		MODULE_ID
-	}
-
+	/**
+	 * Stack is used to construct ASN1 schema objects
+	 */
 	private final LinkedList<Object> stack = new LinkedList<Object>();
 
-	public ASN1TreeWalkerImpl(TreeNodeStream input) {
-		super(input);
+	/**
+	 * Create tree walker for nodes and schema that should accept modules
+	 *
+	 * @param nodes  - tree nodes
+	 * @param schema - the schema
+	 */
+	public ASN1TreeWalkerImpl(
+	                         final CommonTreeNodeStream nodes,
+	                         final ASN1Schema schema
+	                         ) {
+		super(nodes);
+		this.schema = schema;
 	}
 
+	/**
+	 * Pop values from stack into result till 'o' found ('o' would be removed from stack and NOT added to result)
+	 *
+	 * @param o - the needle
+	 *
+	 * @return an stack
+	 */
 	protected final LinkedList<Object> transferTill(final Object o) {
 		final LinkedList<Object> cStack = new LinkedList<Object>();
 		Object tmp = stack.poll();
@@ -128,23 +76,6 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		return cStack;
 	}
 
-	/**
-	 * Return collection of modules
-	 *
-	 * @return
-	 */
-	public Collection<Module> getModules() {
-		List<Module> list = new ArrayList<Module>();
-		while (stack.size() > 0) {
-			final Module m = (Module) stack.poll();
-			if (m == null) {
-				throw new IllegalStateException();
-			}
-			list.add(m);
-		}
-		return list;
-	}
-
 	@Override
 	protected void openModule() {
 //		super.openModule();
@@ -155,18 +86,24 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void closeModule() {
 //		super.closeModule();
 		final LinkedList<Object> moduleStack = transferTill(BlockTag.MODULE);
+		//TODO: module id
 		final String moduleId = (String) moduleStack.poll();
+
 		final TaggingMethod defaultTaggingMethod = (moduleStack.peek() instanceof TaggingMethod) ?
 		                                           (TaggingMethod) moduleStack.poll() :
 		                                           TaggingMethod.AUTOMATIC;
 		final Boolean extensibilityImplied = (moduleStack.peek() instanceof Boolean) ? (Boolean) moduleStack.poll() : false;
-		final Exports e = (moduleStack.peek() instanceof Exports) ? (Exports) moduleStack.poll() : null;
-		final Imports i = (moduleStack.peek() instanceof Imports) ? (Imports) moduleStack.poll() : null;
+		final Exports e = (moduleStack.peek() instanceof Exports) ? (Exports) moduleStack.poll() : new Exports(false, null);
+		final Imports i = (moduleStack.peek() instanceof Imports) ? (Imports) moduleStack.poll() : new Imports(null);
 		final Vector assignments = (Vector) moduleStack.poll();
 
 		final Module module = (e.all) ? new Module(moduleId, defaultTaggingMethod, extensibilityImplied, true, i.imports, assignments)
 		                              : new Module(moduleId, defaultTaggingMethod, extensibilityImplied, e.exports, i.imports, assignments);
-		stack.push(module);
+
+		//actually we have no need to store it in stack
+//		stack.push(module);
+		//now add module to schema
+		schema.addModule(module);
 	}
 
 	@Override
@@ -250,12 +187,14 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void openValueAssignment(final String valueName) {
 		// TODO: unimplemented method stub
 		super.openValueAssignment(valueName);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	protected void closeValueAssignment() {
 		// TODO: unimplemented method stub
 		super.closeValueAssignment();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -273,7 +212,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final String typeName = (String) typeDefStack.poll();
 		final ASN1Type type = (ASN1Type) typeDefStack.poll();
 
-		stack.push(new ASN1UserType(typeName, type, (Constraint) typeDefStack.poll()));
+		stack.push(new ASN1UserType(typeName, type));
 	}
 
 	@Override
@@ -288,14 +227,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> typeStack = transferTill(BlockTag.TYPE);
 		final Object type = typeStack.poll();
 		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
-//		logger.info(type + " " + asn1type + "\n" + typeStack);
-		stack.push(asn1type);
 		if (typeStack.size() == 1) {
-			try {
-				asn1type.setConstraint((Constraint) typeStack.poll());
-			} catch (ASN1ConstraintUsageException e) {
-				logger.warn("Exception:", e);
-			}
+			stack.push(new ASN1ConstrainedType(asn1type, (Constraint) typeStack.poll()));
+		} else if (typeStack.isEmpty()) {
+			stack.push(asn1type);
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 
@@ -352,7 +289,11 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> sofStack = transferTill(BlockTag.SEQUENCEOF);
 		ASN1Type eType = (ASN1Type) sofStack.poll();
 		Constraint c = (Constraint) sofStack.poll();
-		stack.push(new ASN1SequenceOf(eType, c));
+		if (c != null) {
+			stack.push(new ASN1ConstrainedType(new ASN1SequenceOf(eType), c));
+		} else {
+			stack.push(new ASN1SequenceOf(eType));
+		}
 	}
 
 	@Override
@@ -611,8 +552,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> trStack = transferTill(BlockTag.TYPE_REFERENCE);
 		String moduleName = (String) trStack.poll();
 		String typeName = (String) trStack.poll();
+		Constraint constraint = (Constraint) trStack.poll();
 		//TODO: validation
-		stack.push(new ASN1UnresolvedType(typeName, moduleName, (Constraint) trStack.poll()));
+		if (constraint == null) {
+			stack.push(new ASN1UnresolvedType(typeName, moduleName));
+		} else {
+			stack.push(new ASN1ConstrainedType(new ASN1UnresolvedType(typeName, moduleName), constraint));
+		}
 	}
 
 	@Override
@@ -811,5 +757,83 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void extensibilityImplied() {
 //		super.extensibilityImplied();
 		stack.push(true);
+	}
+
+
+	private static class Endpoint {
+		final boolean                            less;
+		final ValueRangeConstraint.EndpointState sp;
+		final Object                             value;
+
+		private Endpoint(final boolean less, final Object value) {
+			this(less, value, ValueRangeConstraint.EndpointState.NONE);
+		}
+
+		private Endpoint(final boolean less, final Object value, final ValueRangeConstraint.EndpointState sp) {
+			this.less = less;
+			this.sp = sp;
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "Endpoint{" +
+			       "less=" + less +
+			       ", value=" + value +
+			       ", sp=" + sp +
+			       '}';
+		}
+	}
+
+	private static class Exports {
+		final Vector  exports;
+		final boolean all;
+
+		private Exports(final boolean all, final Vector exports) {
+			this.all = all;
+			this.exports = exports;
+		}
+
+		@Override
+		public String toString() {
+			return "Exports{" + ((all) ? "ALL" : exports) +
+			       '}';
+		}
+	}
+
+	private static class Imports {
+		final Vector imports;
+
+		private Imports(final Vector imports) {
+			this.imports = imports;
+		}
+
+		@Override
+		public String toString() {
+			return "Imports{" + imports +
+			       '}';
+		}
+	}
+
+	private enum BlockTag {
+		MODULE,
+		VECTOR,
+		TYPE_DEFINITION,
+		CONSTRAINT,
+		TYPE,
+		TAGGED_TYPE,
+		UNION,
+		CONSTRAINT_VALUE_RANGE,
+		ENDPOINT,
+		VALUE,
+		CONSTRAINT_VALUE,
+		INTERSECTION,
+		CONSTRAINT_SIZE,
+		SYMBOLS_FROM_MODULE,
+		IMPORTS,
+		EXPORTS,
+		SEQUENCEOF,
+		TYPE_REFERENCE,
+		MODULE_ID
 	}
 }

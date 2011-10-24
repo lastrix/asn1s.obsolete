@@ -19,15 +19,13 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
+public class ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Type.class);
-
 
 	public static ASN1Type createTypeFor(Object clazz) {
 //		logger.info("Requested class for '" + clazz + "'.");
@@ -44,13 +42,4 @@ public abstract class ASN1Type {
 		//no type for such object
 		return null;
 	}
-
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	public abstract void setConstraint(Constraint constraint) throws ASN1ConstraintUsageException;
 }

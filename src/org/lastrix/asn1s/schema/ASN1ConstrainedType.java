@@ -22,10 +22,31 @@ package org.lastrix.asn1s.schema;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Integer extends ASN1Type {
+public class ASN1ConstrainedType extends ASN1Type {
+	private final Constraint constraint;
+	private       ASN1Type   type;
+
+	public ASN1ConstrainedType(final ASN1Type type, final Constraint constraint) {
+		this.type = type;
+		this.constraint = constraint;
+	}
+
+	public Constraint getConstraint() {
+		return constraint;
+	}
+
+	public ASN1Type getType() {
+		return type;
+	}
+
+	void setType(final ASN1Type type) {
+		this.type = type;
+	}
 
 	@Override
 	public String toString() {
-		return "ASN1IntegerType";
+		return "ASN1ConstrainedType{" + type + " " +
+		       constraint +
+		       '}';
 	}
 }

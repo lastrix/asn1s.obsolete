@@ -18,39 +18,22 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
-
 /**
  * @author lastrix
  * @version 1.0
  */
 public class ASN1SequenceOf extends ASN1Type {
 
-	private final ASN1Type   componentType;
-	private       Constraint constraint;
+	private final ASN1Type componentType;
 
-	public ASN1SequenceOf(final ASN1Type componentType, final Constraint constraint) {
+	public ASN1SequenceOf(final ASN1Type componentType) {
 		this.componentType = componentType;
-		this.constraint = constraint;
 	}
 
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	@Override
-	public void setConstraint(final Constraint constraint) throws ASN1ConstraintUsageException {
-		this.constraint = constraint;
-	}
 
 	@Override
 	public String toString() {
-		return "ASN1SequenceOf{" +
-		       "componentType=" + componentType +
-		       ", constraint=" + constraint +
+		return "ASN1SequenceOf{" + componentType +
 		       '}';
 	}
 }

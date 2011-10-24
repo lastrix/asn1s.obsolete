@@ -18,8 +18,6 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
-
 /**
  * Used to handle user defined types.
  *
@@ -28,49 +26,25 @@ import org.lastrix.asn1s.exception.ASN1ConstraintUsageException;
  */
 public class ASN1UserType extends ASN1Type {
 
-	private Constraint constraint = null;
 	private ASN1Type baseType;
 	private String   name;
 	private Module   module;
 
+
 	/**
-	 * Create user type with name and baseType
+	 * Create user type with name, baseType
 	 *
 	 * @param name     - the name of user type
 	 * @param baseType - the base type which should handle loading/saving
-	 */
-	public ASN1UserType(final String name, final ASN1Type baseType) {
-		this(name, baseType, null);
-	}
-
-	/**
-	 * Create user type with name, baseType and constraint
-	 *
-	 * @param name       - the name of user type
-	 * @param baseType   - the base type which should handle loading/saving
-	 * @param constraint - the test parameter, which should check object sanity when loading/saving
 	 *
 	 * @throws NullPointerException if name or baseType is null
 	 */
-	public ASN1UserType(final String name, final ASN1Type baseType, final Constraint constraint) throws NullPointerException {
+	public ASN1UserType(final String name, final ASN1Type baseType) throws NullPointerException {
 		if (name == null || baseType == null) {
 			throw new NullPointerException();
 		}
 		this.name = name;
 		this.baseType = baseType;
-		this.constraint = constraint;
-	}
-
-	/**
-	 * Setup constraint for this type
-	 *
-	 * @param constraint - the constraint to use
-	 *
-	 * @throws ASN1ConstraintUsageException - if constraint can not be applied
-	 */
-	@Override
-	public void setConstraint(final Constraint constraint) throws ASN1ConstraintUsageException {
-		this.constraint = constraint;
 	}
 
 	@Override
@@ -79,7 +53,6 @@ public class ASN1UserType extends ASN1Type {
 		       '\'' + ((module == null) ? "" : module.getModuleId() + ".") +
 		       name + '\'' +
 		       ", baseType=" + baseType +
-		       ", constraint=" + constraint +
 		       '}';
 	}
 

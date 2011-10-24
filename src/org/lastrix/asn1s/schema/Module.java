@@ -30,6 +30,7 @@ import java.util.Vector;
  */
 public class Module {
 
+	private       ASN1Schema                   schema;
 	private final String                       moduleId;
 	private final ASN1TreeWalker.TaggingMethod defaultTaggingMethod;
 	private final boolean                      extensibilityImplied;
@@ -87,5 +88,33 @@ public class Module {
 		       ", imports=" + imports +
 		       ", types=" + types +
 		       '}';
+	}
+
+	void validate() {
+		// TODO: unimplemented method stub
+
+	}
+
+	/**
+	 * Get schema
+	 *
+	 * @return schema
+	 */
+	public ASN1Schema getSchema() {
+		return schema;
+	}
+
+	/**
+	 * Setup schema for this module, you can not set schema if it is already not null.
+	 * Validation called inside.
+	 *
+	 * @param schema - the schema
+	 */
+	public void setSchema(final ASN1Schema schema) {
+		if (this.schema != null) {
+			throw new IllegalStateException();
+		}
+		this.schema = schema;
+		validate();
 	}
 }
