@@ -116,6 +116,7 @@ public class ASN1Schema {
 			for (ASN1Module m : schema.modules.values()) {
 				sb.append(m + "\n");
 			}
+
 			//TestSeqOf
 			//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
 			schema.class2type.put(ArrayList.class, schema.simpleIndexedTypes.get("TestSeqOf"));

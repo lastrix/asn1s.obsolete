@@ -298,14 +298,17 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openSequence() {
-		// TODO: unimplemented method stub
-		super.openSequence();
+//		super.openSequence();
+		stack.push(BlockTag.SEQUENCE);
 	}
 
 	@Override
 	protected void closeSequence() {
-		// TODO: unimplemented method stub
-		super.closeSequence();
+//		super.closeSequence();
+		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
+		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) sStack.poll();
+		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1Type[componentTypes.size()])));
+		logger.warn(sStack);
 	}
 
 	@Override
@@ -364,14 +367,20 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openComponentType() {
-		// TODO: unimplemented method stub
-		super.openComponentType();
+//		super.openComponentType();
+		stack.push(BlockTag.COMPONENT_TYPE);
 	}
 
 	@Override
 	protected void closeComponentType() {
-		// TODO: unimplemented method stub
-		super.closeComponentType();
+//		super.closeComponentType();
+		final LinkedList<Object> ctStack = transferTill(BlockTag.COMPONENT_TYPE);
+		//FIXME: COMPONENTS OF is not handled!!!
+		while (!ctStack.isEmpty()) {
+			final NamedType type = (NamedType) ctStack.poll();
+			//TODO options
+			stack.push(new ASN1ComponentType(type.name, type.type));
+		}
 	}
 
 	@Override
@@ -412,14 +421,18 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openNamedType(final String name) {
-		// TODO: unimplemented method stub
-		super.openNamedType(name);
+//		super.openNamedType(name);
+		stack.push(BlockTag.NAMED_TYPE);
+		stack.push(name);
 	}
 
 	@Override
 	protected void closeNamedType() {
-		// TODO: unimplemented method stub
-		super.closeNamedType();
+//		super.closeNamedType();
+		final LinkedList<Object> ntStack = transferTill(BlockTag.NAMED_TYPE);
+		final String name = (String) ntStack.poll();
+		final ASN1Type type = (ASN1Type) ntStack.poll();
+		stack.push(new NamedType(name, type));
 	}
 
 	@Override
@@ -759,6 +772,24 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		stack.push(true);
 	}
 
+	private static class NamedType {
+		final String   name;
+		final ASN1Type type;
+
+		private NamedType(final String name, final ASN1Type type) {
+			this.name = name;
+			this.type = type;
+		}
+
+		@Override
+		public String toString() {
+			return "NamedType{" +
+			       "name='" + name + '\'' +
+			       ", type=" + type +
+			       '}';
+		}
+	}
+
 
 	private static class Endpoint {
 		final boolean                            less;
@@ -834,6 +865,9 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		EXPORTS,
 		SEQUENCEOF,
 		TYPE_REFERENCE,
+		SEQUENCE,
+		NAMED_TYPE,
+		COMPONENT_TYPE,
 		MODULE_ID
 	}
 }

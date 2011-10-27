@@ -21,15 +21,11 @@ package org.lastrix.asn1s;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.lastrix.asn1s.schema.ASN1Schema;
-import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -97,13 +93,14 @@ public class Asn1s {
 		initLogging();
 		final ASN1Schema s = ASN1Schema.loadSchema("/home/lastrix/dev/java/ASN1S/antlr/output/__Test___input.txt");
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		List<Integer> list = new ArrayList<Integer>(Arrays.asList(new Integer[]{0, 10}));
-		try {
-			s.write(list, bos);
-		} catch (Exception e) {
-			logger.warn("Exception:", e);
-		}
-		logger.warn(Utils.toHexString(bos.toByteArray()));
+
+//		List<Integer> list = new ArrayList<Integer>(Arrays.asList(new Integer[]{0, 10}));
+//		try {
+//			s.write(list, bos);
+//		} catch (Exception e) {
+//			logger.warn("Exception:", e);
+//		}
+//		logger.warn(Utils.toHexString(bos.toByteArray()));
 	}
 
 }
