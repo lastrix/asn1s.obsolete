@@ -70,7 +70,6 @@ public class ASN1Sequence extends ASN1Type {
 
 	@Override
 	public void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception {
-		final List list = (List) o;
 
 		if (header) {
 			//write header
@@ -80,19 +79,14 @@ public class ASN1Sequence extends ASN1Type {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
 		if (componentType.length == 1) {
 			// SEQUENCE OF
+			final List list = (List) o;
 			for (Object lo : list) {
 				componentType[0].write(lo, bos, true);
 			}
 		} else {
 			// SEQUENCE
-			int i = 0;
-			for (Object lo : list) {
-				if (i >= componentType.length) {
-					//we can not allow such
-					throw new ASN1Exception();
-				}
-				ASN1Type type = componentType[i++];
-				type.write(lo, bos, true);
+			for (ASN1Type t : componentType) {
+				t.write(o, bos, true);
 			}
 		}
 		final byte[] data = bos.toByteArray();

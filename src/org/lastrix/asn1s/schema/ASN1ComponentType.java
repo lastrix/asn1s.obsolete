@@ -19,11 +19,16 @@
 package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 
 /**
+ * Class for writing/reading specified object's field to/from ASN.1 notation.
+ * This class doesn't check object class, just tries to get a field
+ *
  * @author lastrix
  * @version 1.0
  */
@@ -51,8 +56,26 @@ public class ASN1ComponentType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		// TODO: unimplemented method stub
+		//let's find field with name in object class
+		Field f = null;
+		Class c = o.getClass();
+		while (c != null) {
+			try {
+				f = c.getDeclaredField(name);
+				f.setAccessible(true);
+			} catch (NoSuchFieldException e) {
+			}
+			c = c.getSuperclass();
+		}
+		if (f == null) { throw new ASN1ProtocolException("Object 'o' have got no field named " + name); }
 
+		Object value = null;
+		try {
+			value = f.get(o);
+		} catch (IllegalAccessException e) {
+			throw new ASN1Exception(e);
+		}
+		type.write(value, os, true);
 	}
 
 	@Override

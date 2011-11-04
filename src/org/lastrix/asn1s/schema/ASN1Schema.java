@@ -121,7 +121,8 @@ public class ASN1Schema {
 			//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
 			schema.class2type.put(ArrayList.class, schema.simpleIndexedTypes.get("TestSeqOf"));
 			schema.type2class.put(schema.simpleIndexedTypes.get("TestSeqOf"), ArrayList.class);
-
+			schema.class2type.put(SequenceOfTestClassImpl.class, schema.simpleIndexedTypes.get("TestSeq"));
+			schema.type2class.put(schema.simpleIndexedTypes.get("TestSeq"), SequenceOfTestClassImpl.class);
 			logger.info(sb);
 			schema.validate();
 			return schema;

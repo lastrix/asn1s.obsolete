@@ -180,7 +180,7 @@ public class ASN1Module {
 		       ", defaultTaggingMethod=" + defaultTaggingMethod +
 		       ", extensibilityImplied=" + extensibilityImplied +
 		       ", exportAll=" + exportAll +
-		       ", definedTypes=" + types.values() + '}';
+		       ", definedTypes=" + types.keySet() + '}';
 	}
 
 	/**
