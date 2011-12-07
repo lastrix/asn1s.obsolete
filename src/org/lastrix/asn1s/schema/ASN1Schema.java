@@ -111,7 +111,7 @@ public class ASN1Schema {
 			}
 			logger.info(sb);
 
-//			logger.warn(schema.type2class.keySet());
+			logger.warn(schema.type2class.keySet());
 //			logger.warn(schema.class2type.keySet());
 			schema.validate();
 			return schema;

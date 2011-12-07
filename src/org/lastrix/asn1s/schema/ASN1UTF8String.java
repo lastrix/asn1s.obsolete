@@ -18,32 +18,61 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.protocol.Tag;
+import org.lastrix.asn1s.util.Utils;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClass {
-	private int    a;
-	private int    b;
-	private double c;
-	private String d;
+public class ASN1UTF8String extends ASN1Type {
+	private final static Logger logger = Logger.getLogger(ASN1UTF8String.class);
 
-	public SequenceOfTestClass() {
+	private final static String NAME         = "UTF8String";
+	public final static  byte   TAG          = 0x0C;
+	private final        byte[] HEADER_BYTES = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 1).tagToByteArray();
+
+	public ASN1UTF8String() {
+		handledClass = String.class;
+		name = NAME;
 	}
 
-	public SequenceOfTestClass(final int a, final int b, final double c, final String d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		// TODO: unimplemented method stub
+		String s = (String) o;
+		os.write(s.getBytes("UTF-8"));
+		//TODO:
+		logger.warn(Utils.toHexString(s.getBytes("UTF-8")));
+		throw new UnsupportedOperationException("Not implemented yet.");
 	}
 
 	@Override
-	public String toString() {
-		return "SequenceOfTestClass{" +
-		       "a=" + a +
-		       ", b=" + b +
-		       ", c=" + c +
-		       '}';
+	public boolean isConstructed() {
+		return false;
+	}
+
+	/**
+	 * Validate this object
+	 *
+	 * @param module
+	 */
+	@Override
+	public void validate(final ASN1Module module) {
 	}
 }

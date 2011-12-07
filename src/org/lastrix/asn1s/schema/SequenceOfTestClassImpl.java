@@ -27,7 +27,7 @@ public class SequenceOfTestClassImpl extends SequenceOfTestClass {
 		super();
 	}
 
-	public SequenceOfTestClassImpl(final int a, final int b) {
-		super(a, b);
+	public SequenceOfTestClassImpl(final int a, final int b, final double c, final String d) {
+		super(a, b, c, d);
 	}
 }

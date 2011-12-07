@@ -42,6 +42,9 @@ public class ASN1Module {
 
 	static {
 		registerType(new ASN1Integer(), defaultModule, Integer.class);
+		registerType(new ASN1Real(Float.class), defaultModule, Float.class);
+		registerType(new ASN1Real(Double.class), defaultModule, Double.class);
+		registerType(new ASN1UTF8String(), defaultModule, String.class);
 	}
 
 	/**

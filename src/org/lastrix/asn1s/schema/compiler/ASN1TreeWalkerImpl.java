@@ -710,25 +710,38 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void typeBoolean() {
 //		super.typeBoolean();
-		stack.push(Boolean.class);
+		stack.push("BOOLEAN");
 	}
 
 	@Override
 	protected void typeReal() {
 //		super.typeReal();
-		stack.push(Double.class);
+		stack.push("REAL");
 	}
 
 	@Override
 	protected void typeOID() {
 		// TODO: unimplemented method stub
 		super.typeOID();
+		stack.push("OID");
 	}
 
 	@Override
 	protected void typeCString(final RestrictedCString subtype) {
 		// TODO: unimplemented method stub
-		super.typeCString(subtype);
+//		super.typeCString(subtype);
+		switch (subtype) {
+			case UTF8String:
+				stack.push("UTF8String");
+				break;
+
+			case IA5String:
+				stack.push("IA5String");
+				break;
+
+			default:
+				throw new UnsupportedOperationException("Can not handle " + subtype);
+		}
 	}
 
 	@Override
