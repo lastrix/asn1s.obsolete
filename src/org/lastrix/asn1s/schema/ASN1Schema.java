@@ -32,7 +32,6 @@ import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,14 +58,6 @@ public class ASN1Schema {
 	private final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
 
 	/**
-	 * Storage for all exports where key is [TypeName]
-	 * If some types has same [TypeName] only last appear here.
-	 *
-	 * @see #types
-	 */
-	private final Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
-
-	/**
 	 * Defines which ASN1Type should handle specified class
 	 */
 	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
@@ -75,6 +66,8 @@ public class ASN1Schema {
 	 * Defines which class handled by ASN1Type
 	 */
 	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
+
+	private Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
 
 	/**
 	 * Create new schema and load modules into it
@@ -116,14 +109,10 @@ public class ASN1Schema {
 			for (ASN1Module m : schema.modules.values()) {
 				sb.append(m + "\n");
 			}
-
-			//TestSeqOf
-			//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
-			schema.class2type.put(ArrayList.class, schema.simpleIndexedTypes.get("TestSeqOf"));
-			schema.type2class.put(schema.simpleIndexedTypes.get("TestSeqOf"), ArrayList.class);
-			schema.class2type.put(SequenceOfTestClassImpl.class, schema.simpleIndexedTypes.get("TestSeq"));
-			schema.type2class.put(schema.simpleIndexedTypes.get("TestSeq"), SequenceOfTestClassImpl.class);
 			logger.info(sb);
+
+//			logger.warn(schema.type2class.keySet());
+//			logger.warn(schema.class2type.keySet());
 			schema.validate();
 			return schema;
 		} catch (Exception e) {
@@ -134,11 +123,6 @@ public class ASN1Schema {
 
 	private ASN1Schema() {
 		addModule(ASN1Module.defaultModule);
-
-		//FIXME: remove this workaround, you should support each module with it's own ASN1Type<->Java Class mappings
-		class2type.put(Integer.class, simpleIndexedTypes.get(ASN1Integer.NAME));
-		type2class.put(simpleIndexedTypes.get(ASN1Integer.NAME), Integer.class);
-
 		logger.info("Created new schema.");
 	}
 
@@ -183,6 +167,8 @@ public class ASN1Schema {
 	 */
 	void addType(ASN1Type type) {
 		types.put(type.getTypeId(), type);
+		class2type.put(type.getHandledClass(), type);
+		type2class.put(type, type.getHandledClass());
 		simpleIndexedTypes.put(type.getName(), type);
 	}
 
@@ -211,21 +197,15 @@ public class ASN1Schema {
 		return null;
 	}
 
-	public ASN1Type findType(final Object type) {
-		if (type instanceof String) {
-			ASN1Type t = types.get(type);
-			if (t == null) {
-				t = simpleIndexedTypes.get(type);
-			}
-			return t;
-		} else if (type instanceof ASN1Type) {
-			return (ASN1Type) type;
-		}
-		//i can not do anything here, i'm so sorry ;)
-		return null;
-	}
-
 	public ASN1Type getHandler(final Object o) {
 		return class2type.get(o.getClass());
+	}
+
+	public ASN1Type getType(final String name, final String moduleId) {
+		ASN1Type t = simpleIndexedTypes.get(name);
+		if (t != null) {
+			return t;
+		}
+		return types.get(ASN1Type.makeTypeId(name, moduleId));
 	}
 }

@@ -166,7 +166,7 @@ assignmentList			:
 		assignment+ -> ^(VEC assignment+);
 
 assignment			:
-		( ID '::=' )=> typeAssignment
+		(CLASS_DEF? ID '::=' )=> typeAssignment
 	|	valueAssignment;
 
 valueAssignment			:
@@ -193,7 +193,7 @@ booleanValue:
 	|	'FALSE' -> ^(FALSE);
 
 typeAssignment			:
-		ID '::=' type -> ^(TYPE_ASSIGNMENT ID type);
+		CLASS_DEF? ID '::=' type -> ^(TYPE_ASSIGNMENT ID CLASS_DEF? type);
 
 type				:
 		booleanType -> ^(TYPE booleanType)
@@ -469,6 +469,7 @@ ID		:	('a'..'z'|'A'..'Z') ('-'?('a'..'z'|'A'..'Z'|'0'..'9'))*;
 INT		:	'0' | '-'? ('1'..'9')('0'..'9')*;
 REAL_NUMBER	:	INT '.' ('0'..'9')+ (('e'|'E') (('-')=>'-'|'+')? INT )?;
 
-COMMENT_LINE	:	'--'(options { greedy = false; } : .)* '\n' { $channel = HIDDEN; };
+CLASS_DEF	:	'--' '#' (options { greedy = false; } : .)* '\n';
+COMMENT_LINE	:	'--' (options { greedy = false; } : .)* '\n' { $channel = HIDDEN; };
 ML_COMMENT	:	'/*' (options {greedy=false;} : .)* '*/' {$channel=HIDDEN;};
 WS		:	(' ' | '\t' | '\n' | '\r') {$channel=HIDDEN;};

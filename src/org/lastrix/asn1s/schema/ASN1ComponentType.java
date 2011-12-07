@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 
@@ -33,6 +34,7 @@ import java.lang.reflect.Field;
  * @version 1.0
  */
 public class ASN1ComponentType extends ASN1Type {
+	private final static Logger logger = Logger.getLogger(ASN1ComponentType.class);
 
 	private final String   name;
 	private       ASN1Type type;
@@ -86,11 +88,16 @@ public class ASN1ComponentType extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
-		// TODO: unimplemented method stub
-
+	public void validate(final ASN1Module module) {
+		if (type instanceof ASN1UnresolvedType) {
+			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+		} else {
+			type.validate(module);
+		}
 	}
 
 	@Override

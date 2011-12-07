@@ -32,6 +32,8 @@ public abstract class ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Type.class);
 	protected String     name;
 	protected ASN1Module module;
+	protected Class      handledClass;
+
 
 	public static ASN1Type createTypeFor(Object clazz) {
 //		logger.info("Requested class for '" + clazz + "'.");
@@ -66,6 +68,10 @@ public abstract class ASN1Type {
 		return module.getName() + "." + name;
 	}
 
+	public static String makeTypeId(final String name, final String moduleId) {
+		return moduleId + "." + name;
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
@@ -86,6 +92,13 @@ public abstract class ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
-	public abstract void validate();
+	public abstract void validate(ASN1Module module);
+
+
+	public Class getHandledClass() {
+		return handledClass;
+	}
 }

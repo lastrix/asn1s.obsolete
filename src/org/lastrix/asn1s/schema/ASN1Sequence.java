@@ -107,14 +107,16 @@ public class ASN1Sequence extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 		for (int i = 0; i < componentType.length; i++) {
 			if (componentType[i] instanceof ASN1UnresolvedType) {
-				componentType[i] = getModule().getType(componentType[i].getName(), ((ASN1UnresolvedType) componentType[i]).getModuleName());
+				componentType[i] = module.getType(componentType[i].getName(), ((ASN1UnresolvedType) componentType[i]).getModuleName());
 			} else {
-				componentType[i].validate();
+				componentType[i].validate(module);
 			}
 		}
 	}

@@ -36,6 +36,7 @@ public class ASN1Integer extends ASN1Type {
 	private final       byte[] HEADER_BYTES = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 1).tagToByteArray();
 
 	public ASN1Integer() {
+		handledClass = Integer.class;
 		this.name = NAME;
 	}
 
@@ -111,8 +112,10 @@ public class ASN1Integer extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 	}
 }

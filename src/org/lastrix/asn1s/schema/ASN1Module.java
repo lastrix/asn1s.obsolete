@@ -41,7 +41,7 @@ public class ASN1Module {
 	);
 
 	static {
-		registerType(new ASN1Integer(), defaultModule);
+		registerType(new ASN1Integer(), defaultModule, Integer.class);
 	}
 
 	/**
@@ -50,9 +50,21 @@ public class ASN1Module {
 	 * @param type   - the type
 	 * @param module - the module
 	 */
-	private static void registerType(ASN1Type type, ASN1Module module) {
+	public static void registerType(ASN1Type type, ASN1Module module, Class clazz) {
 		type.setModule(module);
 		module.types.put(type.getName(), type);
+
+		//test if there is no class for such type
+		if (module.class2type.containsKey(clazz)) {
+			logger.warn("Redefining type handler for class " + clazz);
+		}
+		module.class2type.put(clazz, type);
+
+		//so there should be no clazz for such type, check it
+		if (module.type2class.containsKey(type)) {
+			logger.warn("Redefining class handler for type " + type);
+		}
+		module.type2class.put(type, clazz);
 		if (module.exportAll || module.exports.contains(type.getName())) {
 			module.typesExported.put(type.getName(), type);
 		}
@@ -99,7 +111,7 @@ public class ASN1Module {
 	                 final boolean extensibilityImplied,
 	                 final boolean exportAll,
 	                 final Vector<SymbolsFromModule> imports,
-	                 final Vector<ASN1Type> types
+	                 final Vector<ASN1UserType> types
 	                 ) {
 		this(moduleId, defaultTaggingMethod, extensibilityImplied, exportAll, null, imports, types);
 	}
@@ -120,7 +132,7 @@ public class ASN1Module {
 	                 final boolean extensibilityImplied,
 	                 final Vector<String> exports,
 	                 final Vector<SymbolsFromModule> imports,
-	                 final Vector<ASN1Type> types
+	                 final Vector<ASN1UserType> types
 	                 ) {
 		this(moduleId, defaultTaggingMethod, extensibilityImplied, false, exports, imports, types);
 	}
@@ -143,7 +155,7 @@ public class ASN1Module {
 	                  final boolean exportAll,
 	                  final Vector<String> exports,
 	                  final Vector<SymbolsFromModule> imports,
-	                  final Vector<ASN1Type> types
+	                  final Vector<ASN1UserType> types
 	                  ) {
 		if (moduleId == null) throw new NullPointerException();
 
@@ -156,9 +168,9 @@ public class ASN1Module {
 
 		//and add all the types
 		if (types != null) {
-			for (ASN1Type t : types) {
+			for (ASN1UserType t : types) {
 //				logger.warn("Registering type " + t);
-				registerType(t, this);
+				registerType(t, this, t.getHandledClass());
 			}
 		}
 	}
@@ -190,7 +202,7 @@ public class ASN1Module {
 		// TODO: unimplemented method stub
 		//replace all unresolved types with valid ones
 		for (ASN1Type t : types.values()) {
-			t.validate();
+			t.validate(this);
 		}
 
 		//check exports
@@ -206,6 +218,8 @@ public class ASN1Module {
 				logger.warn("Found unresolved type " + t.getTypeId());
 			}
 		}
+//		logger.warn("class2type= " + class2type);
+//		logger.warn("type2class= " + type2class);
 	}
 
 	/**
@@ -257,11 +271,11 @@ public class ASN1Module {
 
 	public ASN1Type getType(final String name, final String moduleId) {
 		if (moduleId != null && !getModuleId().equals(moduleId)) {
-			return null;
+			return getSchema().getType(name, moduleId);
 		}
 		ASN1Type t = types.get(name);
-		if (t == null) {
-			return null;
+		if (t == null && !getModuleId().equals(moduleId)) {
+			return getSchema().getType(name, moduleId);
 		}
 		return t;
 	}

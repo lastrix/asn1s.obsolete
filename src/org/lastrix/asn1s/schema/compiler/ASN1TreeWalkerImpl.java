@@ -198,10 +198,11 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	}
 
 	@Override
-	protected void openTypeAssignment(final String name) {
+	protected void openTypeAssignment(final String name, final Class clazz) {
 //		super.openTypeAssignment(name);
 		stack.push(BlockTag.TYPE_DEFINITION);
 		stack.push(name);
+		stack.push(clazz);
 	}
 
 	@Override
@@ -210,9 +211,11 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> typeDefStack = transferTill(BlockTag.TYPE_DEFINITION);
 
 		final String typeName = (String) typeDefStack.poll();
+		final Class clazz = (typeDefStack.peek() instanceof Class) ? (Class) typeDefStack.poll() : null;
 		final ASN1Type type = (ASN1Type) typeDefStack.poll();
 
-		stack.push(new ASN1UserType(typeName, type));
+//		logger.warn("User specified class for " + typeName + " = " + clazz);
+		stack.push(new ASN1UserType(typeName, type, clazz));
 	}
 
 	@Override
@@ -226,7 +229,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 //		super.closeType();
 		final LinkedList<Object> typeStack = transferTill(BlockTag.TYPE);
 		final Object type = typeStack.poll();
-		final ASN1Type asn1type = schema.findType(type);//ASN1Type.createTypeFor(type);
+		final ASN1Type asn1type = getType(type);//ASN1Type.createTypeFor(type);
 		if (typeStack.size() == 1) {
 			stack.push(new ASN1ConstrainedType(asn1type, (Constraint) typeStack.poll()));
 		} else if (typeStack.isEmpty()) {
@@ -234,6 +237,16 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		} else {
 			throw new IllegalStateException();
 		}
+	}
+
+	private ASN1Type getType(final Object type) {
+		if (type instanceof String) {
+			return new ASN1UnresolvedType((String) type);
+		}
+		if (type instanceof ASN1Type) {
+			return (ASN1Type) type;
+		}
+		return null;
 	}
 
 	@Override
@@ -308,7 +321,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
 		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) sStack.poll();
 		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1Type[componentTypes.size()])));
-		logger.warn(sStack);
+//		logger.warn(sStack);
 	}
 
 	@Override

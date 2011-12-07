@@ -88,13 +88,15 @@ public class ASN1ConstrainedType extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 		if (type instanceof ASN1UnresolvedType) {
-			type = getModule().getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
 		} else {
-			type.validate();
+			type.validate(module);
 		}
 	}
 }

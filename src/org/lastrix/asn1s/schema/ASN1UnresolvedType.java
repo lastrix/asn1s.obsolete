@@ -64,7 +64,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
 	public String getModuleName() {
@@ -78,9 +78,11 @@ public class ASN1UnresolvedType extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 		// TODO: unimplemented method stub
 
 	}

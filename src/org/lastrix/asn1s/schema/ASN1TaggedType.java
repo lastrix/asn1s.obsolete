@@ -152,19 +152,21 @@ public class ASN1TaggedType extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 		if (subType instanceof ASN1UnresolvedType) {
-			subType = getModule().getType(subType.getName(), ((ASN1UnresolvedType) subType).getModuleName());
+			subType = module.getType(subType.getName(), ((ASN1UnresolvedType) subType).getModuleName());
 		} else {
-			subType.validate();
+			subType.validate(module);
 		}
 
 		if (_methodToUse == null) {
 			switch (taggingMethod) {
 				case AUTOMATIC:
-					switch (getModule().getDefaultTaggingMethod()) {
+					switch (module.getDefaultTaggingMethod()) {
 						case AUTOMATIC:
 						case IMPLICIT:
 							_methodToUse = ASN1TreeWalker.TaggingMethod.IMPLICIT;

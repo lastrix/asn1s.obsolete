@@ -33,16 +33,17 @@ public class ASN1UserType extends ASN1Type {
 
 	private ASN1Type baseType;
 
-
 	/**
 	 * Create user type with name, baseType
 	 *
 	 * @param name     - the name of user type
 	 * @param baseType - the base type which should handle loading/saving
+	 * @param clazz
 	 *
 	 * @throws NullPointerException if name or baseType is null
 	 */
-	public ASN1UserType(final String name, final ASN1Type baseType) throws NullPointerException {
+	public ASN1UserType(final String name, final ASN1Type baseType, final Class clazz) throws NullPointerException {
+		handledClass = clazz;
 		if (name == null || baseType == null) {
 			throw new NullPointerException();
 		}
@@ -88,13 +89,16 @@ public class ASN1UserType extends ASN1Type {
 
 	/**
 	 * Validate this object
+	 *
+	 * @param module
 	 */
 	@Override
-	public void validate() {
+	public void validate(final ASN1Module module) {
 		if (baseType instanceof ASN1UnresolvedType) {
-			baseType = getModule().getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
+			baseType = module.getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
 		} else {
-			baseType.validate();
+			baseType.validate(module);
 		}
 	}
+
 }

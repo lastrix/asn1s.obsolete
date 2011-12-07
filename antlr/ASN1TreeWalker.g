@@ -79,7 +79,7 @@ protected void openValueAssignment(String valueName){System.out.println("Open Va
 protected void closeValueAssignment(){System.out.println("Close ValueAssignment.");}
 
 
-protected void openTypeAssignment(String name){System.out.println("Open TypeAssignment for " + name);}
+protected void openTypeAssignment(String name, Class clazz){System.out.println("Open TypeAssignment for " + name);}
 
 protected void closeTypeAssignment(){System.out.println("Close TypeAssignment.");}
 
@@ -370,8 +370,23 @@ enterValueAssignment:
 	{openValueAssignment($ID.text);};
 
 enterTypeAssignment:	
-	^(TYPE_ASSIGNMENT ID .*)
-	{openTypeAssignment($ID.text);};
+	^(TYPE_ASSIGNMENT ID CLASS_DEF? .*)
+	{ 
+		String classDef = ($CLASS_DEF!=null)?$CLASS_DEF.text:"";
+		Class clazz = java.util.ArrayList.class;
+		if ( classDef.length() > 2 ){
+			Class tc = null;
+			try {
+				tc = Class.forName(classDef.substring(classDef.indexOf('#')+1, classDef.lastIndexOf('#')));
+			} catch (ClassNotFoundException e) {
+				//FIX ME: do report somehow?;
+			}
+			if ( !tc.isInterface() ){
+				clazz = tc;
+			}
+		}
+		openTypeAssignment($ID.text, clazz);
+	};
 
 enterType	:	
 	^(TYPE .*)
