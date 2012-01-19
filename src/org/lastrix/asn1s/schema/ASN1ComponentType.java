@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -19,10 +19,11 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.exception.*;
+import org.lastrix.asn1s.protocol.Header;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 
@@ -38,7 +39,7 @@ public class ASN1ComponentType extends ASN1Type {
 
 	private final String   name;
 	private       ASN1Type type;
-//	private boolean optional;
+	private final boolean optional = false;
 //	private final Object defaultValue;
 
 
@@ -59,6 +60,18 @@ public class ASN1ComponentType extends ASN1Type {
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
 		//let's find field with name in object class
+		Field f = findField(o);
+
+		Object value = null;
+		try {
+			value = f.get(o);
+		} catch (IllegalAccessException e) {
+			throw new ASN1Exception(e);
+		}
+		type.write(value, os, true);
+	}
+
+	private Field findField(final Object o) throws ASN1ProtocolException {
 		Field f = null;
 		Class c = o.getClass();
 		while (c != null) {
@@ -70,20 +83,44 @@ public class ASN1ComponentType extends ASN1Type {
 			c = c.getSuperclass();
 		}
 		if (f == null) { throw new ASN1ProtocolException("Object 'o' have got no field named " + name); }
+		return f;
+	}
 
-		Object value = null;
-		try {
-			value = f.get(o);
-		} catch (IllegalAccessException e) {
-			throw new ASN1Exception(e);
+	@Override
+	public Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws IOException,
+	ASN1Exception {
+		//header can not be null here, such as o.
+		if (o == null || header == null) {
+			throw new NullPointerException();
 		}
-		type.write(value, os, true);
+		Field f = findField(o);
+		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
+		try {
+			// underlying type reader should always test header.
+			final Object ro = type.read(null, is, header, true);
+			try {
+				f.set(o, ro);
+			} catch (Exception e) {
+				//we should catch everything, i don't trust it.
+				e.printStackTrace();
+				throw new ASN1ReadException("Unable to setup new value of field '" + name + "'.");
+			}
+		} catch (ASN1IncorrectHeaderException e) {
+			//we can allow state when object is not read only if it optional
+			if (optional) {
+				throw new ASN1OptionalComponentSkippedException();
+			} else {
+				//if not, so throw it again! :)
+				throw e;
+			}
+		}
+		//we should always return null here. Since we're not type readers, we are auxiliary modifier.
+		return null;
 	}
 
 	@Override
 	public boolean isConstructed() {
-		// TODO: unimplemented method stub
-		return false;
+		return type.isConstructed();
 	}
 
 	/**

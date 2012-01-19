@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -41,6 +41,7 @@ public class ASN1Module {
 	);
 
 	static {
+		// defining default types in their own module
 		registerType(new ASN1Integer(), defaultModule, Integer.class);
 		registerType(new ASN1Real(Float.class), defaultModule, Float.class);
 		registerType(new ASN1Real(Double.class), defaultModule, Double.class);
@@ -248,7 +249,6 @@ public class ASN1Module {
 		for (ASN1Type t : typesExported.values()) {
 			schema.addType(t);
 		}
-		validate();
 	}
 
 	/**

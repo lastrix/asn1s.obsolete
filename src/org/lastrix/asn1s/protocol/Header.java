@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -19,6 +19,7 @@
 package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.util.Utils;
 
@@ -276,7 +277,32 @@ public final class Header {
 				throw new ASN1ProtocolException("Unexpected EOF found.", e);
 			}
 		}
-		return new Header(tag, tagClass, constructed, length, bytesRead);
+		final Header h = new Header(tag, tagClass, constructed, length, bytesRead);
+//		logger.warn(h);
+		return h;
+	}
+
+	/**
+	 * Read tag with length and return Header as result (do validation checks)
+	 *
+	 * @param is                  - the input stream
+	 * @param expectedTag         - the expected tag
+	 * @param expectedConstructed - the expected constructed state
+	 * @param expectedTagClass    - the expected tag class
+	 *
+	 * @return the Header
+	 *
+	 * @throws ASN1ProtocolException
+	 */
+	public static Header readHeader(
+	                               InputStream is, final long expectedTag, final boolean expectedConstructed,
+	                               final long expectedTagClass
+	                               ) throws ASN1ProtocolException {
+		final Header h = readHeader(is);
+		if (h.getTag() != expectedTag || h.getTagClass() != expectedTagClass || h.isConstructed() != expectedConstructed) {
+			throw new ASN1IncorrectHeaderException();
+		}
+		return h;
 	}
 
 	public int getBytesRead() {

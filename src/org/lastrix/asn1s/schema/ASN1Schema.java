@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -24,7 +24,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.ASN1Parser;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
@@ -32,6 +32,7 @@ import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +67,8 @@ public class ASN1Schema {
 	 * Defines which class handled by ASN1Type
 	 */
 	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
+
+	private final Map<String, ASN1Type> header2type = new HashMap<String, ASN1Type>();
 
 	private Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
 
@@ -111,9 +114,9 @@ public class ASN1Schema {
 			}
 			logger.info(sb);
 
-			logger.warn(schema.type2class.keySet());
-//			logger.warn(schema.class2type.keySet());
+			schema.rebuildIndex();
 			schema.validate();
+			schema.rebuildIndex();
 			return schema;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,7 +150,10 @@ public class ASN1Schema {
 	 * @return
 	 */
 	public boolean validate() {
-		return false;
+		for (ASN1Module m : modules.values()) {
+			m.validate();
+		}
+		return true;
 	}
 
 	/**
@@ -167,9 +173,6 @@ public class ASN1Schema {
 	 */
 	void addType(ASN1Type type) {
 		types.put(type.getTypeId(), type);
-		class2type.put(type.getHandledClass(), type);
-		type2class.put(type, type.getHandledClass());
-		simpleIndexedTypes.put(type.getName(), type);
 	}
 
 	/**
@@ -192,9 +195,11 @@ public class ASN1Schema {
 	 *
 	 * @return an Object
 	 */
-	public Object read(InputStream is) throws ASN1ProtocolException {
+	public Object read(InputStream is) throws ASN1Exception, IOException {
 		//TODO: implement this
-		return null;
+		final Header h = Header.readHeader(is);
+		ASN1Type t = header2type.get(Arrays.toString(h.tagToByteArray()));
+		return t.read(null, is, h, true);
 	}
 
 	public ASN1Type getHandler(final Object o) {
@@ -207,5 +212,14 @@ public class ASN1Schema {
 			return t;
 		}
 		return types.get(ASN1Type.makeTypeId(name, moduleId));
+	}
+
+	public void rebuildIndex() {
+		for (ASN1Type type : types.values()) {
+			class2type.put(type.getHandledClass(), type);
+			type2class.put(type, type.getHandledClass());
+			header2type.put(Arrays.toString(type.getHeaderBytes()), type);
+			simpleIndexedTypes.put(type.getName(), type);
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -25,10 +25,7 @@ import org.lastrix.asn1s.schema.SequenceOfTestClass;
 import org.lastrix.asn1s.schema.SequenceOfTestClassImpl;
 import org.lastrix.asn1s.util.Utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -100,11 +97,21 @@ public class Asn1s {
 //		List<Integer> list = new ArrayList<Integer>(Arrays.asList(0x10, 0x1, 0xFF, 0x1FF));
 		try {
 			s.write(sotc, bos);
+			s.write(sotc, bos);
+			s.write(sotc, bos);
+			s.write(sotc, bos);
 //			s.write(list, bos);
 		} catch (Exception e) {
 			logger.warn("Exception:", e);
 		}
-		logger.warn(Utils.toHexString(bos.toByteArray()));
+		final byte[] data = bos.toByteArray();
+		logger.warn("\n" + Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		try {
+			while (bis.available() > 0) { logger.warn("Got object: " + s.read(bis)); }
+		} catch (Exception e) {
+			logger.warn("Exception:", e);
+		}
 	}
 
 }

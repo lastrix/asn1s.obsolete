@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -19,11 +19,16 @@
 package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.util.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -61,6 +66,7 @@ public class ASN1Real extends ASN1Type {
 		}
 		handledClass = clazz;
 		this.name = NAME;
+		this.headerBytes = HEADER_BYTES;
 	}
 
 	/**
@@ -82,12 +88,12 @@ public class ASN1Real extends ASN1Type {
 			os.write(HEADER_BYTES);
 			if (value == 0d) {
 				//write length
-				os.write(0x00);
+				Header.writeLength(os, 0x00);
 				//it's all we need to do here
 				return;
 			} else if (Double.isInfinite(value)) {
 				//write length
-				os.write(0x01);
+				Header.writeLength(os, 0x01);
 				//write info octet
 				os.write(((value < 0) ? SPECIAL_REAL_VALUE_NEGATIVE_INF : SPECIAL_REAL_VALUE_POSITIVE_INF));
 				return;
@@ -116,14 +122,125 @@ public class ASN1Real extends ASN1Type {
 			final byte[] exponentBytes = Utils.extractBytes(exponent, 0, exponentBytesCount);
 			final byte[] mantisBytes = Utils.extractBytes(mantis, 7, 7 - mantisBytesCount);
 
-			//write length octet
-			os.write(mantisBytesCount + exponentBytesCount + 1);
+			if (header) {
+				//write length octet
+				Header.writeLength(os, mantisBytesCount + exponentBytesCount + 1);
+			}
 
 			//write info octet (we could only have here 1 or 2 exponent octets)
 			os.write(REAL_BINARY_MASK | ((exponentBytesCount == 1) ? 0x00 : 0x01) | ((int) (valueBits >> 57) & REAL_SIGN_MASK));
 			os.write(exponentBytes);
 			os.write(mantisBytes);
 		}
+	}
+
+	@Override
+	public Object read(final Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws IOException, ASN1Exception {
+		//read header if it is not supplied
+		if (header == null) {
+			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
+		} else if (forceHeaderChecking) {
+			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
+				throw new ASN1IncorrectHeaderException();
+			}
+		}
+
+		if (o != null) {
+			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'o'");
+		}
+
+		//test for zero value
+		if (header.getLength() == 0) {
+			return 0d;
+		}
+
+		final int info = is.read();
+		int mantisLength = header.getLength() - 1;
+
+		//bad news
+		final long base;
+		//binary base
+		if ((info & REAL_BINARY_MASK) > 0) {
+			if ((info & REAL_BASE_MASK) == REAL_BASE_2) {
+				base = BASE_2;
+			} else if ((info & REAL_BASE_MASK) == REAL_BASE_8) {
+				base = BASE_8;
+			} else if ((info & REAL_BASE_MASK) == REAL_BASE_16) {
+				base = BASE_16;
+			} else {
+				//this should not happen
+				throw new ASN1ProtocolException("Real: Invalid value for binary base (11)");
+			}
+		} else {
+			//decimal or something special
+			if ((info & SPECIAL_REAL_VALUE) > 0) {
+				if (header.getLength() > 1) {
+					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
+				}
+				if (info == SPECIAL_REAL_VALUE) { return Double.POSITIVE_INFINITY; } else if (info == SPECIAL_REAL_VALUE_NEGATIVE_INF) {
+					return Double.NEGATIVE_INFINITY;
+				} else {
+					throw new ASN1ProtocolException("Invalid real format for -inf/+inf");
+				}
+			} else {
+				//TODO: check this, code is copy-pasted.
+				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) mantisLength);
+
+				Utils.transfer(is, bos, (int) mantisLength);
+				// IA5 == ASCII...?
+				String nrRep = new String(bos.toByteArray(), "US-ASCII");
+				// this will swallow NR(1-3) and give proper double :)
+				return Double.parseDouble(nrRep);
+			}
+		}
+		//calculate scale
+		final long scale = (long) Math.pow(base, (info & SCALE_MASK) >> 2);
+
+		//extract exponent
+		long exponent = 0;
+		int exponentType = info & EXPONENT_TYPE;
+		if (exponentType == 0) {
+			exponent = is.read();
+			mantisLength--;
+		} else if (exponentType == 1 || exponentType == 2) {
+			final int exponentLength = 2 + exponentType - 1;
+			final byte[] data = new byte[exponentLength];
+			if (is.read(data) != exponentLength) {
+				throw new ASN1ReadException("Can not read all required bytes");
+			}
+			for (int i = 0; i < exponentLength; i++) {
+				exponent = (exponent << 8) | ((long) data[i] & Utils.BYTE_MASK);
+			}
+			if (exponent > EXPONENT_MASK) {
+				throw new ASN1ProtocolException("Exponent overflow.");
+			}
+			mantisLength -= exponentLength;
+		}
+
+		//extract mantis
+		if (mantisLength > 7) {
+			throw new ASN1ProtocolException("Mantis overflow.");
+		}
+		long mantis = 0;
+
+		// read the entire chunk of data
+		final byte[] data = new byte[mantisLength];
+		if (is.read(data) != mantisLength) {
+			throw new ASN1ReadException("Can not read all required bytes");
+		}
+		// convert to valid form now
+		for (int i = 0; i < mantisLength; i++) {
+			mantis = (mantis << 8) | (((long) data[i]) & Utils.BYTE_MASK);
+		}
+		mantis <<= (7 - mantisLength) * 8;
+		mantis *= scale;
+		if (mantis > MANTIS_MASK) {
+			throw new ASN1ProtocolException(String.format("Mantis overflow (%X)", mantis));
+		}
+		long rawDouble = ((info & REAL_SIGN_MASK) != 0) ? DOUBLE_SIGN_MASK : 0;
+		rawDouble |= (exponent & EXPONENT_MASK) << DOUBLE_EXPONENT_POSITION;
+		rawDouble |= mantis & MANTIS_MASK;
+		return Double.longBitsToDouble(rawDouble);
 	}
 
 	@Override

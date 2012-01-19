@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -20,12 +20,15 @@ package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1OptionalComponentSkippedException;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
+import org.lastrix.asn1s.util.Utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,15 +43,18 @@ public class ASN1Sequence extends ASN1Type {
 	private final Logger logger = Logger.getLogger(ASN1Sequence.class);
 
 	private final ASN1Type[] componentType;
-	private final static byte   TAG          = 16;
+	private final static byte TAG = 16;
+	private final boolean sequenceOf;
 	/**
 	 * Construct this thing so we could use it later.
 	 */
 	private final static byte[] HEADER_BYTES = new Header(TAG, Tag.CLASS_UNIVERSAL, true, Tag.FORM_INDEFINITE).tagToByteArray();
 
-	public ASN1Sequence(final ASN1Type[] componentType) {
+	public ASN1Sequence(final ASN1Type[] componentType, final boolean sequenceOf) {
 		this.componentType = componentType;
 		this.name = generateName();
+		this.sequenceOf = sequenceOf;
+		this.headerBytes = HEADER_BYTES;
 	}
 
 	private String generateName() {
@@ -77,7 +83,7 @@ public class ASN1Sequence extends ASN1Type {
 		}
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		if (componentType.length == 1) {
+		if (sequenceOf) {
 			// SEQUENCE OF
 			final List list = (List) o;
 			for (Object lo : list) {
@@ -98,6 +104,71 @@ public class ASN1Sequence extends ASN1Type {
 
 		//and now we can save our data.
 		os.write(data);
+	}
+
+	@Override
+	public Object read(Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws IOException, ASN1Exception {
+		if (header == null) {
+			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
+		} else if (forceHeaderChecking) {
+			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
+				throw new ASN1IncorrectHeaderException();
+			}
+		}
+
+		if (sequenceOf) {
+			final List list;
+			if (o instanceof List) {
+				list = (List) o;
+			} else if (o == null) {
+				list = new ArrayList();
+			} else {
+				throw new IllegalArgumentException("ASN1SequenceOf does not allow any objects if it not implement java.util.List.");
+			}
+
+			//read all data
+			if (header.getLength() == Tag.FORM_INDEFINITE) {
+				throw new ASN1ProtocolException("SequenceOf doesn't support indefinite form");
+			}
+			final ByteArrayOutputStream bos = new ByteArrayOutputStream(header.getLength());
+			Utils.transfer(is, bos, header.getLength());
+			final byte[] data = bos.toByteArray();
+			final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+			while (bis.available() > 0) {
+				list.add(componentType[0].read(bis));
+			}
+			return list;
+		} else {
+			if (o == null) {
+				throw new NullPointerException();
+			}
+			//read first header, so we won't sent null
+			Header h = null;
+			for (ASN1Type t : componentType) {
+				// read header, if it is null for any reason
+				if (h == null) {
+					h = Header.readHeader(is);
+				}
+				//now try to load field value into our o.
+				try {
+					t.read(o, is, h, true);
+				} catch (ASN1OptionalComponentSkippedException e) {
+					//type reader told that we can not read such component but it is optional, so simply skip it
+					continue;
+				}
+				//set it to null, so next iteration would reread it.
+				h = null;
+			}
+
+			//check for indefinite form.
+			if (header.getLength() == Tag.FORM_INDEFINITE) {
+				h = Header.readHeader(is);
+				if (!h.isEOC()) {
+					throw new ASN1ProtocolException("Indefinite encoding without EOC marker at end");
+				}
+			}
+			return o;
+		}
 	}
 
 	@Override

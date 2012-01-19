@@ -16,10 +16,11 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.schema;
 
-import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ReadException;
+import org.lastrix.asn1s.protocol.Tag;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,30 +28,53 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * See X.690-0207 8.7 for more information
+ * Defines octet string. This class should be used by other String-related types.
  *
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1OctStringCoder implements PrimitiveEncoder, PrimitiveDecoder {
+public abstract class ASN1OctetString extends ASN1Type {
 
-	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1OctStringCoder.class);
-	public final static  byte   TAG    = 0x04;
-	@SuppressWarnings({"WeakerAccess"})
-	public final static  Header HEADER = new Header(TAG, (byte) Tag.CLASS_UNIVERSAL, false, 0);
-
-	public ASN1OctStringCoder() {}
-
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
 	@Override
-	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		if (header.getLength() == 0) {
-			//noinspection ZeroLengthArrayAllocation
-			return new byte[0];
-		}
+	public abstract void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception;
 
+
+	/**
+	 * Protected method to encode octet strings
+	 *
+	 * @param os   - the output stream
+	 * @param data - the data to write
+	 *
+	 * @throws IOException   thrown by I/O
+	 * @throws ASN1Exception
+	 */
+	protected final void encode(final OutputStream os, byte[] data) throws IOException, ASN1Exception {
 		//infinite
-		if (header.getLength() == Tag.FORM_INDEFINITE) {
+		os.write(data);
+	}
+
+	/**
+	 * Protected method for decoding octet strings
+	 *
+	 * @param is     - the input stream
+	 * @param length - the amount of bytes to read
+	 *
+	 * @return the byte array
+	 *
+	 * @throws ASN1Exception
+	 * @throws IOException   thrown by I/O
+	 */
+	protected final byte[] decode(final InputStream is, final int length) throws ASN1Exception, IOException {
+		if (length == Tag.FORM_INDEFINITE) {
 			//damn infinite form
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			int b;
@@ -70,19 +94,21 @@ public final class ASN1OctStringCoder implements PrimitiveEncoder, PrimitiveDeco
 		}
 
 		//defined
-		final byte[] data = new byte[header.getLength()];
-		;
-		if (is.read(data) != header.getLength()) {
-			//FIXME: exception
+		final byte[] data = new byte[length];
+		if (is.read(data) != length) {
+			throw new ASN1ReadException("Can not read all byte for oct string.");
 		}
 		return data;
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws IOException {
-		byte[] array = (byte[]) value;
-		os.write(HEADER.tagToByteArray());
-		os.write(array.length);
-		os.write(array);
-	}
+	public abstract boolean isConstructed();
+
+	/**
+	 * Validate this object
+	 *
+	 * @param module
+	 */
+	@Override
+	public abstract void validate(final ASN1Module module);
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -20,12 +20,14 @@ package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -136,6 +138,40 @@ public class ASN1TaggedType extends ASN1Type {
 		os.write(data);
 	}
 
+	/**
+	 * Read object of type from input stream
+	 *
+	 * @param o                   - the object which should be used for modifying
+	 * @param is                  - the input stream
+	 * @param header              - the header, non null values prevents method to read header from stream
+	 * @param forceHeaderChecking - force type reader to check header
+	 *
+	 * @return an Object or null
+	 *
+	 * @throws IOException   thrown from I/O
+	 * @throws ASN1Exception if selected type reader can not acquire data
+	 */
+	@Override
+	public Object read(final Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws
+	                                                                                                           IOException,
+	                                                                                                           ASN1Exception {
+		if (header == null) {
+			header = Header.readHeader(is, tagNumber, isConstructed(), getTagClass(tagClass));
+		} else if (forceHeaderChecking) {
+			if (header.getTag() != tagNumber || header.getTagClass() != getTagClass(tagClass) || header.isConstructed() != isConstructed()) {
+				throw new ASN1IncorrectHeaderException();
+			}
+		}
+		switch (_methodToUse) {
+			case IMPLICIT:
+				return subType.read(o, is, header, false);
+
+			case EXPLICIT:
+				return subType.read(o, is, null, false);
+		}
+		return null;
+	}
+
 	@Override
 	public boolean isConstructed() {
 		//TODO: fix this, cos there could be constructed types even if subType is not
@@ -187,5 +223,12 @@ public class ASN1TaggedType extends ASN1Type {
 					break;
 			}
 		}
+		this.headerBytes = new Header(
+		                             tagNumber,
+		                             getTagClass(tagClass),
+		                             isConstructed() || _methodToUse == ASN1TreeWalker.TaggingMethod.EXPLICIT,
+		                             Tag.FORM_INDEFINITE
+		).tagToByteArray();
+
 	}
 }

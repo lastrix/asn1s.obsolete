@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -19,8 +19,10 @@
 package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.protocol.Header;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -64,6 +66,26 @@ public class ASN1UnresolvedType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	/**
+	 * Read object of type from input stream
+	 *
+	 * @param o                   - the object which should be used for modifying
+	 * @param is                  - the input stream
+	 * @param header              - the header, non null values prevents method to read header from stream
+	 * @param forceHeaderChecking - force type reader to check header
+	 *
+	 * @return an Object or null
+	 *
+	 * @throws IOException   thrown from I/O
+	 * @throws ASN1Exception if selected type reader can not acquire data
+	 */
+	@Override
+	public Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
+	                                                                                                                 IOException,
+	                                                                                                                 ASN1Exception {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 

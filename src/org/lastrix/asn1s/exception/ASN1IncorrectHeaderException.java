@@ -16,35 +16,26 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.exception;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClass {
-	private long   a;
-	private long   b;
-	private double c;
-	private String d;
-
-	public SequenceOfTestClass() {
+public class ASN1IncorrectHeaderException extends ASN1ProtocolException {
+	public ASN1IncorrectHeaderException(final Throwable cause) {
+		super(cause);
 	}
 
-	public SequenceOfTestClass(final int a, final int b, final double c, final String d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	public ASN1IncorrectHeaderException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
-	@Override
-	public String toString() {
-		return "SequenceOfTestClass{" +
-		       "a=" + a +
-		       ", b=" + b +
-		       ", c=" + c +
-		       ", d=" + d +
-		       '}';
+	public ASN1IncorrectHeaderException(final String message) {
+		super(message);
+	}
+
+	public ASN1IncorrectHeaderException() {
+		super();
 	}
 }

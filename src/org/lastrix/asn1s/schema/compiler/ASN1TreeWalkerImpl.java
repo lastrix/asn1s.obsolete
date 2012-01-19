@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -303,9 +303,9 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		ASN1Type eType = (ASN1Type) sofStack.poll();
 		Constraint c = (Constraint) sofStack.poll();
 		if (c != null) {
-			stack.push(new ASN1ConstrainedType(new ASN1Sequence(new ASN1Type[]{eType}), c));
+			stack.push(new ASN1ConstrainedType(new ASN1Sequence(new ASN1Type[]{eType}, true), c));
 		} else {
-			stack.push(new ASN1Sequence(new ASN1Type[]{eType}));
+			stack.push(new ASN1Sequence(new ASN1Type[]{eType}, true));
 		}
 	}
 
@@ -320,7 +320,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 //		super.closeSequence();
 		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
 		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) sStack.poll();
-		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1Type[componentTypes.size()])));
+		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1Type[componentTypes.size()]), false));
 //		logger.warn(sStack);
 	}
 

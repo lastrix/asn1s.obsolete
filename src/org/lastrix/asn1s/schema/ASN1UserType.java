@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -19,9 +19,13 @@
 package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ReadException;
+import org.lastrix.asn1s.protocol.Header;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 
 /**
  * Used to handle user defined types.
@@ -74,6 +78,44 @@ public class ASN1UserType extends ASN1Type {
 		baseType.write(o, os, header);
 	}
 
+	/**
+	 * Read object of type from input stream
+	 *
+	 * @param o                   - the object which should be used for modifying
+	 * @param is                  - the input stream
+	 * @param header              - the header, non null values prevents method to read header from stream
+	 * @param forceHeaderChecking - force type reader to check header
+	 *
+	 * @return an Object or null
+	 *
+	 * @throws IOException   thrown from I/O
+	 * @throws ASN1Exception if selected type reader can not acquire data
+	 */
+	@Override
+	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
+	                                                                                                           IOException,
+	                                                                                                           ASN1Exception {
+		// we does not have any headers here, so leave it for underlying type reader.
+
+		// does not allow java. objects instantiation.
+		//FIXME: find a better way here.
+		if (handledClass.getName().startsWith("java.")) {
+			return baseType.read(null, is, header, forceHeaderChecking);
+		} else {
+			o = makeInstance();
+			return baseType.read(o, is, header, forceHeaderChecking);
+		}
+	}
+
+	private Object makeInstance() throws ASN1ReadException {
+		try {
+			Constructor c = handledClass.getConstructor();
+			return c.newInstance();
+		} catch (Exception e) {
+			throw new ASN1ReadException("Can not instantiate handled class.");
+		}
+	}
+
 	@Override
 	public boolean isConstructed() {
 		return baseType.isConstructed();
@@ -101,4 +143,8 @@ public class ASN1UserType extends ASN1Type {
 		}
 	}
 
+	@Override
+	public byte[] getHeaderBytes() {
+		return baseType.getHeaderBytes();
+	}
 }
