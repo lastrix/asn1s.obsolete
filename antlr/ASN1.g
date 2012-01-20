@@ -78,15 +78,11 @@ TYPE_REFERENCE;
 }
 
 @header {
-package org.lastrix.asn1s.schema.compiler;
-
-//import org.lastrix.asn1s.schema.compiler.*;
-//import java.util.List;
-//import java.util.Collections;
+package org.lastrix.asn1s.schema.compiler.generated;
 }
 
 @lexer::header{
-package org.lastrix.asn1s.schema.compiler;
+package org.lastrix.asn1s.schema.compiler.generated;
 }
 
 @rulecatch{

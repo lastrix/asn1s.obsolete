@@ -19,7 +19,13 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
+import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
+import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
+import org.lastrix.asn1s.schema.type.ASN1UserType;
+import org.lastrix.asn1s.schema.type.x690.ASN1Integer;
+import org.lastrix.asn1s.schema.type.x690.ASN1Real;
+import org.lastrix.asn1s.schema.type.x690.ASN1UTF8String;
 
 import java.util.*;
 

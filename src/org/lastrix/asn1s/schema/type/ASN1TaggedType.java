@@ -16,14 +16,16 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.compiler.ASN1TreeWalker;
+import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
+import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -179,7 +181,7 @@ public class ASN1TaggedType extends ASN1Type {
 	}
 
 	@Override
-	void setModule(final ASN1Module module) {
+	public void setModule(final ASN1Module module) {
 		super.setModule(module);
 		if (subType.getModule() == null) {
 			subType.setModule(module);

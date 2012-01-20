@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,23 +16,32 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SizeConstraint extends Constraint {
-	private final Constraint constraint;
+public class SequenceOfTestClassAsField {
+	private String name;
+	private long   id;
+	private double weight;
 
-	public SizeConstraint(final Constraint constraint) {
-		this.constraint = constraint;
+	public SequenceOfTestClassAsField(final long id, final String name, final double weight) {
+		this.id = id;
+		this.name = name;
+		this.weight = weight;
+	}
+
+	public SequenceOfTestClassAsField() {
 	}
 
 	@Override
 	public String toString() {
-		return "SizeConstraint{" +
-		       "constraint=" + constraint +
+		return "SequenceOfTestClassAsField{" +
+		       "id=" + id +
+		       ", name='" + name + '\'' +
+		       ", weight=" + weight +
 		       '}';
 	}
 }

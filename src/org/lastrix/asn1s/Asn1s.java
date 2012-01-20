@@ -21,11 +21,10 @@ package org.lastrix.asn1s;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.lastrix.asn1s.schema.ASN1Schema;
-import org.lastrix.asn1s.schema.SequenceOfTestClass;
-import org.lastrix.asn1s.schema.SequenceOfTestClassImpl;
-import org.lastrix.asn1s.util.Utils;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -91,27 +90,37 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
-		final ASN1Schema s = ASN1Schema.loadSchema("/home/lastrix/dev/java/ASN1S/antlr/__Test___input.txt");
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		SequenceOfTestClass sotc = new SequenceOfTestClassImpl(0x1010, 0x1111, 2.5, "Test");
-//		List<Integer> list = new ArrayList<Integer>(Arrays.asList(0x10, 0x1, 0xFF, 0x1FF));
-		try {
-			s.write(sotc, bos);
-			s.write(sotc, bos);
-			s.write(sotc, bos);
-			s.write(sotc, bos);
-//			s.write(list, bos);
-		} catch (Exception e) {
-			logger.warn("Exception:", e);
-		}
-		final byte[] data = bos.toByteArray();
-		logger.warn("\n" + Utils.toHexString(data));
-		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-		try {
-			while (bis.available() > 0) { logger.warn("Got object: " + s.read(bis)); }
-		} catch (Exception e) {
-			logger.warn("Exception:", e);
-		}
+		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+//		ByteArrayOutputStream bos = new ByteArrayOutputStream(128*500000);
+//
+////		List<Integer> list = new ArrayList<Integer>(Arrays.asList(0x10, 0x1, 0xFF, 0x1FF));
+//		try {
+//			logger.warn("Starting serialization");
+//			for (int i = 0; i < 1; i++) {
+//				s.write(
+//				       new SequenceOfTestClass(i, 0x1111, 2.5, "Test", new SequenceOfTestClassAsField(i, "susy", 1.0)),
+//				       bos
+//				       );
+//			}
+//			logger.warn("Finished");
+////			s.write(list, bos);
+//		} catch (Exception e) {
+//			logger.warn("Exception:", e);
+//		}
+//		final byte[] data = bos.toByteArray();
+////		logger.warn("\n" + Utils.toHexString(data));
+//		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+//		logger.warn("Starting deserialization");
+//		try {
+//			int i = 0;
+//			while (bis.available() > 0) {
+//				final Object o = s.read(bis);
+////				logger.warn("Got object: " + o);
+//			}
+//		} catch (Exception e) {
+//			logger.warn("Exception:", e);
+//		}
+//		logger.warn("Finished");
 	}
 
 }

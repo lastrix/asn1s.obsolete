@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,18 +16,22 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.constraint;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClassImpl extends SequenceOfTestClass {
-	public SequenceOfTestClassImpl() {
-		super();
+public class ValueConstraint extends Constraint {
+	private final Object value;
+
+	public ValueConstraint(final Object value) {
+		this.value = value;
 	}
 
-	public SequenceOfTestClassImpl(final int a, final int b, final double c, final String d) {
-		super(a, b, c, d);
+	@Override
+	public String toString() {
+		return "ValueConstraint{" + value +
+		       '}';
 	}
 }

@@ -6,7 +6,7 @@ options {
 }
 
 @header{
-package org.lastrix.asn1s.schema.compiler;
+package org.lastrix.asn1s.schema.compiler.generated;
 }
 
 @members {

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,26 +16,23 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.constraint;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Intersection {
+public class SizeConstraint extends Constraint {
 	private final Constraint constraint;
-	private final Constraint except;
 
-	public Intersection(final Constraint constraint, final Constraint except) {
+	public SizeConstraint(final Constraint constraint) {
 		this.constraint = constraint;
-		this.except = except;
 	}
 
 	@Override
 	public String toString() {
-		return "Intersection{" +
+		return "SizeConstraint{" +
 		       "constraint=" + constraint +
-		       ", except=" + except +
 		       '}';
 	}
 }

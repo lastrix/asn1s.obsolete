@@ -18,33 +18,45 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.CustomTestCase;
+import org.lastrix.asn1s.SequenceOfTestClass;
+import org.lastrix.asn1s.SequenceOfTestClassAsField;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClass {
-	private long   a;
-	private long   b;
-	private double c;
-	private String d;
+public class SchemaTest extends CustomTestCase {
 
-	public SequenceOfTestClass() {
-	}
-
-	public SequenceOfTestClass(final int a, final int b, final double c, final String d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
-	}
-
-	@Override
-	public String toString() {
-		return "SequenceOfTestClass{" +
-		       "a=" + a +
-		       ", b=" + b +
-		       ", c=" + c +
-		       ", d=" + d +
-		       '}';
+	public void testSaveLoad() throws Exception {
+		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+		final int COUNT = 500;
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
+		try {
+			for (int i = 0; i < COUNT; i++) {
+				s.write(
+				       new SequenceOfTestClass(i, 0x1111, 2.5, "Test" + i, new SequenceOfTestClassAsField(i, "susy" + i, 1.0)),
+				       bos
+				       );
+			}
+		} catch (Exception e) {
+			fail("Exception caught.");
+		}
+		final byte[] data = bos.toByteArray();
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		try {
+			int i = 0;
+			while (bis.available() > 0) {
+				final Object o = s.read(bis);
+				assertNotNull(o);
+				i++;
+			}
+			assertEquals(COUNT, i);
+		} catch (Exception e) {
+			fail("Exception caught.");
+		}
 	}
 }

@@ -16,11 +16,12 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.*;
 import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.schema.ASN1Module;
 
 import java.io.IOException;
 import java.io.InputStream;

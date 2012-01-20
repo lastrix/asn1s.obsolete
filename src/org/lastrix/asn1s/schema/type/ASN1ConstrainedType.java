@@ -16,11 +16,12 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.type;
 
-import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,54 +31,34 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
-	private final static Logger logger = Logger.getLogger(ASN1Type.class);
-	protected String     name;
-	protected ASN1Module module;
-	protected Class      handledClass;
-	protected byte[] headerBytes = null;
+public class ASN1ConstrainedType extends ASN1Type {
+	private final Constraint constraint;
+	private       ASN1Type   type;
 
-
-	public static ASN1Type createTypeFor(Object clazz) {
-//		logger.info("Requested class for '" + clazz + "'.");
-		if (clazz instanceof ASN1Type) {
-			//if this thing already ASN1Type - just return it back
-			return (ASN1Type) clazz;
-		} else if (clazz == Long.class) {
-			//create integer handler
-			return new ASN1Integer();
-		} else if (clazz != null && clazz instanceof String) {
-			//just return unresolved type
-			return new ASN1UnresolvedType((String) clazz, null);
-		}
-		//no type for such object
-		return null;
+	public ASN1ConstrainedType(final ASN1Type type, final Constraint constraint) {
+		this.type = type;
+		this.constraint = constraint;
+		//constrained type can not have it's own name, so get it from base
+		this.name = type.getName();
 	}
 
-	ASN1Module getModule() {
-		return module;
+	public Constraint getConstraint() {
+		return constraint;
 	}
 
-	void setModule(final ASN1Module module) {
-//		logger.warn(String.format("Module set for %s (%s)", this, module));
-		this.module = module;
+	public ASN1Type getType() {
+		return type;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getTypeId() {
-		return module.getName() + "." + name;
-	}
-
-	public static String makeTypeId(final String name, final String moduleId) {
-		return moduleId + "." + name;
+	void setType(final ASN1Type type) {
+		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName();
+		return "ASN1ConstrainedType{" + type + " " +
+		       constraint +
+		       '}';
 	}
 
 	/**
@@ -89,7 +70,12 @@ public abstract class ASN1Type {
 	 *
 	 * @throws IOException
 	 */
-	public abstract void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception;
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		//this is simple?
+		//FIXME: constraint checks?
+		type.write(o, os, header);
+	}
 
 	/**
 	 * Read object of type from input stream
@@ -104,39 +90,39 @@ public abstract class ASN1Type {
 	 * @throws IOException   thrown from I/O
 	 * @throws ASN1Exception if selected type reader can not acquire data
 	 */
-	public abstract Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                                          IOException,
-	                                                                                                                          ASN1Exception;
-
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param is - the input stream
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
-	public Object read(final InputStream is) throws IOException, ASN1Exception {
-		return read(null, is, null, false);
+	@Override
+	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
+	                                                                                                           IOException,
+	                                                                                                           ASN1Exception {
+		o = type.read(o, is, header, forceHeaderChecking);
+		//TODO: constraint checks?
+		return o;
 	}
 
-	public abstract boolean isConstructed();
+	@Override
+	public boolean isConstructed() {
+		return type.isConstructed();
+	}
+
+	@Override
+	public void setModule(final ASN1Module module) {
+		super.setModule(module);
+		if (type.getModule() == null) {
+			type.setModule(module);
+		}
+	}
 
 	/**
 	 * Validate this object
 	 *
 	 * @param module
 	 */
-	public abstract void validate(ASN1Module module);
-
-
-	public Class getHandledClass() {
-		return handledClass;
-	}
-
-	public byte[] getHeaderBytes() {
-		return headerBytes;
+	@Override
+	public void validate(final ASN1Module module) {
+		if (type instanceof ASN1UnresolvedType) {
+			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+		} else {
+			type.validate(module);
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,22 +16,37 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.constraint;
+
+import java.util.Vector;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class ValueConstraint extends Constraint {
-	private final Object value;
+public class Union {
 
-	public ValueConstraint(final Object value) {
-		this.value = value;
+	private final boolean        except;
+	private final Vector<Vector> unions;
+
+	public Union(final boolean except, final Vector<Vector> intersections) {
+		this.except = except;
+		this.unions = intersections;
 	}
 
 	@Override
 	public String toString() {
-		return "ValueConstraint{" + value +
+		return "Union{" +
+		       "except=" + except +
+		       ", unions=" + unions +
 		       '}';
+	}
+
+	public boolean isExcept() {
+		return except;
+	}
+
+	public Vector<Vector> getUnions() {
+		return unions;
 	}
 }

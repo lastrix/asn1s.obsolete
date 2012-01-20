@@ -25,9 +25,10 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.protocol.Header;
-import org.lastrix.asn1s.schema.compiler.ASN1Lexer;
-import org.lastrix.asn1s.schema.compiler.ASN1Parser;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
+import org.lastrix.asn1s.schema.compiler.generated.ASN1Lexer;
+import org.lastrix.asn1s.schema.compiler.generated.ASN1Parser;
+import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,9 +115,11 @@ public class ASN1Schema {
 			}
 			logger.info(sb);
 
+			//FIXME: find a way to remove that rebuilding... it looks ugly
 			schema.rebuildIndex();
 			schema.validate();
 			schema.rebuildIndex();
+			logger.warn("Global types: " + schema.types.keySet());
 			return schema;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,7 +187,7 @@ public class ASN1Schema {
 	public void write(Object o, OutputStream os) throws ASN1Exception, IOException {
 		//TODO: implement this
 		ASN1Type type = getHandler(o);
-		logger.warn(String.format("Selected '%s' for %s", type.getTypeId(), o));
+//		logger.warn(String.format("Selected '%s' for %s", type.getTypeId(), o));
 		type.write(o, os, true);
 	}
 

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,22 +16,38 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class RootConstraint extends Constraint {
-	private final Union union;
+public class SequenceOfTestClass {
+	private long                       a;
+	private long                       b;
+	private double                     c;
+	private String                     d;
+	private SequenceOfTestClassAsField myField;
 
-	public RootConstraint(final Union union) {
-		this.union = union;
+	public SequenceOfTestClass() {
+	}
+
+	public SequenceOfTestClass(final int a, final int b, final double c, final String d, final SequenceOfTestClassAsField myField) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
+		this.myField = myField;
 	}
 
 	@Override
 	public String toString() {
-		return "RootConstraint{" + union +
+		return "SequenceOfTestClass{" +
+		       "a=" + a +
+		       ", b=" + b +
+		       ", c=" + c +
+		       ", d=" + d +
+		       ", myField=" + myField +
 		       '}';
 	}
 }

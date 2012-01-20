@@ -16,42 +16,26 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s;
-
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
-import org.junit.Test;
-
-import java.util.Locale;
+package org.lastrix.asn1s.schema.constraint;
 
 /**
- * Main class for test. Holds all tests for project.
- *
  * @author lastrix
  * @version 1.0
  */
-@SuppressWarnings({"ALL"})
-public class AllTests {
+public class Intersection {
+	private final Constraint constraint;
+	private final Constraint except;
 
-	/**
-	 * Generate {@link TestSuite}
-	 *
-	 * @return an {@link Test} object
-	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for current project");
+	public Intersection(final Constraint constraint, final Constraint except) {
+		this.constraint = constraint;
+		this.except = except;
+	}
 
-//		suite.addTest(org.lastrix.asn1s.protocol.AllTests.suite());
-		suite.addTest(org.lastrix.asn1s.schema.AllTests.suite());
-		suite.addTest(org.lastrix.asn1s.tools.AllTests.suite());
-		suite.addTest(org.lastrix.asn1s.util.AllTests.suite());
-
-		// Make sure that we run the tests using the english locale
-		return new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
+	@Override
+	public String toString() {
+		return "Intersection{" +
+		       "constraint=" + constraint +
+		       ", except=" + except +
+		       '}';
 	}
 }

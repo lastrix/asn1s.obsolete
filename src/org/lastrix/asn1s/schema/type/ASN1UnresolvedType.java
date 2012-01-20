@@ -16,52 +16,44 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.schema.ASN1Module;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
 
 /**
- * Used to handle user defined types.
- *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1UserType extends ASN1Type {
+public class ASN1UnresolvedType extends ASN1Type {
 
-	private ASN1Type baseType;
+	private final String moduleName;
 
-	/**
-	 * Create user type with name, baseType
-	 *
-	 * @param name     - the name of user type
-	 * @param baseType - the base type which should handle loading/saving
-	 * @param clazz
-	 *
-	 * @throws NullPointerException if name or baseType is null
-	 */
-	public ASN1UserType(final String name, final ASN1Type baseType, final Class clazz) throws NullPointerException {
-		handledClass = clazz;
-		if (name == null || baseType == null) {
+	public ASN1UnresolvedType(final String name, final String moduleName) {
+		if (name == null) {
 			throw new NullPointerException();
 		}
 		this.name = name;
-		this.baseType = baseType;
+		this.moduleName = moduleName;
+	}
+
+	/**
+	 * Create unresolved type stub for later verification
+	 *
+	 * @param name
+	 */
+	public ASN1UnresolvedType(final String name) {
+		this(name, null);
 	}
 
 	@Override
 	public String toString() {
-		return "ASN1UserType{" +
-		       '\'' + ((module == null) ? "" : module.getModuleId() + ".") +
-		       name + '\'' +
-		       ", baseType=" + baseType +
-		       '}';
+		return "ASN1UnresolvedType{" + ((moduleName != null) ? moduleName + "." + name : name) + '}';
 	}
 
 	/**
@@ -75,7 +67,7 @@ public class ASN1UserType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		baseType.write(o, os, header);
+		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
 	/**
@@ -92,41 +84,19 @@ public class ASN1UserType extends ASN1Type {
 	 * @throws ASN1Exception if selected type reader can not acquire data
 	 */
 	@Override
-	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                           IOException,
-	                                                                                                           ASN1Exception {
-		// we does not have any headers here, so leave it for underlying type reader.
-
-		// does not allow java. objects instantiation.
-		//FIXME: find a better way here.
-		if (handledClass.getName().startsWith("java.")) {
-			return baseType.read(null, is, header, forceHeaderChecking);
-		} else {
-			o = makeInstance();
-			return baseType.read(o, is, header, forceHeaderChecking);
-		}
+	public Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
+	                                                                                                                 IOException,
+	                                                                                                                 ASN1Exception {
+		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
-	private Object makeInstance() throws ASN1ReadException {
-		try {
-			Constructor c = handledClass.getConstructor();
-			return c.newInstance();
-		} catch (Exception e) {
-			throw new ASN1ReadException("Can not instantiate handled class.");
-		}
+	public String getModuleName() {
+		return moduleName;
 	}
 
 	@Override
 	public boolean isConstructed() {
-		return baseType.isConstructed();
-	}
-
-	@Override
-	void setModule(final ASN1Module module) {
-		super.setModule(module);
-		if (baseType.getModule() == null) {
-			baseType.setModule(module);
-		}
+		return false;
 	}
 
 	/**
@@ -136,15 +106,7 @@ public class ASN1UserType extends ASN1Type {
 	 */
 	@Override
 	public void validate(final ASN1Module module) {
-		if (baseType instanceof ASN1UnresolvedType) {
-			baseType = module.getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
-		} else {
-			baseType.validate(module);
-		}
-	}
+		// TODO: unimplemented method stub
 
-	@Override
-	public byte[] getHeaderBytes() {
-		return baseType.getHeaderBytes();
 	}
 }

@@ -16,46 +16,52 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.protocol.Header;
+import org.lastrix.asn1s.schema.ASN1Module;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 
 /**
+ * Used to handle user defined types.
+ *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1ConstrainedType extends ASN1Type {
-	private final Constraint constraint;
-	private       ASN1Type   type;
+public class ASN1UserType extends ASN1Type {
 
-	public ASN1ConstrainedType(final ASN1Type type, final Constraint constraint) {
-		this.type = type;
-		this.constraint = constraint;
-		//constrained type can not have it's own name, so get it from base
-		this.name = type.getName();
-	}
+	private ASN1Type baseType;
 
-	public Constraint getConstraint() {
-		return constraint;
-	}
-
-	public ASN1Type getType() {
-		return type;
-	}
-
-	void setType(final ASN1Type type) {
-		this.type = type;
+	/**
+	 * Create user type with name, baseType
+	 *
+	 * @param name     - the name of user type
+	 * @param baseType - the base type which should handle loading/saving
+	 * @param clazz
+	 *
+	 * @throws NullPointerException if name or baseType is null
+	 */
+	public ASN1UserType(final String name, final ASN1Type baseType, final Class clazz) throws NullPointerException {
+		handledClass = clazz;
+		if (name == null || baseType == null) {
+			throw new NullPointerException();
+		}
+		this.name = name;
+		this.baseType = baseType;
 	}
 
 	@Override
 	public String toString() {
-		return "ASN1ConstrainedType{" + type + " " +
-		       constraint +
+		return "ASN1UserType{" +
+		       '\'' + ((module == null) ? "" : module.getModuleId() + ".") +
+		       name + '\'' +
+		       ", baseType=" + baseType +
 		       '}';
 	}
 
@@ -70,9 +76,7 @@ public class ASN1ConstrainedType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		//this is simple?
-		//FIXME: constraint checks?
-		type.write(o, os, header);
+		baseType.write(o, os, header);
 	}
 
 	/**
@@ -92,21 +96,37 @@ public class ASN1ConstrainedType extends ASN1Type {
 	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
 	                                                                                                           IOException,
 	                                                                                                           ASN1Exception {
-		o = type.read(o, is, header, forceHeaderChecking);
-		//TODO: constraint checks?
-		return o;
+		// we does not have any headers here, so leave it for underlying type reader.
+
+		// does not allow java. objects instantiation.
+		//FIXME: find a better way here.
+		if (handledClass.getName().startsWith("java.")) {
+			return baseType.read(null, is, header, forceHeaderChecking);
+		} else {
+			o = makeInstance();
+			return baseType.read(o, is, header, forceHeaderChecking);
+		}
+	}
+
+	private Object makeInstance() throws ASN1ReadException {
+		try {
+			Constructor c = handledClass.getConstructor();
+			return c.newInstance();
+		} catch (Exception e) {
+			throw new ASN1ReadException("Can not instantiate handled class.");
+		}
 	}
 
 	@Override
 	public boolean isConstructed() {
-		return type.isConstructed();
+		return baseType.isConstructed();
 	}
 
 	@Override
-	void setModule(final ASN1Module module) {
+	public void setModule(final ASN1Module module) {
 		super.setModule(module);
-		if (type.getModule() == null) {
-			type.setModule(module);
+		if (baseType.getModule() == null) {
+			baseType.setModule(module);
 		}
 	}
 
@@ -117,10 +137,15 @@ public class ASN1ConstrainedType extends ASN1Type {
 	 */
 	@Override
 	public void validate(final ASN1Module module) {
-		if (type instanceof ASN1UnresolvedType) {
-			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+		if (baseType instanceof ASN1UnresolvedType) {
+			baseType = module.getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
 		} else {
-			type.validate(module);
+			baseType.validate(module);
 		}
+	}
+
+	@Override
+	public byte[] getHeaderBytes() {
+		return baseType.getHeaderBytes();
 	}
 }

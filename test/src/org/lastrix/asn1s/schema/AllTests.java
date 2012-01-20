@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -41,6 +41,7 @@ public class AllTests {
 	public static junit.framework.Test suite() {
 		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema");
 
+		suite.addTestSuite(SchemaTest.class);
 		// Make sure that we run the tests using the english locale
 		return new TestSetup(suite) {
 			@Override

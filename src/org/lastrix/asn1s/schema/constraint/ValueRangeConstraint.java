@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,16 +16,46 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.schema.constraint;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Constraint {
+public class ValueRangeConstraint extends Constraint {
+
+	public enum EndpointState {
+		MIN,
+		MAX,
+		NONE
+	}
+
+	private final Object        lowerValue;
+	private final Object        upperValue;
+	private final boolean       lowerLess;
+	private final boolean       upperLess;
+	private final EndpointState lowerES;
+	private final EndpointState upperES;
+
+	public ValueRangeConstraint(
+	                           final Object lowerValue,
+	                           final boolean lowerLess,
+	                           final EndpointState lowerES,
+	                           final Object upperValue,
+	                           final boolean upperLess,
+	                           final EndpointState upperES
+	                           ) {
+		this.lowerValue = lowerValue;
+		this.lowerLess = lowerLess;
+		this.lowerES = lowerES;
+		this.upperValue = upperValue;
+		this.upperLess = upperLess;
+		this.upperES = upperES;
+	}
 
 	@Override
 	public String toString() {
-		return "Constraint";
+		return "ValueRangeConstraint{" + ((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : "")
+		       + " .. " + ((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES) + '}';
 	}
 }

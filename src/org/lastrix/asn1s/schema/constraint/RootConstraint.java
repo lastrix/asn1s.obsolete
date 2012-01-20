@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,37 +16,22 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
-
-import java.util.Vector;
+package org.lastrix.asn1s.schema.constraint;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Union {
+public class RootConstraint extends Constraint {
+	private final Union union;
 
-	private final boolean        except;
-	private final Vector<Vector> unions;
-
-	public Union(final boolean except, final Vector<Vector> intersections) {
-		this.except = except;
-		this.unions = intersections;
+	public RootConstraint(final Union union) {
+		this.union = union;
 	}
 
 	@Override
 	public String toString() {
-		return "Union{" +
-		       "except=" + except +
-		       ", unions=" + unions +
+		return "RootConstraint{" + union +
 		       '}';
-	}
-
-	public boolean isExcept() {
-		return except;
-	}
-
-	public Vector<Vector> getUnions() {
-		return unions;
 	}
 }
