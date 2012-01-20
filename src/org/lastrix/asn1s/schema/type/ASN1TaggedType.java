@@ -24,6 +24,7 @@ import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
@@ -41,7 +42,7 @@ public class ASN1TaggedType extends ASN1Type {
 
 
 	private final ASN1TreeWalker.TaggingMethod taggingMethod;
-	private final ASN1TreeWalker.TagClass      tagClass;
+	private final TagClass                     tagClass;
 	private final int                          tagNumber;
 	private       ASN1Type                     subType;
 
@@ -54,7 +55,7 @@ public class ASN1TaggedType extends ASN1Type {
 	public ASN1TaggedType(
 	                     final ASN1Type subType,
 	                     final int tagNumber,
-	                     final ASN1TreeWalker.TagClass tagClass,
+	                     final TagClass tagClass,
 	                     final ASN1TreeWalker.TaggingMethod taggingMethod,
 	                     final Constraint constraint
 	                     ) {
@@ -72,7 +73,7 @@ public class ASN1TaggedType extends ASN1Type {
 		}
 	}
 
-	static byte getTagClass(final ASN1TreeWalker.TagClass tagClass) {
+	static byte getTagClass(final TagClass tagClass) {
 		if (tagClass == null) {
 			return Tag.CLASS_CONTEXT_SPECIFIC;
 		}

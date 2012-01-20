@@ -7,6 +7,8 @@ options {
 
 @header{
 package org.lastrix.asn1s.schema.compiler.generated;
+
+import org.lastrix.asn1s.schema.TagClass;
 }
 
 @members {
