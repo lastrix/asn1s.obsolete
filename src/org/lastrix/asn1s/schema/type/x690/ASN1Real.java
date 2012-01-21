@@ -22,9 +22,7 @@ import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
-import org.lastrix.asn1s.protocol.Header;
-import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
@@ -39,9 +37,8 @@ import java.io.OutputStream;
  */
 public class ASN1Real extends ASN1Type {
 
-	public static final String NAME         = "REAL";
-	public final static byte   TAG          = 0x09;
-	private final       byte[] HEADER_BYTES = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 1).tagToByteArray();
+	public static final String  NAME = "REAL";
+	public final static ASN1Tag TAG  = new ASN1Tag(0x09, TagClass.UNIVERSAL, false);
 
 	private static final int  REAL_BASE_MASK                  = 0x30;
 	private static final int  REAL_BASE_8                     = 0x10;
@@ -68,7 +65,6 @@ public class ASN1Real extends ASN1Type {
 		}
 		handledClass = clazz;
 		this.name = NAME;
-		this.headerBytes = HEADER_BYTES;
 	}
 
 	/**
@@ -87,15 +83,15 @@ public class ASN1Real extends ASN1Type {
 
 		if (header) {
 			//write the header
-			os.write(HEADER_BYTES);
+			os.write(TAG.asBytes());
 			if (value == 0d) {
 				//write length
-				Header.writeLength(os, 0x00);
+				os.write(ASN1Length.asBytes(0x00));
 				//it's all we need to do here
 				return;
 			} else if (Double.isInfinite(value)) {
 				//write length
-				Header.writeLength(os, 0x01);
+				os.write(ASN1Length.asBytes(0x01));
 				//write info octet
 				os.write(((value < 0) ? SPECIAL_REAL_VALUE_NEGATIVE_INF : SPECIAL_REAL_VALUE_POSITIVE_INF));
 				return;
@@ -126,7 +122,7 @@ public class ASN1Real extends ASN1Type {
 
 			if (header) {
 				//write length octet
-				Header.writeLength(os, mantisBytesCount + exponentBytesCount + 1);
+				os.write(ASN1Length.asBytes(mantisBytesCount + exponentBytesCount + 1));
 			}
 
 			//write info octet (we could only have here 1 or 2 exponent octets)
@@ -137,27 +133,32 @@ public class ASN1Real extends ASN1Type {
 	}
 
 	@Override
-	public Object read(final Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws IOException, ASN1Exception {
-		//read header if it is not supplied
-		if (header == null) {
-			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
-		} else if (forceHeaderChecking) {
-			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
+	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+		if (nullValue != null) {
+			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'nullValue'");
+		}
+
+		// tag should be null in anyway
+		if (tag == null) {
+			tag = ASN1Tag.readTag(is);
+			tagCheck = true;
+		}
+		// if we should check tag, then check it!
+		if (tagCheck) {
+			if (!TAG.equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}
 
-		if (o != null) {
-			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'o'");
-		}
+		final int length = ASN1Length.readLength(is).getLength();
 
 		//test for zero value
-		if (header.getLength() == 0) {
+		if (length == 0) {
 			return 0d;
 		}
 
 		final int info = is.read();
-		int mantisLength = header.getLength() - 1;
+		int mantisLength = length - 1;
 
 		//bad news
 		final long base;
@@ -176,8 +177,8 @@ public class ASN1Real extends ASN1Type {
 		} else {
 			//decimal or something special
 			if ((info & SPECIAL_REAL_VALUE) > 0) {
-				if (header.getLength() > 1) {
-					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + header.getLength() + "').");
+				if (length > 1) {
+					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + length + "').");
 				}
 				if (info == SPECIAL_REAL_VALUE) { return Double.POSITIVE_INFINITY; } else if (info == SPECIAL_REAL_VALUE_NEGATIVE_INF) {
 					return Double.NEGATIVE_INFINITY;
@@ -245,23 +246,6 @@ public class ASN1Real extends ASN1Type {
 		return Double.longBitsToDouble(rawDouble);
 	}
 
-	@Override
-	public boolean isConstructed() {
-		return false;
-	}
-
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
-	@Override
-	public void validate(final ASN1Module module) {
-		// TODO: unimplemented method stub
-
-	}
-
-
 	/**
 	 * Convert Float or Double to double
 	 *
@@ -280,5 +264,47 @@ public class ASN1Real extends ASN1Type {
 			return (Float) o;
 		}
 		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
+	}
+
+	@Override
+	public boolean isConstructed() {
+		return TAG.isConstructed();
+	}
+
+	@Override
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
+		}
+
+		setModule(module);
+
+		//now we should add self to index base
+		module.install(this);
+	}
+
+	@Override
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {}
+
+	@Override
+	public boolean isValid() {
+		// TODO: unimplemented method stub
+		return false;
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		return TAG;
 	}
 }

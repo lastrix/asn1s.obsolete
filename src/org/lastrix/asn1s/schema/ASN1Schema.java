@@ -29,6 +29,7 @@ import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Parser;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.x690.ASN1X690Module;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,7 +129,7 @@ public class ASN1Schema {
 	}
 
 	private ASN1Schema() {
-		addModule(ASN1Module.defaultModule);
+		addModule(new ASN1X690Module());
 		logger.info("Created new schema.");
 	}
 

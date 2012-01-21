@@ -39,8 +39,7 @@ public class ASN1Integer extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 
 	public static final  String  NAME = "INTEGER";
-	public final static  byte    TAG  = 0x02;
-	private final static ASN1Tag tag  = new ASN1Tag(TAG, TagClass.UNIVERSAL, false);
+	private final static ASN1Tag TAG  = new ASN1Tag(0x02, TagClass.UNIVERSAL, false);
 
 	public ASN1Integer(Class<? extends Number> _class) {
 		if (_class != Byte.class && _class != Short.class && _class != Integer.class && _class != Long.class) {
@@ -73,9 +72,9 @@ public class ASN1Integer extends ASN1Type {
 
 		if (header) {
 			//write header
-			os.write(tag.asBytes());
+			os.write(TAG.asBytes());
 			//write length
-			os.write(ASN1Length.writeLength(size));
+			os.write(ASN1Length.asBytes(size));
 		}
 		//write integer data
 		os.write(Utils.extractBytes(value, 0, size));
@@ -83,24 +82,23 @@ public class ASN1Integer extends ASN1Type {
 
 	@Override
 	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
-		// tag should be null in anyway
+		if (nullValue != null) {
+			throw new IllegalArgumentException("ASN1Integer does not allow non null parameter 'nullValue'");
+		}
+
+		// TAG should be null in anyway
 		if (tag == null) {
 			tag = ASN1Tag.readTag(is);
 			tagCheck = true;
 		}
-		// if we should check tag, then check it!
+		// if we should check TAG, then check it!
 		if (tagCheck) {
-			if (!ASN1Integer.tag.equals(tag)) {
+			if (!TAG.equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}
 
-		if (nullValue != null) {
-			throw new IllegalArgumentException("ASN1Integer does not allow non null parameter 'o'");
-		}
-
 		final int length = ASN1Length.readLength(is).getLength();
-
 
 		long value = 0;
 		//extract sign
@@ -162,7 +160,7 @@ public class ASN1Integer extends ASN1Type {
 
 	@Override
 	public boolean isConstructed() {
-		return tag.isConstructed();
+		return TAG.isConstructed();
 	}
 
 
@@ -199,6 +197,6 @@ public class ASN1Integer extends ASN1Type {
 
 	@Override
 	public ASN1Tag getTag() {
-		return tag;
+		return TAG;
 	}
 }

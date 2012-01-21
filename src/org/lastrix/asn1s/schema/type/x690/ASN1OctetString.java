@@ -21,7 +21,6 @@ package org.lastrix.asn1s.schema.type.x690;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.ByteArrayOutputStream;
@@ -36,19 +35,6 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public abstract class ASN1OctetString extends ASN1Type {
-
-	/**
-	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
-	 *
-	 * @param o      - the object to be written
-	 * @param os     - the output stream
-	 * @param header - true if header should be written
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public abstract void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception;
-
 
 	/**
 	 * Protected method to encode octet strings
@@ -102,15 +88,4 @@ public abstract class ASN1OctetString extends ASN1Type {
 		}
 		return data;
 	}
-
-	@Override
-	public abstract boolean isConstructed();
-
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
-	@Override
-	public abstract void validate(final ASN1Module module);
 }

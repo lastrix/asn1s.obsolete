@@ -20,9 +20,12 @@ package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1Tag;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -79,32 +82,20 @@ public class ASN1UserType extends ASN1Type {
 		baseType.write(o, os, header);
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
 	@Override
-	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                           IOException,
-	                                                                                                           ASN1Exception {
+	public Object read(Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		if (value != null) {
+			throw new IllegalArgumentException("ASN1Integer does not allow non null parameter 'value'");
+		}
 		// we does not have any headers here, so leave it for underlying type reader.
 
 		// does not allow java. objects instantiation.
 		//FIXME: find a better way here.
 		if (handledClass.getName().startsWith("java.")) {
-			return baseType.read(null, is, header, forceHeaderChecking);
+			return baseType.read(null, is, tag, tagCheck);
 		} else {
-			o = makeInstance();
-			return baseType.read(o, is, header, forceHeaderChecking);
+			value = makeInstance();
+			return baseType.read(value, is, tag, tagCheck);
 		}
 	}
 
@@ -123,29 +114,60 @@ public class ASN1UserType extends ASN1Type {
 	}
 
 	@Override
-	public void setModule(final ASN1Module module) {
-		super.setModule(module);
-		if (baseType.getModule() == null) {
-			baseType.setModule(module);
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
 		}
-	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
-	@Override
-	public void validate(final ASN1Module module) {
+		setModule(module);
+
 		if (baseType instanceof ASN1UnresolvedType) {
-			baseType = module.getType(baseType.getName(), ((ASN1UnresolvedType) baseType).getModuleName());
+			module.addPropertyChangeListener(
+			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(final PropertyChangeEvent evt) {
+					if (evt.getNewValue() instanceof ASN1Type) {
+						final ASN1Type type = (ASN1Type) evt.getNewValue();
+						if (type.getName().equals(baseType.getName())) {
+							baseType = type;
+							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+							module.install(ASN1UserType.this);
+						}
+					}
+				}
+			}
+			                                );
 		} else {
-			baseType.validate(module);
+			//now we should add self to index base
+			module.install(this);
 		}
 	}
 
 	@Override
-	public byte[] getHeaderBytes() {
-		return baseType.getHeaderBytes();
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		if (baseType instanceof ASN1UnresolvedType) {
+			baseType = getModule().resolveType((ASN1UnresolvedType) baseType);
+		}
+	}
+
+	@Override
+	public boolean isValid() {
+		return !(baseType instanceof ASN1UnresolvedType) && baseType.isValid();
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		return baseType.getTag();
 	}
 }

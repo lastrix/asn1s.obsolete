@@ -19,10 +19,13 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,7 +42,7 @@ public class ASN1ConstrainedType extends ASN1Type {
 		this.type = type;
 		this.constraint = constraint;
 		//constrained type can not have it's own name, so get it from base
-		this.name = type.getName();
+		this.name = type.getName() + "@" + hashCode();
 	}
 
 	public Constraint getConstraint() {
@@ -77,27 +80,14 @@ public class ASN1ConstrainedType extends ASN1Type {
 		type.write(o, os, header);
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
+
 	@Override
-	public Object read(Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                           IOException,
-	                                                                                                           ASN1Exception {
-		o = type.read(o, is, header, forceHeaderChecking);
-		//TODO: constraint checks?
-		return o;
+	public Object read(Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		value = type.read(value, is, tag, tagCheck);
+		//TODO: constraint checks
+		return value;
 	}
+
 
 	@Override
 	public boolean isConstructed() {
@@ -105,24 +95,60 @@ public class ASN1ConstrainedType extends ASN1Type {
 	}
 
 	@Override
-	public void setModule(final ASN1Module module) {
-		super.setModule(module);
-		if (type.getModule() == null) {
-			type.setModule(module);
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
+		}
+
+		setModule(module);
+
+		if (type instanceof ASN1UnresolvedType) {
+			module.addPropertyChangeListener(
+			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(final PropertyChangeEvent evt) {
+					if (evt.getNewValue() instanceof ASN1Type) {
+						final ASN1Type type = (ASN1Type) evt.getNewValue();
+						if (type.getName().equals(ASN1ConstrainedType.this.type.getName())) {
+							ASN1ConstrainedType.this.type = type;
+							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+							module.install(ASN1ConstrainedType.this);
+						}
+					}
+				}
+			}
+			                                );
+		} else {
+			//now we should add self to index base
+			module.install(this);
 		}
 	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
 	@Override
-	public void validate(final ASN1Module module) {
-		if (type instanceof ASN1UnresolvedType) {
-			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
-		} else {
-			type.validate(module);
-		}
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO: unimplemented method stub
+		return false;
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		return type.getTag();
 	}
 }

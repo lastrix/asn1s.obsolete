@@ -20,9 +20,12 @@ package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.*;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1Tag;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -88,19 +91,17 @@ public class ASN1ComponentType extends ASN1Type {
 	}
 
 	@Override
-	public Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws IOException,
-	ASN1Exception {
-		//header can not be null here, such as o.
-		if (o == null || header == null) {
+	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		if (value == null || tag == null) {
 			throw new NullPointerException();
 		}
-		Field f = findField(o);
+		Field f = findField(value);
 		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
 		try {
 			// underlying type reader should always test header.
-			final Object ro = type.read(null, is, header, true);
+			final Object ro = type.read(null, is, tag, true);
 			try {
-				f.set(o, ro);
+				f.set(value, ro);
 			} catch (Exception e) {
 				//we should catch everything, i don't trust it.
 				e.printStackTrace();
@@ -124,22 +125,66 @@ public class ASN1ComponentType extends ASN1Type {
 		return type.isConstructed();
 	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
 	@Override
-	public void validate(final ASN1Module module) {
-		if (type instanceof ASN1UnresolvedType) {
-			type = module.getType(type.getName(), ((ASN1UnresolvedType) type).getModuleName());
+	public String toString() {
+		return name + " " + type;
+	}
+
+	@Override
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
+		}
+
+		setModule(module);
+
+		if (ASN1ComponentType.this.type instanceof ASN1UnresolvedType) {
+			module.addPropertyChangeListener(
+			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(final PropertyChangeEvent evt) {
+					if (evt.getNewValue() instanceof ASN1Type) {
+						final ASN1Type type = (ASN1Type) evt.getNewValue();
+						if (type.getName().equals(ASN1ComponentType.this.type.getName())) {
+							ASN1ComponentType.this.type = type;
+							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+							module.install(ASN1ComponentType.this);
+						}
+					}
+				}
+			}
+			                                );
 		} else {
-			type.validate(module);
+			//now we should add self to index base
+			module.install(this);
 		}
 	}
 
 	@Override
-	public String toString() {
-		return name + " " + type;
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO: unimplemented method stub
+		return false;
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		return type.getTag();
 	}
 }

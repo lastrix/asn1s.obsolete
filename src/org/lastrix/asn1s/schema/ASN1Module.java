@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 import org.lastrix.asn1s.schema.type.ASN1UserType;
 
 import java.beans.PropertyChangeEvent;
@@ -185,14 +186,11 @@ public class ASN1Module {
 	 *
 	 * @param schema - the schema
 	 */
-	public void setSchema(final ASN1Schema schema) {
+	private void setSchema(final ASN1Schema schema) {
 		if (this.schema != null) {
 			throw new IllegalStateException();
 		}
 		this.schema = schema;
-		for (ASN1Type t : typesExported.values()) {
-			t.onExport(schema);
-		}
 	}
 
 	/**
@@ -233,6 +231,10 @@ public class ASN1Module {
 			}
 		}
 		return type;
+	}
+
+	public ASN1Type resolveType(ASN1UnresolvedType type) {
+		return resolveType(type.getName(), type.getModuleId());
 	}
 
 	private void firePropertyChange(final PropertyChangeEvent evt) {pcs.firePropertyChange(evt);}
@@ -286,5 +288,23 @@ public class ASN1Module {
 		this.class2type.put(type.getHandledClass(), type);
 //		types.put(type.getName(), type);
 		firePropertyChange(TYPE_INSTALLED, null, type);
+	}
+
+
+	public void deploy(ASN1Schema schema) {
+		setSchema(schema);
+		//first install types
+		for (ASN1Type t : types.values()) {
+			t.onInstall(this);
+		}
+		//get imports
+
+		for (SymbolsFromModule sfm : imports) {
+
+		}
+		//now we could export them
+		for (ASN1Type t : typesExported.values()) {
+			t.onExport(schema);
+		}
 	}
 }

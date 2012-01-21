@@ -288,10 +288,23 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final TagClass tagClass = (TagClass) taggedTypeStack.poll();
 		final TaggingMethod taggingMethod = (TaggingMethod) taggedTypeStack.poll();
 		final Object type = taggedTypeStack.poll();
-		final ASN1Type asn1type = ASN1Type.createTypeFor(type);
+		final ASN1Type asn1type = createTypeFor(type);
 		//and create new type
 //		logger.info(String.format("Creating type for %d %s %s %s", tagNumber, tagClass, taggingMethod, type));
 		stack.push(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod, (Constraint) taggedTypeStack.poll()));
+	}
+
+	private static ASN1Type createTypeFor(Object clazz) {
+//		logger.info("Requested class for '" + clazz + "'.");
+		if (clazz instanceof ASN1Type) {
+			//if this thing already ASN1Type - just return it back
+			return (ASN1Type) clazz;
+		} else if (clazz != null && clazz instanceof String) {
+			//just return unresolved type
+			return new ASN1UnresolvedType((String) clazz, null);
+		}
+		//no type for such object
+		return null;
 	}
 
 	@Override

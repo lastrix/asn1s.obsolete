@@ -19,8 +19,9 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,14 +33,14 @@ import java.io.OutputStream;
  */
 public class ASN1UnresolvedType extends ASN1Type {
 
-	private final String moduleName;
+	private final String moduleId;
 
-	public ASN1UnresolvedType(final String name, final String moduleName) {
+	public ASN1UnresolvedType(final String name, final String moduleId) {
 		if (name == null) {
 			throw new NullPointerException();
 		}
 		this.name = name;
-		this.moduleName = moduleName;
+		this.moduleId = moduleId;
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 
 	@Override
 	public String toString() {
-		return "ASN1UnresolvedType{" + ((moduleName != null) ? moduleName + "." + name : name) + '}';
+		return "ASN1UnresolvedType{" + ((moduleId != null) ? moduleId + "." + name : name) + '}';
 	}
 
 	/**
@@ -70,43 +71,47 @@ public class ASN1UnresolvedType extends ASN1Type {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
 	@Override
-	public Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                                 IOException,
-	                                                                                                                 ASN1Exception {
+	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
-	public String getModuleName() {
-		return moduleName;
+	public String getModuleId() {
+		return moduleId;
 	}
 
 	@Override
 	public boolean isConstructed() {
-		return false;
+		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
 	@Override
-	public void validate(final ASN1Module module) {
-		// TODO: unimplemented method stub
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
 
+	@Override
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public boolean isValid() {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 }

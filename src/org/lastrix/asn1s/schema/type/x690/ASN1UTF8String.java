@@ -21,9 +21,7 @@ package org.lastrix.asn1s.schema.type.x690;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.protocol.Header;
-import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,14 +34,12 @@ import java.io.OutputStream;
 public class ASN1UTF8String extends ASN1OctetString {
 	private final static Logger logger = Logger.getLogger(ASN1UTF8String.class);
 
-	private final static String NAME         = "UTF8String";
-	public final static  byte   TAG          = 0x0C;
-	private final        byte[] HEADER_BYTES = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 1).tagToByteArray();
+	private final static String  NAME = "UTF8String";
+	public final static  ASN1Tag TAG  = new ASN1Tag(0x0C, TagClass.UNIVERSAL, false);
 
 	public ASN1UTF8String() {
 		handledClass = String.class;
 		name = NAME;
-		this.headerBytes = HEADER_BYTES;
 	}
 
 	/**
@@ -61,55 +57,77 @@ public class ASN1UTF8String extends ASN1OctetString {
 		//write header and length
 		//TODO: check about constructed.
 		if (header) {
-			os.write(HEADER_BYTES);
-			Header.writeLength(os, data.length);
+			os.write(TAG.asBytes());
+			os.write(ASN1Length.asBytes(data.length));
 		}
 		encode(os, data);
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
 	@Override
-	public Object read(final Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws
-	                                                                                                           IOException,
-	                                                                                                           ASN1Exception {
-		if (o != null) {
-			throw new IllegalArgumentException("ASN1UTF8String does not allow non null values for parameter 'o'.");
+	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+		if (nullValue != null) {
+			throw new IllegalArgumentException("ASN1Integer does not allow non null parameter 'nullValue'");
 		}
 
-		if (header == null) {
-			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
-		} else if (forceHeaderChecking) {
-			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
+		// TAG should be null in anyway
+		if (tag == null) {
+			tag = ASN1Tag.readTag(is);
+			tagCheck = true;
+		}
+		// if we should check TAG, then check it!
+		if (tagCheck) {
+			if (!TAG.equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}
-		return new String(decode(is, header.getLength()), "UTF-8");
+
+		final int length = ASN1Length.readLength(is).getLength();
+
+		return new String(decode(is, length), "UTF-8");
 	}
 
 	@Override
 	public boolean isConstructed() {
+		return TAG.isConstructed();
+	}
+
+	@Override
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
+		}
+
+		setModule(module);
+
+		//now we should add self to index base
+		module.install(this);
+	}
+
+	@Override
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO: unimplemented method stub
 		return false;
 	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
 	@Override
-	public void validate(final ASN1Module module) {
-		//this is basic class which does not need any kind of validation
+	public ASN1Tag getTag() {
+		return TAG;
 	}
 }

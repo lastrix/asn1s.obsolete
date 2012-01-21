@@ -49,7 +49,7 @@ public final class ASN1Length {
 	 */
 	public ASN1Length(final int length) {
 		this.length = length;
-		this.bytes = writeLength(length);
+		this.bytes = asBytes(length);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class ASN1Length {
 	 *
 	 * @return an byte array
 	 */
-	public static byte[] writeLength(int length) {
+	public static byte[] asBytes(int length) {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(1);
 		if (length == FORM_INDEFINITE) {
 			bos.write(FORM_INDEFINITE);

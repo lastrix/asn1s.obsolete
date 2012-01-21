@@ -23,11 +23,11 @@ import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.TaggingMethod;
+import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +45,7 @@ public class ASN1TaggedType extends ASN1Type {
 	private final TagClass      tagClass;
 	private final int           tagNumber;
 	private       ASN1Type      subType;
+	private       ASN1Tag       tag;
 
 	/**
 	 * It should be set later, so we would know for certain how to handle tagging
@@ -71,23 +72,6 @@ public class ASN1TaggedType extends ASN1Type {
 		} else {
 			this.taggingMethod = taggingMethod;
 		}
-	}
-
-	static byte getTagClass(final TagClass tagClass) {
-		if (tagClass == null) {
-			return Tag.CLASS_CONTEXT_SPECIFIC;
-		}
-		switch (tagClass) {
-			case UNIVERSAL:
-				return Tag.CLASS_UNIVERSAL;
-
-			case APPLICATION:
-				return Tag.CLASS_APPLICATION;
-
-			case PRIVATE:
-				return Tag.CLASS_PRIVATE;
-		}
-		return 0;
 	}
 
 
@@ -117,7 +101,7 @@ public class ASN1TaggedType extends ASN1Type {
 			os.write(
 			        new Header(
 			                  tagNumber,
-			                  getTagClass(tagClass),
+			                  tagClass.getCode(),
 			                  isConstructed() || _methodToUse == TaggingMethod.EXPLICIT,
 			                  Tag.FORM_INDEFINITE
 			        ).tagToByteArray()
@@ -141,97 +125,117 @@ public class ASN1TaggedType extends ASN1Type {
 		os.write(data);
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
 	@Override
-	public Object read(final Object o, final InputStream is, Header header, final boolean forceHeaderChecking) throws
-	                                                                                                           IOException,
-	                                                                                                           ASN1Exception {
-		if (header == null) {
-			header = Header.readHeader(is, tagNumber, isConstructed(), getTagClass(tagClass));
-		} else if (forceHeaderChecking) {
-			if (header.getTag() != tagNumber || header.getTagClass() != getTagClass(tagClass) || header.isConstructed() != isConstructed()) {
+	public Object read(final Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+		if (tag == null) {
+			tag = ASN1Tag.readTag(is);
+			tagCheck = true;
+		}
+		// if we should check TAG, then check it!
+		if (tagCheck) {
+			if (!this.tag.equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}
+
 		switch (_methodToUse) {
 			case IMPLICIT:
-				return subType.read(o, is, header, false);
+				return subType.read(value, is, tag, false);
 
 			case EXPLICIT:
-				return subType.read(o, is, null, false);
+				return subType.read(value, is, null, false);
 		}
-		return null;
+		throw new ASN1Exception("Unknown error.");
 	}
 
 	@Override
 	public boolean isConstructed() {
-		//TODO: fix this, cos there could be constructed types even if subType is not
-		return subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT;
+		return tag.isConstructed();
 	}
 
 	@Override
-	public void setModule(final ASN1Module module) {
-		super.setModule(module);
-		if (subType.getModule() == null) {
-			subType.setModule(module);
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
+		if (getModule() != null) {
+			throw new IllegalStateException();
 		}
-	}
 
-	/**
-	 * Validate this object
-	 *
-	 * @param module
-	 */
-	@Override
-	public void validate(final ASN1Module module) {
+		setModule(module);
+
 		if (subType instanceof ASN1UnresolvedType) {
-			subType = module.getType(subType.getName(), ((ASN1UnresolvedType) subType).getModuleName());
-		} else {
-			subType.validate(module);
-		}
-
-		if (_methodToUse == null) {
-			switch (taggingMethod) {
-				case AUTOMATIC:
-					switch (module.getDefaultTaggingMethod()) {
-						case AUTOMATIC:
-						case IMPLICIT:
-							_methodToUse = TaggingMethod.IMPLICIT;
-							break;
-
-						case EXPLICIT:
-							_methodToUse = TaggingMethod.EXPLICIT;
-							break;
+			module.addPropertyChangeListener(
+			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(final PropertyChangeEvent evt) {
+					if (evt.getNewValue() instanceof ASN1Type) {
+						final ASN1Type type = (ASN1Type) evt.getNewValue();
+						if (type.getName().equals(subType.getName())) {
+							subType = type;
+							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+							doInstall(module);
+						}
 					}
-					break;
-
-				case IMPLICIT:
-					_methodToUse = TaggingMethod.IMPLICIT;
-					break;
-
-				case EXPLICIT:
-					_methodToUse = TaggingMethod.EXPLICIT;
-					break;
+				}
 			}
+			                                );
+		} else {
+			//now we should add self to index base
+			doInstall(module);
 		}
-		this.headerBytes = new Header(
-		                             tagNumber,
-		                             getTagClass(tagClass),
-		                             isConstructed() || _methodToUse == TaggingMethod.EXPLICIT,
-		                             Tag.FORM_INDEFINITE
-		).tagToByteArray();
+	}
 
+	private void doInstall(ASN1Module module) {
+		switch (taggingMethod) {
+			case AUTOMATIC:
+				switch (module.getDefaultTaggingMethod()) {
+					case AUTOMATIC:
+					case IMPLICIT:
+						_methodToUse = TaggingMethod.IMPLICIT;
+						break;
+
+					case EXPLICIT:
+						_methodToUse = TaggingMethod.EXPLICIT;
+						break;
+				}
+				break;
+
+			case IMPLICIT:
+				_methodToUse = TaggingMethod.IMPLICIT;
+				break;
+
+			case EXPLICIT:
+				_methodToUse = TaggingMethod.EXPLICIT;
+				break;
+		}
+		// set up tag
+		ASN1TaggedType.this.tag = new ASN1Tag(tagNumber, tagClass, subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT);
+		module.install(this);
+	}
+
+	@Override
+	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public void onImport(final ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
+
+	@Override
+	public void resolveTypes() {
+		// TODO: unimplemented method stub
+
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO: unimplemented method stub
+		return false;
+	}
+
+	@Override
+	public ASN1Tag getTag() {
+		return tag;
 	}
 }
