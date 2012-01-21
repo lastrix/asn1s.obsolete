@@ -19,7 +19,7 @@
 package org.lastrix.asn1s.schema.type.x690;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.protocol.Header;
@@ -143,7 +143,7 @@ public class ASN1Real extends ASN1Type {
 			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
 		} else if (forceHeaderChecking) {
 			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
-				throw new ASN1IncorrectHeaderException();
+				throw new ASN1IncorrectTagException();
 			}
 		}
 

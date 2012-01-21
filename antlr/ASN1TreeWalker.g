@@ -9,6 +9,7 @@ options {
 package org.lastrix.asn1s.schema.compiler.generated;
 
 import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.TaggingMethod;
 }
 
 @members {

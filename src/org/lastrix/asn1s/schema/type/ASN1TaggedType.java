@@ -20,12 +20,12 @@ package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
+import org.lastrix.asn1s.schema.TaggingMethod;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.io.ByteArrayOutputStream;
@@ -41,22 +41,22 @@ public class ASN1TaggedType extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1TaggedType.class);
 
 
-	private final ASN1TreeWalker.TaggingMethod taggingMethod;
-	private final TagClass                     tagClass;
-	private final int                          tagNumber;
-	private       ASN1Type                     subType;
+	private final TaggingMethod taggingMethod;
+	private final TagClass      tagClass;
+	private final int           tagNumber;
+	private       ASN1Type      subType;
 
 	/**
 	 * It should be set later, so we would know for certain how to handle tagging
 	 */
-	private ASN1TreeWalker.TaggingMethod _methodToUse = null;
+	private TaggingMethod _methodToUse = null;
 
 
 	public ASN1TaggedType(
 	                     final ASN1Type subType,
 	                     final int tagNumber,
 	                     final TagClass tagClass,
-	                     final ASN1TreeWalker.TaggingMethod taggingMethod,
+	                     final TaggingMethod taggingMethod,
 	                     final Constraint constraint
 	                     ) {
 		if (subType == null || tagNumber < 0) {
@@ -67,7 +67,7 @@ public class ASN1TaggedType extends ASN1Type {
 		this.tagClass = tagClass;
 		this.name = subType.getName();
 		if (taggingMethod == null) {
-			this.taggingMethod = ASN1TreeWalker.TaggingMethod.AUTOMATIC;
+			this.taggingMethod = TaggingMethod.AUTOMATIC;
 		} else {
 			this.taggingMethod = taggingMethod;
 		}
@@ -118,7 +118,7 @@ public class ASN1TaggedType extends ASN1Type {
 			        new Header(
 			                  tagNumber,
 			                  getTagClass(tagClass),
-			                  isConstructed() || _methodToUse == ASN1TreeWalker.TaggingMethod.EXPLICIT,
+			                  isConstructed() || _methodToUse == TaggingMethod.EXPLICIT,
 			                  Tag.FORM_INDEFINITE
 			        ).tagToByteArray()
 			        );
@@ -162,7 +162,7 @@ public class ASN1TaggedType extends ASN1Type {
 			header = Header.readHeader(is, tagNumber, isConstructed(), getTagClass(tagClass));
 		} else if (forceHeaderChecking) {
 			if (header.getTag() != tagNumber || header.getTagClass() != getTagClass(tagClass) || header.isConstructed() != isConstructed()) {
-				throw new ASN1IncorrectHeaderException();
+				throw new ASN1IncorrectTagException();
 			}
 		}
 		switch (_methodToUse) {
@@ -178,7 +178,7 @@ public class ASN1TaggedType extends ASN1Type {
 	@Override
 	public boolean isConstructed() {
 		//TODO: fix this, cos there could be constructed types even if subType is not
-		return subType.isConstructed() || _methodToUse == ASN1TreeWalker.TaggingMethod.EXPLICIT;
+		return subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT;
 	}
 
 	@Override
@@ -208,28 +208,28 @@ public class ASN1TaggedType extends ASN1Type {
 					switch (module.getDefaultTaggingMethod()) {
 						case AUTOMATIC:
 						case IMPLICIT:
-							_methodToUse = ASN1TreeWalker.TaggingMethod.IMPLICIT;
+							_methodToUse = TaggingMethod.IMPLICIT;
 							break;
 
 						case EXPLICIT:
-							_methodToUse = ASN1TreeWalker.TaggingMethod.EXPLICIT;
+							_methodToUse = TaggingMethod.EXPLICIT;
 							break;
 					}
 					break;
 
 				case IMPLICIT:
-					_methodToUse = ASN1TreeWalker.TaggingMethod.IMPLICIT;
+					_methodToUse = TaggingMethod.IMPLICIT;
 					break;
 
 				case EXPLICIT:
-					_methodToUse = ASN1TreeWalker.TaggingMethod.EXPLICIT;
+					_methodToUse = TaggingMethod.EXPLICIT;
 					break;
 			}
 		}
 		this.headerBytes = new Header(
 		                             tagNumber,
 		                             getTagClass(tagClass),
-		                             isConstructed() || _methodToUse == ASN1TreeWalker.TaggingMethod.EXPLICIT,
+		                             isConstructed() || _methodToUse == TaggingMethod.EXPLICIT,
 		                             Tag.FORM_INDEFINITE
 		).tagToByteArray();
 

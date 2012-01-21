@@ -49,15 +49,17 @@ public final class ASN1Length {
 	 */
 	public ASN1Length(final int length) {
 		this.length = length;
-		this.bytes = toByteArray();
+		this.bytes = writeLength(length);
 	}
 
 	/**
 	 * Converts length field to byte array that could be written to ASN.1 stream
 	 *
+	 * @param length - the value to be written
+	 *
 	 * @return an byte array
 	 */
-	private byte[] toByteArray() {
+	public static byte[] writeLength(int length) {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(1);
 		if (length == FORM_INDEFINITE) {
 			bos.write(FORM_INDEFINITE);
@@ -84,7 +86,7 @@ public final class ASN1Length {
 	 *
 	 * @throws ASN1ReadException if I/O errors occur
 	 */
-	public ASN1Length readLength(final InputStream is) throws ASN1ReadException {
+	public static ASN1Length readLength(final InputStream is) throws ASN1ReadException {
 		int temp;
 		//	Read the length and create header
 		try {

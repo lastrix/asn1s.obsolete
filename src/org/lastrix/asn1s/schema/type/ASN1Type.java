@@ -20,15 +20,17 @@ package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.type.x690.ASN1Integer;
+import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * Abstract type handler class for all ASN.1 types defined by specification
+ *
  * @author lastrix
  * @version 1.0
  */
@@ -37,40 +39,23 @@ public abstract class ASN1Type {
 	protected String     name;
 	protected ASN1Module module;
 	protected Class      handledClass;
-	protected byte[] headerBytes = null;
+	protected boolean exported = false;
 
-
-	public static ASN1Type createTypeFor(Object clazz) {
-//		logger.info("Requested class for '" + clazz + "'.");
-		if (clazz instanceof ASN1Type) {
-			//if this thing already ASN1Type - just return it back
-			return (ASN1Type) clazz;
-		} else if (clazz == Long.class) {
-			//create integer handler
-			return new ASN1Integer();
-		} else if (clazz != null && clazz instanceof String) {
-			//just return unresolved type
-			return new ASN1UnresolvedType((String) clazz, null);
-		}
-		//no type for such object
-		return null;
-	}
-
-	ASN1Module getModule() {
+	public final ASN1Module getModule() {
 		return module;
 	}
 
-	public void setModule(final ASN1Module module) {
+	public final void setModule(final ASN1Module module) {
 //		logger.warn(String.format("Module set for %s (%s)", this, module));
 		this.module = module;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public String getTypeId() {
-		return module.getName() + "." + name;
+	public final String getTypeId() {
+		return makeTypeId(getName(), module.getName());
 	}
 
 	public static String makeTypeId(final String name, final String moduleId) {
@@ -96,19 +81,19 @@ public abstract class ASN1Type {
 	/**
 	 * Read object of type from input stream
 	 *
-	 * @param o                   - the object which should be used for modifying
-	 * @param is                  - the input stream
-	 * @param header              - the header, non null values prevents method to read header from stream
-	 * @param forceHeaderChecking - force type reader to check header
+	 * @param value    - the object which should be used for modifying
+	 * @param is       - the input stream
+	 * @param tag      - the ASN.1 tag
+	 * @param tagCheck - force type reader to check tag validity
 	 *
 	 * @return an Object or null
 	 *
 	 * @throws IOException   thrown from I/O
 	 * @throws ASN1Exception if selected type reader can not acquire data
 	 */
-	public abstract Object read(final Object o, final InputStream is, final Header header, final boolean forceHeaderChecking) throws
-	                                                                                                                          IOException,
-	                                                                                                                          ASN1Exception;
+	public abstract Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws
+	                                                                                                                 IOException,
+	                                                                                                                 ASN1Exception;
 
 	/**
 	 * Read object of type from input stream
@@ -120,25 +105,60 @@ public abstract class ASN1Type {
 	 * @throws IOException   thrown from I/O
 	 * @throws ASN1Exception if selected type reader can not acquire data
 	 */
-	public Object read(final InputStream is) throws IOException, ASN1Exception {
+	public final Object read(final InputStream is) throws IOException, ASN1Exception {
 		return read(null, is, null, false);
 	}
 
 	public abstract boolean isConstructed();
 
 	/**
-	 * Validate this object
+	 * Called when type should be installed in module.
 	 *
-	 * @param module
+	 * @param module - the module, where type should be
+	 *
+	 * @throws IllegalStateException if type already installed
 	 */
-	public abstract void validate(ASN1Module module);
+	public abstract void onInstall(ASN1Module module) throws IllegalStateException;
 
+	/**
+	 * Called when type should be exported. This method could be called only after #onInstall(ASN1Module)
+	 *
+	 * @param schema - the schema, where type should be.
+	 *
+	 * @throws IllegalStateException if type already exported
+	 */
+	public abstract void onExport(ASN1Schema schema) throws IllegalStateException;
+
+	/**
+	 * Called when type should be imported to module
+	 *
+	 * @param module - the module
+	 *
+	 * @throws IllegalStateException if type already imported
+	 */
+	public abstract void onImport(ASN1Module module) throws IllegalStateException;
+
+	/**
+	 * This method called when type is installed, exported if needed, and all imports for this module have been satisfied.
+	 * This method should replace all {@see ASN1UnresolvedType} with valid types.
+	 */
+	public abstract void resolveTypes();
+
+	/**
+	 * Returns true if this type is valid: all types resolved, handled classes found.
+	 *
+	 * @return an boolean
+	 */
+	public abstract boolean isValid();
+
+	/**
+	 * Return tag
+	 *
+	 * @return an ASN1Tag
+	 */
+	public abstract ASN1Tag getTag();
 
 	public Class getHandledClass() {
 		return handledClass;
-	}
-
-	public byte[] getHeaderBytes() {
-		return headerBytes;
 	}
 }

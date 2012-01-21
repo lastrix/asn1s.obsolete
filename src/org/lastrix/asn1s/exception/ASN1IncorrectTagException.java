@@ -22,20 +22,20 @@ package org.lastrix.asn1s.exception;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1IncorrectHeaderException extends ASN1ProtocolException {
-	public ASN1IncorrectHeaderException(final Throwable cause) {
+public class ASN1IncorrectTagException extends ASN1ProtocolException {
+	public ASN1IncorrectTagException(final Throwable cause) {
 		super(cause);
 	}
 
-	public ASN1IncorrectHeaderException(final String message, final Throwable cause) {
+	public ASN1IncorrectTagException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public ASN1IncorrectHeaderException(final String message) {
+	public ASN1IncorrectTagException(final String message) {
 		super(message);
 	}
 
-	public ASN1IncorrectHeaderException() {
+	public ASN1IncorrectTagException() {
 		super();
 	}
 }

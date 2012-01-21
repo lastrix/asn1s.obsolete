@@ -19,7 +19,7 @@
 package org.lastrix.asn1s.protocol;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.util.Utils;
 
@@ -300,7 +300,7 @@ public final class Header {
 	                               ) throws ASN1ProtocolException {
 		final Header h = readHeader(is);
 		if (h.getTag() != expectedTag || h.getTagClass() != expectedTagClass || h.isConstructed() != expectedConstructed) {
-			throw new ASN1IncorrectHeaderException();
+			throw new ASN1IncorrectTagException();
 		}
 		return h;
 	}

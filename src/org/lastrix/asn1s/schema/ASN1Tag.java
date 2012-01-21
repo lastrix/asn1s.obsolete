@@ -126,9 +126,8 @@ public final class ASN1Tag {
 
 	@Override
 	public int hashCode() {
-		return ((constructed) ? 1 : 0)
-		       | (tagClass.ordinal() << 1)
-		       | (tag << 3);
+		return tagClass.ordinal()
+		       | (tag << 2);
 	}
 
 	@Override
@@ -136,7 +135,7 @@ public final class ASN1Tag {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof ASN1Tag) {
-			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTag()) && constructed == ((ASN1Tag) obj).isConstructed();
+			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTag());
 		}
 		return false;
 	}

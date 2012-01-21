@@ -20,7 +20,7 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1IncorrectHeaderException;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.schema.ASN1Module;
@@ -92,7 +92,7 @@ public class ASN1UTF8String extends ASN1OctetString {
 			header = Header.readHeader(is, TAG, isConstructed(), Tag.CLASS_UNIVERSAL);
 		} else if (forceHeaderChecking) {
 			if (header.getTag() != TAG || header.getTagClass() != Tag.CLASS_UNIVERSAL || header.isConstructed() != isConstructed()) {
-				throw new ASN1IncorrectHeaderException();
+				throw new ASN1IncorrectTagException();
 			}
 		}
 		return new String(decode(is, header.getLength()), "UTF-8");

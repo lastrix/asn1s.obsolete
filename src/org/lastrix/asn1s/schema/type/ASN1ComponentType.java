@@ -106,7 +106,7 @@ public class ASN1ComponentType extends ASN1Type {
 				e.printStackTrace();
 				throw new ASN1ReadException("Unable to setup new value of field '" + name + "'.");
 			}
-		} catch (ASN1IncorrectHeaderException e) {
+		} catch (ASN1IncorrectTagException e) {
 			//we can allow state when object is not read only if it optional
 			if (optional) {
 				throw new ASN1OptionalComponentSkippedException();

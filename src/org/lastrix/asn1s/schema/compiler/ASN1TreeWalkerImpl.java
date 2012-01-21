@@ -20,10 +20,7 @@ package org.lastrix.asn1s.schema.compiler;
 
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.ASN1Schema;
-import org.lastrix.asn1s.schema.SymbolsFromModule;
-import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
 import org.lastrix.asn1s.schema.constraint.*;
 import org.lastrix.asn1s.schema.type.*;

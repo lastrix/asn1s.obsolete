@@ -19,14 +19,12 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
 import org.lastrix.asn1s.schema.type.ASN1Type;
-import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 import org.lastrix.asn1s.schema.type.ASN1UserType;
-import org.lastrix.asn1s.schema.type.x690.ASN1Integer;
-import org.lastrix.asn1s.schema.type.x690.ASN1Real;
-import org.lastrix.asn1s.schema.type.x690.ASN1UTF8String;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
@@ -36,74 +34,34 @@ import java.util.*;
  * @version 1.0
  */
 public class ASN1Module {
-	private final static Logger     logger        = Logger.getLogger(ASN1Module.class);
-	/**
-	 * Default module that holds all basic objects present in ASN.1, this module automatically injected into any ASN1Schema. This module name contains
-	 * some characters that not allowed in ASN.1 spec, so no one would hide it.
-	 */
-	static final         ASN1Module defaultModule = new ASN1Module(
-	                                                              "--DEFAULT--", ASN1TreeWalker.TaggingMethod.IMPLICIT, false, true, null,
-	                                                              new Vector()
-	);
+	private final static Logger logger         = Logger.getLogger(ASN1Module.class);
+	public static final  String TYPE_INSTALLED = "typeInstalled";
 
-	static {
-		// defining default types in their own module
-		registerType(new ASN1Integer(), defaultModule, Integer.class);
-		registerType(new ASN1Real(Float.class), defaultModule, Float.class);
-		registerType(new ASN1Real(Double.class), defaultModule, Double.class);
-		registerType(new ASN1UTF8String(), defaultModule, String.class);
-	}
+	private       ASN1Schema              schema;
+	private final String                  moduleId;
+	private final TaggingMethod           defaultTaggingMethod;
+	private final boolean                 extensibilityImplied;
+	private final boolean                 exportAll;
+	private final List<String>            exports;
+	private final List<SymbolsFromModule> imports;
+	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
 
-	/**
-	 * Registers type in module, sets type's module to module
-	 *
-	 * @param type   - the type
-	 * @param module - the module
-	 */
-	public static void registerType(ASN1Type type, ASN1Module module, Class clazz) {
-		type.setModule(module);
-		module.types.put(type.getName(), type);
 
-		//test if there is no class for such type
-		if (module.class2type.containsKey(clazz)) {
-			logger.warn("Redefining type handler for class " + clazz);
-		}
-		module.class2type.put(clazz, type);
-
-		//so there should be no clazz for such type, check it
-		if (module.type2class.containsKey(type)) {
-			logger.warn("Redefining class handler for type " + type);
-		}
-		module.type2class.put(type, clazz);
-		if (module.exportAll || module.exports.contains(type.getName())) {
-			module.typesExported.put(type.getName(), type);
-		}
-//		logger.warn(String.format("Registered type %s in %s.", type.getTypeId(), module.getModuleId()));
-	}
-
-	private       ASN1Schema                   schema;
-	private final String                       moduleId;
-	private final ASN1TreeWalker.TaggingMethod defaultTaggingMethod;
-	private final boolean                      extensibilityImplied;
-	private final boolean                      exportAll;
-	private final List<String>                 exports;
-	private final List<SymbolsFromModule>      imports;
-	private final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
+	protected final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
 
 	/**
 	 * Defines which ASN1Type should handle specified class
 	 */
-	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
+	protected final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
 
-	/**
-	 * Defines which class handled by ASN1Type
-	 */
-	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
+	protected final Map<String, Map<String, ASN1Type>> importedTypes = new HashMap<String, Map<String, ASN1Type>>();
+
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
 	 * Storage for all exports where key is [TypeName]
 	 */
-	private final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
+	protected final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
 
 	/**
 	 * Create new module
@@ -117,7 +75,7 @@ public class ASN1Module {
 	 */
 	public ASN1Module(
 	                 final String moduleId,
-	                 final ASN1TreeWalker.TaggingMethod defaultTaggingMethod,
+	                 final TaggingMethod defaultTaggingMethod,
 	                 final boolean extensibilityImplied,
 	                 final boolean exportAll,
 	                 final Vector<SymbolsFromModule> imports,
@@ -138,7 +96,7 @@ public class ASN1Module {
 	 */
 	public ASN1Module(
 	                 final String moduleId,
-	                 final ASN1TreeWalker.TaggingMethod defaultTaggingMethod,
+	                 final TaggingMethod defaultTaggingMethod,
 	                 final boolean extensibilityImplied,
 	                 final Vector<String> exports,
 	                 final Vector<SymbolsFromModule> imports,
@@ -158,15 +116,15 @@ public class ASN1Module {
 	 * @param imports              - vector with symbols from module
 	 * @param types                - vector with types
 	 */
-	private ASN1Module(
-	                  final String moduleId,
-	                  final ASN1TreeWalker.TaggingMethod defaultTaggingMethod,
-	                  final boolean extensibilityImplied,
-	                  final boolean exportAll,
-	                  final Vector<String> exports,
-	                  final Vector<SymbolsFromModule> imports,
-	                  final Vector<ASN1UserType> types
-	                  ) {
+	protected ASN1Module(
+	                    final String moduleId,
+	                    final TaggingMethod defaultTaggingMethod,
+	                    final boolean extensibilityImplied,
+	                    final boolean exportAll,
+	                    final Vector<String> exports,
+	                    final Vector<SymbolsFromModule> imports,
+	                    final Vector<ASN1UserType> types
+	                    ) {
 		if (moduleId == null) throw new NullPointerException();
 
 		this.moduleId = moduleId;
@@ -179,8 +137,7 @@ public class ASN1Module {
 		//and add all the types
 		if (types != null) {
 			for (ASN1UserType t : types) {
-//				logger.warn("Registering type " + t);
-				registerType(t, this, t.getHandledClass());
+				this.types.put(t.getName(), t);
 			}
 		}
 	}
@@ -209,27 +166,8 @@ public class ASN1Module {
 	 * Validate this module and find all unresolved externals
 	 */
 	void validate() {
-		// TODO: unimplemented method stub
-		//replace all unresolved types with valid ones
-		for (ASN1Type t : types.values()) {
-			t.validate(this);
-		}
 
-		//check exports
-		for (String s : exports) {
-			if (!(typesExported.get(s) instanceof ASN1Type) || typesExported.get(s) instanceof ASN1UnresolvedType) {
-				logger.warn(String.format("Symbols '%s' declared in exports, but type is not found in this module.", s));
-			}
-		}
 
-		//find all unresolved types
-		for (ASN1Type t : types.values()) {
-			if (t instanceof ASN1UnresolvedType) {
-				logger.warn("Found unresolved type " + t.getTypeId());
-			}
-		}
-//		logger.warn("class2type= " + class2type);
-//		logger.warn("type2class= " + type2class);
 	}
 
 	/**
@@ -253,7 +191,7 @@ public class ASN1Module {
 		}
 		this.schema = schema;
 		for (ASN1Type t : typesExported.values()) {
-			schema.addType(t);
+			t.onExport(schema);
 		}
 	}
 
@@ -266,26 +204,87 @@ public class ASN1Module {
 		return moduleId;
 	}
 
-	ASN1Type getHandler(Object o) {
-		ASN1Type result = class2type.get(o.getClass());
-		if (result == null) {
-			return getSchema().getHandler(o);
-		}
-		return result;
-	}
-
-	public ASN1TreeWalker.TaggingMethod getDefaultTaggingMethod() {
+	public TaggingMethod getDefaultTaggingMethod() {
 		return defaultTaggingMethod;
 	}
 
-	public ASN1Type getType(final String name, final String moduleId) {
-		if (moduleId != null && !getModuleId().equals(moduleId)) {
-			return getSchema().getType(name, moduleId);
+	/**
+	 * Resolves type by its name and moduleId
+	 *
+	 * @param name     - an String
+	 * @param moduleId - an String
+	 *
+	 * @return an ASN1Type or null
+	 */
+	public ASN1Type resolveType(final String name, final String moduleId) {
+		// if module id is set, then we should check import lists
+		if (!getModuleId().equals(moduleId) && moduleId != null) {
+			Map<String, ASN1Type> map = importedTypes.get(moduleId);
+			return map.get(name);
 		}
-		ASN1Type t = types.get(name);
-		if (t == null && !getModuleId().equals(moduleId)) {
-			return getSchema().getType(name, moduleId);
+		// get from internal type list
+		ASN1Type type = types.get(name);
+
+		if (type == null && moduleId == null) {
+			//if nothing found, try to find it in imported symbols
+			for (Map<String, ASN1Type> map : importedTypes.values()) {
+				final ASN1Type t = map.get(name);
+				if (t != null) { return t; }
+			}
 		}
-		return t;
+		return type;
+	}
+
+	private void firePropertyChange(final PropertyChangeEvent evt) {pcs.firePropertyChange(evt);}
+
+	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(
+		                                propertyName,
+		                                listener
+		                                );
+	}
+
+	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(
+		                             propertyName,
+		                             listener
+		                             );
+	}
+
+	public void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
+	}
+
+
+	/**
+	 * Adds specified type to imports
+	 *
+	 * @param type
+	 */
+	public void importType(ASN1Type type) {
+		Map<String, ASN1Type> map = importedTypes.get(type.getModule().getModuleId());
+		if (map == null) {
+			map = new HashMap<String, ASN1Type>();
+			importedTypes.put(type.getModule().getModuleId(), map);
+		}
+		map.put(type.getName(), type);
+		firePropertyChange(TYPE_INSTALLED, null, type);
+	}
+
+	/**
+	 * Installs type in this Module
+	 *
+	 * @param type
+	 */
+	public void install(ASN1Type type) {
+		//register signatures
+		tag2type.put(type.getTag(), type);
+		this.class2type.put(type.getHandledClass(), type);
+//		types.put(type.getName(), type);
+		firePropertyChange(TYPE_INSTALLED, null, type);
 	}
 }
