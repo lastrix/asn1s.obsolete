@@ -128,8 +128,8 @@ public class ASN1UserType extends ASN1Type {
 						if (evt.getNewValue() instanceof ASN1Type) {
 							final ASN1Type type = (ASN1Type) evt.getNewValue();
 							if (type.getName().equals(baseType.getName()) &&
-							    (((ASN1UnresolvedType) baseType).getModuleId() == null
-							     || type.getModule().getModuleId().equals(((ASN1UnresolvedType) baseType).getModuleId()))) {
+							    (((ASN1UnresolvedType) baseType).getModuleName() == null
+							     || type.getModule().getName().equals(((ASN1UnresolvedType) baseType).getModuleName()))) {
 								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
 								baseType = type;
 								try {

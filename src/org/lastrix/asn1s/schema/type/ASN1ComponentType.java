@@ -40,16 +40,17 @@ import java.lang.reflect.Field;
 public class ASN1ComponentType extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1ComponentType.class);
 
-	private final String   name;
+	private final String   fieldName;
 	private       ASN1Type type;
 	private final boolean optional = false;
 	private Field field;
 //	private final Object defaultValue;
 
 
-	public ASN1ComponentType(final String name, final ASN1Type type) {
-		this.name = name;
+	public ASN1ComponentType(final String fieldName, final ASN1Type type) {
+		this.name = type.getName();
 		this.type = type;
+		this.fieldName = fieldName;
 		invalid();
 	}
 
@@ -80,7 +81,7 @@ public class ASN1ComponentType extends ASN1Type {
 		Class c = clazz;
 		while (c != null) {
 			try {
-				f = c.getDeclaredField(name);
+				f = c.getDeclaredField(fieldName);
 				f.setAccessible(true);
 			} catch (NoSuchFieldException e) {
 			}
@@ -133,7 +134,7 @@ public class ASN1ComponentType extends ASN1Type {
 
 		setModule(module);
 
-		if (ASN1ComponentType.this.type instanceof ASN1UnresolvedType) {
+		if (type instanceof ASN1UnresolvedType) {
 			final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
 			if (t == null) {
 				module.addPropertyChangeListener(
@@ -142,9 +143,9 @@ public class ASN1ComponentType extends ASN1Type {
 					public void propertyChange(final PropertyChangeEvent evt) {
 						if (evt.getNewValue() instanceof ASN1Type) {
 							final ASN1Type _type = (ASN1Type) evt.getNewValue();
-							if (_type.getName().equals(ASN1ComponentType.this.type.getName()) &&
-							    (((ASN1UnresolvedType) type).getModuleId() == null
-							     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleId()))) {
+							if (_type.getName().equals(type.getName()) &&
+							    (type.getModuleName() == null
+							     || _type.getModuleName().equals(type.getModuleName()))) {
 								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
 								try {
 									ASN1ComponentType.this.type = _type;
@@ -168,7 +169,9 @@ public class ASN1ComponentType extends ASN1Type {
 	}
 
 	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
-		module.install(this);
+		if (register) {
+			module.install(this);
+		}
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
 			type.onInstall(module, false);
 		}

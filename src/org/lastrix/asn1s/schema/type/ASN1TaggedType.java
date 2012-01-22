@@ -168,9 +168,11 @@ public class ASN1TaggedType extends ASN1Type {
 					@Override
 					public void propertyChange(final PropertyChangeEvent evt) {
 						if (evt.getNewValue() instanceof ASN1Type) {
-							final ASN1Type type = (ASN1Type) evt.getNewValue();
-							if (type.getName().equals(subType.getName())) {
-								subType = type;
+							final ASN1Type _type = (ASN1Type) evt.getNewValue();
+							if (_type.getName().equals(subType.getName()) &&
+							    (((ASN1UnresolvedType) subType).getModuleName() == null
+							     || _type.getModule().getName().equals(((ASN1UnresolvedType) subType).getModuleName()))) {
+								subType = _type;
 								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
 								try {
 									doInstall(module, register);

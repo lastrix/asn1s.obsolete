@@ -134,7 +134,7 @@ public class ASN1Schema {
 		//if it fail, no module would be added.
 		try {
 			module.deploy(this);
-			modules.put(module.getModuleId(), module);
+			modules.put(module.getName(), module);
 		} catch (ASN1Exception e) {
 			logger.error("Exception:", e);
 		}

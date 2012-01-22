@@ -41,7 +41,7 @@ public class ASN1Module {
 	public static final  String TYPE_INSTALLED = "typeInstalled";
 
 	private       ASN1Schema              schema;
-	private final String                  moduleId;
+	private final ASN1ModuleId            moduleId;
 	private final TaggingMethod           defaultTaggingMethod;
 	private final boolean                 extensibilityImplied;
 	private final boolean                 exportAll;
@@ -77,7 +77,7 @@ public class ASN1Module {
 	 * @param types                - vector with types
 	 */
 	public ASN1Module(
-	                 final String moduleId,
+	                 final ASN1ModuleId moduleId,
 	                 final TaggingMethod defaultTaggingMethod,
 	                 final boolean extensibilityImplied,
 	                 final boolean exportAll,
@@ -98,7 +98,7 @@ public class ASN1Module {
 	 * @param types                - vector with types
 	 */
 	public ASN1Module(
-	                 final String moduleId,
+	                 final ASN1ModuleId moduleId,
 	                 final TaggingMethod defaultTaggingMethod,
 	                 final boolean extensibilityImplied,
 	                 final Vector<String> exports,
@@ -120,7 +120,7 @@ public class ASN1Module {
 	 * @param types                - vector with types
 	 */
 	protected ASN1Module(
-	                    final String moduleId,
+	                    final ASN1ModuleId moduleId,
 	                    final TaggingMethod defaultTaggingMethod,
 	                    final boolean extensibilityImplied,
 	                    final boolean exportAll,
@@ -146,12 +146,11 @@ public class ASN1Module {
 	}
 
 	/**
-	 * Returns module id, currently only name supported.
-	 * TODO: add here OID support and make complete ModuleID class.
+	 * Returns module id.
 	 *
-	 * @return an String
+	 * @return an ASN1ModuleId
 	 */
-	public String getModuleId() {
+	public ASN1ModuleId getModuleId() {
 		return moduleId;
 	}
 
@@ -193,7 +192,7 @@ public class ASN1Module {
 	 * @return an String
 	 */
 	public String getName() {
-		return moduleId;
+		return getModuleId().getModuleName();
 	}
 
 	public TaggingMethod getDefaultTaggingMethod() {
@@ -211,7 +210,7 @@ public class ASN1Module {
 	public ASN1Type resolveType(final String name, final String moduleId) {
 //		logger.warn("Looking for type " + name + "  in " + moduleId);
 		// if module id is set, then we should check import lists
-		if (!getModuleId().equals(moduleId) && moduleId != null) {
+		if (!getName().equals(moduleId) && moduleId != null) {
 			Map<String, ASN1Type> map = importedTypes.get(moduleId);
 			return map.get(name);
 		}
@@ -229,7 +228,7 @@ public class ASN1Module {
 	}
 
 	public ASN1Type resolveType(ASN1UnresolvedType type) {
-		return resolveType(type.getName(), type.getModuleId());
+		return resolveType(type.getName(), type.getModuleName());
 	}
 
 	private void firePropertyChange(final PropertyChangeEvent evt) {pcs.firePropertyChange(evt);}
@@ -264,10 +263,10 @@ public class ASN1Module {
 	 */
 	public void importType(ASN1Type type) {
 		if (type != null) {
-			Map<String, ASN1Type> map = importedTypes.get(type.getModule().getModuleId());
+			Map<String, ASN1Type> map = importedTypes.get(type.getModuleName());
 			if (map == null) {
 				map = new HashMap<String, ASN1Type>();
-				importedTypes.put(type.getModule().getModuleId(), map);
+				importedTypes.put(type.getModuleName(), map);
 			}
 			map.put(type.getName(), type);
 			firePropertyChange(TYPE_INSTALLED, null, type);
@@ -364,7 +363,7 @@ public class ASN1Module {
 					public void propertyChange(final PropertyChangeEvent evt) {
 						if (evt.getNewValue() instanceof ASN1Type) {
 							final ASN1Type type = (ASN1Type) evt.getNewValue();
-							if (typeName.equals(type.getName()) && sfm.getModuleName().equals(type.getModule().getName())) {
+							if (typeName.equals(type.getName()) && sfm.getModuleName().equals(type.getModuleName())) {
 								importType(type);
 								schema.removePropertyChangeListener(ASN1Schema.TYPE_INSTALLED, this);
 							}
@@ -378,8 +377,13 @@ public class ASN1Module {
 
 	public void printDebugInfo() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("Types:\n");
 		for (ASN1Type t : types.values()) {
 			sb.append(String.format("%s%s\n", t.isValid() ? "" : "*", t.getTypeId()));
+		}
+		sb.append("Imported types:\n");
+		for (Map<String, ASN1Type> map : importedTypes.values()) {
+			sb.append(map + "\n");
 		}
 		logger.info(sb);
 	}

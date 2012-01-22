@@ -77,7 +77,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
-	public String getModuleId() {
+	public String getModuleName() {
 		return moduleId;
 	}
 

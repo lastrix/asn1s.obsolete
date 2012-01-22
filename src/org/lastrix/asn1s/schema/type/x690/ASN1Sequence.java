@@ -200,8 +200,8 @@ public class ASN1Sequence extends ASN1Type {
 							if (evt.getNewValue() instanceof ASN1Type) {
 								final ASN1Type _type = (ASN1Type) evt.getNewValue();
 								if (_type.getName().equals(type.getName()) &&
-								    (((ASN1UnresolvedType) type).getModuleId() == null
-								     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleId()))) {
+								    (((ASN1UnresolvedType) type).getModuleName() == null
+								     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleName()))) {
 									module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
 									componentType[index] = _type;
 									try {

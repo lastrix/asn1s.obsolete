@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1ModuleId;
 import org.lastrix.asn1s.schema.SymbolsFromModule;
 import org.lastrix.asn1s.schema.TaggingMethod;
 import org.lastrix.asn1s.schema.type.ASN1Type;
@@ -32,7 +33,7 @@ import java.util.Vector;
  */
 public class ASN1X690Module extends ASN1Module {
 	private final static Logger logger      = Logger.getLogger(ASN1X690Module.class);
-	public final static  String MODULE_NAME = "--DEFAULT--";
+	public final static  String MODULE_NAME = "__DEFAULT__";
 	/**
 	 * Holds all types that should be imported in any module
 	 */
@@ -50,7 +51,7 @@ public class ASN1X690Module extends ASN1Module {
 	 * Create ASN1 module that holds all default ASN.1 types.
 	 */
 	public ASN1X690Module() {
-		super(MODULE_NAME, TaggingMethod.EXPLICIT, false, true, null, null, null);
+		super(new ASN1ModuleId(MODULE_NAME), TaggingMethod.EXPLICIT, false, true, null, null, null);
 		allowImports = false;
 		addType(new ASN1Integer(Long.class));
 		addType(new ASN1Integer(Integer.class));

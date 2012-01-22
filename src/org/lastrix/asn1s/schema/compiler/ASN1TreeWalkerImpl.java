@@ -91,7 +91,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 //		super.closeModule();
 		final LinkedList<Object> moduleStack = transferTill(BlockTag.MODULE);
 		//TODO: module id
-		final String moduleId = (String) moduleStack.poll();
+		final ASN1ModuleId moduleId = (ASN1ModuleId) moduleStack.poll();
 
 		final TaggingMethod defaultTaggingMethod = (moduleStack.peek() instanceof TaggingMethod) ?
 		                                           (TaggingMethod) moduleStack.poll() :
@@ -121,14 +121,14 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void closeModuleId() {
 //		super.closeModuleId();
 		final LinkedList<Object> moduleIdStack = transferTill(BlockTag.MODULE_ID);
-		final String id = (String) moduleIdStack.poll();
-		if (id == null) {
+		final String name = (String) moduleIdStack.poll();
+		if (name == null) {
 			throw new NullPointerException();
 		}
 		//TODO: add name validation
 
 		//return it back (cos we can not make OID now)
-		stack.push(id);
+		stack.push(new ASN1ModuleId(name));
 	}
 
 	@Override

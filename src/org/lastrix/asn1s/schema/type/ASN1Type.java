@@ -67,6 +67,10 @@ public abstract class ASN1Type {
 		return moduleId + "." + name;
 	}
 
+	public String getModuleName() {
+		return getModule().getName();
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
