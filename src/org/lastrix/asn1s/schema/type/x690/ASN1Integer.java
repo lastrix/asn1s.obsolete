@@ -22,7 +22,9 @@ import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
-import org.lastrix.asn1s.schema.*;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
@@ -46,7 +48,13 @@ public class ASN1Integer extends ASN1Type {
 			throw new IllegalArgumentException("Only 'Byte', 'Short', 'Integer' and 'Long' allowed.");
 		}
 		handledClass = _class;
-		this.name = NAME;
+		if (_class == Long.class) {
+			this.name = NAME;
+		} else {
+			this.name = NAME + _class.getSimpleName();
+		}
+		this.tag = TAG;
+		valid();
 	}
 
 	/**
@@ -151,52 +159,5 @@ public class ASN1Integer extends ASN1Type {
 		                                               o.getClass().getSimpleName()
 		                                               )
 		);
-	}
-
-	@Override
-	public String toString() {
-		return getName();
-	}
-
-	@Override
-	public boolean isConstructed() {
-		return TAG.isConstructed();
-	}
-
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
-		if (getModule() != null) {
-			throw new IllegalStateException();
-		}
-
-		setModule(module);
-
-		//now we should add self to index base
-		module.install(this);
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {}
-
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	@Override
-	public ASN1Tag getTag() {
-		return TAG;
 	}
 }

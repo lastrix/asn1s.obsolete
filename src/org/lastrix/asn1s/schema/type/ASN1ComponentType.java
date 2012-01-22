@@ -21,7 +21,6 @@ package org.lastrix.asn1s.schema.type;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.*;
 import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.beans.PropertyChangeEvent;
@@ -44,12 +43,14 @@ public class ASN1ComponentType extends ASN1Type {
 	private final String   name;
 	private       ASN1Type type;
 	private final boolean optional = false;
+	private Field field;
 //	private final Object defaultValue;
 
 
 	public ASN1ComponentType(final String name, final ASN1Type type) {
 		this.name = name;
 		this.type = type;
+		invalid();
 	}
 
 	/**
@@ -64,20 +65,19 @@ public class ASN1ComponentType extends ASN1Type {
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
 		//let's find field with name in object class
-		Field f = findField(o);
-
+		field = findField(o.getClass());
 		Object value = null;
 		try {
-			value = f.get(o);
+			value = field.get(o);
 		} catch (IllegalAccessException e) {
 			throw new ASN1Exception(e);
 		}
 		type.write(value, os, true);
 	}
 
-	private Field findField(final Object o) throws ASN1ProtocolException {
+	private Field findField(final Class clazz) throws ASN1Exception {
 		Field f = null;
-		Class c = o.getClass();
+		Class c = clazz;
 		while (c != null) {
 			try {
 				f = c.getDeclaredField(name);
@@ -86,7 +86,7 @@ public class ASN1ComponentType extends ASN1Type {
 			}
 			c = c.getSuperclass();
 		}
-		if (f == null) { throw new ASN1ProtocolException("Object 'o' have got no field named " + name); }
+		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", name, clazz)); }
 		return f;
 	}
 
@@ -95,13 +95,13 @@ public class ASN1ComponentType extends ASN1Type {
 		if (value == null || tag == null) {
 			throw new NullPointerException();
 		}
-		Field f = findField(value);
+		field = findField(value.getClass());
 		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
 		try {
 			// underlying type reader should always test header.
 			final Object ro = type.read(null, is, tag, true);
 			try {
-				f.set(value, ro);
+				field.set(value, ro);
 			} catch (Exception e) {
 				//we should catch everything, i don't trust it.
 				e.printStackTrace();
@@ -121,17 +121,12 @@ public class ASN1ComponentType extends ASN1Type {
 	}
 
 	@Override
-	public boolean isConstructed() {
-		return type.isConstructed();
-	}
-
-	@Override
 	public String toString() {
 		return name + " " + type;
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException();
 		}
@@ -139,48 +134,45 @@ public class ASN1ComponentType extends ASN1Type {
 		setModule(module);
 
 		if (ASN1ComponentType.this.type instanceof ASN1UnresolvedType) {
-			module.addPropertyChangeListener(
-			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(final PropertyChangeEvent evt) {
-					if (evt.getNewValue() instanceof ASN1Type) {
-						final ASN1Type type = (ASN1Type) evt.getNewValue();
-						if (type.getName().equals(ASN1ComponentType.this.type.getName())) {
-							ASN1ComponentType.this.type = type;
-							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-							module.install(ASN1ComponentType.this);
+			final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
+			if (t == null) {
+				module.addPropertyChangeListener(
+				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if (evt.getNewValue() instanceof ASN1Type) {
+							final ASN1Type _type = (ASN1Type) evt.getNewValue();
+							if (_type.getName().equals(ASN1ComponentType.this.type.getName()) &&
+							    (((ASN1UnresolvedType) type).getModuleId() == null
+							     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleId()))) {
+								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+								try {
+									ASN1ComponentType.this.type = _type;
+									doInstall(module, register);
+								} catch (ASN1Exception e) {
+									logger.warn("Exception:", e);
+								}
+							}
 						}
 					}
 				}
+				                                );
+			} else {
+				this.type = t;
+				doInstall(module, register);
 			}
-			                                );
 		} else {
 			//now we should add self to index base
-			module.install(this);
+			doInstall(module, register);
 		}
 	}
 
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public boolean isValid() {
-		// TODO: unimplemented method stub
-		return false;
+	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
+		module.install(this);
+		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
+			type.onInstall(module, false);
+		}
+		valid();
 	}
 
 	@Override

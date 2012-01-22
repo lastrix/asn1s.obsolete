@@ -41,6 +41,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 		}
 		this.name = name;
 		this.moduleId = moduleId;
+		invalid();
 	}
 
 	/**
@@ -81,12 +82,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 	}
 
 	@Override
-	public boolean isConstructed() {
-		throw new UnsupportedOperationException("You trying to use " + this);
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
@@ -97,16 +93,6 @@ public class ASN1UnresolvedType extends ASN1Type {
 
 	@Override
 	public void onImport(final ASN1Module module) throws IllegalStateException {
-		throw new UnsupportedOperationException("You trying to use " + this);
-	}
-
-	@Override
-	public void resolveTypes() {
-		throw new UnsupportedOperationException("You trying to use " + this);
-	}
-
-	@Override
-	public boolean isValid() {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 

@@ -16,50 +16,26 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
-
-import org.lastrix.asn1s.CustomTestCase;
-import org.lastrix.asn1s.SequenceOfTestClass;
-import org.lastrix.asn1s.SequenceOfTestClassAsField;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+package org.lastrix.asn1s.exception;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SchemaTest extends CustomTestCase {
+public class ASN1NoSuchFieldException extends ASN1Exception {
+	public ASN1NoSuchFieldException(final Throwable cause) {
+		super(cause);
+	}
 
-	public void testSaveLoad() throws Exception {
-		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
-		final int COUNT = 1000;
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
-		try {
-			for (int i = 0; i < COUNT; i++) {
-				s.write(
-				       new SequenceOfTestClass(i, 0x1111, 2.5, "Test" + i, new SequenceOfTestClassAsField(i, "susy" + i, 1.0)),
-				       bos
-				       );
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Exception caught.");
-		}
-		final byte[] data = bos.toByteArray();
-//		System.out.println(Utils.toHexString(data));
-		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-		try {
-			int i = 0;
-			while (bis.available() > 0) {
-				final Object o = s.read(bis);
-				assertNotNull(o);
-				i++;
-			}
-			assertEquals(COUNT, i);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Exception caught.");
-		}
+	public ASN1NoSuchFieldException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
+	public ASN1NoSuchFieldException(final String message) {
+		super(message);
+	}
+
+	public ASN1NoSuchFieldException() {
+		super();
 	}
 }

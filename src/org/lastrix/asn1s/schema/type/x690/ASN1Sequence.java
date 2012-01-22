@@ -24,11 +24,17 @@ import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1OptionalComponentSkippedException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.*;
-import org.lastrix.asn1s.schema.type.ASN1ComponentType;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
+import org.lastrix.asn1s.schema.type.ASN1UserType;
 import org.lastrix.asn1s.util.Utils;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,26 +57,10 @@ public class ASN1Sequence extends ASN1Type {
 	public ASN1Sequence(final ASN1Type[] componentType, final boolean sequenceOf) {
 		this.componentType = componentType;
 		this.sequenceOf = sequenceOf;
-		this.name = generateName();
+		this.name = "SEQUENCE@" + hashCode();
+		this.tag = TAG;
+		valid();
 	}
-
-	private String generateName() {
-		if (sequenceOf) {
-			return "SEQUENCE OF " + componentType[0].getName();
-		}
-		//TODO: make complete thing here
-		final StringBuilder sb = new StringBuilder(128);
-		sb.append("SEQUENCE [");
-		for (final ASN1Type t : componentType) {
-			final ASN1ComponentType type = (ASN1ComponentType) t;
-			sb.append(type.getName());
-			sb.append(" ");
-			sb.append(type.getTypeId());
-		}
-		sb.append("]");
-		return "SEQUENCE";
-	}
-
 
 	@Override
 	public String toString() {
@@ -188,46 +178,85 @@ public class ASN1Sequence extends ASN1Type {
 	}
 
 	@Override
-	public boolean isConstructed() {
-		return TAG.isConstructed();
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
-			throw new IllegalStateException();
+			throw new IllegalStateException(getTypeId());
 		}
 
 		setModule(module);
 
-		//now we should add self to index base
-		module.install(this);
+		registerComponentTypeListenters(module, register);
+
+		for (int i = 0; i < componentType.length; i++) {
+			final ASN1Type type = componentType[i];
+			if (type instanceof ASN1UnresolvedType) {
+				final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
+				if (t == null) {
+					final int index = i;
+					module.addPropertyChangeListener(
+					                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+						@Override
+						public void propertyChange(final PropertyChangeEvent evt) {
+							if (evt.getNewValue() instanceof ASN1Type) {
+								final ASN1Type _type = (ASN1Type) evt.getNewValue();
+								if (_type.getName().equals(type.getName()) &&
+								    (((ASN1UnresolvedType) type).getModuleId() == null
+								     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleId()))) {
+									module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+									componentType[index] = _type;
+									try {
+										doInstall(module, componentType[index]);
+									} catch (ASN1Exception e) {
+										logger.error("Exception:", e);
+									}
+								}
+							}
+						}
+					}
+					                                );
+				} else {
+					componentType[i] = t;
+					doInstall(module, componentType[i]);
+				}
+			} else {
+				//now we should add self to index base
+				doInstall(module, componentType[i]);
+			}
+		}
 	}
 
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
+	private void registerComponentTypeListenters(final ASN1Module module, final boolean register) {
+		final PropertyChangeListener pcl = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if (Boolean.TRUE.equals(evt.getNewValue())) {
+					for (ASN1Type type : componentType) {
+						if (!type.isValid()) {
+							return;
+						}
+					}
+					for (ASN1Type type : componentType) {
+						type.removePropertyChangeListener(VALID, this);
+					}
 
+					if (register) {
+						module.install(ASN1Sequence.this);
+					}
+					valid();
+				}
+			}
+		};
+
+		for (ASN1Type t : componentType) {
+			t.addPropertyChangeListener(VALID, pcl);
+		}
 	}
 
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
+	private void doInstall(final ASN1Module module, final ASN1Type type) throws ASN1Exception {
+		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
+			type.onInstall(module, false);
+		}
 	}
 
-	@Override
-	public void resolveTypes() {
-		// TODO: unimplemented method stub
 
-	}
-
-	@Override
-	public boolean isValid() {
-		// TODO: unimplemented method stub
-		return false;
-	}
-
-	@Override
-	public ASN1Tag getTag() {
-		return TAG;
-	}
 }

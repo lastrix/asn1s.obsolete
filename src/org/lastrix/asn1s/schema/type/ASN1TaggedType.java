@@ -23,7 +23,10 @@ import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.*;
+import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.TaggingMethod;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.beans.PropertyChangeEvent;
@@ -45,7 +48,6 @@ public class ASN1TaggedType extends ASN1Type {
 	private final TagClass      tagClass;
 	private final int           tagNumber;
 	private       ASN1Type      subType;
-	private       ASN1Tag       tag;
 
 	/**
 	 * It should be set later, so we would know for certain how to handle tagging
@@ -72,6 +74,7 @@ public class ASN1TaggedType extends ASN1Type {
 		} else {
 			this.taggingMethod = taggingMethod;
 		}
+		invalid();
 	}
 
 
@@ -149,12 +152,7 @@ public class ASN1TaggedType extends ASN1Type {
 	}
 
 	@Override
-	public boolean isConstructed() {
-		return tag.isConstructed();
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException();
 		}
@@ -162,28 +160,39 @@ public class ASN1TaggedType extends ASN1Type {
 		setModule(module);
 
 		if (subType instanceof ASN1UnresolvedType) {
-			module.addPropertyChangeListener(
-			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(final PropertyChangeEvent evt) {
-					if (evt.getNewValue() instanceof ASN1Type) {
-						final ASN1Type type = (ASN1Type) evt.getNewValue();
-						if (type.getName().equals(subType.getName())) {
-							subType = type;
-							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-							doInstall(module);
+			final ASN1Type t = module.resolveType((ASN1UnresolvedType) subType);
+			logger.warn("t=" + t);
+			if (t == null) {
+				module.addPropertyChangeListener(
+				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if (evt.getNewValue() instanceof ASN1Type) {
+							final ASN1Type type = (ASN1Type) evt.getNewValue();
+							if (type.getName().equals(subType.getName())) {
+								subType = type;
+								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+								try {
+									doInstall(module, register);
+								} catch (ASN1Exception e) {
+									logger.error("Exception:", e);
+								}
+							}
 						}
 					}
 				}
+				                                );
+			} else {
+				this.subType = t;
+				doInstall(module, register);
 			}
-			                                );
 		} else {
 			//now we should add self to index base
-			doInstall(module);
+			doInstall(module, register);
 		}
 	}
 
-	private void doInstall(ASN1Module module) {
+	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
 		switch (taggingMethod) {
 			case AUTOMATIC:
 				switch (module.getDefaultTaggingMethod()) {
@@ -208,34 +217,12 @@ public class ASN1TaggedType extends ASN1Type {
 		}
 		// set up tag
 		ASN1TaggedType.this.tag = new ASN1Tag(tagNumber, tagClass, subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT);
-		module.install(this);
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public boolean isValid() {
-		// TODO: unimplemented method stub
-		return false;
-	}
-
-	@Override
-	public ASN1Tag getTag() {
-		return tag;
+		if (register) {
+			module.install(this);
+		}
+		if (!(subType instanceof ASN1UserType) && (subType.getModule() == null)) {
+			subType.onInstall(module, false);
+		}
+		valid();
 	}
 }

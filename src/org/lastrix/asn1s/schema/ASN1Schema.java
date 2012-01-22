@@ -24,17 +24,17 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.protocol.Header;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Parser;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.schema.type.x690.ASN1X690Module;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,17 +48,12 @@ import java.util.Map;
 public class ASN1Schema {
 	private static final Logger logger = Logger.getLogger(ASN1Schema.class);
 
+	public final static String TYPE_INSTALLED = "typeInstalled";
+
 	/**
 	 * Modules in this schema
 	 */
 	private final Map<String, ASN1Module> modules = new HashMap<String, ASN1Module>();
-
-	/**
-	 * Storage for all exports where key is [ModuleName].[TypeName]
-	 *
-	 * @see #modules
-	 */
-	private final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
 
 	/**
 	 * Defines which ASN1Type should handle specified class
@@ -66,13 +61,16 @@ public class ASN1Schema {
 	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
 
 	/**
-	 * Defines which class handled by ASN1Type
+	 * Each type has it's own tag, and it should be unique
 	 */
-	private final Map<ASN1Type, Class> type2class = new HashMap<ASN1Type, Class>();
+	private final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
 
-	private final Map<String, ASN1Type> header2type = new HashMap<String, ASN1Type>();
+	/**
+	 * Stores all types sorted by their module
+	 */
+	private final Map<String, Map<String, ASN1Type>> types = new HashMap<String, Map<String, ASN1Type>>();
 
-	private Map<String, ASN1Type> simpleIndexedTypes = new HashMap<String, ASN1Type>();
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
 	 * Create new schema and load modules into it
@@ -109,55 +107,22 @@ public class ASN1Schema {
 			ASN1TreeWalkerImpl walker = new ASN1TreeWalkerImpl(nodes, schema);
 			walker.downup(t);
 
-			StringBuilder sb = new StringBuilder();
-			sb.append("Created schema with starting modules:\n");
-			for (ASN1Module m : schema.modules.values()) {
-				sb.append(m + "\n");
-			}
-			logger.info(sb);
-
-			//FIXME: find a way to remove that rebuilding... it looks ugly
-			schema.rebuildIndex();
-			schema.validate();
-			schema.rebuildIndex();
-			logger.warn("Global types: " + schema.types.keySet());
 			return schema;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.warn("Exception:", e);
 			return null;
 		}
 	}
 
 	private ASN1Schema() {
 		addModule(new ASN1X690Module());
-		logger.info("Created new schema.");
 	}
 
 	private ASN1Schema(Collection<ASN1Module> modules) {
 		this();
 		for (ASN1Module m : modules) {
-			this.modules.put(m.getModuleId(), m);
+			addModule(m);
 		}
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("Created schema with starting modules:\n");
-		for (ASN1Module m : modules) {
-			sb.append(m + "\n");
-		}
-		logger.info(sb);
-	}
-
-
-	/**
-	 * Validate schema so there would be no unresolved types in modules and generate type
-	 *
-	 * @return
-	 */
-	public boolean validate() {
-		for (ASN1Module m : modules.values()) {
-			m.validate();
-		}
-		return true;
 	}
 
 	/**
@@ -166,17 +131,13 @@ public class ASN1Schema {
 	 * @param module - the module to be added
 	 */
 	public void addModule(final ASN1Module module) {
-		modules.put(module.getModuleId(), module);
-		module.setSchema(this);
-	}
-
-	/**
-	 * Register new type in schema scope
-	 *
-	 * @param type - the ASN1Type
-	 */
-	void addType(ASN1Type type) {
-		types.put(type.getTypeId(), type);
+		//if it fail, no module would be added.
+		try {
+			module.deploy(this);
+			modules.put(module.getModuleId(), module);
+		} catch (ASN1Exception e) {
+			logger.error("Exception:", e);
+		}
 	}
 
 	/**
@@ -186,10 +147,7 @@ public class ASN1Schema {
 	 * @param os - the output stream
 	 */
 	public void write(Object o, OutputStream os) throws ASN1Exception, IOException {
-		//TODO: implement this
-		ASN1Type type = getHandler(o);
-//		logger.warn(String.format("Selected '%s' for %s", type.getTypeId(), o));
-		type.write(o, os, true);
+		getHandler(o).write(o, os, true);
 	}
 
 	/**
@@ -200,30 +158,118 @@ public class ASN1Schema {
 	 * @return an Object
 	 */
 	public Object read(InputStream is) throws ASN1Exception, IOException {
-		//TODO: implement this
-		final Header h = Header.readHeader(is);
-		ASN1Type t = header2type.get(Arrays.toString(h.tagToByteArray()));
-		return t.read(null, is, h, true);
+		final ASN1Tag tag = ASN1Tag.readTag(is);
+		ASN1Type handler = getHandler(tag);
+		return handler.read(null, is, tag, true);
 	}
 
-	public ASN1Type getHandler(final Object o) {
+	/**
+	 * Returns handler for certain tag
+	 *
+	 * @param tag - an ASN1Tag
+	 *
+	 * @return an ASN1Type
+	 *
+	 * @see #read(InputStream)
+	 */
+	private ASN1Type getHandler(final ASN1Tag tag) {
+		return tag2type.get(tag);
+	}
+
+	/**
+	 * Returns handler for certain class
+	 *
+	 * @param o - the object
+	 *
+	 * @return an ASN1Type
+	 *
+	 * @see #write(Object, OutputStream)
+	 */
+	private ASN1Type getHandler(final Object o) {
+		if (o == null) {
+			return class2type.get(null);
+		}
 		return class2type.get(o.getClass());
 	}
 
+	/**
+	 * Returns type by its full type id (moduleName.name)
+	 *
+	 * @param name     - type name
+	 * @param moduleId - module id
+	 *
+	 * @return
+	 */
 	public ASN1Type getType(final String name, final String moduleId) {
-		ASN1Type t = simpleIndexedTypes.get(name);
-		if (t != null) {
-			return t;
+		Map<String, ASN1Type> map = types.get(moduleId);
+		if (map != null) {
+			return map.get(name);
 		}
-		return types.get(ASN1Type.makeTypeId(name, moduleId));
+		return null;
 	}
 
-	public void rebuildIndex() {
-		for (ASN1Type type : types.values()) {
+
+	/**
+	 * Install type in this schema, this will make specified type as global type
+	 * that could be used in {@link #read(InputStream)} and {@link #write(Object, OutputStream)}
+	 *
+	 * @param type - the type to be isntalled
+	 */
+	public void install(final ASN1Type type) {
+		if (type != null) {
+			Map<String, ASN1Type> map = types.get(type.getModule().getName());
+			if (map == null) {
+				map = new HashMap<String, ASN1Type>();
+				types.put(type.getModule().getName(), map);
+			}
+			map.put(type.getName(), type);
+
+			tag2type.put(type.getTag(), type);
 			class2type.put(type.getHandledClass(), type);
-			type2class.put(type, type.getHandledClass());
-			header2type.put(Arrays.toString(type.getHeaderBytes()), type);
-			simpleIndexedTypes.put(type.getName(), type);
+
+			firePropertyChange(TYPE_INSTALLED, null, type);
+		}
+	}
+
+	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(
+		                             propertyName,
+		                             listener
+		                             );
+	}
+
+	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(
+		                                propertyName,
+		                                listener
+		                                );
+	}
+
+	protected void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
+	}
+
+	protected void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
+	}
+
+	public void printDebugInfo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Global types:\n");
+		for (String moduleName : types.keySet()) {
+			sb.append(String.format("Module: %s\n%s\n", moduleName, types.get(moduleName)));
+		}
+		logger.info(sb);
+		for (ASN1Module m : modules.values()) {
+			m.printDebugInfo();
 		}
 	}
 }

@@ -20,9 +20,7 @@ package org.lastrix.asn1s;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.lastrix.asn1s.schema.ASN1Tag;
-import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.util.Utils;
+import org.lastrix.asn1s.schema.ASN1Schema;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -92,9 +90,10 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
-//		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
-		ASN1Tag tag = new ASN1Tag(200, TagClass.UNIVERSAL, false);
-		logger.warn("\n" + Utils.toHexString(tag.asBytes()));
+		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+		s.printDebugInfo();
+//		ASN1Tag tag = new ASN1Tag(200, TagClass.UNIVERSAL, false);
+//		logger.warn("\n" + Utils.toHexString(tag.asBytes()));
 //		ByteArrayOutputStream bos = new ByteArrayOutputStream(128*500000);
 //
 ////		List<Integer> list = new ArrayList<Integer>(Arrays.asList(0x10, 0x1, 0xFF, 0x1FF));

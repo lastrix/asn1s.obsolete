@@ -135,7 +135,7 @@ public final class ASN1Tag {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof ASN1Tag) {
-			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTag());
+			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTagClass());
 		}
 		return false;
 	}

@@ -22,7 +22,9 @@ import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
-import org.lastrix.asn1s.schema.*;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
@@ -64,7 +66,13 @@ public class ASN1Real extends ASN1Type {
 			throw new UnsupportedOperationException("Only Double and Float supported.");
 		}
 		handledClass = clazz;
-		this.name = NAME;
+		if (clazz == Double.class) {
+			this.name = NAME;
+		} else {
+			this.name = NAME + clazz.getSimpleName();
+		}
+		this.tag = TAG;
+		valid();
 	}
 
 	/**
@@ -264,47 +272,5 @@ public class ASN1Real extends ASN1Type {
 			return (Float) o;
 		}
 		throw new IllegalArgumentException(String.format("Object 'o' should be 'Float' or 'Double', has '%s'.", o.getClass().getSimpleName()));
-	}
-
-	@Override
-	public boolean isConstructed() {
-		return TAG.isConstructed();
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
-		if (getModule() != null) {
-			throw new IllegalStateException();
-		}
-
-		setModule(module);
-
-		//now we should add self to index base
-		module.install(this);
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {}
-
-	@Override
-	public boolean isValid() {
-		// TODO: unimplemented method stub
-		return false;
-	}
-
-	@Override
-	public ASN1Tag getTag() {
-		return TAG;
 	}
 }

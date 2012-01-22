@@ -18,10 +18,10 @@
 
 package org.lastrix.asn1s.schema.type;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.beans.PropertyChangeEvent;
@@ -39,6 +39,7 @@ import java.lang.reflect.Constructor;
  */
 public class ASN1UserType extends ASN1Type {
 
+	private final static Logger logger = Logger.getLogger(ASN1UserType.class);
 	private ASN1Type baseType;
 
 	/**
@@ -57,6 +58,7 @@ public class ASN1UserType extends ASN1Type {
 		}
 		this.name = name;
 		this.baseType = baseType;
+		invalid();
 	}
 
 	@Override
@@ -109,12 +111,7 @@ public class ASN1UserType extends ASN1Type {
 	}
 
 	@Override
-	public boolean isConstructed() {
-		return baseType.isConstructed();
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException();
 		}
@@ -122,52 +119,52 @@ public class ASN1UserType extends ASN1Type {
 		setModule(module);
 
 		if (baseType instanceof ASN1UnresolvedType) {
-			module.addPropertyChangeListener(
-			                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(final PropertyChangeEvent evt) {
-					if (evt.getNewValue() instanceof ASN1Type) {
-						final ASN1Type type = (ASN1Type) evt.getNewValue();
-						if (type.getName().equals(baseType.getName())) {
-							baseType = type;
-							module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-							module.install(ASN1UserType.this);
+			final ASN1Type t = module.resolveType((ASN1UnresolvedType) baseType);
+			if (t == null) {
+				module.addPropertyChangeListener(
+				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if (evt.getNewValue() instanceof ASN1Type) {
+							final ASN1Type type = (ASN1Type) evt.getNewValue();
+							if (type.getName().equals(baseType.getName()) &&
+							    (((ASN1UnresolvedType) baseType).getModuleId() == null
+							     || type.getModule().getModuleId().equals(((ASN1UnresolvedType) baseType).getModuleId()))) {
+								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+								baseType = type;
+								try {
+									doInstall(module, register);
+								} catch (ASN1Exception e) {
+									logger.error("Exception:", e);
+								}
+							}
 						}
 					}
 				}
+				                                );
+			} else {
+				this.baseType = t;
+				doInstall(module, register);
 			}
-			                                );
 		} else {
 			//now we should add self to index base
+			doInstall(module, register);
+		}
+	}
+
+	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
+		if (register) {
 			module.install(this);
 		}
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {
-		if (baseType instanceof ASN1UnresolvedType) {
-			baseType = getModule().resolveType((ASN1UnresolvedType) baseType);
+		if (!(baseType instanceof ASN1UserType) && (baseType.getModule() == null)) {
+			baseType.onInstall(module, false);
 		}
-	}
-
-	@Override
-	public boolean isValid() {
-		return !(baseType instanceof ASN1UnresolvedType) && baseType.isValid();
+		valid();
 	}
 
 	@Override
 	public ASN1Tag getTag() {
+		//we should override this, because base type is tag supplier
 		return baseType.getTag();
 	}
 }

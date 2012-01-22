@@ -24,6 +24,8 @@ import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,17 +38,20 @@ import java.io.OutputStream;
  */
 public abstract class ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1Type.class);
-	protected String     name;
-	protected ASN1Module module;
-	protected Class      handledClass;
+	public final static  String VALID  = "valid";
+	protected String name;
+	protected ASN1Module module = null;
+	protected Class handledClass;
 	protected boolean exported = false;
+	private boolean valid;
+	protected     ASN1Tag               tag = null;
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	public final ASN1Module getModule() {
 		return module;
 	}
 
-	public final void setModule(final ASN1Module module) {
-//		logger.warn(String.format("Module set for %s (%s)", this, module));
+	protected void setModule(final ASN1Module module) {
 		this.module = module;
 	}
 
@@ -109,16 +114,36 @@ public abstract class ASN1Type {
 		return read(null, is, null, false);
 	}
 
-	public abstract boolean isConstructed();
+	/**
+	 * Returns true if this type is constructed
+	 *
+	 * @return an boolean
+	 */
+	public final boolean isConstructed() {
+		return getTag().isConstructed();
+	}
 
 	/**
 	 * Called when type should be installed in module.
 	 *
-	 * @param module - the module, where type should be
+	 * @param module   - the module, where type should be
+	 * @param register - if true - type should call module.install(ASN1Type)
 	 *
 	 * @throws IllegalStateException if type already installed
+	 * @throws ASN1Exception
 	 */
-	public abstract void onInstall(ASN1Module module) throws IllegalStateException;
+	public void onInstall(ASN1Module module, boolean register) throws IllegalStateException, ASN1Exception {
+		if (getModule() != null) {
+			throw new IllegalStateException(getTypeId());
+		}
+
+		setModule(module);
+
+		//now we should add self to index base
+		if (register) {
+			module.install(this);
+		}
+	}
 
 	/**
 	 * Called when type should be exported. This method could be called only after #onInstall(ASN1Module)
@@ -127,7 +152,14 @@ public abstract class ASN1Type {
 	 *
 	 * @throws IllegalStateException if type already exported
 	 */
-	public abstract void onExport(ASN1Schema schema) throws IllegalStateException;
+	public void onExport(ASN1Schema schema) throws IllegalStateException {
+//		logger.warn("Exporting type: " + getTypeId());
+		if (exported) {
+			throw new IllegalStateException("Type already exported.");
+		}
+		exported = true;
+		schema.install(this);
+	}
 
 	/**
 	 * Called when type should be imported to module
@@ -136,29 +168,69 @@ public abstract class ASN1Type {
 	 *
 	 * @throws IllegalStateException if type already imported
 	 */
-	public abstract void onImport(ASN1Module module) throws IllegalStateException;
-
-	/**
-	 * This method called when type is installed, exported if needed, and all imports for this module have been satisfied.
-	 * This method should replace all {@see ASN1UnresolvedType} with valid types.
-	 */
-	public abstract void resolveTypes();
+	public void onImport(ASN1Module module) throws IllegalStateException {
+		module.importType(this);
+	}
 
 	/**
 	 * Returns true if this type is valid: all types resolved, handled classes found.
 	 *
 	 * @return an boolean
 	 */
-	public abstract boolean isValid();
+	public final boolean isValid() {
+		return valid;
+	}
+
+	protected final void valid() {
+		firePropertyChange(VALID, this.valid, true);
+		this.valid = true;
+	}
+
+	protected final void invalid() {
+		firePropertyChange(VALID, this.valid, false);
+		this.valid = false;
+	}
 
 	/**
 	 * Return tag
 	 *
 	 * @return an ASN1Tag
 	 */
-	public abstract ASN1Tag getTag();
+	public ASN1Tag getTag() {
+		return tag;
+	}
 
 	public Class getHandledClass() {
 		return handledClass;
+	}
+
+	public final void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(
+		                             propertyName,
+		                             listener
+		                             );
+	}
+
+	public final void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(
+		                                propertyName,
+		                                listener
+		                                );
+	}
+
+	protected final void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
+	}
+
+	protected final void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
 	}
 }

@@ -18,21 +18,40 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.SymbolsFromModule;
 import org.lastrix.asn1s.schema.TaggingMethod;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+
+import java.util.Vector;
 
 /**
  * @author lastrix
  * @version 1.0
  */
 public class ASN1X690Module extends ASN1Module {
+	private final static Logger logger      = Logger.getLogger(ASN1X690Module.class);
+	public final static  String MODULE_NAME = "--DEFAULT--";
+	/**
+	 * Holds all types that should be imported in any module
+	 */
+	public final static SymbolsFromModule IMPORTS;
+
+	static {
+		Vector<String> items = new Vector<String>();
+		items.add(ASN1Integer.NAME);
+		items.add(ASN1Real.NAME);
+		items.add(ASN1UTF8String.NAME);
+		IMPORTS = new SymbolsFromModule(MODULE_NAME, items);
+	}
 
 	/**
 	 * Create ASN1 module that holds all default ASN.1 types.
 	 */
 	public ASN1X690Module() {
-		super("", TaggingMethod.EXPLICIT, false, true, null, null, null);
+		super(MODULE_NAME, TaggingMethod.EXPLICIT, false, true, null, null, null);
+		allowImports = false;
 		addType(new ASN1Integer(Long.class));
 		addType(new ASN1Integer(Integer.class));
 		addType(new ASN1Integer(Short.class));
@@ -49,6 +68,11 @@ public class ASN1X690Module extends ASN1Module {
 	 */
 	private void addType(ASN1Type type) {
 		types.put(type.getName(), type);
-		type.onInstall(this);
+//		try {
+//			type.onInstall(this);
+//		} catch (ASN1Exception e) {
+//			logger.error("Critical error, can not install basic types.", e);
+//			System.exit(-1);
+//		}
 	}
 }

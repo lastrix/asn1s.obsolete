@@ -19,9 +19,11 @@
 package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 import org.lastrix.asn1s.schema.type.ASN1UserType;
+import org.lastrix.asn1s.schema.type.x690.ASN1X690Module;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -46,7 +48,7 @@ public class ASN1Module {
 	private final List<String>            exports;
 	private final List<SymbolsFromModule> imports;
 	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
-
+	protected       boolean               allowImports  = true;
 
 	protected final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
 
@@ -164,14 +166,6 @@ public class ASN1Module {
 	}
 
 	/**
-	 * Validate this module and find all unresolved externals
-	 */
-	void validate() {
-
-
-	}
-
-	/**
 	 * Get schema
 	 *
 	 * @return schema
@@ -215,6 +209,7 @@ public class ASN1Module {
 	 * @return an ASN1Type or null
 	 */
 	public ASN1Type resolveType(final String name, final String moduleId) {
+//		logger.warn("Looking for type " + name + "  in " + moduleId);
 		// if module id is set, then we should check import lists
 		if (!getModuleId().equals(moduleId) && moduleId != null) {
 			Map<String, ASN1Type> map = importedTypes.get(moduleId);
@@ -268,13 +263,17 @@ public class ASN1Module {
 	 * @param type
 	 */
 	public void importType(ASN1Type type) {
-		Map<String, ASN1Type> map = importedTypes.get(type.getModule().getModuleId());
-		if (map == null) {
-			map = new HashMap<String, ASN1Type>();
-			importedTypes.put(type.getModule().getModuleId(), map);
+		if (type != null) {
+			Map<String, ASN1Type> map = importedTypes.get(type.getModule().getModuleId());
+			if (map == null) {
+				map = new HashMap<String, ASN1Type>();
+				importedTypes.put(type.getModule().getModuleId(), map);
+			}
+			map.put(type.getName(), type);
+			firePropertyChange(TYPE_INSTALLED, null, type);
+		} else {
+			logger.warn("Someone imports null type.");
 		}
-		map.put(type.getName(), type);
-		firePropertyChange(TYPE_INSTALLED, null, type);
 	}
 
 	/**
@@ -290,21 +289,98 @@ public class ASN1Module {
 		firePropertyChange(TYPE_INSTALLED, null, type);
 	}
 
-
-	public void deploy(ASN1Schema schema) {
+	/**
+	 * Deploy module to target schema, this includes:
+	 * 1. fetching imports from schema
+	 * 2. installing types in this module as it should be.
+	 * 3. exporting types to schema
+	 *
+	 * @param schema
+	 */
+	public void deploy(final ASN1Schema schema) throws ASN1Exception {
+		logger.warn("Deploying module " + getModuleId());
+		//if schema already set, this will fail
+		// preventing futher execution
 		setSchema(schema);
+
+		if (allowImports) {
+			//get default imports
+			getImports(schema, ASN1X690Module.IMPORTS);
+			//get imports
+			for (SymbolsFromModule sfm : imports) {
+				getImports(schema, sfm);
+			}
+		}
+
 		//first install types
 		for (ASN1Type t : types.values()) {
-			t.onInstall(this);
+			t.onInstall(this, true);
 		}
-		//get imports
 
-		for (SymbolsFromModule sfm : imports) {
+		for (String typeName : exports) {
+			final ASN1Type type = types.get(typeName);
+			if (type == null) {
+				throw new NullPointerException();
+			}
+			typesExported.put(typeName, type);
+		}
+		//now we could export types
+		for (final ASN1Type t : (exportAll) ? types.values() : typesExported.values()) {
+			if (t.isValid()) {
+				t.onExport(schema);
+			} else {
+				//setup listener, which should export type later
+				t.addPropertyChangeListener(
+				                           ASN1Type.VALID, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if (Boolean.TRUE.equals(evt.getNewValue())) {
+							t.removePropertyChangeListener(ASN1Type.VALID, this);
+							t.onExport(schema);
+						}
+					}
+				}
+				                           );
+			}
+		}
+	}
 
+	/**
+	 * Retrieves imports from schema
+	 *
+	 * @param schema - the schema
+	 * @param sfm    - the SymbolsFromModule object
+	 */
+	private void getImports(final ASN1Schema schema, final SymbolsFromModule sfm) {
+		for (final String typeName : sfm.getSymbols()) {
+			final ASN1Type type = schema.getType(typeName, sfm.getModuleName());
+			if (type != null) {
+				importType(type);
+			} else {
+				//if no such type - then add a listener and wait. it's all we could do here.
+				schema.addPropertyChangeListener(
+				                                ASN1Schema.TYPE_INSTALLED, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if (evt.getNewValue() instanceof ASN1Type) {
+							final ASN1Type type = (ASN1Type) evt.getNewValue();
+							if (typeName.equals(type.getName()) && sfm.getModuleName().equals(type.getModule().getName())) {
+								importType(type);
+								schema.removePropertyChangeListener(ASN1Schema.TYPE_INSTALLED, this);
+							}
+						}
+					}
+				}
+				                                );
+			}
 		}
-		//now we could export them
-		for (ASN1Type t : typesExported.values()) {
-			t.onExport(schema);
+	}
+
+	public void printDebugInfo() {
+		StringBuilder sb = new StringBuilder();
+		for (ASN1Type t : types.values()) {
+			sb.append(String.format("%s%s\n", t.isValid() ? "" : "*", t.getTypeId()));
 		}
+		logger.info(sb);
 	}
 }

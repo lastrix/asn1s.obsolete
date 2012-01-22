@@ -21,7 +21,9 @@ package org.lastrix.asn1s.schema.type.x690;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.schema.*;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +36,14 @@ import java.io.OutputStream;
 public class ASN1UTF8String extends ASN1OctetString {
 	private final static Logger logger = Logger.getLogger(ASN1UTF8String.class);
 
-	private final static String  NAME = "UTF8String";
-	public final static  ASN1Tag TAG  = new ASN1Tag(0x0C, TagClass.UNIVERSAL, false);
+	public final static String  NAME = "UTF8String";
+	public final static ASN1Tag TAG  = new ASN1Tag(0x0C, TagClass.UNIVERSAL, false);
 
 	public ASN1UTF8String() {
 		handledClass = String.class;
 		name = NAME;
+		this.tag = TAG;
+		valid();
 	}
 
 	/**
@@ -84,50 +88,5 @@ public class ASN1UTF8String extends ASN1OctetString {
 		final int length = ASN1Length.readLength(is).getLength();
 
 		return new String(decode(is, length), "UTF-8");
-	}
-
-	@Override
-	public boolean isConstructed() {
-		return TAG.isConstructed();
-	}
-
-	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException {
-		if (getModule() != null) {
-			throw new IllegalStateException();
-		}
-
-		setModule(module);
-
-		//now we should add self to index base
-		module.install(this);
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-	@Override
-	public void resolveTypes() {
-		// TODO: unimplemented method stub
-
-	}
-
-	@Override
-	public boolean isValid() {
-		// TODO: unimplemented method stub
-		return false;
-	}
-
-	@Override
-	public ASN1Tag getTag() {
-		return TAG;
 	}
 }
