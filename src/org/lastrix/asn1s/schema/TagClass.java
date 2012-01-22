@@ -62,7 +62,7 @@ public enum TagClass {
 	 *
 	 * @throws IllegalArgumentException if code is not 0x00, 0x40 or 0xC0.
 	 */
-	public static TagClass getByCode(final byte code) throws IllegalArgumentException {
+	public static TagClass getByCode(final int code) throws IllegalArgumentException {
 		if (code == 0x00) {
 			return UNIVERSAL;
 		} else if (code == 0x40) {

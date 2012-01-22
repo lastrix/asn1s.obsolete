@@ -23,7 +23,6 @@ import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1OptionalComponentSkippedException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
-import org.lastrix.asn1s.protocol.Tag;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
@@ -103,9 +102,9 @@ public class ASN1Sequence extends ASN1Type {
 	}
 
 	@Override
-	public Object read(final Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null) {
-			throw new IllegalArgumentException("ASN1Sequence does not allow null parameter 'value'");
+			value = new ArrayList();
 		}
 		// TAG should be null in anyway
 		if (tag == null) {
@@ -124,14 +123,12 @@ public class ASN1Sequence extends ASN1Type {
 			final List list;
 			if (value instanceof List) {
 				list = (List) value;
-			} else if (value == null) {
-				list = new ArrayList();
 			} else {
 				throw new IllegalArgumentException("ASN1SequenceOf does not allow any objects if it not implement java.util.List.");
 			}
 
 			//read all data
-			if (length == Tag.FORM_INDEFINITE) {
+			if (length == ASN1Length.FORM_INDEFINITE) {
 				throw new ASN1ProtocolException("SequenceOf doesn't support indefinite form");
 			}
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
@@ -165,7 +162,7 @@ public class ASN1Sequence extends ASN1Type {
 			}
 
 			//check for indefinite form.
-			if (length == Tag.FORM_INDEFINITE) {
+			if (length == ASN1Length.FORM_INDEFINITE) {
 				final byte[] eocTest = new byte[]{0x7F, 0x7F};
 				is.read(eocTest);
 

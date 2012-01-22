@@ -20,101 +20,47 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Defines octet string. This class should be used by other String-related types.
- *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1OctetString extends ASN1Type {
+public class ASN1Boolean extends ASN1Type {
 
-	public final static  String  NAME = "OCTET STRING";
-	private final static ASN1Tag TAG  = new ASN1Tag(0x04, TagClass.UNIVERSAL, false);
+	public static final ASN1Tag TAG   = new ASN1Tag(0x01, TagClass.UNIVERSAL, false);
+	public static final int     TRUE  = 0xFF;
+	public static final int     FALSE = 0x00;
+	public static final String  NAME  = "BOOLEAN";
 
-	protected ASN1OctetString() {
+	public ASN1Boolean() {
 		this.tag = TAG;
 		this.name = NAME;
-		this.handledClass = new byte[0].getClass();
+		this.handledClass = Boolean.class;
 		valid();
 	}
 
-
-	/**
-	 * Protected method to encode octet strings
-	 *
-	 * @param os   - the output stream
-	 * @param data - the data to write
-	 *
-	 * @throws IOException   thrown by I/O
-	 * @throws ASN1Exception
-	 */
-	protected final void encode(final OutputStream os, byte[] data) throws IOException, ASN1Exception {
-		//infinite
-		os.write(data);
-	}
-
-	/**
-	 * Protected method for decoding octet strings
-	 *
-	 * @param is     - the input stream
-	 * @param length - the amount of bytes to read
-	 *
-	 * @return the byte array
-	 *
-	 * @throws ASN1Exception
-	 * @throws IOException   thrown by I/O
-	 */
-	protected final byte[] decode(final InputStream is, final int length) throws ASN1Exception, IOException {
-		if (length == ASN1Length.FORM_INDEFINITE) {
-			//damn infinite form
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			int b;
-			int b0 = -1;
-			while (true) {
-				b = is.read();
-				if (b == 0x00 && b0 == 0x00) {
-					break;
-				}
-				bos.write(b);
-				b0 = b;
-			}
-			byte[] result = new byte[bos.size() - 1];
-
-			System.arraycopy(bos.toByteArray(), 0, result, 0, result.length);
-			return result;
-		}
-
-		//defined
-		final byte[] data = new byte[length];
-		if (is.read(data) != length) {
-			throw new ASN1ReadException("Can not read all byte for oct string.");
-		}
-		return data;
-	}
-
 	@Override
-	public void write(final Object value, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		byte[] array = (byte[]) value;
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		final Boolean value = (Boolean) o;
 		if (header) {
 			os.write(getTag().asBytes());
-			os.write(ASN1Length.asBytes(array.length));
+			os.write(ASN1Length.asBytes(1));
 		}
-		encode(os, array);
+		os.write((value) ? TRUE : FALSE);
 	}
 
 	@Override
-	public Object read(Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (nullValue != null) {
 			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'nullValue'");
 		}
@@ -131,6 +77,21 @@ public class ASN1OctetString extends ASN1Type {
 			}
 		}
 
-		return decode(is, ASN1Length.readLength(is).getLength());
+		final int length = ASN1Length.readLength(is).getLength();
+		if (length != 1) {
+			throw new ASN1ReadException("Length expected to be 1, got " + length);
+		}
+
+		final int value = is.read();
+		switch (value) {
+			case TRUE:
+				return Boolean.TRUE;
+
+			case FALSE:
+				return Boolean.FALSE;
+
+			default:
+				throw new ASN1ProtocolException("Incorrect coding found " + value);
+		}
 	}
 }

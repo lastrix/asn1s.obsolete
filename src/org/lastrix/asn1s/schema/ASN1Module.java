@@ -48,7 +48,6 @@ public class ASN1Module {
 	private final List<String>            exports;
 	private final List<SymbolsFromModule> imports;
 	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
-	protected       boolean               allowImports  = true;
 
 	protected final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
 
@@ -299,16 +298,14 @@ public class ASN1Module {
 	public void deploy(final ASN1Schema schema) throws ASN1Exception {
 		logger.warn("Deploying module " + getModuleId());
 		//if schema already set, this will fail
-		// preventing futher execution
+		// preventing further execution
 		setSchema(schema);
 
-		if (allowImports) {
-			//get default imports
-			getImports(schema, ASN1X690Module.IMPORTS);
-			//get imports
-			for (SymbolsFromModule sfm : imports) {
-				getImports(schema, sfm);
-			}
+		//get default imports
+		getImports(schema, ASN1X690Module.IMPORTS);
+		//get imports
+		for (SymbolsFromModule sfm : imports) {
+			getImports(schema, sfm);
 		}
 
 		//first install types

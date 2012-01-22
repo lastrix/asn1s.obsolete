@@ -24,6 +24,8 @@ import org.lastrix.asn1s.SequenceOfTestClassAsField;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lastrix
@@ -57,6 +59,35 @@ public class SchemaTest extends CustomTestCase {
 				i++;
 			}
 			assertEquals(COUNT, i);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Exception caught.");
+		}
+	}
+
+	public void testSaveLoadInList() throws Exception {
+		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+		final int COUNT = 1000;
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
+		final List list = new ArrayList();
+		for (int i = 0; i < COUNT; i++) {
+			list.add(new SequenceOfTestClass(i, 0x1111, 2.5, "Test" + i, new SequenceOfTestClassAsField(i, "susy" + i, 1.0)));
+		}
+		try {
+			s.write(list, bos);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Exception caught.");
+		}
+		final byte[] data = bos.toByteArray();
+//		System.out.println(Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		try {
+			while (bis.available() > 0) {
+				final ArrayList o = (ArrayList) s.read(bis);
+				assertNotNull(o);
+				assertEquals(COUNT, o.size());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Exception caught.");

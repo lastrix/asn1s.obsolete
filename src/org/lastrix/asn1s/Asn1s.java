@@ -91,39 +91,7 @@ public class Asn1s {
 	public static void main(final String... args) {
 		initLogging();
 		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
-		s.printDebugInfo();
-//		ASN1Tag tag = new ASN1Tag(200, TagClass.UNIVERSAL, false);
-//		logger.warn("\n" + Utils.toHexString(tag.asBytes()));
-//		ByteArrayOutputStream bos = new ByteArrayOutputStream(128*500000);
-//
-////		List<Integer> list = new ArrayList<Integer>(Arrays.asList(0x10, 0x1, 0xFF, 0x1FF));
-//		try {
-//			logger.warn("Starting serialization");
-//			for (int i = 0; i < 1; i++) {
-//				s.write(
-//				       new SequenceOfTestClass(i, 0x1111, 2.5, "Test", new SequenceOfTestClassAsField(i, "susy", 1.0)),
-//				       bos
-//				       );
-//			}
-//			logger.warn("Finished");
-////			s.write(list, bos);
-//		} catch (Exception e) {
-//			logger.warn("Exception:", e);
-//		}
-//		final byte[] data = bos.toByteArray();
-////		logger.warn("\n" + Utils.toHexString(data));
-//		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-//		logger.warn("Starting deserialization");
-//		try {
-//			int i = 0;
-//			while (bis.available() > 0) {
-//				final Object o = s.read(bis);
-////				logger.warn("Got object: " + o);
-//			}
-//		} catch (Exception e) {
-//			logger.warn("Exception:", e);
-//		}
-//		logger.warn("Finished");
+//		s.printDebugInfo();
 	}
 
 }

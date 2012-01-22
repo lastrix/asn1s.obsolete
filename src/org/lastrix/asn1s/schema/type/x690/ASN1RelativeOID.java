@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,10 +16,15 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.schema.type.x690;
 
-import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -31,18 +36,60 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1RelativeOIDCoder implements PrimitiveDecoder, PrimitiveEncoder {
-	private final static Logger logger = Logger.getLogger(ASN1RelativeOIDCoder.class);
+public class ASN1RelativeOID extends ASN1Type {
+	public final static String  NAME = "RELATIVE-OID";
+	public final static ASN1Tag TAG  = new ASN1Tag(0x0D, TagClass.UNIVERSAL, false);
 
-	public static final  byte   TAG    = 0x0D;
-	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
-
-	public ASN1RelativeOIDCoder() {
+	public ASN1RelativeOID() {
+		this.tag = TAG;
+		this.name = NAME;
+		// TODO: implement class for Relative OID
+		this.handledClass = null;
 	}
 
 	@Override
-	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		return readOids(is, header.getLength(), 0);
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		// TODO: checking and fetching from special class
+		long[] oids = null;
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		writeOids(bos, oids);
+		final byte[] data = bos.toByteArray();
+		bos.close();
+
+		if (header) {
+			os.write(getTag().asBytes());
+			os.write(ASN1Length.asBytes(data.length));
+		}
+
+		//content
+		os.write(data);
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+		if (nullValue != null) {
+			throw new IllegalArgumentException("ASN1RelativeOID does not allow non null parameter 'nullValue'");
+		}
+
+		// TAG should be null in anyway
+		if (tag == null) {
+			tag = ASN1Tag.readTag(is);
+			tagCheck = true;
+		}
+		// if we should check TAG, then check it!
+		if (tagCheck) {
+			if (!TAG.equals(tag)) {
+				throw new ASN1IncorrectTagException();
+			}
+		}
+
+		final int length = ASN1Length.readLength(is).getLength();
+		final long[] oids = readOids(is, length, 0);
+		//TODO: conversion to special class
+		throw new UnsupportedOperationException("Handled class is not implemented.");
+//		return null;
 	}
 
 	/**
@@ -85,34 +132,16 @@ public class ASN1RelativeOIDCoder implements PrimitiveDecoder, PrimitiveEncoder 
 		return oids;
 	}
 
-	@Override
-	public void encode(final OutputStream os, final Object value) throws IOException, IllegalArgumentException, NullPointerException {
-		long[] oids = (long[]) value;
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		writeOids(bos, oids, 0);
-		final byte[] data = bos.toByteArray();
-		bos.close();
-
-		//tag
-		os.write(HEADER.tagToByteArray());
-		//length
-		Header.writeLength(os, data.length);
-		//content
-		os.write(data);
-	}
-
 	/**
 	 * Write oids to output stream
 	 *
 	 * @param os   - the output stream
 	 * @param oids - the oids
-	 * @param skip - number of elements to skip
 	 *
 	 * @throws IOException - from write() calls
 	 */
-	protected final void writeOids(final OutputStream os, long[] oids, int skip) throws IOException {
-		for (int i = skip; i < oids.length; i++) {
+	protected void writeOids(final OutputStream os, long[] oids) throws IOException {
+		for (int i = 0; i < oids.length; i++) {
 			writeOid(oids[i], os);
 		}
 	}
@@ -125,7 +154,7 @@ public class ASN1RelativeOIDCoder implements PrimitiveDecoder, PrimitiveEncoder 
 	 *
 	 * @throws IOException - from write() calls
 	 */
-	private void writeOid(final long value, OutputStream os) throws IOException {
+	protected final void writeOid(final long value, OutputStream os) throws IOException {
 		final long mValue = Utils.makeByteGaps(value, 1, Utils.UNSIGNED_BYTE_MASK);
 		final int bytesCount = Utils.getMinimumBytes(mValue);
 		for (int i = bytesCount - 1; i > 0; i--) {

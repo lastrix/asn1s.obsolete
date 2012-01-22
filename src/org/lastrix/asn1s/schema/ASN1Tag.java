@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.util.Utils;
@@ -35,10 +36,11 @@ import java.io.InputStream;
  * @see #readTag(InputStream)
  */
 public final class ASN1Tag {
+	private final static Logger logger   = Logger.getLogger(ASN1Tag.class);
 	/**
 	 * Tag mask to extract 1-5th bits from first tag octet
 	 */
-	public static final int TAG_MASK = 0x1F;
+	public static final  int    TAG_MASK = 0x1F;
 
 	/**
 	 * Class mask to extract 7th and 8th bits from first tag octet
@@ -195,7 +197,7 @@ public final class ASN1Tag {
 		} catch (IOException e) {
 			throw new ASN1ReadException("I/O error", e);
 		}
-		final byte tagClass = (byte) (temp & CLASS_MASK);
+		final int tagClass = (temp & CLASS_MASK);
 		final boolean constructed = ((temp & PC_MASK) >> 5) > 0;
 		int tag = temp & TAG_MASK;
 

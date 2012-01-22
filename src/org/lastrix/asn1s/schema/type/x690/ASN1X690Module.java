@@ -44,6 +44,12 @@ public class ASN1X690Module extends ASN1Module {
 		items.add(ASN1Integer.NAME);
 		items.add(ASN1Real.NAME);
 		items.add(ASN1UTF8String.NAME);
+		items.add(ASN1OctetString.NAME);
+		items.add(ASN1Null.NAME);
+		items.add(ASN1Boolean.NAME);
+		items.add(ASN1BitString.NAME);
+		items.add(ASN1ObjectID.NAME);
+		items.add(ASN1RelativeOID.NAME);
 		IMPORTS = new SymbolsFromModule(MODULE_NAME, items);
 	}
 
@@ -52,7 +58,6 @@ public class ASN1X690Module extends ASN1Module {
 	 */
 	public ASN1X690Module() {
 		super(new ASN1ModuleId(MODULE_NAME), TaggingMethod.EXPLICIT, false, true, null, null, null);
-		allowImports = false;
 		addType(new ASN1Integer(Long.class));
 		addType(new ASN1Integer(Integer.class));
 		addType(new ASN1Integer(Short.class));
@@ -60,6 +65,12 @@ public class ASN1X690Module extends ASN1Module {
 		addType(new ASN1Real(Float.class));
 		addType(new ASN1Real(Double.class));
 		addType(new ASN1UTF8String());
+		addType(new ASN1OctetString());
+		addType(new ASN1Null());
+		addType(new ASN1Boolean());
+		addType(new ASN1BitString());
+		addType(new ASN1ObjectID());
+		addType(new ASN1RelativeOID());
 	}
 
 	/**
@@ -75,5 +86,11 @@ public class ASN1X690Module extends ASN1Module {
 //			logger.error("Critical error, can not install basic types.", e);
 //			System.exit(-1);
 //		}
+	}
+
+	@Override
+	public void importType(final ASN1Type type) {
+//		super.importType(type);
+		// no type could be imported to this module
 	}
 }

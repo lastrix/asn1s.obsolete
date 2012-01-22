@@ -1,6 +1,6 @@
 TestModule DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
-EXPORTS TestSeq;
+EXPORTS TestSeq, ListOfTestSeq;
 
 --#org.lastrix.asn1s.SequenceOfTestClass#
 TestSeq ::= [APPLICATION 2] IMPLICIT SEQUENCE {
@@ -17,4 +17,7 @@ TestSeqAsField ::= [APPLICATION 9] IMPLICIT SEQUENCE {
   name UTF8String,
   weight REAL
 }
+
+--#java.util.ArrayList#
+ListOfTestSeq ::= [APPLICATION 12] SEQUENCE OF TestSeq
 END

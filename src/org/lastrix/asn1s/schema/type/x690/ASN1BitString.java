@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -16,10 +16,15 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.protocol;
+package org.lastrix.asn1s.schema.type.x690;
 
-import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.schema.ASN1Length;
+import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,68 +32,36 @@ import java.io.OutputStream;
 import java.util.BitSet;
 
 /**
- * See X.690-0207 8.6 for more information
- *
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1BitStringCoder implements PrimitiveDecoder, PrimitiveEncoder {
-	public static final  byte   TAG    = 0x03;
-	@SuppressWarnings({"UnusedDeclaration"})
-	private final static Logger logger = Logger.getLogger(ASN1BitStringCoder.class);
+public class ASN1BitString extends ASN1Type {
 
-	private static final Header HEADER = new Header(TAG, Tag.CLASS_UNIVERSAL, false, 0);
+	public final static String  NAME = "BIT STRING";
+	public final static ASN1Tag TAG  = new ASN1Tag(0x03, TagClass.UNIVERSAL, false);
 
-	public ASN1BitStringCoder() {}
-
-
-	@Override
-	public Object decode(final InputStream is, final Header header) throws ASN1ProtocolException, IOException {
-		final int pad = is.read();
-		if (pad > 7) {
-			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
-		}
-
-		BitSet bs = new BitSet((header.getLength() - 1) * 8);
-		int temp;
-		final int size = header.getLength() - 1 - ((pad > 0) ? 1 : 0);
-		for (int i = 0; i < size; i++) {
-			temp = is.read();
-			for (int k = i * 8; k < (i + 1) * 8; k++) {
-				if ((temp & 0x01) > 0) {
-					bs.set(k);
-				}
-				temp >>= 1;
-			}
-		}
-
-		//handle pad
-		if (pad > 0) {
-			temp = is.read();
-			temp >>= pad;
-			final int end = (header.getLength() - 1) * 8 - pad;
-			for (int i = (header.getLength() - 2) * 8; i < end; i++) {
-				if ((temp & 0x01) > 0) {
-					bs.set(i);
-				}
-				temp >>= 1;
-			}
-		}
-		return bs;
+	public ASN1BitString() {
+		this.tag = TAG;
+		this.name = NAME;
+		this.handledClass = BitSet.class;
+		valid();
 	}
 
 	@Override
-	public void encode(final OutputStream os, final Object value) throws IOException {
-		//write tag
-		os.write(HEADER.tagToByteArray());
+	public void write(final Object value, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		if (value == null) {
+			throw new NullPointerException();
+		}
 
 		BitSet bs = (BitSet) value;
 		final int bitCount = bs.length();
 		final int rest = bitCount % 8;
 		final int bytesCount = bitCount / 8 + ((rest > 0) ? 1 : 0) + 1;
 
-		//write length
-		Header.writeLength(os, bytesCount);
+		if (header) {
+			os.write(getTag().asBytes());
+			os.write(ASN1Length.asBytes(bytesCount));
+		}
 
 		//write pad settings
 		if (rest == 0) {
@@ -107,6 +80,60 @@ public final class ASN1BitStringCoder implements PrimitiveDecoder, PrimitiveEnco
 		//write last byte
 		os.write(lastByte);
 	}
+
+	@Override
+	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+		if (nullValue != null) {
+			throw new IllegalArgumentException("ASN1BitString does not allow non null parameter 'nullValue'");
+		}
+
+		// TAG should be null in anyway
+		if (tag == null) {
+			tag = ASN1Tag.readTag(is);
+			tagCheck = true;
+		}
+		// if we should check TAG, then check it!
+		if (tagCheck) {
+			if (!TAG.equals(tag)) {
+				throw new ASN1IncorrectTagException();
+			}
+		}
+
+		final int length = ASN1Length.readLength(is).getLength();
+
+		final int pad = is.read();
+		if (pad > 7) {
+			throw new ASN1ProtocolException("Bit string pad should be in [0,7]");
+		}
+
+		BitSet bs = new BitSet((length - 1) * 8);
+		int temp;
+		final int size = length - 1 - ((pad > 0) ? 1 : 0);
+		for (int i = 0; i < size; i++) {
+			temp = is.read();
+			for (int k = i * 8; k < (i + 1) * 8; k++) {
+				if ((temp & 0x01) > 0) {
+					bs.set(k);
+				}
+				temp >>= 1;
+			}
+		}
+
+		//handle pad
+		if (pad > 0) {
+			temp = is.read();
+			temp >>= pad;
+			final int end = (length - 1) * 8 - pad;
+			for (int i = (length - 2) * 8; i < end; i++) {
+				if ((temp & 0x01) > 0) {
+					bs.set(i);
+				}
+				temp >>= 1;
+			}
+		}
+		return bs;
+	}
+
 
 	/**
 	 * Extracts 1 byte from {@link BitSet}

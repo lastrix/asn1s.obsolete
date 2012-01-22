@@ -21,12 +21,7 @@ package org.lastrix.asn1s.schema.type;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.protocol.Header;
-import org.lastrix.asn1s.protocol.Tag;
-import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.ASN1Tag;
-import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.TaggingMethod;
+import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.beans.PropertyChangeEvent;
@@ -99,18 +94,7 @@ public class ASN1TaggedType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-
-		if (header) {
-			os.write(
-			        new Header(
-			                  tagNumber,
-			                  tagClass.getCode(),
-			                  isConstructed() || _methodToUse == TaggingMethod.EXPLICIT,
-			                  Tag.FORM_INDEFINITE
-			        ).tagToByteArray()
-			        );
-		}
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		switch (_methodToUse) {
 			case IMPLICIT:
 				subType.write(o, bos, false);
@@ -122,7 +106,8 @@ public class ASN1TaggedType extends ASN1Type {
 		}
 		final byte[] data = bos.toByteArray();
 		if (header) {
-			Header.writeLength(os, data.length);
+			os.write(getTag().asBytes());
+			os.write(ASN1Length.asBytes(data.length));
 		}
 
 		os.write(data);
@@ -146,6 +131,8 @@ public class ASN1TaggedType extends ASN1Type {
 				return subType.read(value, is, tag, false);
 
 			case EXPLICIT:
+				//remove length field
+				ASN1Length.readLength(is);
 				return subType.read(value, is, null, false);
 		}
 		throw new ASN1Exception("Unknown error.");
@@ -161,7 +148,6 @@ public class ASN1TaggedType extends ASN1Type {
 
 		if (subType instanceof ASN1UnresolvedType) {
 			final ASN1Type t = module.resolveType((ASN1UnresolvedType) subType);
-			logger.warn("t=" + t);
 			if (t == null) {
 				module.addPropertyChangeListener(
 				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
