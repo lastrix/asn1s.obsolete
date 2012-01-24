@@ -23,6 +23,7 @@ import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,8 +41,7 @@ public final class ASN1ObjectID extends ASN1RelativeOID {
 	public ASN1ObjectID() {
 		this.name = NAME;
 		this.tag = TAG;
-		//TODO: implement ObjectIdentifier class!!!!
-		this.handledClass = null;
+		this.handledClass = ASN1ObjectIdentifier.class;
 	}
 
 	@Override
@@ -67,9 +67,8 @@ public final class ASN1ObjectID extends ASN1RelativeOID {
 		final long[] oids = readOids(is, length - 1, 2);
 		oids[0] = fOid / MULTIPLIER;
 		oids[1] = fOid % MULTIPLIER;
-		//TODO: conversion to special class
-		throw new UnsupportedOperationException("Handled class is not implemented.");
-//		return null;
+
+		return new ASN1ObjectIdentifier(oids);
 	}
 
 	@Override

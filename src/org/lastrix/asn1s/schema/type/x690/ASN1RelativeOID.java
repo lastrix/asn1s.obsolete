@@ -25,6 +25,7 @@ import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.type.ASN1RelativeObjectIdentifier;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -43,14 +44,15 @@ public class ASN1RelativeOID extends ASN1Type {
 	public ASN1RelativeOID() {
 		this.tag = TAG;
 		this.name = NAME;
-		// TODO: implement class for Relative OID
-		this.handledClass = null;
+		this.handledClass = ASN1RelativeObjectIdentifier.class;
 	}
 
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		// TODO: checking and fetching from special class
-		long[] oids = null;
+		if (o == null || handledClass.equals(o.getClass())) {
+			throw new ASN1Exception("");
+		}
+		long[] oids = ((ASN1RelativeObjectIdentifier) o).getOids();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		writeOids(bos, oids);
@@ -64,7 +66,6 @@ public class ASN1RelativeOID extends ASN1Type {
 
 		//content
 		os.write(data);
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -87,9 +88,7 @@ public class ASN1RelativeOID extends ASN1Type {
 
 		final int length = ASN1Length.readLength(is).getLength();
 		final long[] oids = readOids(is, length, 0);
-		//TODO: conversion to special class
-		throw new UnsupportedOperationException("Handled class is not implemented.");
-//		return null;
+		return new ASN1RelativeObjectIdentifier(oids);
 	}
 
 	/**
