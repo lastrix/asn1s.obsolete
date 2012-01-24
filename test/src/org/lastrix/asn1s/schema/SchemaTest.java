@@ -21,6 +21,8 @@ package org.lastrix.asn1s.schema;
 import org.lastrix.asn1s.CustomTestCase;
 import org.lastrix.asn1s.SequenceOfTestClass;
 import org.lastrix.asn1s.SequenceOfTestClassAsField;
+import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
+import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -88,6 +90,37 @@ public class SchemaTest extends CustomTestCase {
 				assertNotNull(o);
 				assertEquals(COUNT, o.size());
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Exception caught.");
+		}
+	}
+
+
+	public void testSaveLoadOID() throws Exception {
+		final ASN1Schema s = ASN1Schema.create();
+//		s.printDebugInfo();
+		final int COUNT = 2;
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
+		try {
+			for (int i = 0; i < COUNT; i++) {
+				s.write(new ASN1ObjectIdentifier(new long[]{1, 2, 518, 49998}), bos);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Exception caught.");
+		}
+		final byte[] data = bos.toByteArray();
+		System.out.println(Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		try {
+			int i = 0;
+			while (bis.available() > 0) {
+				final ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) s.read(bis);
+				assertNotNull(oid);
+				i++;
+			}
+			assertEquals(COUNT, i);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Exception caught.");

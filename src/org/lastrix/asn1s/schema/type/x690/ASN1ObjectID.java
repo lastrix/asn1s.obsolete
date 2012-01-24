@@ -42,6 +42,7 @@ public final class ASN1ObjectID extends ASN1RelativeOID {
 		this.name = NAME;
 		this.tag = TAG;
 		this.handledClass = ASN1ObjectIdentifier.class;
+		valid();
 	}
 
 	@Override

@@ -45,11 +45,12 @@ public class ASN1RelativeOID extends ASN1Type {
 		this.tag = TAG;
 		this.name = NAME;
 		this.handledClass = ASN1RelativeObjectIdentifier.class;
+		valid();
 	}
 
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		if (o == null || handledClass.equals(o.getClass())) {
+		if (o == null || !handledClass.equals(o.getClass())) {
 			throw new ASN1Exception("");
 		}
 		long[] oids = ((ASN1RelativeObjectIdentifier) o).getOids();

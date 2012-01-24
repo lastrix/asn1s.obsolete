@@ -51,7 +51,7 @@ public class ASN1Integer extends ASN1Type {
 		if (_class == Long.class) {
 			this.name = NAME;
 		} else {
-			this.name = NAME + _class.getSimpleName();
+			this.name = NAME + "-" + _class.getSimpleName();
 		}
 		this.tag = TAG;
 		valid();

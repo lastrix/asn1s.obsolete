@@ -114,6 +114,10 @@ public class ASN1Schema {
 		}
 	}
 
+	public static ASN1Schema create() {
+		return new ASN1Schema();
+	}
+
 	private ASN1Schema() {
 		addModule(new ASN1X690Module());
 	}

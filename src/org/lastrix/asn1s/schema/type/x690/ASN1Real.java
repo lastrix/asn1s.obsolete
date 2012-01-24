@@ -69,7 +69,7 @@ public class ASN1Real extends ASN1Type {
 		if (clazz == Double.class) {
 			this.name = NAME;
 		} else {
-			this.name = NAME + clazz.getSimpleName();
+			this.name = NAME + "-" + clazz.getSimpleName();
 		}
 		this.tag = TAG;
 		valid();
