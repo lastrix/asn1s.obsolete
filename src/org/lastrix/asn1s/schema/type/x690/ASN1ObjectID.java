@@ -63,7 +63,7 @@ public final class ASN1ObjectID extends ASN1RelativeOID {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 		final int fOid = is.read();
 		final long[] oids = readOids(is, length - 1, 2);
 		oids[0] = fOid / MULTIPLIER;

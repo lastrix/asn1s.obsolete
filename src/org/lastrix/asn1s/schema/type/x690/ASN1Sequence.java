@@ -118,7 +118,7 @@ public class ASN1Sequence extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 		if (sequenceOf) {
 			final List list;
 			if (value instanceof List) {

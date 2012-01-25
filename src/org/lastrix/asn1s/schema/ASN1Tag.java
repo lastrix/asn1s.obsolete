@@ -18,7 +18,6 @@
 
 package org.lastrix.asn1s.schema;
 
-import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.util.Utils;
@@ -29,18 +28,19 @@ import java.io.InputStream;
 
 /**
  * Declares ASN1 Tag. This object perform reading and writing from or to stream ASN1 tags.
- * TODO: add references.
+ * See ITU-T X.690 (07/2002) paragraph  8.1.2.3.
  *
  * @author lastrix
  * @version 1.0
- * @see #readTag(InputStream)
+ * @see #readTag(InputStream) - to read tag from stream
+ * @see #asBytes() - to get byte array representation, you could write it to stream
  */
 public final class ASN1Tag {
-	private final static Logger logger   = Logger.getLogger(ASN1Tag.class);
+
 	/**
 	 * Tag mask to extract 1-5th bits from first tag octet
 	 */
-	public static final  int    TAG_MASK = 0x1F;
+	public static final int TAG_MASK = 0x1F;
 
 	/**
 	 * Class mask to extract 7th and 8th bits from first tag octet
@@ -88,11 +88,13 @@ public final class ASN1Tag {
 		this.tag = tag;
 		this.tagClass = tagClass;
 		this.constructed = constructed;
+		// may be do it lazy?
 		this.bytes = toByteArray();
 	}
 
 	@Override
 	public String toString() {
+		//small hack, so constructed would only change bracket to brace
 		if (constructed) {
 			return String.format("ASN1Tag[%d %s]", tag, tagClass);
 		}
@@ -128,6 +130,7 @@ public final class ASN1Tag {
 
 	@Override
 	public int hashCode() {
+		// we don't need to hash constructed, some classes don't like it, like Strings, see ITU-T X.690 paragraph 8.6.4.2
 		return tagClass.ordinal()
 		       | (tag << 2);
 	}
@@ -137,6 +140,8 @@ public final class ASN1Tag {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof ASN1Tag) {
+			// yes, there is no constructed checks. Since some types got very bad here (like Strings, see ITU-T X.690 paragraph 8.6.4.2)
+			// so it better not to check
 			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTagClass());
 		}
 		return false;
@@ -157,15 +162,17 @@ public final class ASN1Tag {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(1);
 
 		if (tagBits > TAG_MASK) {
-			//write XX X 11111
+			//write XX X 11111 byte
 			bos.write(TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
 
+			// now write tag number as described in ITU-T X.690 paragraph 8.1.2.4.3.
 			long mTag = Utils.makeByteGaps(getTag(), 1, Utils.UNSIGNED_BYTE_MASK);
 			final int bytesCount = Utils.getMinimumBytes(mTag);
 			for (int i = bytesCount - 1; i >= 0; i--) {
 				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
 			}
 		} else {
+			// one byte tag
 			bos.write(getTag() & TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
 		}
 		return bos.toByteArray();
@@ -197,6 +204,7 @@ public final class ASN1Tag {
 		} catch (IOException e) {
 			throw new ASN1ReadException("I/O error", e);
 		}
+		// see tag format in ITU-T X.690 paragraph 8.1.2.3, and in some cases 8.1.2.4.3.
 		final int tagClass = (temp & CLASS_MASK);
 		final boolean constructed = ((temp & PC_MASK) >> 5) > 0;
 		int tag = temp & TAG_MASK;

@@ -158,7 +158,7 @@ public class ASN1Real extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 
 		//test for zero value
 		if (length == 0) {

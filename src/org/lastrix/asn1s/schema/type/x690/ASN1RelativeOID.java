@@ -87,7 +87,7 @@ public class ASN1RelativeOID extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 		final long[] oids = readOids(is, length, 0);
 		return new ASN1RelativeObjectIdentifier(oids);
 	}

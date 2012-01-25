@@ -76,7 +76,7 @@ public final class ASN1Null extends ASN1Type {
 		}
 
 		//length should be zero
-		if (ASN1Length.readLength(is).getLength() != 0) {
+		if (ASN1Length.readLength(is) != 0) {
 			throw new ASN1ReadException("Zero length expected.");
 		}
 		return null;

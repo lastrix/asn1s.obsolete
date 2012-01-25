@@ -77,7 +77,7 @@ public class ASN1Boolean extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 		if (length != 1) {
 			throw new ASN1ReadException("Length expected to be 1, got " + length);
 		}

@@ -99,7 +99,7 @@ public class ASN1BitString extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 
 		final int pad = is.read();
 		if (pad > 7) {

@@ -131,6 +131,6 @@ public class ASN1OctetString extends ASN1Type {
 			}
 		}
 
-		return decode(is, ASN1Length.readLength(is).getLength());
+		return decode(is, ASN1Length.readLength(is));
 	}
 }

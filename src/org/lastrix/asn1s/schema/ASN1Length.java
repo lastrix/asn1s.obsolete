@@ -26,30 +26,21 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Handles ASN1 length field, as described in ASN.1 specification X.690
- * TODO: references
+ * Handles ASN1 length field, as described in ASN.1 specification ITU-T X.690 paragraph 8.1.3
  *
  * @author lastrix
  * @version 1.0
- * @see #readLength(InputStream)
+ * @see #readLength(InputStream) - to read length from stream
+ * @see #asBytes(int) - to get byte array representation of and int
  */
 public final class ASN1Length {
 
 	public static final int FORM_INDEFINITE = 0x80;
 
-	private int    length;
-	private byte[] bytes;
-
 	/**
 	 * Construct ASN1Length
-	 *
-	 * @param length - an int
-	 *
-	 * @see #asBytes()
 	 */
-	public ASN1Length(final int length) {
-		this.length = length;
-		this.bytes = asBytes(length);
+	private ASN1Length(final int length) {
 	}
 
 	/**
@@ -86,9 +77,10 @@ public final class ASN1Length {
 	 *
 	 * @throws ASN1ReadException if I/O errors occur
 	 */
-	public static ASN1Length readLength(final InputStream is) throws ASN1ReadException {
+	public static int readLength(final InputStream is) throws ASN1ReadException {
+
 		int temp;
-		//	Read the length and create header
+		// Read the length and create header
 		try {
 			temp = is.read();
 		} catch (IOException e) {
@@ -98,14 +90,17 @@ public final class ASN1Length {
 		int length = 0;
 
 		if (temp == FORM_INDEFINITE) {
-			//this is an indefinite form
+			// this is an indefinite form
 			length = 0;
 		} else if ((temp & Utils.BYTE_SIGN_MASK) == 0) {
-			//this is short definite form
+			// this is short definite form
 			length = temp & Utils.UNSIGNED_BYTE_MASK;
 		} else {
-			//this is an definite long form
+			// this is an definite long form
 			final int count = temp & Utils.UNSIGNED_BYTE_MASK;
+			if (count > 4) {
+				throw new ASN1ReadException("int overflow");
+			}
 			try {
 				for (int i = 0; i < count; i++) {
 					temp = is.read();
@@ -115,24 +110,7 @@ public final class ASN1Length {
 				throw new ASN1ReadException("I/O error.", e);
 			}
 		}
-		return new ASN1Length(length);
-	}
-
-	/**
-	 * The length value
-	 *
-	 * @return an int
-	 */
-	public int getLength() {
 		return length;
 	}
 
-	/**
-	 * Returns byte array ASN.1 length field representation
-	 *
-	 * @return an byte array
-	 */
-	public byte[] asBytes() {
-		return bytes;
-	}
 }

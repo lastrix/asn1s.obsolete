@@ -106,7 +106,7 @@ public class ASN1Integer extends ASN1Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 
 		long value = 0;
 		//extract sign

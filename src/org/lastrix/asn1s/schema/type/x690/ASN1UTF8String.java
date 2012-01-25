@@ -85,7 +85,7 @@ public class ASN1UTF8String extends ASN1OctetString {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is).getLength();
+		final int length = ASN1Length.readLength(is);
 
 		return new String(decode(is, length), "UTF-8");
 	}
