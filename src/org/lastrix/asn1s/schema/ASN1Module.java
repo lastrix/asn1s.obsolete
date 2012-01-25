@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.schema.type.ASN1TaggedType;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 import org.lastrix.asn1s.schema.type.ASN1UserType;
@@ -31,33 +32,70 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
- * ASN1 ASN1Module with type definitions
+ * Declares ASN.1 module as expected in ITU-T X.680 and ITU-T X.690.
+ * Holds all types and local index table to easy search and deploy.
  *
  * @author lastrix
  * @version 1.0
  */
 public class ASN1Module {
 	private final static Logger logger         = Logger.getLogger(ASN1Module.class);
+	/**
+	 * Constant used in property change support to notify about new type installation.
+	 */
 	public static final  String TYPE_INSTALLED = "typeInstalled";
 
-	private       ASN1Schema              schema;
-	private final ASN1ModuleId            moduleId;
-	private final TaggingMethod           defaultTaggingMethod;
-	private final boolean                 extensibilityImplied;
-	private final boolean                 exportAll;
-	private final List<String>            exports;
-	private final List<SymbolsFromModule> imports;
-	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
-
-	protected final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
+	/**
+	 * Link to schema which uses this module.
+	 */
+	private ASN1Schema schema;
 
 	/**
-	 * Defines which ASN1Type should handle specified class
+	 * This module id. Any module should have its module id, see ITU-T X.680 paragraph 12.1
 	 */
-	protected final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
+	private final ASN1ModuleId moduleId;
 
+	/**
+	 * Default tagging method in this module.
+	 * This variable primarily used in {@link ASN1TaggedType}
+	 */
+	private final TaggingMethod defaultTaggingMethod;
+
+	/**
+	 * Flag that allows user to extend types as it wants.
+	 * IS NOT SUPPORTED YET.
+	 */
+	private final boolean extensibilityImplied;
+
+	/**
+	 * Flag to tell exporter, whether all types or only listed should be exported.
+	 */
+	private final boolean exportAll;
+
+	/**
+	 * List of references to types and etc, that should be exported.
+	 * This list could be overriden by setting {@link #exportAll}, if set to true this list will not be used.
+	 */
+	private final List<String> exports;
+
+	/**
+	 * List of imports that would be loaded from global type base (Schema)
+	 */
+	private final List<SymbolsFromModule> imports;
+
+	/**
+	 * List of types that exactly exported.
+	 */
+	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
+
+	/**
+	 * List of types beeing actually imported and registered in this module.
+	 */
 	protected final Map<String, Map<String, ASN1Type>> importedTypes = new HashMap<String, Map<String, ASN1Type>>();
 
+	/**
+	 * The property change support used to notify users about installation of new types
+	 */
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
@@ -164,15 +202,6 @@ public class ASN1Module {
 	}
 
 	/**
-	 * Get schema
-	 *
-	 * @return schema
-	 */
-	public ASN1Schema getSchema() {
-		return schema;
-	}
-
-	/**
 	 * Setup schema for this module, you can not set schema if it is already not null.
 	 * Validation called inside.
 	 *
@@ -207,7 +236,6 @@ public class ASN1Module {
 	 * @return an ASN1Type or null
 	 */
 	public ASN1Type resolveType(final String name, final String moduleId) {
-//		logger.warn("Looking for type " + name + "  in " + moduleId);
 		// if module id is set, then we should check import lists
 		if (!getName().equals(moduleId) && moduleId != null) {
 			Map<String, ASN1Type> map = importedTypes.get(moduleId);
@@ -226,11 +254,16 @@ public class ASN1Module {
 		return type;
 	}
 
+	/**
+	 * Resolves an unresolved type and returns null or valid one.
+	 *
+	 * @param type - an ASN1UnresolvedType instance
+	 *
+	 * @return null or ASN1Type object
+	 */
 	public ASN1Type resolveType(ASN1UnresolvedType type) {
 		return resolveType(type.getName(), type.getModuleName());
 	}
-
-	private void firePropertyChange(final PropertyChangeEvent evt) {pcs.firePropertyChange(evt);}
 
 	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(
@@ -280,9 +313,6 @@ public class ASN1Module {
 	 * @param type
 	 */
 	public void install(ASN1Type type) {
-		//register signatures
-		tag2type.put(type.getTag(), type);
-		this.class2type.put(type.getHandledClass(), type);
 //		types.put(type.getName(), type);
 		firePropertyChange(TYPE_INSTALLED, null, type);
 	}

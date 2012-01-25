@@ -19,7 +19,8 @@
 package org.lastrix.asn1s.schema;
 
 /**
- * Enumeration that holds tag class, specified in ASN.1 specification
+ * Enumeration that holds tag class, specified in ASN.1 specification.
+ * See ITU-T X.680 and ITU-T.X690 for more information.
  *
  * @author lastrix
  * @version 1.0

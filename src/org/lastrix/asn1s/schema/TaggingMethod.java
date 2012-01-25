@@ -19,6 +19,8 @@
 package org.lastrix.asn1s.schema;
 
 /**
+ * Defines tagging methods as declared in ITU-T X.680.
+ *
  * @author lastrix
  * @version 1.0
  */

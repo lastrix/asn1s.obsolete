@@ -84,7 +84,7 @@ public class ASN1Schema {
 	}
 
 	/**
-	 * Create new schema and load modules into it
+	 * Create new schema (if necessary) and load modules into it
 	 *
 	 * @param fileName - the schema file
 	 * @param s        - the schema where modules  should be stored

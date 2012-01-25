@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema;
 
 /**
  * ASN1ModuleId - special class to make modules unique and be described as it expected in ASN.1 specifications.
+ * See ITU-T X.690 paragraph 8.19.
  *
  * @author lastrix
  * @version 1.0

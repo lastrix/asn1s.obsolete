@@ -22,7 +22,6 @@ import org.lastrix.asn1s.CustomTestCase;
 import org.lastrix.asn1s.SequenceOfTestClass;
 import org.lastrix.asn1s.SequenceOfTestClassAsField;
 import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
-import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -100,7 +99,7 @@ public class SchemaTest extends CustomTestCase {
 	public void testSaveLoadOID() throws Exception {
 		final ASN1Schema s = ASN1Schema.create();
 //		s.printDebugInfo();
-		final int COUNT = 2;
+		final int COUNT = 1000;
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
 		try {
 			for (int i = 0; i < COUNT; i++) {
@@ -111,7 +110,7 @@ public class SchemaTest extends CustomTestCase {
 			fail("Exception caught.");
 		}
 		final byte[] data = bos.toByteArray();
-		System.out.println(Utils.toHexString(data));
+//		System.out.println(Utils.toHexString(data));
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 		try {
 			int i = 0;

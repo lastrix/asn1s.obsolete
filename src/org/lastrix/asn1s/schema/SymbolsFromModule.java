@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -18,18 +18,32 @@
 
 package org.lastrix.asn1s.schema;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
+ * This class used to hold data about import block, as described in ITU-T X.680 paragraph 12.1
+ *
  * @author lastrix
  * @version 1.0
  */
 public class SymbolsFromModule {
+	/**
+	 * full module name as declared in ITU-T X.680
+	 */
 	private final String moduleName;
 
-	private final Vector<String> symbols;
+	/**
+	 * List of typereferences as declared in ITU-T X.680
+	 */
+	private final List<String> symbols;
 
-	public SymbolsFromModule(final String moduleName, final Vector<String> symbols) {
+	/**
+	 * Create new SymbolsFromModule
+	 *
+	 * @param moduleName - name of module
+	 * @param symbols    - list of symbols
+	 */
+	public SymbolsFromModule(final String moduleName, final List<String> symbols) {
 		this.moduleName = moduleName;
 		this.symbols = symbols;
 	}
@@ -38,7 +52,7 @@ public class SymbolsFromModule {
 		return moduleName;
 	}
 
-	public Vector<String> getSymbols() {
+	public List<String> getSymbols() {
 		return symbols;
 	}
 
