@@ -97,7 +97,7 @@ public class SchemaTest extends CustomTestCase {
 
 
 	public void testSaveLoadOID() throws Exception {
-		final ASN1Schema s = ASN1Schema.create();
+		final ASN1Schema s = new ASN1Schema();
 //		s.printDebugInfo();
 		final int COUNT = 1000;
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);

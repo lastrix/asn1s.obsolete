@@ -34,7 +34,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1Null extends ASN1Type {
+public final class ASN1Null extends ASN1Type implements ASN1X690Type {
 
 	public final static ASN1Tag TAG  = new ASN1Tag(0x05, TagClass.UNIVERSAL, false);
 	public final static String  NAME = "NULL";

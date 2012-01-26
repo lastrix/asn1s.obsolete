@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema.compiler;
 
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
 import org.lastrix.asn1s.schema.constraint.*;
@@ -107,7 +108,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		//actually we have no need to store it in stack
 //		stack.push(module);
 		//now add module to schema
-		schema.addModule(module);
+		try {
+			schema.addModule(module);
+		} catch (ASN1Exception e1) {
+			logger.error("Fatal error:", e1);
+			throw new IllegalStateException(e1);
+		}
 	}
 
 	@Override

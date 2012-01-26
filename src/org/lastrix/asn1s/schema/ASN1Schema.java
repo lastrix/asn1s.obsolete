@@ -22,7 +22,6 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
-import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Lexer;
@@ -35,20 +34,74 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Base class that should be used to save/load data from binary ASN1 notation format (*.asn1bin)
+ * This class performs Module management, index control and user helping via methods {@link #read(InputStream)}
+ * and {@link #write(Object, OutputStream)}. Those methods help you read or write objects from or to streams.
+ * This process uses preloaded data, stored in ASN.1 schemas as defined in ITU-T X.680. Each loaded schema contains
+ * some modules, which give you a list of exported types. Only exported types could be seen from ASN1Schema, and,
+ * of course, used by {@link #read(InputStream)} and {@link #write(Object, OutputStream)} methods.
+ * To get starting with ASN1Schema you may make a clean copy of it by calling empty constructor. This clean schema
+ * contains only basic types defined in ITU-T X.680 and ITU-T X.690, except sequences, sets and other complex
+ * objects that can not be "just loaded".
+ * The complete list of allowed types listed in {@link ASN1X690Module.IMPORTS};
  *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Schema {
-	private static final Logger logger = Logger.getLogger(ASN1Schema.class);
+public final class ASN1Schema {
 
+	/**
+	 * Constant used in property change firing to let listeners know about new type installation.
+	 */
 	public final static String TYPE_INSTALLED = "typeInstalled";
+
+	/**
+	 * Create new schema and load modules into it
+	 *
+	 * @param fileName - the schema file
+	 *
+	 * @return ASN1Schema or null
+	 */
+	public static ASN1Schema loadSchema(String fileName) throws ASN1Exception {
+		return loadSchema(fileName, null);
+	}
+
+	/**
+	 * Create new schema (if necessary) and load modules into it
+	 *
+	 * @param fileName - the schema file
+	 * @param s        - the schema where modules  should be stored
+	 *
+	 * @return ASN1Schema or null
+	 */
+	public static ASN1Schema loadSchema(String fileName, ASN1Schema s) throws ASN1Exception {
+		final ASN1Schema schema = (s == null) ? new ASN1Schema() : s;
+		try {
+			// please read more about this in ANTLR documentation and tutorials.
+			ASN1Lexer lex = new ASN1Lexer(new ANTLRFileStream(fileName, "UTF8"));
+			CommonTokenStream tokens = new CommonTokenStream(lex);
+
+
+			ASN1Parser parser = new ASN1Parser(tokens);
+			ASN1Parser.parse_return r = parser.parse();
+
+
+			CommonTree t = (CommonTree) r.getTree();
+			CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
+
+
+			ASN1TreeWalkerImpl walker = new ASN1TreeWalkerImpl(nodes, schema);
+			walker.downup(t);
+
+			// schema already contain all fetched modules
+			return schema;
+		} catch (Exception e) {
+			throw new ASN1Exception(e);
+		}
+	}
 
 	/**
 	 * Modules in this schema
@@ -70,63 +123,16 @@ public class ASN1Schema {
 	 */
 	private final Map<String, Map<String, ASN1Type>> types = new HashMap<String, Map<String, ASN1Type>>();
 
+	/**
+	 * Property change support to let listeners know about new type installation.
+	 */
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
-	 * Create new schema and load modules into it
-	 *
-	 * @param fileName - the schema file
-	 *
-	 * @return ASN1Schema or null
+	 * Default constructor. Makes schema with default types.
 	 */
-	public static ASN1Schema loadSchema(String fileName) {
-		return loadSchema(fileName, null);
-	}
-
-	/**
-	 * Create new schema (if necessary) and load modules into it
-	 *
-	 * @param fileName - the schema file
-	 * @param s        - the schema where modules  should be stored
-	 *
-	 * @return ASN1Schema or null
-	 */
-	public static ASN1Schema loadSchema(String fileName, ASN1Schema s) {
-		final ASN1Schema schema = (s == null) ? new ASN1Schema() : s;
-		try {
-			ASN1Lexer lex = new ASN1Lexer(new ANTLRFileStream(fileName, "UTF8"));
-			CommonTokenStream tokens = new CommonTokenStream(lex);
-
-
-			ASN1Parser parser = new ASN1Parser(tokens);
-			ASN1Parser.parse_return r = parser.parse();
-			CommonTree t = (CommonTree) r.getTree();
-			CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
-
-
-			ASN1TreeWalkerImpl walker = new ASN1TreeWalkerImpl(nodes, schema);
-			walker.downup(t);
-
-			return schema;
-		} catch (Exception e) {
-			logger.warn("Exception:", e);
-			return null;
-		}
-	}
-
-	public static ASN1Schema create() {
-		return new ASN1Schema();
-	}
-
-	private ASN1Schema() {
+	public ASN1Schema() throws ASN1Exception {
 		addModule(new ASN1X690Module());
-	}
-
-	private ASN1Schema(Collection<ASN1Module> modules) {
-		this();
-		for (ASN1Module m : modules) {
-			addModule(m);
-		}
 	}
 
 	/**
@@ -134,14 +140,65 @@ public class ASN1Schema {
 	 *
 	 * @param module - the module to be added
 	 */
-	public void addModule(final ASN1Module module) {
+	public void addModule(final ASN1Module module) throws ASN1Exception {
 		//if it fail, no module would be added.
-		try {
-			module.deploy(this);
-			modules.put(module.getName(), module);
-		} catch (ASN1Exception e) {
-			logger.error("Exception:", e);
+		module.deploy(this);
+		modules.put(module.getName(), module);
+	}
+
+	/**
+	 * Returns type by its full type id (moduleName.name)
+	 *
+	 * @param name     - type name
+	 * @param moduleId - module id
+	 *
+	 * @return
+	 */
+	public ASN1Type getType(final String name, final String moduleId) {
+		Map<String, ASN1Type> map = types.get(moduleId);
+		if (map != null) {
+			return map.get(name);
 		}
+		return null;
+	}
+
+
+	/**
+	 * Install type in this schema, this will make specified type as global type
+	 * that could be used in {@link #read(InputStream)} and {@link #write(Object, OutputStream)}
+	 *
+	 * @param type - the type to be installed
+	 */
+	public void install(final ASN1Type type) {
+		if (type == null) {
+			throw new NullPointerException();
+		}
+		// get module's map which holds exports for type's module
+		Map<String, ASN1Type> map = types.get(type.getModule().getName());
+		if (map == null) {
+			map = new HashMap<String, ASN1Type>();
+			types.put(type.getModule().getName(), map);
+		}
+		map.put(type.getName(), type);
+
+		// build index
+		tag2type.put(type.getTag(), type);
+		class2type.put(type.getHandledClass(), type);
+
+		// notification
+		firePropertyChange(TYPE_INSTALLED, null, type);
+	}
+
+	/**
+	 * Read object from InputStream decoding it with ASN.1
+	 *
+	 * @param is - the InputStream
+	 *
+	 * @return an Object
+	 */
+	public Object read(InputStream is) throws ASN1Exception, IOException {
+		final ASN1Tag tag = ASN1Tag.readTag(is);
+		return getHandler(tag).read(null, is, tag, true);
 	}
 
 	/**
@@ -154,18 +211,9 @@ public class ASN1Schema {
 		getHandler(o).write(o, os, true);
 	}
 
-	/**
-	 * Read object from InputStream decoding it with ASN.1
-	 *
-	 * @param is - the InputStream
-	 *
-	 * @return an Object
-	 */
-	public Object read(InputStream is) throws ASN1Exception, IOException {
-		final ASN1Tag tag = ASN1Tag.readTag(is);
-		ASN1Type handler = getHandler(tag);
-		return handler.read(null, is, tag, true);
-	}
+	// ------------------------------------------------------------------------ //
+	// ----------------------- PRIVATE METHODS -------------------------------- //
+	// ------------------------------------------------------------------------ //
 
 	/**
 	 * Returns handler for certain tag
@@ -196,45 +244,16 @@ public class ASN1Schema {
 		return class2type.get(o.getClass());
 	}
 
-	/**
-	 * Returns type by its full type id (moduleName.name)
-	 *
-	 * @param name     - type name
-	 * @param moduleId - module id
-	 *
-	 * @return
-	 */
-	public ASN1Type getType(final String name, final String moduleId) {
-		Map<String, ASN1Type> map = types.get(moduleId);
-		if (map != null) {
-			return map.get(name);
-		}
-		return null;
-	}
-
+	// ------------------------------------------------------------------------ //
+	// ----------------------- DELEGATES -------------------------------------- //
+	// ------------------------------------------------------------------------ //
 
 	/**
-	 * Install type in this schema, this will make specified type as global type
-	 * that could be used in {@link #read(InputStream)} and {@link #write(Object, OutputStream)}
+	 * Delegate from pcs
 	 *
-	 * @param type - the type to be isntalled
+	 * @param propertyName
+	 * @param listener
 	 */
-	public void install(final ASN1Type type) {
-		if (type != null) {
-			Map<String, ASN1Type> map = types.get(type.getModule().getName());
-			if (map == null) {
-				map = new HashMap<String, ASN1Type>();
-				types.put(type.getModule().getName(), map);
-			}
-			map.put(type.getName(), type);
-
-			tag2type.put(type.getTag(), type);
-			class2type.put(type.getHandledClass(), type);
-
-			firePropertyChange(TYPE_INSTALLED, null, type);
-		}
-	}
-
 	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(
 		                             propertyName,
@@ -242,6 +261,13 @@ public class ASN1Schema {
 		                             );
 	}
 
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param listener
+	 */
 	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(
 		                                propertyName,
@@ -249,6 +275,13 @@ public class ASN1Schema {
 		                                );
 	}
 
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param oldValue
+	 * @param newValue
+	 */
 	protected void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
 		pcs.firePropertyChange(
 		                      propertyName,
@@ -257,23 +290,4 @@ public class ASN1Schema {
 		                      );
 	}
 
-	protected void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
-		pcs.firePropertyChange(
-		                      propertyName,
-		                      oldValue,
-		                      newValue
-		                      );
-	}
-
-	public void printDebugInfo() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Global types:\n");
-		for (String moduleName : types.keySet()) {
-			sb.append(String.format("Module: %s\n%s\n", moduleName, types.get(moduleName)));
-		}
-		logger.info(sb);
-		for (ASN1Module m : modules.values()) {
-			m.printDebugInfo();
-		}
-	}
 }

@@ -46,7 +46,7 @@ import java.util.List;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Sequence extends ASN1Type {
+public class ASN1Sequence extends ASN1Type implements ASN1X690Type {
 	private final Logger logger = Logger.getLogger(ASN1Sequence.class);
 
 	private final ASN1Type[] componentType;

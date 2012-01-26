@@ -35,7 +35,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Boolean extends ASN1Type {
+public class ASN1Boolean extends ASN1Type implements ASN1X690Type {
 
 	public static final ASN1Tag TAG   = new ASN1Tag(0x01, TagClass.UNIVERSAL, false);
 	public static final int     TRUE  = 0xFF;

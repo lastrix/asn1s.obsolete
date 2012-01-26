@@ -20,6 +20,7 @@ package org.lastrix.asn1s;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Schema;
 
 import java.io.FileInputStream;
@@ -90,7 +91,11 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
-		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+		try {
+			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+		} catch (ASN1Exception e) {
+			logger.warn("Exception:", e);
+		}
 //		s.printDebugInfo();
 	}
 

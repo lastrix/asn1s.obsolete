@@ -37,7 +37,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1OctetString extends ASN1Type {
+public class ASN1OctetString extends ASN1Type implements ASN1X690Type {
 
 	public final static  String  NAME = "OCTET STRING";
 	private final static ASN1Tag TAG  = new ASN1Tag(0x04, TagClass.UNIVERSAL, false);

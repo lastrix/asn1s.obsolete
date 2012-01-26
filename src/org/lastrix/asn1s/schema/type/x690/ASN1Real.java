@@ -37,7 +37,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Real extends ASN1Type {
+public class ASN1Real extends ASN1Type implements ASN1X690Type {
 
 	public static final String  NAME = "REAL";
 	public final static ASN1Tag TAG  = new ASN1Tag(0x09, TagClass.UNIVERSAL, false);

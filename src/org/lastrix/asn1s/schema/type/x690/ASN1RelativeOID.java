@@ -37,7 +37,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1RelativeOID extends ASN1Type {
+public class ASN1RelativeOID extends ASN1Type implements ASN1X690Type {
 	public final static String  NAME = "RELATIVE-OID";
 	public final static ASN1Tag TAG  = new ASN1Tag(0x0D, TagClass.UNIVERSAL, false);
 

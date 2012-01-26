@@ -33,7 +33,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1UTF8String extends ASN1OctetString {
+public class ASN1UTF8String extends ASN1OctetString implements ASN1X690Type {
 	private final static Logger logger = Logger.getLogger(ASN1UTF8String.class);
 
 	public final static String  NAME = "UTF8String";

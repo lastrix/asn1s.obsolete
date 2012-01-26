@@ -35,7 +35,7 @@ import java.util.BitSet;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1BitString extends ASN1Type {
+public class ASN1BitString extends ASN1Type implements ASN1X690Type {
 
 	public final static String  NAME = "BIT STRING";
 	public final static ASN1Tag TAG  = new ASN1Tag(0x03, TagClass.UNIVERSAL, false);
