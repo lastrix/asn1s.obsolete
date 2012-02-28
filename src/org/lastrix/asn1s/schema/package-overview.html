@@ -26,7 +26,7 @@
 This package contains utilities that help you load and handle ASN.1 modules, as described in ITU-T X.680.
 
 You could use Schema.loadSchema(path-to-schema) to load ASN.1 module into an clear Schema which contain your loaded module and default module which
-content is default ASN.1 type handlers. Of course you may override default module and use our own, in future.
+content is default ASN.1 type handlers. Of course you may override default module and use your own, in future.
 
 To use your schema you need to call read and write methods. See Schema#read(InputStream) and Schema#write(Object, OutputStream) for more information.
 Those methods will lookup for information built by modules and use it to call certain type handlers.
