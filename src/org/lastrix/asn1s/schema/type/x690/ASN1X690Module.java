@@ -42,6 +42,9 @@ public class ASN1X690Module extends ASN1Module {
 	static {
 		Vector<String> items = new Vector<String>();
 		items.add(ASN1Integer.NAME);
+		items.add(ASN1Integer.NAME + "-Byte");
+		items.add(ASN1Integer.NAME + "-Short");
+		items.add(ASN1Integer.NAME + "-Integer");
 		items.add(ASN1Real.NAME);
 		items.add(ASN1Real.NAME + "-Float");
 		items.add(ASN1UTF8String.NAME);

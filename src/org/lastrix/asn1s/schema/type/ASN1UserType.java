@@ -170,6 +170,6 @@ public class ASN1UserType extends ASN1Type {
 
 	@Override
 	public String getTypeString(final String prefix) {
-		return prefix + name + " " + baseType.getTypeString(prefix);
+		return prefix + name + " ::= " + baseType.getTypeString(prefix);
 	}
 }

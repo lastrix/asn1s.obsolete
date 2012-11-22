@@ -219,7 +219,9 @@ public class ASN1TaggedType extends ASN1Type {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(prefix);
 		sb.append("[");
-		sb.append(getTag());
+		sb.append(getTag().getTagClass());
+		sb.append(" ");
+		sb.append(getTag().getTag());
 		sb.append("] ");
 		sb.append(subType.getTypeString(prefix));
 		return sb.toString();
