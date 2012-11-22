@@ -211,6 +211,36 @@ public final class ASN1Schema {
 		getHandler(o).write(o, os, true);
 	}
 
+	public String getModulesString() {
+		StringBuilder sb = new StringBuilder();
+		for (String s : modules.keySet()) {
+			sb.append(s);
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
+	public String getTypesString() {
+		StringBuilder sb = new StringBuilder();
+		for (String module : types.keySet()) {
+			sb.append("From module '");
+			sb.append(module);
+			sb.append("':\n");
+			final Map<String, ASN1Type> tl = types.get(module);
+			for (String typeName : tl.keySet()) {
+				sb.append("\t");
+				sb.append(typeName);
+				sb.append(" of type '");
+				sb.append(tl.get(typeName).getClass().getSimpleName());
+				sb.append("':\n");
+				sb.append(tl.get(typeName).getTypeString("\t\t"));
+				sb.append("\n");
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
 	// ------------------------------------------------------------------------ //
 	// ----------------------- PRIVATE METHODS -------------------------------- //
 	// ------------------------------------------------------------------------ //

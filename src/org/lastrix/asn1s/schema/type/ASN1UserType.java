@@ -167,4 +167,9 @@ public class ASN1UserType extends ASN1Type {
 		//we should override this, because base type is tag supplier
 		return baseType.getTag();
 	}
+
+	@Override
+	public String getTypeString(final String prefix) {
+		return prefix + name + " " + baseType.getTypeString(prefix);
+	}
 }

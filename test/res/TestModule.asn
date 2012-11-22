@@ -6,7 +6,7 @@ EXPORTS TestSeq, ListOfTestSeq;
 TestSeq ::= [APPLICATION 2] IMPLICIT SEQUENCE {
   a INTEGER,
   b INTEGER,
-  c REAL,
+  c REAL-Float,
   d UTF8String,
   myField TestSeqAsField
 }
@@ -15,7 +15,7 @@ TestSeq ::= [APPLICATION 2] IMPLICIT SEQUENCE {
 TestSeqAsField ::= [APPLICATION 9] IMPLICIT SEQUENCE {
   id INTEGER,
   name UTF8String,
-  weight REAL
+  weight REAL-Float
 }
 
 --#java.util.ArrayList#

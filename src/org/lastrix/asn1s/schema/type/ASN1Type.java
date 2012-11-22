@@ -305,6 +305,17 @@ public abstract class ASN1Type {
 		return getModule().getName();
 	}
 
+	/**
+	 * Return debug string containing formatted type
+	 *
+	 * @param prefix - prefix for each string
+	 *
+	 * @return an String
+	 */
+	public String getTypeString(final String prefix) {
+		return prefix + getTypeId();
+	}
+
 	// ------------------------------------------------------------------------ //
 	// --------------------- ABSTRACT METHODS --------------------------------- //
 	// ------------------------------------------------------------------------ //
@@ -336,4 +347,5 @@ public abstract class ASN1Type {
 	public abstract Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws
 	                                                                                                                 IOException,
 	                                                                                                                 ASN1Exception;
+
 }

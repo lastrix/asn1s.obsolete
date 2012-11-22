@@ -93,6 +93,8 @@ public class Asn1s {
 		initLogging();
 		try {
 			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+			logger.warn(s.getModulesString());
+			logger.warn(s.getTypesString());
 		} catch (ASN1Exception e) {
 			logger.warn("Exception:", e);
 		}

@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.type.ASN1TaggedType;
 import org.lastrix.asn1s.schema.type.ASN1Type;
@@ -40,6 +41,8 @@ import java.util.*;
  * @version 1.0
  */
 public class ASN1Module {
+	private final static Logger logger = Logger.getLogger(ASN1Module.class.getName());
+
 	/**
 	 * Constant used in property change support to notify about new type installation.
 	 */

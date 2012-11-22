@@ -255,5 +255,19 @@ public class ASN1Sequence extends ASN1Type implements ASN1X690Type {
 		}
 	}
 
-
+	@Override
+	public String getTypeString(final String prefix) {
+		final StringBuilder sb = new StringBuilder();
+		if (sequenceOf) {
+			sb.append("Sequence of ");
+			sb.append(componentType[0].getTypeId());
+		} else {
+			sb.append("Sequence:\n");
+			for (ASN1Type t : componentType) {
+				sb.append(t.getTypeString(prefix + "\t"));
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+	}
 }
