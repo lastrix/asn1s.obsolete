@@ -16,15 +16,15 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g 2011-12-07 12:40:35
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g 2012-11-24 19:38:08
 
 package org.lastrix.asn1s.schema.compiler.generated;
-
 
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.TreeFilter;
 import org.antlr.runtime.tree.TreeNodeStream;
+import org.lastrix.asn1s.schema.Presence;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.TaggingMethod;
 
@@ -373,15 +373,28 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	public String[] getTokenNames() { return ASN1TreeWalker.tokenNames; }
 
-	public String getGrammarFileName() { return "/home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g"; }
+	public String getGrammarFileName() { return "/home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g"; }
 
 
-	public enum Presence {
-		PRESENT,
-		ABSENT,
-		OPTIONAL
-	}
+	/*
+    public enum Presence {
+    	PRESENT,
+    	ABSENT,
+    	OPTIONAL
+    }
 
+    public enum TagClass {
+    	UNIVERSAL,
+    	APPLICATION,
+    	PRIVATE
+    }
+
+    public enum TaggingMethod {
+    	IMPLICIT,
+    	EXPLICIT,
+    	AUTOMATIC;
+    }
+    */
 	public enum RestrictedCString {
 		BMPString,
 		GeneralString,
@@ -627,10 +640,10 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "topdown"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:253:1: topdown : ( enterModule | enterModuleId | enterVec | enterExports | enterImports | enterSymbolsFromModule | enterValueAssignment | enterTypeAssignment | enterType | enterValue | enterTaggedType | enterSequenceOf | enterSequence | enterSetOf | enterSet | enterChoice | enterExceptionSpec | enterComponentType | enterComponentTypeOption | enterExtensionAdditionGroup | enterExtensionAdditionAlternativesGroup | enterNamedType | enterConstraint | enterConstraintValueRange | enterConstraintValue | enterConstraintSize | enterConstraintType | enterConstraintInnerType | enterEndpoint | enterUnion | enterIntersectionElement | enterNamedConstraint | enterSelectionType | enterEnumeration | enterTypeReference | nameForm | nameNumberForm | numberForm | symbol | globalModuleReference | trueValue | falseValue | numberValue | defaultTaggingMethod | extensionEndMarkerPvt | integerType | booleanType | realType | oidType | cstringType | enumerationItemPvt | extensibilityImpliedPvt );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:258:1: topdown : ( enterModule | enterModuleId | enterVec | enterExports | enterImports | enterSymbolsFromModule | enterValueAssignment | enterTypeAssignment | enterType | enterValue | enterTaggedType | enterSequenceOf | enterSequence | enterSetOf | enterSet | enterChoice | enterExceptionSpec | enterComponentType | enterComponentTypeOption | enterExtensionAdditionGroup | enterExtensionAdditionAlternativesGroup | enterNamedType | enterConstraint | enterConstraintValueRange | enterConstraintValue | enterConstraintSize | enterConstraintType | enterConstraintInnerType | enterEndpoint | enterUnion | enterIntersectionElement | enterNamedConstraint | enterSelectionType | enterEnumeration | enterTypeReference | nameForm | nameNumberForm | numberForm | symbol | globalModuleReference | trueValue | falseValue | numberValue | defaultTaggingMethod | extensionEndMarkerPvt | integerType | booleanType | realType | oidType | cstringType | enumerationItemPvt | extensibilityImpliedPvt );
 	public final void topdown() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:253:10: ( enterModule | enterModuleId | enterVec | enterExports | enterImports | enterSymbolsFromModule | enterValueAssignment | enterTypeAssignment | enterType | enterValue | enterTaggedType | enterSequenceOf | enterSequence | enterSetOf | enterSet | enterChoice | enterExceptionSpec | enterComponentType | enterComponentTypeOption | enterExtensionAdditionGroup | enterExtensionAdditionAlternativesGroup | enterNamedType | enterConstraint | enterConstraintValueRange | enterConstraintValue | enterConstraintSize | enterConstraintType | enterConstraintInnerType | enterEndpoint | enterUnion | enterIntersectionElement | enterNamedConstraint | enterSelectionType | enterEnumeration | enterTypeReference | nameForm | nameNumberForm | numberForm | symbol | globalModuleReference | trueValue | falseValue | numberValue | defaultTaggingMethod | extensionEndMarkerPvt | integerType | booleanType | realType | oidType | cstringType | enumerationItemPvt | extensibilityImpliedPvt )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:258:10: ( enterModule | enterModuleId | enterVec | enterExports | enterImports | enterSymbolsFromModule | enterValueAssignment | enterTypeAssignment | enterType | enterValue | enterTaggedType | enterSequenceOf | enterSequence | enterSetOf | enterSet | enterChoice | enterExceptionSpec | enterComponentType | enterComponentTypeOption | enterExtensionAdditionGroup | enterExtensionAdditionAlternativesGroup | enterNamedType | enterConstraint | enterConstraintValueRange | enterConstraintValue | enterConstraintSize | enterConstraintType | enterConstraintInnerType | enterEndpoint | enterUnion | enterIntersectionElement | enterNamedConstraint | enterSelectionType | enterEnumeration | enterTypeReference | nameForm | nameNumberForm | numberForm | symbol | globalModuleReference | trueValue | falseValue | numberValue | defaultTaggingMethod | extensionEndMarkerPvt | integerType | booleanType | realType | oidType | cstringType | enumerationItemPvt | extensibilityImpliedPvt )
 			int alt1 = 52;
 			switch (input.LA(1)) {
 				case MODULE: {
@@ -855,7 +868,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt1) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:254:2: enterModule
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:259:2: enterModule
 				{
 					pushFollow(FOLLOW_enterModule_in_topdown56);
 					enterModule();
@@ -866,7 +879,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:255:4: enterModuleId
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:260:4: enterModuleId
 				{
 					pushFollow(FOLLOW_enterModuleId_in_topdown61);
 					enterModuleId();
@@ -877,7 +890,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:256:4: enterVec
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:261:4: enterVec
 				{
 					pushFollow(FOLLOW_enterVec_in_topdown66);
 					enterVec();
@@ -888,7 +901,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:257:4: enterExports
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:262:4: enterExports
 				{
 					pushFollow(FOLLOW_enterExports_in_topdown71);
 					enterExports();
@@ -899,7 +912,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:258:4: enterImports
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:263:4: enterImports
 				{
 					pushFollow(FOLLOW_enterImports_in_topdown76);
 					enterImports();
@@ -910,7 +923,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:259:4: enterSymbolsFromModule
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:264:4: enterSymbolsFromModule
 				{
 					pushFollow(FOLLOW_enterSymbolsFromModule_in_topdown81);
 					enterSymbolsFromModule();
@@ -921,7 +934,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 7:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:260:4: enterValueAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:265:4: enterValueAssignment
 				{
 					pushFollow(FOLLOW_enterValueAssignment_in_topdown86);
 					enterValueAssignment();
@@ -932,7 +945,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 8:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:261:4: enterTypeAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:266:4: enterTypeAssignment
 				{
 					pushFollow(FOLLOW_enterTypeAssignment_in_topdown91);
 					enterTypeAssignment();
@@ -943,7 +956,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 9:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:262:4: enterType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:267:4: enterType
 				{
 					pushFollow(FOLLOW_enterType_in_topdown96);
 					enterType();
@@ -954,7 +967,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 10:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:263:4: enterValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:268:4: enterValue
 				{
 					pushFollow(FOLLOW_enterValue_in_topdown101);
 					enterValue();
@@ -965,7 +978,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 11:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:264:4: enterTaggedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:269:4: enterTaggedType
 				{
 					pushFollow(FOLLOW_enterTaggedType_in_topdown106);
 					enterTaggedType();
@@ -976,7 +989,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 12:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:265:4: enterSequenceOf
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:270:4: enterSequenceOf
 				{
 					pushFollow(FOLLOW_enterSequenceOf_in_topdown111);
 					enterSequenceOf();
@@ -987,7 +1000,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 13:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:266:4: enterSequence
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:271:4: enterSequence
 				{
 					pushFollow(FOLLOW_enterSequence_in_topdown116);
 					enterSequence();
@@ -998,7 +1011,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 14:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:267:4: enterSetOf
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:272:4: enterSetOf
 				{
 					pushFollow(FOLLOW_enterSetOf_in_topdown121);
 					enterSetOf();
@@ -1009,7 +1022,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 15:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:268:4: enterSet
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:273:4: enterSet
 				{
 					pushFollow(FOLLOW_enterSet_in_topdown126);
 					enterSet();
@@ -1020,7 +1033,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 16:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:269:4: enterChoice
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:274:4: enterChoice
 				{
 					pushFollow(FOLLOW_enterChoice_in_topdown131);
 					enterChoice();
@@ -1031,7 +1044,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 17:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:270:4: enterExceptionSpec
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:275:4: enterExceptionSpec
 				{
 					pushFollow(FOLLOW_enterExceptionSpec_in_topdown136);
 					enterExceptionSpec();
@@ -1042,7 +1055,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 18:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:271:4: enterComponentType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:276:4: enterComponentType
 				{
 					pushFollow(FOLLOW_enterComponentType_in_topdown141);
 					enterComponentType();
@@ -1053,7 +1066,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 19:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:272:4: enterComponentTypeOption
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:277:4: enterComponentTypeOption
 				{
 					pushFollow(FOLLOW_enterComponentTypeOption_in_topdown146);
 					enterComponentTypeOption();
@@ -1064,7 +1077,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 20:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:273:4: enterExtensionAdditionGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:278:4: enterExtensionAdditionGroup
 				{
 					pushFollow(FOLLOW_enterExtensionAdditionGroup_in_topdown151);
 					enterExtensionAdditionGroup();
@@ -1075,7 +1088,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 21:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:274:4: enterExtensionAdditionAlternativesGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:279:4: enterExtensionAdditionAlternativesGroup
 				{
 					pushFollow(FOLLOW_enterExtensionAdditionAlternativesGroup_in_topdown156);
 					enterExtensionAdditionAlternativesGroup();
@@ -1086,7 +1099,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 22:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:275:4: enterNamedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:280:4: enterNamedType
 				{
 					pushFollow(FOLLOW_enterNamedType_in_topdown161);
 					enterNamedType();
@@ -1097,7 +1110,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 23:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:276:4: enterConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:281:4: enterConstraint
 				{
 					pushFollow(FOLLOW_enterConstraint_in_topdown166);
 					enterConstraint();
@@ -1108,7 +1121,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 24:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:277:4: enterConstraintValueRange
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:282:4: enterConstraintValueRange
 				{
 					pushFollow(FOLLOW_enterConstraintValueRange_in_topdown171);
 					enterConstraintValueRange();
@@ -1119,7 +1132,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 25:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:278:4: enterConstraintValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:283:4: enterConstraintValue
 				{
 					pushFollow(FOLLOW_enterConstraintValue_in_topdown176);
 					enterConstraintValue();
@@ -1130,7 +1143,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 26:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:279:4: enterConstraintSize
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:284:4: enterConstraintSize
 				{
 					pushFollow(FOLLOW_enterConstraintSize_in_topdown181);
 					enterConstraintSize();
@@ -1141,7 +1154,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 27:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:280:4: enterConstraintType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:285:4: enterConstraintType
 				{
 					pushFollow(FOLLOW_enterConstraintType_in_topdown186);
 					enterConstraintType();
@@ -1152,7 +1165,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 28:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:281:4: enterConstraintInnerType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:286:4: enterConstraintInnerType
 				{
 					pushFollow(FOLLOW_enterConstraintInnerType_in_topdown191);
 					enterConstraintInnerType();
@@ -1163,7 +1176,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 29:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:282:4: enterEndpoint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:287:4: enterEndpoint
 				{
 					pushFollow(FOLLOW_enterEndpoint_in_topdown196);
 					enterEndpoint();
@@ -1174,7 +1187,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 30:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:283:4: enterUnion
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:288:4: enterUnion
 				{
 					pushFollow(FOLLOW_enterUnion_in_topdown201);
 					enterUnion();
@@ -1185,7 +1198,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 31:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:284:4: enterIntersectionElement
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:289:4: enterIntersectionElement
 				{
 					pushFollow(FOLLOW_enterIntersectionElement_in_topdown206);
 					enterIntersectionElement();
@@ -1196,7 +1209,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 32:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:285:4: enterNamedConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:290:4: enterNamedConstraint
 				{
 					pushFollow(FOLLOW_enterNamedConstraint_in_topdown211);
 					enterNamedConstraint();
@@ -1207,7 +1220,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 33:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:286:4: enterSelectionType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:291:4: enterSelectionType
 				{
 					pushFollow(FOLLOW_enterSelectionType_in_topdown216);
 					enterSelectionType();
@@ -1218,7 +1231,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 34:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:287:4: enterEnumeration
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:292:4: enterEnumeration
 				{
 					pushFollow(FOLLOW_enterEnumeration_in_topdown221);
 					enterEnumeration();
@@ -1229,7 +1242,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 35:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:288:4: enterTypeReference
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:293:4: enterTypeReference
 				{
 					pushFollow(FOLLOW_enterTypeReference_in_topdown226);
 					enterTypeReference();
@@ -1240,7 +1253,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 36:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:289:4: nameForm
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:294:4: nameForm
 				{
 					pushFollow(FOLLOW_nameForm_in_topdown231);
 					nameForm();
@@ -1251,7 +1264,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 37:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:290:4: nameNumberForm
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:295:4: nameNumberForm
 				{
 					pushFollow(FOLLOW_nameNumberForm_in_topdown236);
 					nameNumberForm();
@@ -1262,7 +1275,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 38:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:291:4: numberForm
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:296:4: numberForm
 				{
 					pushFollow(FOLLOW_numberForm_in_topdown241);
 					numberForm();
@@ -1273,7 +1286,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 39:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:292:4: symbol
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:297:4: symbol
 				{
 					pushFollow(FOLLOW_symbol_in_topdown246);
 					symbol();
@@ -1284,7 +1297,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 40:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:293:4: globalModuleReference
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:298:4: globalModuleReference
 				{
 					pushFollow(FOLLOW_globalModuleReference_in_topdown251);
 					globalModuleReference();
@@ -1295,7 +1308,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 41:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:294:4: trueValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:299:4: trueValue
 				{
 					pushFollow(FOLLOW_trueValue_in_topdown256);
 					trueValue();
@@ -1306,7 +1319,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 42:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:295:4: falseValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:300:4: falseValue
 				{
 					pushFollow(FOLLOW_falseValue_in_topdown261);
 					falseValue();
@@ -1317,7 +1330,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 43:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:296:4: numberValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:301:4: numberValue
 				{
 					pushFollow(FOLLOW_numberValue_in_topdown266);
 					numberValue();
@@ -1328,7 +1341,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 44:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:297:4: defaultTaggingMethod
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:302:4: defaultTaggingMethod
 				{
 					pushFollow(FOLLOW_defaultTaggingMethod_in_topdown271);
 					defaultTaggingMethod();
@@ -1339,7 +1352,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 45:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:298:4: extensionEndMarkerPvt
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:303:4: extensionEndMarkerPvt
 				{
 					pushFollow(FOLLOW_extensionEndMarkerPvt_in_topdown276);
 					extensionEndMarkerPvt();
@@ -1350,7 +1363,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 46:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:299:4: integerType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:304:4: integerType
 				{
 					pushFollow(FOLLOW_integerType_in_topdown281);
 					integerType();
@@ -1361,7 +1374,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 47:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:300:4: booleanType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:305:4: booleanType
 				{
 					pushFollow(FOLLOW_booleanType_in_topdown286);
 					booleanType();
@@ -1372,7 +1385,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 48:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:301:4: realType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:306:4: realType
 				{
 					pushFollow(FOLLOW_realType_in_topdown291);
 					realType();
@@ -1383,7 +1396,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 49:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:302:4: oidType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:307:4: oidType
 				{
 					pushFollow(FOLLOW_oidType_in_topdown296);
 					oidType();
@@ -1394,7 +1407,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 50:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:303:4: cstringType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:308:4: cstringType
 				{
 					pushFollow(FOLLOW_cstringType_in_topdown301);
 					cstringType();
@@ -1405,7 +1418,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 51:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:304:4: enumerationItemPvt
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:309:4: enumerationItemPvt
 				{
 					pushFollow(FOLLOW_enumerationItemPvt_in_topdown306);
 					enumerationItemPvt();
@@ -1416,7 +1429,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 52:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:305:4: extensibilityImpliedPvt
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:310:4: extensibilityImpliedPvt
 				{
 					pushFollow(FOLLOW_extensibilityImpliedPvt_in_topdown311);
 					extensibilityImpliedPvt();
@@ -1440,10 +1453,10 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "bottomup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:307:1: bottomup : ( exitModule | exitModuleId | exitVec | exitExports | exitImports | exitSymbolsFromModule | exitValueAssignment | exitTypeAssignment | exitType | exitValue | exitTaggedType | exitSequenceOf | exitSequence | exitSetOf | exitSet | exitChoice | exitExceptionSpec | exitComponentType | exitComponentTypeOption | exitExtensionAdditionGroup | exitExtensionAdditionAlternativesGroup | exitNamedType | exitConstraint | exitConstraintValueRange | exitConstraintValue | exitConstraintSize | exitConstraintType | exitConstraintInnerType | exitEndpoint | exitUnion | exitIntersectionElement | exitNamedConstraint | exitSelectionType | exitEnumeration | exitTypeReference );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:312:1: bottomup : ( exitModule | exitModuleId | exitVec | exitExports | exitImports | exitSymbolsFromModule | exitValueAssignment | exitTypeAssignment | exitType | exitValue | exitTaggedType | exitSequenceOf | exitSequence | exitSetOf | exitSet | exitChoice | exitExceptionSpec | exitComponentType | exitComponentTypeOption | exitExtensionAdditionGroup | exitExtensionAdditionAlternativesGroup | exitNamedType | exitConstraint | exitConstraintValueRange | exitConstraintValue | exitConstraintSize | exitConstraintType | exitConstraintInnerType | exitEndpoint | exitUnion | exitIntersectionElement | exitNamedConstraint | exitSelectionType | exitEnumeration | exitTypeReference );
 	public final void bottomup() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:307:10: ( exitModule | exitModuleId | exitVec | exitExports | exitImports | exitSymbolsFromModule | exitValueAssignment | exitTypeAssignment | exitType | exitValue | exitTaggedType | exitSequenceOf | exitSequence | exitSetOf | exitSet | exitChoice | exitExceptionSpec | exitComponentType | exitComponentTypeOption | exitExtensionAdditionGroup | exitExtensionAdditionAlternativesGroup | exitNamedType | exitConstraint | exitConstraintValueRange | exitConstraintValue | exitConstraintSize | exitConstraintType | exitConstraintInnerType | exitEndpoint | exitUnion | exitIntersectionElement | exitNamedConstraint | exitSelectionType | exitEnumeration | exitTypeReference )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:312:10: ( exitModule | exitModuleId | exitVec | exitExports | exitImports | exitSymbolsFromModule | exitValueAssignment | exitTypeAssignment | exitType | exitValue | exitTaggedType | exitSequenceOf | exitSequence | exitSetOf | exitSet | exitChoice | exitExceptionSpec | exitComponentType | exitComponentTypeOption | exitExtensionAdditionGroup | exitExtensionAdditionAlternativesGroup | exitNamedType | exitConstraint | exitConstraintValueRange | exitConstraintValue | exitConstraintSize | exitConstraintType | exitConstraintInnerType | exitEndpoint | exitUnion | exitIntersectionElement | exitNamedConstraint | exitSelectionType | exitEnumeration | exitTypeReference )
 			int alt2 = 35;
 			switch (input.LA(1)) {
 				case MODULE: {
@@ -1600,7 +1613,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt2) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:308:2: exitModule
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:313:2: exitModule
 				{
 					pushFollow(FOLLOW_exitModule_in_bottomup320);
 					exitModule();
@@ -1611,7 +1624,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:309:4: exitModuleId
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:314:4: exitModuleId
 				{
 					pushFollow(FOLLOW_exitModuleId_in_bottomup325);
 					exitModuleId();
@@ -1622,7 +1635,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:310:4: exitVec
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:315:4: exitVec
 				{
 					pushFollow(FOLLOW_exitVec_in_bottomup330);
 					exitVec();
@@ -1633,7 +1646,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:311:4: exitExports
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:316:4: exitExports
 				{
 					pushFollow(FOLLOW_exitExports_in_bottomup335);
 					exitExports();
@@ -1644,7 +1657,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:312:4: exitImports
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:317:4: exitImports
 				{
 					pushFollow(FOLLOW_exitImports_in_bottomup340);
 					exitImports();
@@ -1655,7 +1668,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:313:4: exitSymbolsFromModule
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:318:4: exitSymbolsFromModule
 				{
 					pushFollow(FOLLOW_exitSymbolsFromModule_in_bottomup345);
 					exitSymbolsFromModule();
@@ -1666,7 +1679,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 7:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:314:4: exitValueAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:319:4: exitValueAssignment
 				{
 					pushFollow(FOLLOW_exitValueAssignment_in_bottomup350);
 					exitValueAssignment();
@@ -1677,7 +1690,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 8:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:315:4: exitTypeAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:320:4: exitTypeAssignment
 				{
 					pushFollow(FOLLOW_exitTypeAssignment_in_bottomup355);
 					exitTypeAssignment();
@@ -1688,7 +1701,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 9:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:316:4: exitType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:321:4: exitType
 				{
 					pushFollow(FOLLOW_exitType_in_bottomup360);
 					exitType();
@@ -1699,7 +1712,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 10:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:317:4: exitValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:322:4: exitValue
 				{
 					pushFollow(FOLLOW_exitValue_in_bottomup365);
 					exitValue();
@@ -1710,7 +1723,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 11:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:318:4: exitTaggedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:323:4: exitTaggedType
 				{
 					pushFollow(FOLLOW_exitTaggedType_in_bottomup370);
 					exitTaggedType();
@@ -1721,7 +1734,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 12:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:319:4: exitSequenceOf
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:324:4: exitSequenceOf
 				{
 					pushFollow(FOLLOW_exitSequenceOf_in_bottomup375);
 					exitSequenceOf();
@@ -1732,7 +1745,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 13:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:320:4: exitSequence
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:325:4: exitSequence
 				{
 					pushFollow(FOLLOW_exitSequence_in_bottomup380);
 					exitSequence();
@@ -1743,7 +1756,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 14:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:321:4: exitSetOf
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:326:4: exitSetOf
 				{
 					pushFollow(FOLLOW_exitSetOf_in_bottomup385);
 					exitSetOf();
@@ -1754,7 +1767,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 15:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:322:4: exitSet
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:327:4: exitSet
 				{
 					pushFollow(FOLLOW_exitSet_in_bottomup390);
 					exitSet();
@@ -1765,7 +1778,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 16:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:323:4: exitChoice
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:328:4: exitChoice
 				{
 					pushFollow(FOLLOW_exitChoice_in_bottomup395);
 					exitChoice();
@@ -1776,7 +1789,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 17:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:324:4: exitExceptionSpec
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:329:4: exitExceptionSpec
 				{
 					pushFollow(FOLLOW_exitExceptionSpec_in_bottomup400);
 					exitExceptionSpec();
@@ -1787,7 +1800,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 18:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:325:4: exitComponentType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:330:4: exitComponentType
 				{
 					pushFollow(FOLLOW_exitComponentType_in_bottomup405);
 					exitComponentType();
@@ -1798,7 +1811,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 19:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:326:4: exitComponentTypeOption
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:331:4: exitComponentTypeOption
 				{
 					pushFollow(FOLLOW_exitComponentTypeOption_in_bottomup410);
 					exitComponentTypeOption();
@@ -1809,7 +1822,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 20:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:327:4: exitExtensionAdditionGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:332:4: exitExtensionAdditionGroup
 				{
 					pushFollow(FOLLOW_exitExtensionAdditionGroup_in_bottomup415);
 					exitExtensionAdditionGroup();
@@ -1820,7 +1833,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 21:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:328:4: exitExtensionAdditionAlternativesGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:333:4: exitExtensionAdditionAlternativesGroup
 				{
 					pushFollow(FOLLOW_exitExtensionAdditionAlternativesGroup_in_bottomup420);
 					exitExtensionAdditionAlternativesGroup();
@@ -1831,7 +1844,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 22:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:329:4: exitNamedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:334:4: exitNamedType
 				{
 					pushFollow(FOLLOW_exitNamedType_in_bottomup425);
 					exitNamedType();
@@ -1842,7 +1855,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 23:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:330:4: exitConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:335:4: exitConstraint
 				{
 					pushFollow(FOLLOW_exitConstraint_in_bottomup430);
 					exitConstraint();
@@ -1853,7 +1866,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 24:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:331:4: exitConstraintValueRange
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:336:4: exitConstraintValueRange
 				{
 					pushFollow(FOLLOW_exitConstraintValueRange_in_bottomup435);
 					exitConstraintValueRange();
@@ -1864,7 +1877,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 25:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:332:4: exitConstraintValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:337:4: exitConstraintValue
 				{
 					pushFollow(FOLLOW_exitConstraintValue_in_bottomup440);
 					exitConstraintValue();
@@ -1875,7 +1888,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 26:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:333:4: exitConstraintSize
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:338:4: exitConstraintSize
 				{
 					pushFollow(FOLLOW_exitConstraintSize_in_bottomup445);
 					exitConstraintSize();
@@ -1886,7 +1899,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 27:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:334:4: exitConstraintType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:339:4: exitConstraintType
 				{
 					pushFollow(FOLLOW_exitConstraintType_in_bottomup450);
 					exitConstraintType();
@@ -1897,7 +1910,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 28:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:335:4: exitConstraintInnerType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:340:4: exitConstraintInnerType
 				{
 					pushFollow(FOLLOW_exitConstraintInnerType_in_bottomup455);
 					exitConstraintInnerType();
@@ -1908,7 +1921,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 29:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:336:4: exitEndpoint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:341:4: exitEndpoint
 				{
 					pushFollow(FOLLOW_exitEndpoint_in_bottomup460);
 					exitEndpoint();
@@ -1919,7 +1932,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 30:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:337:4: exitUnion
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:342:4: exitUnion
 				{
 					pushFollow(FOLLOW_exitUnion_in_bottomup465);
 					exitUnion();
@@ -1930,7 +1943,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 31:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:338:4: exitIntersectionElement
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:343:4: exitIntersectionElement
 				{
 					pushFollow(FOLLOW_exitIntersectionElement_in_bottomup470);
 					exitIntersectionElement();
@@ -1941,7 +1954,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 32:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:339:4: exitNamedConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:344:4: exitNamedConstraint
 				{
 					pushFollow(FOLLOW_exitNamedConstraint_in_bottomup475);
 					exitNamedConstraint();
@@ -1952,7 +1965,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 33:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:340:4: exitSelectionType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:345:4: exitSelectionType
 				{
 					pushFollow(FOLLOW_exitSelectionType_in_bottomup480);
 					exitSelectionType();
@@ -1963,7 +1976,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 34:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:341:4: exitEnumeration
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:346:4: exitEnumeration
 				{
 					pushFollow(FOLLOW_exitEnumeration_in_bottomup485);
 					exitEnumeration();
@@ -1974,7 +1987,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 35:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:342:4: exitTypeReference
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:347:4: exitTypeReference
 				{
 					pushFollow(FOLLOW_exitTypeReference_in_bottomup490);
 					exitTypeReference();
@@ -1998,11 +2011,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterModule"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:344:1: enterModule : ^( MODULE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:349:1: enterModule : ^( MODULE ( . )* ) ;
 	public final void enterModule() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:344:13: ( ^( MODULE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:345:2: ^( MODULE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:349:13: ( ^( MODULE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:350:2: ^( MODULE ( . )* )
 			{
 				match(input, MODULE, FOLLOW_MODULE_in_enterModule502);
 				if (state.failed) return;
@@ -2010,7 +2023,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:345:12: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:350:12: ( . )*
 					loop3:
 					do {
 						int alt3 = 2;
@@ -2025,7 +2038,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt3) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:345:12: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:350:12: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -2060,13 +2073,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterModuleId"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:348:1: enterModuleId : ^( MODULE_IDENTIFIER ID ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:353:1: enterModuleId : ^( MODULE_IDENTIFIER ID ( . )* ) ;
 	public final void enterModuleId() throws RecognitionException {
 		CommonTree ID1 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:348:15: ( ^( MODULE_IDENTIFIER ID ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:349:2: ^( MODULE_IDENTIFIER ID ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:353:15: ( ^( MODULE_IDENTIFIER ID ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:354:2: ^( MODULE_IDENTIFIER ID ( . )* )
 			{
 				match(input, MODULE_IDENTIFIER, FOLLOW_MODULE_IDENTIFIER_in_enterModuleId520);
 				if (state.failed) return;
@@ -2076,7 +2089,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID1 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterModuleId522);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:349:25: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:354:25: ( . )*
 				loop4:
 				do {
 					int alt4 = 2;
@@ -2091,7 +2104,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt4) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:349:25: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:354:25: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -2125,11 +2138,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterVec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:352:1: enterVec : ^( VEC ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:357:1: enterVec : ^( VEC ( . )* ) ;
 	public final void enterVec() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:352:10: ( ^( VEC ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:353:2: ^( VEC ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:357:10: ( ^( VEC ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:358:2: ^( VEC ( . )* )
 			{
 				match(input, VEC, FOLLOW_VEC_in_enterVec542);
 				if (state.failed) return;
@@ -2137,7 +2150,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:353:8: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:358:8: ( . )*
 					loop5:
 					do {
 						int alt5 = 2;
@@ -2152,7 +2165,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt5) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:353:8: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:358:8: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -2187,13 +2200,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterExports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:356:1: enterExports : ^( EXPORTS ( ( ALL )=> ALL )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:361:1: enterExports : ^( EXPORTS ( ( ALL )=> ALL )? ( . )* ) ;
 	public final void enterExports() throws RecognitionException {
 		CommonTree ALL2 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:356:14: ( ^( EXPORTS ( ( ALL )=> ALL )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:2: ^( EXPORTS ( ( ALL )=> ALL )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:361:14: ( ^( EXPORTS ( ( ALL )=> ALL )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:2: ^( EXPORTS ( ( ALL )=> ALL )? ( . )* )
 			{
 				match(input, EXPORTS, FOLLOW_EXPORTS_in_enterExports560);
 				if (state.failed) return;
@@ -2201,7 +2214,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:12: ( ( ALL )=> ALL )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:12: ( ( ALL )=> ALL )?
 					int alt6 = 2;
 					int LA6_0 = input.LA(1);
 
@@ -2214,7 +2227,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt6) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:13: ( ALL )=> ALL
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:13: ( ALL )=> ALL
 						{
 							ALL2 = (CommonTree) match(input, ALL, FOLLOW_ALL_in_enterExports567);
 							if (state.failed) return;
@@ -2225,7 +2238,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:26: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:26: ( . )*
 					loop7:
 					do {
 						int alt7 = 2;
@@ -2240,7 +2253,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt7) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:26: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:26: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -2275,11 +2288,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterImports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:360:1: enterImports : IMPORTS ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:365:1: enterImports : IMPORTS ;
 	public final void enterImports() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:360:14: ( IMPORTS )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:361:2: IMPORTS
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:365:14: ( IMPORTS )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:366:2: IMPORTS
 			{
 				match(input, IMPORTS, FOLLOW_IMPORTS_in_enterImports587);
 				if (state.failed) return;
@@ -2300,11 +2313,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSymbolsFromModule"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:364:1: enterSymbolsFromModule : ^( SYMBOLS_FROM_MODULE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:369:1: enterSymbolsFromModule : ^( SYMBOLS_FROM_MODULE ( . )* ) ;
 	public final void enterSymbolsFromModule() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:364:23: ( ^( SYMBOLS_FROM_MODULE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:365:2: ^( SYMBOLS_FROM_MODULE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:369:23: ( ^( SYMBOLS_FROM_MODULE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:370:2: ^( SYMBOLS_FROM_MODULE ( . )* )
 			{
 				match(input, SYMBOLS_FROM_MODULE, FOLLOW_SYMBOLS_FROM_MODULE_in_enterSymbolsFromModule600);
 				if (state.failed) return;
@@ -2312,7 +2325,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:365:24: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:370:24: ( . )*
 					loop8:
 					do {
 						int alt8 = 2;
@@ -2327,7 +2340,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt8) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:365:24: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:370:24: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -2362,13 +2375,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterValueAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:368:1: enterValueAssignment : ^( VALUE_ASSIGNMENT ID ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:373:1: enterValueAssignment : ^( VALUE_ASSIGNMENT ID ( . )* ) ;
 	public final void enterValueAssignment() throws RecognitionException {
 		CommonTree ID3 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:368:21: ( ^( VALUE_ASSIGNMENT ID ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:369:2: ^( VALUE_ASSIGNMENT ID ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:373:21: ( ^( VALUE_ASSIGNMENT ID ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:374:2: ^( VALUE_ASSIGNMENT ID ( . )* )
 			{
 				match(input, VALUE_ASSIGNMENT, FOLLOW_VALUE_ASSIGNMENT_in_enterValueAssignment617);
 				if (state.failed) return;
@@ -2378,7 +2391,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID3 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterValueAssignment619);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:369:24: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:374:24: ( . )*
 				loop9:
 				do {
 					int alt9 = 2;
@@ -2393,7 +2406,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt9) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:369:24: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:374:24: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -2427,14 +2440,14 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterTypeAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:372:1: enterTypeAssignment : ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:377:1: enterTypeAssignment : ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* ) ;
 	public final void enterTypeAssignment() throws RecognitionException {
 		CommonTree CLASS_DEF4 = null;
 		CommonTree ID5 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:372:20: ( ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:373:2: ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:377:20: ( ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:378:2: ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? ( . )* )
 			{
 				match(input, TYPE_ASSIGNMENT, FOLLOW_TYPE_ASSIGNMENT_in_enterTypeAssignment636);
 				if (state.failed) return;
@@ -2444,7 +2457,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID5 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterTypeAssignment638);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:373:23: ( CLASS_DEF )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:378:23: ( CLASS_DEF )?
 				int alt10 = 2;
 				int LA10_0 = input.LA(1);
 
@@ -2453,7 +2466,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				switch (alt10) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:373:23: CLASS_DEF
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:378:23: CLASS_DEF
 					{
 						CLASS_DEF4 = (CommonTree) match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_enterTypeAssignment640);
 						if (state.failed) return;
@@ -2464,7 +2477,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:373:34: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:378:34: ( . )*
 				loop11:
 				do {
 					int alt11 = 2;
@@ -2479,7 +2492,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt11) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:373:34: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:378:34: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -2528,11 +2541,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:391:1: enterType : ^( TYPE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:396:1: enterType : ^( TYPE ( . )* ) ;
 	public final void enterType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:391:11: ( ^( TYPE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:392:2: ^( TYPE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:396:11: ( ^( TYPE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:397:2: ^( TYPE ( . )* )
 			{
 				match(input, TYPE, FOLLOW_TYPE_in_enterType659);
 				if (state.failed) return;
@@ -2540,7 +2553,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:392:9: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:397:9: ( . )*
 					loop12:
 					do {
 						int alt12 = 2;
@@ -2555,7 +2568,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt12) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:392:9: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:397:9: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -2590,11 +2603,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:395:1: enterValue : VALUE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:400:1: enterValue : VALUE ;
 	public final void enterValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:395:12: ( VALUE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:396:2: VALUE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:400:12: ( VALUE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:401:2: VALUE
 			{
 				match(input, VALUE, FOLLOW_VALUE_in_enterValue676);
 				if (state.failed) return;
@@ -2615,7 +2628,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterTaggedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:399:1: enterTaggedType : ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:404:1: enterTaggedType : ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* ) ;
 	public final void enterTaggedType() throws RecognitionException {
 		int tn = 0;
 
@@ -2625,8 +2638,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:399:17: ( ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:2: ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:404:17: ( ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:2: ^( TAGGED_TYPE tn= tagNumber ( ( tagClassPvt )=>tc= tagClassPvt )? ( ( taggingMethodPvt )=>tm= taggingMethodPvt )? ( . )* )
 			{
 				match(input, TAGGED_TYPE, FOLLOW_TAGGED_TYPE_in_enterTaggedType690);
 				if (state.failed) return;
@@ -2639,7 +2652,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				state._fsp--;
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:29: ( ( tagClassPvt )=>tc= tagClassPvt )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:29: ( ( tagClassPvt )=>tc= tagClassPvt )?
 				int alt13 = 2;
 				switch (input.LA(1)) {
 					case 148: {
@@ -2670,7 +2683,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 				switch (alt13) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:30: ( tagClassPvt )=>tc= tagClassPvt
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:30: ( tagClassPvt )=>tc= tagClassPvt
 					{
 						pushFollow(FOLLOW_tagClassPvt_in_enterTaggedType703);
 						tc = tagClassPvt();
@@ -2684,7 +2697,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:62: ( ( taggingMethodPvt )=>tm= taggingMethodPvt )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:62: ( ( taggingMethodPvt )=>tm= taggingMethodPvt )?
 				int alt14 = 2;
 				switch (input.LA(1)) {
 					case 108: {
@@ -2715,7 +2728,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 				switch (alt14) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:63: ( taggingMethodPvt )=>tm= taggingMethodPvt
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:63: ( taggingMethodPvt )=>tm= taggingMethodPvt
 					{
 						pushFollow(FOLLOW_taggingMethodPvt_in_enterTaggedType714);
 						tm = taggingMethodPvt();
@@ -2729,7 +2742,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:106: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:106: ( . )*
 				loop15:
 				do {
 					int alt15 = 2;
@@ -2744,7 +2757,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt15) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:106: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:106: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -2778,11 +2791,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSequenceOf"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:403:1: enterSequenceOf : SEQUENCEOF ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:408:1: enterSequenceOf : SEQUENCEOF ;
 	public final void enterSequenceOf() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:403:17: ( SEQUENCEOF )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:404:2: SEQUENCEOF
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:408:17: ( SEQUENCEOF )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:409:2: SEQUENCEOF
 			{
 				match(input, SEQUENCEOF, FOLLOW_SEQUENCEOF_in_enterSequenceOf734);
 				if (state.failed) return;
@@ -2803,11 +2816,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSequence"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:407:1: enterSequence : SEQUENCE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:412:1: enterSequence : SEQUENCE ;
 	public final void enterSequence() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:407:15: ( SEQUENCE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:408:2: SEQUENCE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:412:15: ( SEQUENCE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:413:2: SEQUENCE
 			{
 				match(input, SEQUENCE, FOLLOW_SEQUENCE_in_enterSequence747);
 				if (state.failed) return;
@@ -2828,11 +2841,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSetOf"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:411:1: enterSetOf : SETOF ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:416:1: enterSetOf : SETOF ;
 	public final void enterSetOf() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:411:12: ( SETOF )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:412:2: SETOF
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:416:12: ( SETOF )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:417:2: SETOF
 			{
 				match(input, SETOF, FOLLOW_SETOF_in_enterSetOf760);
 				if (state.failed) return;
@@ -2853,11 +2866,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSet"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:415:1: enterSet : SET ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:420:1: enterSet : SET ;
 	public final void enterSet() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:415:10: ( SET )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:416:2: SET
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:420:10: ( SET )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:421:2: SET
 			{
 				match(input, SET, FOLLOW_SET_in_enterSet773);
 				if (state.failed) return;
@@ -2878,11 +2891,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterChoice"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:419:1: enterChoice : CHOICE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:424:1: enterChoice : CHOICE ;
 	public final void enterChoice() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:419:13: ( CHOICE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:420:2: CHOICE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:424:13: ( CHOICE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:425:2: CHOICE
 			{
 				match(input, CHOICE, FOLLOW_CHOICE_in_enterChoice786);
 				if (state.failed) return;
@@ -2903,13 +2916,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterExceptionSpec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:423:1: enterExceptionSpec : ^( EXCEPTION_SPEC ( INT )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:428:1: enterExceptionSpec : ^( EXCEPTION_SPEC ( INT )? ) ;
 	public final void enterExceptionSpec() throws RecognitionException {
 		CommonTree INT6 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:423:20: ( ^( EXCEPTION_SPEC ( INT )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:424:2: ^( EXCEPTION_SPEC ( INT )? )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:428:20: ( ^( EXCEPTION_SPEC ( INT )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:429:2: ^( EXCEPTION_SPEC ( INT )? )
 			{
 				match(input, EXCEPTION_SPEC, FOLLOW_EXCEPTION_SPEC_in_enterExceptionSpec800);
 				if (state.failed) return;
@@ -2917,7 +2930,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:424:19: ( INT )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:429:19: ( INT )?
 					int alt16 = 2;
 					int LA16_0 = input.LA(1);
 
@@ -2926,7 +2939,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt16) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:424:19: INT
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:429:19: INT
 						{
 							INT6 = (CommonTree) match(input, INT, FOLLOW_INT_in_enterExceptionSpec802);
 							if (state.failed) return;
@@ -2960,11 +2973,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterComponentType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:427:1: enterComponentType : COMPONENT_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:432:1: enterComponentType : COMPONENT_TYPE ;
 	public final void enterComponentType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:427:19: ( COMPONENT_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:428:2: COMPONENT_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:432:19: ( COMPONENT_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:433:2: COMPONENT_TYPE
 			{
 				match(input, COMPONENT_TYPE, FOLLOW_COMPONENT_TYPE_in_enterComponentType821);
 				if (state.failed) return;
@@ -2985,11 +2998,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterComponentTypeOption"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:431:1: enterComponentTypeOption : COMPONENT_TYPE_OPTION ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:436:1: enterComponentTypeOption : COMPONENT_TYPE_OPTION ;
 	public final void enterComponentTypeOption() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:431:25: ( COMPONENT_TYPE_OPTION )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:432:2: COMPONENT_TYPE_OPTION
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:436:25: ( COMPONENT_TYPE_OPTION )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:437:2: COMPONENT_TYPE_OPTION
 			{
 				match(input, COMPONENT_TYPE_OPTION, FOLLOW_COMPONENT_TYPE_OPTION_in_enterComponentTypeOption834);
 				if (state.failed) return;
@@ -3010,13 +3023,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterExtensionAdditionGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:435:1: enterExtensionAdditionGroup : ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:440:1: enterExtensionAdditionGroup : ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* ) ;
 	public final void enterExtensionAdditionGroup() throws RecognitionException {
 		CommonTree INT7 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:435:28: ( ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:2: ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:440:28: ( ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:2: ^( EXTENSION_ADDITION_GROUP ( ( INT )=> INT )? ( . )* )
 			{
 				match(input, EXTENSION_ADDITION_GROUP, FOLLOW_EXTENSION_ADDITION_GROUP_in_enterExtensionAdditionGroup848);
 				if (state.failed) return;
@@ -3024,7 +3037,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:29: ( ( INT )=> INT )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:29: ( ( INT )=> INT )?
 					int alt17 = 2;
 					int LA17_0 = input.LA(1);
 
@@ -3037,7 +3050,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt17) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:30: ( INT )=> INT
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:30: ( INT )=> INT
 						{
 							INT7 = (CommonTree) match(input, INT, FOLLOW_INT_in_enterExtensionAdditionGroup855);
 							if (state.failed) return;
@@ -3048,7 +3061,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:43: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:43: ( . )*
 					loop18:
 					do {
 						int alt18 = 2;
@@ -3063,7 +3076,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt18) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:43: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:43: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3098,13 +3111,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterExtensionAdditionAlternativesGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:439:1: enterExtensionAdditionAlternativesGroup : ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:444:1: enterExtensionAdditionAlternativesGroup : ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* ) ;
 	public final void enterExtensionAdditionAlternativesGroup() throws RecognitionException {
 		CommonTree INT8 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:439:40: ( ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:2: ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:444:40: ( ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:2: ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( ( INT )=> INT )? ( . )* )
 			{
 				match(
 				     input,
@@ -3116,7 +3129,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:42: ( ( INT )=> INT )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:42: ( ( INT )=> INT )?
 					int alt19 = 2;
 					int LA19_0 = input.LA(1);
 
@@ -3129,7 +3142,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt19) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:43: ( INT )=> INT
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:43: ( INT )=> INT
 						{
 							INT8 = (CommonTree) match(input, INT, FOLLOW_INT_in_enterExtensionAdditionAlternativesGroup882);
 							if (state.failed) return;
@@ -3140,7 +3153,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:56: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:56: ( . )*
 					loop20:
 					do {
 						int alt20 = 2;
@@ -3155,7 +3168,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt20) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:56: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:56: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3194,13 +3207,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterNamedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:443:1: enterNamedType : ^( NAMED_TYPE ID ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:448:1: enterNamedType : ^( NAMED_TYPE ID ( . )* ) ;
 	public final void enterNamedType() throws RecognitionException {
 		CommonTree ID9 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:443:17: ( ^( NAMED_TYPE ID ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:444:2: ^( NAMED_TYPE ID ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:448:17: ( ^( NAMED_TYPE ID ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:449:2: ^( NAMED_TYPE ID ( . )* )
 			{
 				match(input, NAMED_TYPE, FOLLOW_NAMED_TYPE_in_enterNamedType904);
 				if (state.failed) return;
@@ -3210,7 +3223,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID9 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterNamedType906);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:444:18: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:449:18: ( . )*
 				loop21:
 				do {
 					int alt21 = 2;
@@ -3225,7 +3238,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt21) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:444:18: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:449:18: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -3259,11 +3272,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:447:1: enterConstraint : ^( CONSTRAINT ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:452:1: enterConstraint : ^( CONSTRAINT ( . )* ) ;
 	public final void enterConstraint() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:447:18: ( ^( CONSTRAINT ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:448:2: ^( CONSTRAINT ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:452:18: ( ^( CONSTRAINT ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:453:2: ^( CONSTRAINT ( . )* )
 			{
 				match(input, CONSTRAINT, FOLLOW_CONSTRAINT_in_enterConstraint927);
 				if (state.failed) return;
@@ -3271,7 +3284,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:448:15: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:453:15: ( . )*
 					loop22:
 					do {
 						int alt22 = 2;
@@ -3286,7 +3299,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt22) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:448:15: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:453:15: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3321,11 +3334,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraintValueRange"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:451:1: enterConstraintValueRange : ^( CONSTRAINT_VALUE_RANGE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:456:1: enterConstraintValueRange : ^( CONSTRAINT_VALUE_RANGE ( . )* ) ;
 	public final void enterConstraintValueRange() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:451:26: ( ^( CONSTRAINT_VALUE_RANGE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:452:2: ^( CONSTRAINT_VALUE_RANGE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:456:26: ( ^( CONSTRAINT_VALUE_RANGE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:457:2: ^( CONSTRAINT_VALUE_RANGE ( . )* )
 			{
 				match(input, CONSTRAINT_VALUE_RANGE, FOLLOW_CONSTRAINT_VALUE_RANGE_in_enterConstraintValueRange944);
 				if (state.failed) return;
@@ -3333,7 +3346,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:452:27: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:457:27: ( . )*
 					loop23:
 					do {
 						int alt23 = 2;
@@ -3348,7 +3361,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt23) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:452:27: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:457:27: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3383,11 +3396,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraintValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:455:1: enterConstraintValue : ^( CONSTRAINT_VALUE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:460:1: enterConstraintValue : ^( CONSTRAINT_VALUE ( . )* ) ;
 	public final void enterConstraintValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:455:21: ( ^( CONSTRAINT_VALUE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:456:2: ^( CONSTRAINT_VALUE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:460:21: ( ^( CONSTRAINT_VALUE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:461:2: ^( CONSTRAINT_VALUE ( . )* )
 			{
 				match(input, CONSTRAINT_VALUE, FOLLOW_CONSTRAINT_VALUE_in_enterConstraintValue961);
 				if (state.failed) return;
@@ -3395,7 +3408,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:456:21: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:461:21: ( . )*
 					loop24:
 					do {
 						int alt24 = 2;
@@ -3410,7 +3423,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt24) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:456:21: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:461:21: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3445,11 +3458,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraintSize"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:459:1: enterConstraintSize : ^( CONSTRAINT_SIZE ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:464:1: enterConstraintSize : ^( CONSTRAINT_SIZE ( . )* ) ;
 	public final void enterConstraintSize() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:459:21: ( ^( CONSTRAINT_SIZE ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:460:2: ^( CONSTRAINT_SIZE ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:464:21: ( ^( CONSTRAINT_SIZE ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:465:2: ^( CONSTRAINT_SIZE ( . )* )
 			{
 				match(input, CONSTRAINT_SIZE, FOLLOW_CONSTRAINT_SIZE_in_enterConstraintSize979);
 				if (state.failed) return;
@@ -3457,7 +3470,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:460:20: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:465:20: ( . )*
 					loop25:
 					do {
 						int alt25 = 2;
@@ -3472,7 +3485,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt25) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:460:20: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:465:20: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3507,13 +3520,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraintType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:463:1: enterConstraintType : ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:468:1: enterConstraintType : ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* ) ;
 	public final void enterConstraintType() throws RecognitionException {
 		CommonTree a = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:463:21: ( ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:464:2: ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:468:21: ( ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:469:2: ^( CONSTRAINT_TYPE (a= 'INCLUDES' )? ( . )* )
 			{
 				match(input, CONSTRAINT_TYPE, FOLLOW_CONSTRAINT_TYPE_in_enterConstraintType998);
 				if (state.failed) return;
@@ -3521,7 +3534,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:464:21: (a= 'INCLUDES' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:469:21: (a= 'INCLUDES' )?
 					int alt26 = 2;
 					int LA26_0 = input.LA(1);
 
@@ -3530,7 +3543,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt26) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:464:21: a= 'INCLUDES'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:469:21: a= 'INCLUDES'
 						{
 							a = (CommonTree) match(input, 120, FOLLOW_120_in_enterConstraintType1002);
 							if (state.failed) return;
@@ -3541,7 +3554,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:464:34: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:469:34: ( . )*
 					loop27:
 					do {
 						int alt27 = 2;
@@ -3556,7 +3569,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt27) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:464:34: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:469:34: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3591,13 +3604,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterConstraintInnerType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:467:1: enterConstraintInnerType : ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:472:1: enterConstraintInnerType : ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* ) ;
 	public final void enterConstraintInnerType() throws RecognitionException {
 		CommonTree a = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:467:25: ( ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:468:2: ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:472:25: ( ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:473:2: ^( CONSTRAINT_INNER_TYPE (a= '...' )? ( . )* )
 			{
 				match(input, CONSTRAINT_INNER_TYPE, FOLLOW_CONSTRAINT_INNER_TYPE_in_enterConstraintInnerType1021);
 				if (state.failed) return;
@@ -3605,7 +3618,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:468:27: (a= '...' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:473:27: (a= '...' )?
 					int alt28 = 2;
 					int LA28_0 = input.LA(1);
 
@@ -3614,7 +3627,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt28) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:468:27: a= '...'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:473:27: a= '...'
 						{
 							a = (CommonTree) match(input, 86, FOLLOW_86_in_enterConstraintInnerType1025);
 							if (state.failed) return;
@@ -3625,7 +3638,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:468:35: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:473:35: ( . )*
 					loop29:
 					do {
 						int alt29 = 2;
@@ -3640,7 +3653,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt29) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:468:35: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:473:35: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3675,7 +3688,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterEndpoint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:471:1: enterEndpoint : ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:476:1: enterEndpoint : ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* ) ;
 	public final void enterEndpoint() throws RecognitionException {
 		CommonTree min = null;
 		CommonTree max = null;
@@ -3683,8 +3696,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:471:16: ( ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:2: ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:476:16: ( ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:2: ^( ENDPOINT (lessSignR= lessSign )? ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )? ( . )* )
 			{
 				match(input, ENDPOINT, FOLLOW_ENDPOINT_in_enterEndpoint1045);
 				if (state.failed) return;
@@ -3692,7 +3705,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:13: (lessSignR= lessSign )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:13: (lessSignR= lessSign )?
 					int alt30 = 2;
 					int LA30_0 = input.LA(1);
 
@@ -3701,7 +3714,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt30) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:14: lessSignR= lessSign
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:14: lessSignR= lessSign
 						{
 							pushFollow(FOLLOW_lessSign_in_enterEndpoint1050);
 							lessSignR = lessSign();
@@ -3715,7 +3728,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:35: ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:35: ( ( 'MIN' )=>min= 'MIN' | ( 'MAX' )=>max= 'MAX' )?
 					int alt31 = 3;
 					int LA31_0 = input.LA(1);
 
@@ -3734,7 +3747,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt31) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:36: ( 'MIN' )=>min= 'MIN'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:36: ( 'MIN' )=>min= 'MIN'
 						{
 							min = (CommonTree) match(input, 125, FOLLOW_125_in_enterEndpoint1061);
 							if (state.failed) return;
@@ -3742,7 +3755,7 @@ public class ASN1TreeWalker extends TreeFilter {
 						}
 						break;
 						case 2:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:57: ( 'MAX' )=>max= 'MAX'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:57: ( 'MAX' )=>max= 'MAX'
 						{
 							max = (CommonTree) match(input, 124, FOLLOW_124_in_enterEndpoint1071);
 							if (state.failed) return;
@@ -3753,7 +3766,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:78: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:78: ( . )*
 					loop32:
 					do {
 						int alt32 = 2;
@@ -3768,7 +3781,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt32) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:78: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:78: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3803,13 +3816,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterUnion"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:475:1: enterUnion : ^( UNION (a= 'ALL' )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:480:1: enterUnion : ^( UNION (a= 'ALL' )? ( . )* ) ;
 	public final void enterUnion() throws RecognitionException {
 		CommonTree a = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:475:13: ( ^( UNION (a= 'ALL' )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:476:2: ^( UNION (a= 'ALL' )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:480:13: ( ^( UNION (a= 'ALL' )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:481:2: ^( UNION (a= 'ALL' )? ( . )* )
 			{
 				match(input, UNION, FOLLOW_UNION_in_enterUnion1092);
 				if (state.failed) return;
@@ -3817,7 +3830,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:476:11: (a= 'ALL' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:481:11: (a= 'ALL' )?
 					int alt33 = 2;
 					int LA33_0 = input.LA(1);
 
@@ -3826,7 +3839,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt33) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:476:11: a= 'ALL'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:481:11: a= 'ALL'
 						{
 							a = (CommonTree) match(input, 92, FOLLOW_92_in_enterUnion1096);
 							if (state.failed) return;
@@ -3837,7 +3850,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:476:19: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:481:19: ( . )*
 					loop34:
 					do {
 						int alt34 = 2;
@@ -3852,7 +3865,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt34) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:476:19: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:481:19: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3887,11 +3900,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterIntersectionElement"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:479:1: enterIntersectionElement : ^( INTERSECTION_ELEMENT ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:484:1: enterIntersectionElement : ^( INTERSECTION_ELEMENT ( . )* ) ;
 	public final void enterIntersectionElement() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:479:25: ( ^( INTERSECTION_ELEMENT ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:480:2: ^( INTERSECTION_ELEMENT ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:484:25: ( ^( INTERSECTION_ELEMENT ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:485:2: ^( INTERSECTION_ELEMENT ( . )* )
 			{
 				match(input, INTERSECTION_ELEMENT, FOLLOW_INTERSECTION_ELEMENT_in_enterIntersectionElement1115);
 				if (state.failed) return;
@@ -3899,7 +3912,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:480:25: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:485:25: ( . )*
 					loop35:
 					do {
 						int alt35 = 2;
@@ -3914,7 +3927,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt35) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:480:25: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:485:25: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -3949,15 +3962,15 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterNamedConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:483:1: enterNamedConstraint : ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:488:1: enterNamedConstraint : ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* ) ;
 	public final void enterNamedConstraint() throws RecognitionException {
 		CommonTree ID10 = null;
 		Presence pc = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:483:22: ( ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:484:2: ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:488:22: ( ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:489:2: ^( NAMED_CONSTRAINT ID (pc= presenceConstraint )? ( . )* )
 			{
 				match(input, NAMED_CONSTRAINT, FOLLOW_NAMED_CONSTRAINT_in_enterNamedConstraint1134);
 				if (state.failed) return;
@@ -3967,7 +3980,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID10 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterNamedConstraint1136);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:484:24: (pc= presenceConstraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:489:24: (pc= presenceConstraint )?
 				int alt36 = 2;
 				switch (input.LA(1)) {
 					case 135: {
@@ -3986,7 +3999,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 				switch (alt36) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:484:25: pc= presenceConstraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:489:25: pc= presenceConstraint
 					{
 						pushFollow(FOLLOW_presenceConstraint_in_enterNamedConstraint1141);
 						pc = presenceConstraint();
@@ -4000,7 +4013,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:484:49: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:489:49: ( . )*
 				loop37:
 				do {
 					int alt37 = 2;
@@ -4015,7 +4028,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt37) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:484:49: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:489:49: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -4049,13 +4062,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterSelectionType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:487:1: enterSelectionType : ^( SELECTION_TYPE ID ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:492:1: enterSelectionType : ^( SELECTION_TYPE ID ( . )* ) ;
 	public final void enterSelectionType() throws RecognitionException {
 		CommonTree ID11 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:487:20: ( ^( SELECTION_TYPE ID ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:488:2: ^( SELECTION_TYPE ID ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:492:20: ( ^( SELECTION_TYPE ID ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:493:2: ^( SELECTION_TYPE ID ( . )* )
 			{
 				match(input, SELECTION_TYPE, FOLLOW_SELECTION_TYPE_in_enterSelectionType1161);
 				if (state.failed) return;
@@ -4065,7 +4078,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				ID11 = (CommonTree) match(input, ID, FOLLOW_ID_in_enterSelectionType1163);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:488:22: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:493:22: ( . )*
 				loop38:
 				do {
 					int alt38 = 2;
@@ -4080,7 +4093,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt38) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:488:22: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:493:22: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -4114,11 +4127,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterEnumeration"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:491:1: enterEnumeration : ^( ENUMERATION ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:496:1: enterEnumeration : ^( ENUMERATION ( . )* ) ;
 	public final void enterEnumeration() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:491:18: ( ^( ENUMERATION ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:492:2: ^( ENUMERATION ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:496:18: ( ^( ENUMERATION ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:497:2: ^( ENUMERATION ( . )* )
 			{
 				match(input, ENUMERATION, FOLLOW_ENUMERATION_in_enterEnumeration1182);
 				if (state.failed) return;
@@ -4126,7 +4139,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				if (input.LA(1) == Token.DOWN) {
 					match(input, Token.DOWN, null);
 					if (state.failed) return;
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:492:16: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:497:16: ( . )*
 					loop39:
 					do {
 						int alt39 = 2;
@@ -4141,7 +4154,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt39) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:492:16: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:497:16: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -4176,14 +4189,14 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enterTypeReference"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:495:1: enterTypeReference : ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:500:1: enterTypeReference : ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* ) ;
 	public final void enterTypeReference() throws RecognitionException {
 		CommonTree a = null;
 		CommonTree b = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:495:20: ( ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:2: ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:500:20: ( ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:2: ^( TYPE_REFERENCE a= ID ( (b= ID )? ) ( . )* )
 			{
 				match(input, TYPE_REFERENCE, FOLLOW_TYPE_REFERENCE_in_enterTypeReference1201);
 				if (state.failed) return;
@@ -4193,10 +4206,10 @@ public class ASN1TreeWalker extends TreeFilter {
 				a = (CommonTree) match(input, ID, FOLLOW_ID_in_enterTypeReference1205);
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:24: ( (b= ID )? )
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:25: (b= ID )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:24: ( (b= ID )? )
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:25: (b= ID )?
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:26: (b= ID )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:26: (b= ID )?
 					int alt40 = 2;
 					int LA40_0 = input.LA(1);
 
@@ -4205,7 +4218,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					}
 					switch (alt40) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:26: b= ID
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:26: b= ID
 						{
 							b = (CommonTree) match(input, ID, FOLLOW_ID_in_enterTypeReference1210);
 							if (state.failed) return;
@@ -4219,7 +4232,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:32: ( . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:32: ( . )*
 				loop41:
 				do {
 					int alt41 = 2;
@@ -4234,7 +4247,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 					switch (alt41) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:496:32: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:501:32: .
 						{
 							matchAny(input);
 							if (state.failed) return;
@@ -4273,11 +4286,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitModule"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:501:1: exitModule : MODULE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:506:1: exitModule : MODULE ;
 	public final void exitModule() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:501:12: ( MODULE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:502:2: MODULE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:506:12: ( MODULE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:507:2: MODULE
 			{
 				match(input, MODULE, FOLLOW_MODULE_in_exitModule1232);
 				if (state.failed) return;
@@ -4298,11 +4311,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitModuleId"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:505:1: exitModuleId : MODULE_IDENTIFIER ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:510:1: exitModuleId : MODULE_IDENTIFIER ;
 	public final void exitModuleId() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:505:14: ( MODULE_IDENTIFIER )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:506:2: MODULE_IDENTIFIER
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:510:14: ( MODULE_IDENTIFIER )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:511:2: MODULE_IDENTIFIER
 			{
 				match(input, MODULE_IDENTIFIER, FOLLOW_MODULE_IDENTIFIER_in_exitModuleId1244);
 				if (state.failed) return;
@@ -4323,11 +4336,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitVec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:509:1: exitVec : VEC ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:514:1: exitVec : VEC ;
 	public final void exitVec() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:509:10: ( VEC )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:510:2: VEC
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:514:10: ( VEC )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:515:2: VEC
 			{
 				match(input, VEC, FOLLOW_VEC_in_exitVec1259);
 				if (state.failed) return;
@@ -4348,11 +4361,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitExports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:513:1: exitExports : EXPORTS ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:518:1: exitExports : EXPORTS ;
 	public final void exitExports() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:513:13: ( EXPORTS )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:514:2: EXPORTS
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:518:13: ( EXPORTS )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:519:2: EXPORTS
 			{
 				match(input, EXPORTS, FOLLOW_EXPORTS_in_exitExports1272);
 				if (state.failed) return;
@@ -4373,11 +4386,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitImports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:517:1: exitImports : IMPORTS ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:522:1: exitImports : IMPORTS ;
 	public final void exitImports() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:517:13: ( IMPORTS )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:518:2: IMPORTS
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:522:13: ( IMPORTS )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:523:2: IMPORTS
 			{
 				match(input, IMPORTS, FOLLOW_IMPORTS_in_exitImports1286);
 				if (state.failed) return;
@@ -4398,11 +4411,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSymbolsFromModule"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:522:1: exitSymbolsFromModule : SYMBOLS_FROM_MODULE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:527:1: exitSymbolsFromModule : SYMBOLS_FROM_MODULE ;
 	public final void exitSymbolsFromModule() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:522:22: ( SYMBOLS_FROM_MODULE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:523:2: SYMBOLS_FROM_MODULE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:527:22: ( SYMBOLS_FROM_MODULE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:528:2: SYMBOLS_FROM_MODULE
 			{
 				match(input, SYMBOLS_FROM_MODULE, FOLLOW_SYMBOLS_FROM_MODULE_in_exitSymbolsFromModule1299);
 				if (state.failed) return;
@@ -4423,11 +4436,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitValueAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:526:1: exitValueAssignment : VALUE_ASSIGNMENT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:531:1: exitValueAssignment : VALUE_ASSIGNMENT ;
 	public final void exitValueAssignment() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:526:20: ( VALUE_ASSIGNMENT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:527:2: VALUE_ASSIGNMENT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:531:20: ( VALUE_ASSIGNMENT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:532:2: VALUE_ASSIGNMENT
 			{
 				match(input, VALUE_ASSIGNMENT, FOLLOW_VALUE_ASSIGNMENT_in_exitValueAssignment1311);
 				if (state.failed) return;
@@ -4448,11 +4461,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitTypeAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:530:1: exitTypeAssignment : TYPE_ASSIGNMENT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:535:1: exitTypeAssignment : TYPE_ASSIGNMENT ;
 	public final void exitTypeAssignment() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:530:19: ( TYPE_ASSIGNMENT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:531:2: TYPE_ASSIGNMENT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:535:19: ( TYPE_ASSIGNMENT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:536:2: TYPE_ASSIGNMENT
 			{
 				match(input, TYPE_ASSIGNMENT, FOLLOW_TYPE_ASSIGNMENT_in_exitTypeAssignment1323);
 				if (state.failed) return;
@@ -4473,11 +4486,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:534:1: exitType : TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:539:1: exitType : TYPE ;
 	public final void exitType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:534:10: ( TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:535:2: TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:539:10: ( TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:540:2: TYPE
 			{
 				match(input, TYPE, FOLLOW_TYPE_in_exitType1336);
 				if (state.failed) return;
@@ -4498,11 +4511,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:538:1: exitValue : VALUE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:543:1: exitValue : VALUE ;
 	public final void exitValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:538:11: ( VALUE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:539:2: VALUE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:543:11: ( VALUE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:544:2: VALUE
 			{
 				match(input, VALUE, FOLLOW_VALUE_in_exitValue1349);
 				if (state.failed) return;
@@ -4523,11 +4536,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitTaggedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:542:1: exitTaggedType : TAGGED_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:547:1: exitTaggedType : TAGGED_TYPE ;
 	public final void exitTaggedType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:542:16: ( TAGGED_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:543:2: TAGGED_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:547:16: ( TAGGED_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:548:2: TAGGED_TYPE
 			{
 				match(input, TAGGED_TYPE, FOLLOW_TAGGED_TYPE_in_exitTaggedType1362);
 				if (state.failed) return;
@@ -4548,11 +4561,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSequenceOf"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:546:1: exitSequenceOf : SEQUENCEOF ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:551:1: exitSequenceOf : SEQUENCEOF ;
 	public final void exitSequenceOf() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:546:16: ( SEQUENCEOF )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:547:2: SEQUENCEOF
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:551:16: ( SEQUENCEOF )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:552:2: SEQUENCEOF
 			{
 				match(input, SEQUENCEOF, FOLLOW_SEQUENCEOF_in_exitSequenceOf1375);
 				if (state.failed) return;
@@ -4573,11 +4586,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSequence"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:550:1: exitSequence : SEQUENCE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:555:1: exitSequence : SEQUENCE ;
 	public final void exitSequence() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:550:14: ( SEQUENCE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:551:2: SEQUENCE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:555:14: ( SEQUENCE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:556:2: SEQUENCE
 			{
 				match(input, SEQUENCE, FOLLOW_SEQUENCE_in_exitSequence1388);
 				if (state.failed) return;
@@ -4598,11 +4611,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSetOf"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:554:1: exitSetOf : SETOF ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:559:1: exitSetOf : SETOF ;
 	public final void exitSetOf() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:554:11: ( SETOF )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:555:2: SETOF
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:559:11: ( SETOF )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:560:2: SETOF
 			{
 				match(input, SETOF, FOLLOW_SETOF_in_exitSetOf1401);
 				if (state.failed) return;
@@ -4623,11 +4636,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSet"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:558:1: exitSet : SET ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:563:1: exitSet : SET ;
 	public final void exitSet() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:558:9: ( SET )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:559:2: SET
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:563:9: ( SET )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:564:2: SET
 			{
 				match(input, SET, FOLLOW_SET_in_exitSet1414);
 				if (state.failed) return;
@@ -4648,11 +4661,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitChoice"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:562:1: exitChoice : CHOICE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:567:1: exitChoice : CHOICE ;
 	public final void exitChoice() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:562:12: ( CHOICE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:563:2: CHOICE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:567:12: ( CHOICE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:568:2: CHOICE
 			{
 				match(input, CHOICE, FOLLOW_CHOICE_in_exitChoice1427);
 				if (state.failed) return;
@@ -4673,11 +4686,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitExceptionSpec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:566:1: exitExceptionSpec : EXCEPTION_SPEC ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:571:1: exitExceptionSpec : EXCEPTION_SPEC ;
 	public final void exitExceptionSpec() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:566:18: ( EXCEPTION_SPEC )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:567:2: EXCEPTION_SPEC
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:571:18: ( EXCEPTION_SPEC )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:572:2: EXCEPTION_SPEC
 			{
 				match(input, EXCEPTION_SPEC, FOLLOW_EXCEPTION_SPEC_in_exitExceptionSpec1439);
 				if (state.failed) return;
@@ -4698,11 +4711,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitComponentType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:570:1: exitComponentType : COMPONENT_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:575:1: exitComponentType : COMPONENT_TYPE ;
 	public final void exitComponentType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:570:18: ( COMPONENT_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:571:2: COMPONENT_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:575:18: ( COMPONENT_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:576:2: COMPONENT_TYPE
 			{
 				match(input, COMPONENT_TYPE, FOLLOW_COMPONENT_TYPE_in_exitComponentType1451);
 				if (state.failed) return;
@@ -4723,11 +4736,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitComponentTypeOption"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:574:1: exitComponentTypeOption : COMPONENT_TYPE_OPTION ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:579:1: exitComponentTypeOption : COMPONENT_TYPE_OPTION ;
 	public final void exitComponentTypeOption() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:574:24: ( COMPONENT_TYPE_OPTION )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:575:2: COMPONENT_TYPE_OPTION
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:579:24: ( COMPONENT_TYPE_OPTION )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:580:2: COMPONENT_TYPE_OPTION
 			{
 				match(input, COMPONENT_TYPE_OPTION, FOLLOW_COMPONENT_TYPE_OPTION_in_exitComponentTypeOption1463);
 				if (state.failed) return;
@@ -4748,11 +4761,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitExtensionAdditionGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:578:1: exitExtensionAdditionGroup : EXTENSION_ADDITION_GROUP ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:583:1: exitExtensionAdditionGroup : EXTENSION_ADDITION_GROUP ;
 	public final void exitExtensionAdditionGroup() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:578:27: ( EXTENSION_ADDITION_GROUP )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:579:2: EXTENSION_ADDITION_GROUP
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:583:27: ( EXTENSION_ADDITION_GROUP )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:584:2: EXTENSION_ADDITION_GROUP
 			{
 				match(input, EXTENSION_ADDITION_GROUP, FOLLOW_EXTENSION_ADDITION_GROUP_in_exitExtensionAdditionGroup1475);
 				if (state.failed) return;
@@ -4773,11 +4786,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitExtensionAdditionAlternativesGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:582:1: exitExtensionAdditionAlternativesGroup : EXTENSION_ADDITION_ALTERNATIVES_GROUP ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:587:1: exitExtensionAdditionAlternativesGroup : EXTENSION_ADDITION_ALTERNATIVES_GROUP ;
 	public final void exitExtensionAdditionAlternativesGroup() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:582:39: ( EXTENSION_ADDITION_ALTERNATIVES_GROUP )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:583:2: EXTENSION_ADDITION_ALTERNATIVES_GROUP
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:587:39: ( EXTENSION_ADDITION_ALTERNATIVES_GROUP )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:588:2: EXTENSION_ADDITION_ALTERNATIVES_GROUP
 			{
 				match(
 				     input,
@@ -4802,11 +4815,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitNamedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:586:1: exitNamedType : NAMED_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:591:1: exitNamedType : NAMED_TYPE ;
 	public final void exitNamedType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:586:16: ( NAMED_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:587:2: NAMED_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:591:16: ( NAMED_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:592:2: NAMED_TYPE
 			{
 				match(input, NAMED_TYPE, FOLLOW_NAMED_TYPE_in_exitNamedType1501);
 				if (state.failed) return;
@@ -4827,11 +4840,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:590:1: exitConstraint : CONSTRAINT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:595:1: exitConstraint : CONSTRAINT ;
 	public final void exitConstraint() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:590:17: ( CONSTRAINT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:591:2: CONSTRAINT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:595:17: ( CONSTRAINT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:596:2: CONSTRAINT
 			{
 				match(input, CONSTRAINT, FOLLOW_CONSTRAINT_in_exitConstraint1515);
 				if (state.failed) return;
@@ -4852,11 +4865,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraintValueRange"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:594:1: exitConstraintValueRange : CONSTRAINT_VALUE_RANGE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:599:1: exitConstraintValueRange : CONSTRAINT_VALUE_RANGE ;
 	public final void exitConstraintValueRange() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:594:25: ( CONSTRAINT_VALUE_RANGE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:595:2: CONSTRAINT_VALUE_RANGE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:599:25: ( CONSTRAINT_VALUE_RANGE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:600:2: CONSTRAINT_VALUE_RANGE
 			{
 				match(input, CONSTRAINT_VALUE_RANGE, FOLLOW_CONSTRAINT_VALUE_RANGE_in_exitConstraintValueRange1527);
 				if (state.failed) return;
@@ -4877,11 +4890,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraintValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:598:1: exitConstraintValue : CONSTRAINT_VALUE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:603:1: exitConstraintValue : CONSTRAINT_VALUE ;
 	public final void exitConstraintValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:598:20: ( CONSTRAINT_VALUE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:599:2: CONSTRAINT_VALUE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:603:20: ( CONSTRAINT_VALUE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:604:2: CONSTRAINT_VALUE
 			{
 				match(input, CONSTRAINT_VALUE, FOLLOW_CONSTRAINT_VALUE_in_exitConstraintValue1539);
 				if (state.failed) return;
@@ -4902,11 +4915,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraintSize"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:602:1: exitConstraintSize : CONSTRAINT_SIZE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:607:1: exitConstraintSize : CONSTRAINT_SIZE ;
 	public final void exitConstraintSize() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:602:20: ( CONSTRAINT_SIZE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:603:2: CONSTRAINT_SIZE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:607:20: ( CONSTRAINT_SIZE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:608:2: CONSTRAINT_SIZE
 			{
 				match(input, CONSTRAINT_SIZE, FOLLOW_CONSTRAINT_SIZE_in_exitConstraintSize1552);
 				if (state.failed) return;
@@ -4927,11 +4940,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraintType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:606:1: exitConstraintType : CONSTRAINT_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:611:1: exitConstraintType : CONSTRAINT_TYPE ;
 	public final void exitConstraintType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:606:20: ( CONSTRAINT_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:607:2: CONSTRAINT_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:611:20: ( CONSTRAINT_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:612:2: CONSTRAINT_TYPE
 			{
 				match(input, CONSTRAINT_TYPE, FOLLOW_CONSTRAINT_TYPE_in_exitConstraintType1565);
 				if (state.failed) return;
@@ -4952,11 +4965,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitConstraintInnerType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:610:1: exitConstraintInnerType : CONSTRAINT_INNER_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:615:1: exitConstraintInnerType : CONSTRAINT_INNER_TYPE ;
 	public final void exitConstraintInnerType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:610:25: ( CONSTRAINT_INNER_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:611:2: CONSTRAINT_INNER_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:615:25: ( CONSTRAINT_INNER_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:616:2: CONSTRAINT_INNER_TYPE
 			{
 				match(input, CONSTRAINT_INNER_TYPE, FOLLOW_CONSTRAINT_INNER_TYPE_in_exitConstraintInnerType1578);
 				if (state.failed) return;
@@ -4977,11 +4990,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitEndpoint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:614:1: exitEndpoint : ENDPOINT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:619:1: exitEndpoint : ENDPOINT ;
 	public final void exitEndpoint() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:614:15: ( ENDPOINT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:615:2: ENDPOINT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:619:15: ( ENDPOINT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:620:2: ENDPOINT
 			{
 				match(input, ENDPOINT, FOLLOW_ENDPOINT_in_exitEndpoint1592);
 				if (state.failed) return;
@@ -5002,11 +5015,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitUnion"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:618:1: exitUnion : UNION ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:623:1: exitUnion : UNION ;
 	public final void exitUnion() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:618:12: ( UNION )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:619:2: UNION
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:623:12: ( UNION )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:624:2: UNION
 			{
 				match(input, UNION, FOLLOW_UNION_in_exitUnion1606);
 				if (state.failed) return;
@@ -5027,11 +5040,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitIntersectionElement"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:622:1: exitIntersectionElement : INTERSECTION_ELEMENT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:627:1: exitIntersectionElement : INTERSECTION_ELEMENT ;
 	public final void exitIntersectionElement() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:622:25: ( INTERSECTION_ELEMENT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:623:2: INTERSECTION_ELEMENT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:627:25: ( INTERSECTION_ELEMENT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:628:2: INTERSECTION_ELEMENT
 			{
 				match(input, INTERSECTION_ELEMENT, FOLLOW_INTERSECTION_ELEMENT_in_exitIntersectionElement1619);
 				if (state.failed) return;
@@ -5052,11 +5065,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitNamedConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:626:1: exitNamedConstraint : NAMED_CONSTRAINT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:631:1: exitNamedConstraint : NAMED_CONSTRAINT ;
 	public final void exitNamedConstraint() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:626:21: ( NAMED_CONSTRAINT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:627:2: NAMED_CONSTRAINT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:631:21: ( NAMED_CONSTRAINT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:632:2: NAMED_CONSTRAINT
 			{
 				match(input, NAMED_CONSTRAINT, FOLLOW_NAMED_CONSTRAINT_in_exitNamedConstraint1632);
 				if (state.failed) return;
@@ -5077,11 +5090,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitSelectionType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:630:1: exitSelectionType : SELECTION_TYPE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:635:1: exitSelectionType : SELECTION_TYPE ;
 	public final void exitSelectionType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:630:19: ( SELECTION_TYPE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:631:2: SELECTION_TYPE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:635:19: ( SELECTION_TYPE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:636:2: SELECTION_TYPE
 			{
 				match(input, SELECTION_TYPE, FOLLOW_SELECTION_TYPE_in_exitSelectionType1645);
 				if (state.failed) return;
@@ -5102,11 +5115,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitEnumeration"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:634:1: exitEnumeration : ENUMERATION ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:639:1: exitEnumeration : ENUMERATION ;
 	public final void exitEnumeration() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:634:18: ( ENUMERATION )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:635:2: ENUMERATION
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:639:18: ( ENUMERATION )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:640:2: ENUMERATION
 			{
 				match(input, ENUMERATION, FOLLOW_ENUMERATION_in_exitEnumeration1659);
 				if (state.failed) return;
@@ -5127,11 +5140,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "exitTypeReference"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:638:1: exitTypeReference : TYPE_REFERENCE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:643:1: exitTypeReference : TYPE_REFERENCE ;
 	public final void exitTypeReference() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:638:19: ( TYPE_REFERENCE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:639:2: TYPE_REFERENCE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:643:19: ( TYPE_REFERENCE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:644:2: TYPE_REFERENCE
 			{
 				match(input, TYPE_REFERENCE, FOLLOW_TYPE_REFERENCE_in_exitTypeReference1672);
 				if (state.failed) return;
@@ -5152,13 +5165,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "nameForm"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:644:1: nameForm : ^( NAME_FORM ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:649:1: nameForm : ^( NAME_FORM ID ) ;
 	public final void nameForm() throws RecognitionException {
 		CommonTree ID12 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:644:10: ( ^( NAME_FORM ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:645:2: ^( NAME_FORM ID )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:649:10: ( ^( NAME_FORM ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:650:2: ^( NAME_FORM ID )
 			{
 				match(input, NAME_FORM, FOLLOW_NAME_FORM_in_nameForm1687);
 				if (state.failed) return;
@@ -5188,14 +5201,14 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "nameNumberForm"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:648:1: nameNumberForm : ^( NAME_NUMBER_FORM ID INT ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:653:1: nameNumberForm : ^( NAME_NUMBER_FORM ID INT ) ;
 	public final void nameNumberForm() throws RecognitionException {
 		CommonTree ID13 = null;
 		CommonTree INT14 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:648:16: ( ^( NAME_NUMBER_FORM ID INT ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:649:2: ^( NAME_NUMBER_FORM ID INT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:653:16: ( ^( NAME_NUMBER_FORM ID INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:654:2: ^( NAME_NUMBER_FORM ID INT )
 			{
 				match(input, NAME_NUMBER_FORM, FOLLOW_NAME_NUMBER_FORM_in_nameNumberForm1704);
 				if (state.failed) return;
@@ -5233,13 +5246,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "numberForm"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:652:1: numberForm : ^( NUMBER_FORM INT ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:657:1: numberForm : ^( NUMBER_FORM INT ) ;
 	public final void numberForm() throws RecognitionException {
 		CommonTree INT15 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:652:12: ( ^( NUMBER_FORM INT ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:653:2: ^( NUMBER_FORM INT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:657:12: ( ^( NUMBER_FORM INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:658:2: ^( NUMBER_FORM INT )
 			{
 				match(input, NUMBER_FORM, FOLLOW_NUMBER_FORM_in_numberForm1724);
 				if (state.failed) return;
@@ -5269,13 +5282,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "symbol"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:656:1: symbol : ^( SYMBOL ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:661:1: symbol : ^( SYMBOL ID ) ;
 	public final void symbol() throws RecognitionException {
 		CommonTree ID16 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:656:9: ( ^( SYMBOL ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:657:2: ^( SYMBOL ID )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:661:9: ( ^( SYMBOL ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:662:2: ^( SYMBOL ID )
 			{
 				match(input, SYMBOL, FOLLOW_SYMBOL_in_symbol1742);
 				if (state.failed) return;
@@ -5305,13 +5318,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "globalModuleReference"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:660:1: globalModuleReference : ^( GLOBAL_MODULE_REFERENCE ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:665:1: globalModuleReference : ^( GLOBAL_MODULE_REFERENCE ID ) ;
 	public final void globalModuleReference() throws RecognitionException {
 		CommonTree ID17 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:660:22: ( ^( GLOBAL_MODULE_REFERENCE ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:661:2: ^( GLOBAL_MODULE_REFERENCE ID )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:665:22: ( ^( GLOBAL_MODULE_REFERENCE ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:666:2: ^( GLOBAL_MODULE_REFERENCE ID )
 			{
 				match(input, GLOBAL_MODULE_REFERENCE, FOLLOW_GLOBAL_MODULE_REFERENCE_in_globalModuleReference1758);
 				if (state.failed) return;
@@ -5341,11 +5354,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "integerType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:664:1: integerType : INTEGER ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:669:1: integerType : INTEGER ;
 	public final void integerType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:664:13: ( INTEGER )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:665:2: INTEGER
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:669:13: ( INTEGER )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:670:2: INTEGER
 			{
 				match(input, INTEGER, FOLLOW_INTEGER_in_integerType1774);
 				if (state.failed) return;
@@ -5366,11 +5379,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "booleanType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:668:1: booleanType : BOOLEAN ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:673:1: booleanType : BOOLEAN ;
 	public final void booleanType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:668:13: ( BOOLEAN )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:669:2: BOOLEAN
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:673:13: ( BOOLEAN )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:674:2: BOOLEAN
 			{
 				match(input, BOOLEAN, FOLLOW_BOOLEAN_in_booleanType1788);
 				if (state.failed) return;
@@ -5391,11 +5404,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "realType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:672:1: realType : REAL ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:677:1: realType : REAL ;
 	public final void realType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:672:10: ( REAL )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:673:2: REAL
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:677:10: ( REAL )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:678:2: REAL
 			{
 				match(input, REAL, FOLLOW_REAL_in_realType1802);
 				if (state.failed) return;
@@ -5416,11 +5429,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "oidType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:676:1: oidType : OID ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:681:1: oidType : OID ;
 	public final void oidType() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:676:10: ( OID )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:677:2: OID
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:681:10: ( OID )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:682:2: OID
 			{
 				match(input, OID, FOLLOW_OID_in_oidType1817);
 				if (state.failed) return;
@@ -5441,13 +5454,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "cstringType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:680:1: cstringType : ( ^( CSTRING UNRESTRICTED_CSTRING ( . )* ) | ^( CSTRING type= cstringSubtype ( . )* ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:685:1: cstringType : ( ^( CSTRING UNRESTRICTED_CSTRING ( . )* ) | ^( CSTRING type= cstringSubtype ( . )* ) );
 	public final void cstringType() throws RecognitionException {
 		RestrictedCString type = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:680:13: ( ^( CSTRING UNRESTRICTED_CSTRING ( . )* ) | ^( CSTRING type= cstringSubtype ( . )* ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:685:13: ( ^( CSTRING UNRESTRICTED_CSTRING ( . )* ) | ^( CSTRING type= cstringSubtype ( . )* ) )
 			int alt44 = 2;
 			int LA44_0 = input.LA(1);
 
@@ -5497,7 +5510,7 @@ public class ASN1TreeWalker extends TreeFilter {
 			}
 			switch (alt44) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:681:2: ^( CSTRING UNRESTRICTED_CSTRING ( . )* )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:686:2: ^( CSTRING UNRESTRICTED_CSTRING ( . )* )
 				{
 					match(input, CSTRING, FOLLOW_CSTRING_in_cstringType1831);
 					if (state.failed) return;
@@ -5507,7 +5520,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					match(input, UNRESTRICTED_CSTRING, FOLLOW_UNRESTRICTED_CSTRING_in_cstringType1833);
 					if (state.failed) return;
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:681:33: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:686:33: ( . )*
 					loop42:
 					do {
 						int alt42 = 2;
@@ -5522,7 +5535,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt42) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:681:33: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:686:33: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -5545,7 +5558,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:683:4: ^( CSTRING type= cstringSubtype ( . )* )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:688:4: ^( CSTRING type= cstringSubtype ( . )* )
 				{
 					match(input, CSTRING, FOLLOW_CSTRING_in_cstringType1846);
 					if (state.failed) return;
@@ -5558,7 +5571,7 @@ public class ASN1TreeWalker extends TreeFilter {
 					state._fsp--;
 					if (state.failed) return;
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:683:34: ( . )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:688:34: ( . )*
 					loop43:
 					do {
 						int alt43 = 2;
@@ -5573,7 +5586,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 						switch (alt43) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:683:34: .
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:688:34: .
 							{
 								matchAny(input);
 								if (state.failed) return;
@@ -5609,11 +5622,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "trueValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:686:1: trueValue : TRUE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:691:1: trueValue : TRUE ;
 	public final void trueValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:686:11: ( TRUE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:687:2: TRUE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:691:11: ( TRUE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:692:2: TRUE
 			{
 				match(input, TRUE, FOLLOW_TRUE_in_trueValue1867);
 				if (state.failed) return;
@@ -5634,11 +5647,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "falseValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:690:1: falseValue : FALSE ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:695:1: falseValue : FALSE ;
 	public final void falseValue() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:690:12: ( FALSE )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:691:2: FALSE
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:695:12: ( FALSE )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:696:2: FALSE
 			{
 				match(input, FALSE, FOLLOW_FALSE_in_falseValue1879);
 				if (state.failed) return;
@@ -5659,13 +5672,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "numberValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:694:1: numberValue : ( ^( NUMBER ID ) | ^( NUMBER INT ) | ^( NUMBER REAL_NUMBER ) | ^( NUMBER PLUS_INFINITY ) | ^( NUMBER MINUS_INFINITY ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:699:1: numberValue : ( ^( NUMBER ID ) | ^( NUMBER INT ) | ^( NUMBER REAL_NUMBER ) | ^( NUMBER PLUS_INFINITY ) | ^( NUMBER MINUS_INFINITY ) );
 	public final void numberValue() throws RecognitionException {
 		CommonTree INT18 = null;
 		CommonTree REAL_NUMBER19 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:694:13: ( ^( NUMBER ID ) | ^( NUMBER INT ) | ^( NUMBER REAL_NUMBER ) | ^( NUMBER PLUS_INFINITY ) | ^( NUMBER MINUS_INFINITY ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:699:13: ( ^( NUMBER ID ) | ^( NUMBER INT ) | ^( NUMBER REAL_NUMBER ) | ^( NUMBER PLUS_INFINITY ) | ^( NUMBER MINUS_INFINITY ) )
 			int alt45 = 5;
 			int LA45_0 = input.LA(1);
 
@@ -5730,7 +5743,7 @@ public class ASN1TreeWalker extends TreeFilter {
 			}
 			switch (alt45) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:695:2: ^( NUMBER ID )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:700:2: ^( NUMBER ID )
 				{
 					match(input, NUMBER, FOLLOW_NUMBER_in_numberValue1894);
 					if (state.failed) return;
@@ -5749,7 +5762,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:696:4: ^( NUMBER INT )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:701:4: ^( NUMBER INT )
 				{
 					match(input, NUMBER, FOLLOW_NUMBER_in_numberValue1904);
 					if (state.failed) return;
@@ -5768,7 +5781,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:697:4: ^( NUMBER REAL_NUMBER )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:702:4: ^( NUMBER REAL_NUMBER )
 				{
 					match(input, NUMBER, FOLLOW_NUMBER_in_numberValue1914);
 					if (state.failed) return;
@@ -5787,7 +5800,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:698:4: ^( NUMBER PLUS_INFINITY )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:703:4: ^( NUMBER PLUS_INFINITY )
 				{
 					match(input, NUMBER, FOLLOW_NUMBER_in_numberValue1924);
 					if (state.failed) return;
@@ -5806,7 +5819,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:699:4: ^( NUMBER MINUS_INFINITY )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:704:4: ^( NUMBER MINUS_INFINITY )
 				{
 					match(input, NUMBER, FOLLOW_NUMBER_in_numberValue1934);
 					if (state.failed) return;
@@ -5838,13 +5851,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "presenceConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:701:1: presenceConstraint returns [Presence pr] : ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:706:1: presenceConstraint returns [Presence pr] : ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' );
 	public final Presence presenceConstraint() throws RecognitionException {
 		Presence pr = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:701:41: ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:706:41: ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' )
 			int alt46 = 3;
 			switch (input.LA(1)) {
 				case 135: {
@@ -5873,7 +5886,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt46) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:702:2: 'PRESENT'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:707:2: 'PRESENT'
 				{
 					match(input, 135, FOLLOW_135_in_presenceConstraint1953);
 					if (state.failed) return pr;
@@ -5883,7 +5896,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:703:4: 'ABSENT'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:708:4: 'ABSENT'
 				{
 					match(input, 91, FOLLOW_91_in_presenceConstraint1960);
 					if (state.failed) return pr;
@@ -5893,7 +5906,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:704:4: 'OPTIONAL'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:709:4: 'OPTIONAL'
 				{
 					match(input, 132, FOLLOW_132_in_presenceConstraint1968);
 					if (state.failed) return pr;
@@ -5916,13 +5929,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "tagClassPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:706:1: tagClassPvt returns [TagClass tc] : ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:711:1: tagClassPvt returns [TagClass tc] : ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' );
 	public final TagClass tagClassPvt() throws RecognitionException {
 		TagClass tc = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:706:34: ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:711:34: ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' )
 			int alt47 = 3;
 			switch (input.LA(1)) {
 				case 148: {
@@ -5951,7 +5964,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt47) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:707:2: 'UNIVERSAL'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:712:2: 'UNIVERSAL'
 				{
 					match(input, 148, FOLLOW_148_in_tagClassPvt1983);
 					if (state.failed) return tc;
@@ -5961,7 +5974,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:708:4: 'APPLICATION'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:713:4: 'APPLICATION'
 				{
 					match(input, 93, FOLLOW_93_in_tagClassPvt1990);
 					if (state.failed) return tc;
@@ -5971,7 +5984,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:709:4: 'PRIVATE'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:714:4: 'PRIVATE'
 				{
 					match(input, 136, FOLLOW_136_in_tagClassPvt1998);
 					if (state.failed) return tc;
@@ -5994,7 +6007,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "tagNumber"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:711:1: tagNumber returns [int tagNumber] : INT ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:716:1: tagNumber returns [int tagNumber] : INT ;
 	public final int tagNumber() throws RecognitionException {
 		int tagNumber = 0;
 
@@ -6002,8 +6015,8 @@ public class ASN1TreeWalker extends TreeFilter {
 		CommonTree INT20 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:712:2: ( INT )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:712:4: INT
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:717:2: ( INT )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:717:4: INT
 			{
 				INT20 = (CommonTree) match(input, INT, FOLLOW_INT_in_tagNumber2014);
 				if (state.failed) return tagNumber;
@@ -6024,14 +6037,14 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "defaultTaggingMethod"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:714:1: defaultTaggingMethod : ^( TAGGING_METHOD tm= taggingMethodPvt ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:719:1: defaultTaggingMethod : ^( TAGGING_METHOD tm= taggingMethodPvt ) ;
 	public final void defaultTaggingMethod() throws RecognitionException {
 		TaggingMethod tm = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:715:2: ( ^( TAGGING_METHOD tm= taggingMethodPvt ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:716:2: ^( TAGGING_METHOD tm= taggingMethodPvt )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:720:2: ( ^( TAGGING_METHOD tm= taggingMethodPvt ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:721:2: ^( TAGGING_METHOD tm= taggingMethodPvt )
 			{
 				match(input, TAGGING_METHOD, FOLLOW_TAGGING_METHOD_in_defaultTaggingMethod2029);
 				if (state.failed) return;
@@ -6064,13 +6077,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "taggingMethodPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:719:1: taggingMethodPvt returns [TaggingMethod tm] : ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:724:1: taggingMethodPvt returns [TaggingMethod tm] : ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' );
 	public final TaggingMethod taggingMethodPvt() throws RecognitionException {
 		TaggingMethod tm = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:719:44: ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:724:44: ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' )
 			int alt48 = 3;
 			switch (input.LA(1)) {
 				case 108: {
@@ -6099,7 +6112,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt48) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:720:3: 'EXPLICIT'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:725:3: 'EXPLICIT'
 				{
 					match(input, 108, FOLLOW_108_in_taggingMethodPvt2053);
 					if (state.failed) return tm;
@@ -6109,7 +6122,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:721:5: 'IMPLICIT'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:726:5: 'IMPLICIT'
 				{
 					match(input, 117, FOLLOW_117_in_taggingMethodPvt2062);
 					if (state.failed) return tm;
@@ -6119,7 +6132,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:722:5: 'AUTOMATIC'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:727:5: 'AUTOMATIC'
 				{
 					match(input, 94, FOLLOW_94_in_taggingMethodPvt2072);
 					if (state.failed) return tm;
@@ -6142,11 +6155,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "extensionEndMarkerPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:724:1: extensionEndMarkerPvt : EXTENSION_END_MARKER ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:729:1: extensionEndMarkerPvt : EXTENSION_END_MARKER ;
 	public final void extensionEndMarkerPvt() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:724:23: ( EXTENSION_END_MARKER )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:725:3: EXTENSION_END_MARKER
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:729:23: ( EXTENSION_END_MARKER )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:730:3: EXTENSION_END_MARKER
 			{
 				match(input, EXTENSION_END_MARKER, FOLLOW_EXTENSION_END_MARKER_in_extensionEndMarkerPvt2087);
 				if (state.failed) return;
@@ -6167,11 +6180,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "extensionAndExceptionPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:728:1: extensionAndExceptionPvt : EXTENSION_AND_EXCEPTION ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:733:1: extensionAndExceptionPvt : EXTENSION_AND_EXCEPTION ;
 	public final void extensionAndExceptionPvt() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:728:25: ( EXTENSION_AND_EXCEPTION )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:729:3: EXTENSION_AND_EXCEPTION
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:733:25: ( EXTENSION_AND_EXCEPTION )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:734:3: EXTENSION_AND_EXCEPTION
 			{
 				match(input, EXTENSION_AND_EXCEPTION, FOLLOW_EXTENSION_AND_EXCEPTION_in_extensionAndExceptionPvt2103);
 				if (state.failed) return;
@@ -6192,13 +6205,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "cstringSubtype"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:733:1: cstringSubtype returns [RestrictedCString type] : ( 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:738:1: cstringSubtype returns [RestrictedCString type] : ( 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' );
 	public final RestrictedCString cstringSubtype() throws RecognitionException {
 		RestrictedCString type = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:733:48: ( 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:738:48: ( 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' )
 			int alt49 = 13;
 			switch (input.LA(1)) {
 				case 97: {
@@ -6267,7 +6280,7 @@ public class ASN1TreeWalker extends TreeFilter {
 
 			switch (alt49) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:734:3: 'BMPString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:739:3: 'BMPString'
 				{
 					match(input, 97, FOLLOW_97_in_cstringSubtype2125);
 					if (state.failed) return type;
@@ -6277,7 +6290,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:735:4: 'GeneralString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:740:4: 'GeneralString'
 				{
 					match(input, 113, FOLLOW_113_in_cstringSubtype2132);
 					if (state.failed) return type;
@@ -6287,7 +6300,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:736:4: 'GraphicString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:741:4: 'GraphicString'
 				{
 					match(input, 114, FOLLOW_114_in_cstringSubtype2139);
 					if (state.failed) return type;
@@ -6297,7 +6310,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:737:4: 'IA5String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:742:4: 'IA5String'
 				{
 					match(input, 115, FOLLOW_115_in_cstringSubtype2146);
 					if (state.failed) return type;
@@ -6307,7 +6320,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:738:4: 'ISO646String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:743:4: 'ISO646String'
 				{
 					match(input, 123, FOLLOW_123_in_cstringSubtype2153);
 					if (state.failed) return type;
@@ -6317,7 +6330,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:739:4: 'NumericString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:744:4: 'NumericString'
 				{
 					match(input, 127, FOLLOW_127_in_cstringSubtype2160);
 					if (state.failed) return type;
@@ -6327,7 +6340,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 7:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:740:4: 'PrintableString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:745:4: 'PrintableString'
 				{
 					match(input, 137, FOLLOW_137_in_cstringSubtype2167);
 					if (state.failed) return type;
@@ -6337,7 +6350,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 8:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:741:4: 'TeletexString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:746:4: 'TeletexString'
 				{
 					match(input, 146, FOLLOW_146_in_cstringSubtype2174);
 					if (state.failed) return type;
@@ -6347,7 +6360,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 9:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:742:4: 'T61String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:747:4: 'T61String'
 				{
 					match(input, 143, FOLLOW_143_in_cstringSubtype2181);
 					if (state.failed) return type;
@@ -6357,7 +6370,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 10:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:743:4: 'UniversalString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:748:4: 'UniversalString'
 				{
 					match(input, 150, FOLLOW_150_in_cstringSubtype2188);
 					if (state.failed) return type;
@@ -6367,7 +6380,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 11:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:744:4: 'UTF8String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:749:4: 'UTF8String'
 				{
 					match(input, 149, FOLLOW_149_in_cstringSubtype2195);
 					if (state.failed) return type;
@@ -6377,7 +6390,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 12:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:745:4: 'VideotexString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:750:4: 'VideotexString'
 				{
 					match(input, 151, FOLLOW_151_in_cstringSubtype2202);
 					if (state.failed) return type;
@@ -6387,7 +6400,7 @@ public class ASN1TreeWalker extends TreeFilter {
 				}
 				break;
 				case 13:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:746:4: 'VisibleString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:751:4: 'VisibleString'
 				{
 					match(input, 152, FOLLOW_152_in_cstringSubtype2209);
 					if (state.failed) return type;
@@ -6410,13 +6423,13 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "enumerationItemPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:748:1: enumerationItemPvt : ^( ENUMERATION_ITEM ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:753:1: enumerationItemPvt : ^( ENUMERATION_ITEM ID ) ;
 	public final void enumerationItemPvt() throws RecognitionException {
 		CommonTree ID21 = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:748:21: ( ^( ENUMERATION_ITEM ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:749:2: ^( ENUMERATION_ITEM ID )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:753:21: ( ^( ENUMERATION_ITEM ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:754:2: ^( ENUMERATION_ITEM ID )
 			{
 				match(input, ENUMERATION_ITEM, FOLLOW_ENUMERATION_ITEM_in_enumerationItemPvt2225);
 				if (state.failed) return;
@@ -6446,11 +6459,11 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "extensibilityImpliedPvt"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:752:1: extensibilityImpliedPvt : EXTENSIBILITY_IMPLIED ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:757:1: extensibilityImpliedPvt : EXTENSIBILITY_IMPLIED ;
 	public final void extensibilityImpliedPvt() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:752:26: ( EXTENSIBILITY_IMPLIED )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:753:2: EXTENSIBILITY_IMPLIED
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:757:26: ( EXTENSIBILITY_IMPLIED )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:758:2: EXTENSIBILITY_IMPLIED
 			{
 				match(input, EXTENSIBILITY_IMPLIED, FOLLOW_EXTENSIBILITY_IMPLIED_in_extensibilityImpliedPvt2244);
 				if (state.failed) return;
@@ -6471,15 +6484,15 @@ public class ASN1TreeWalker extends TreeFilter {
 
 
 	// $ANTLR start "lessSign"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:756:1: lessSign returns [boolean result] : '<' ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:761:1: lessSign returns [boolean result] : '<' ;
 	public final boolean lessSign() throws RecognitionException {
 		boolean result = false;
 
 
 		result = false;
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:757:24: ( '<' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:758:2: '<'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:762:24: ( '<' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:763:2: '<'
 			{
 				match(input, 90, FOLLOW_90_in_lessSign2267);
 				if (state.failed) return result;
@@ -6500,8 +6513,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred1_ASN1TreeWalker
 	public final void synpred1_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:13: ( ALL )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:357:14: ALL
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:13: ( ALL )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:362:14: ALL
 		{
 			match(input, ALL, FOLLOW_ALL_in_synpred1_ASN1TreeWalker564);
 			if (state.failed) return;
@@ -6513,8 +6526,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred2_ASN1TreeWalker
 	public final void synpred2_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:30: ( tagClassPvt )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:31: tagClassPvt
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:30: ( tagClassPvt )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:31: tagClassPvt
 		{
 			pushFollow(FOLLOW_tagClassPvt_in_synpred2_ASN1TreeWalker698);
 			tagClassPvt();
@@ -6529,8 +6542,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred3_ASN1TreeWalker
 	public final void synpred3_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:63: ( taggingMethodPvt )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:400:64: taggingMethodPvt
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:63: ( taggingMethodPvt )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:405:64: taggingMethodPvt
 		{
 			pushFollow(FOLLOW_taggingMethodPvt_in_synpred3_ASN1TreeWalker709);
 			taggingMethodPvt();
@@ -6545,8 +6558,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred4_ASN1TreeWalker
 	public final void synpred4_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:30: ( INT )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:436:31: INT
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:30: ( INT )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:441:31: INT
 		{
 			match(input, INT, FOLLOW_INT_in_synpred4_ASN1TreeWalker852);
 			if (state.failed) return;
@@ -6558,8 +6571,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred5_ASN1TreeWalker
 	public final void synpred5_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:43: ( INT )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:440:44: INT
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:43: ( INT )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:445:44: INT
 		{
 			match(input, INT, FOLLOW_INT_in_synpred5_ASN1TreeWalker879);
 			if (state.failed) return;
@@ -6571,8 +6584,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred6_ASN1TreeWalker
 	public final void synpred6_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:36: ( 'MIN' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:37: 'MIN'
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:36: ( 'MIN' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:37: 'MIN'
 		{
 			match(input, 125, FOLLOW_125_in_synpred6_ASN1TreeWalker1056);
 			if (state.failed) return;
@@ -6584,8 +6597,8 @@ public class ASN1TreeWalker extends TreeFilter {
 
 	// $ANTLR start synpred7_ASN1TreeWalker
 	public final void synpred7_ASN1TreeWalker_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:57: ( 'MAX' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1TreeWalker.g:472:58: 'MAX'
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:57: ( 'MAX' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g:477:58: 'MAX'
 		{
 			match(input, 124, FOLLOW_124_in_synpred7_ASN1TreeWalker1066);
 			if (state.failed) return;

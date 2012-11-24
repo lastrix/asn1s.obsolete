@@ -44,6 +44,7 @@ public class ASN1ConstrainedType extends ASN1Type {
 		this.constraint = constraint;
 		//constrained type can not have it's own name, so get it from base
 		this.name = type.getName() + "@" + hashCode();
+		this.typeId = getName();
 		invalid();
 	}
 
@@ -129,6 +130,7 @@ public class ASN1ConstrainedType extends ASN1Type {
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
 			type.onInstall(module, false);
 		}
+		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
 

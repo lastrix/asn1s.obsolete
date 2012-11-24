@@ -46,6 +46,7 @@ public class ASN1Boolean extends ASN1Type implements ASN1X690Type {
 		this.tag = TAG;
 		this.name = NAME;
 		this.handledClass = Boolean.class;
+		this.typeId = getName();
 		valid();
 	}
 

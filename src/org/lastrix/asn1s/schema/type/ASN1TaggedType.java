@@ -69,6 +69,7 @@ public class ASN1TaggedType extends ASN1Type {
 		} else {
 			this.taggingMethod = taggingMethod;
 		}
+		this.typeId = getName();
 		invalid();
 	}
 
@@ -211,6 +212,7 @@ public class ASN1TaggedType extends ASN1Type {
 		if (!(subType instanceof ASN1UserType) && (subType.getModule() == null)) {
 			subType.onInstall(module, false);
 		}
+		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
 
@@ -225,5 +227,19 @@ public class ASN1TaggedType extends ASN1Type {
 		sb.append("] ");
 		sb.append(subType.getTypeString(prefix));
 		return sb.toString();
+	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append("[");
+		sb.append(getTag().getTagClass());
+		sb.append(" ");
+		sb.append(getTag().getTag());
+		sb.append("] ");
+		if (!taggingMethod.equals(TaggingMethod.AUTOMATIC)) {
+			sb.append(taggingMethod.toString());
+			sb.append(" ");
+		}
+		subType.toASN1(sb);
 	}
 }

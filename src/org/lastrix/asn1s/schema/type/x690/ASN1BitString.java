@@ -44,6 +44,7 @@ public class ASN1BitString extends ASN1Type implements ASN1X690Type {
 		this.tag = TAG;
 		this.name = NAME;
 		this.handledClass = BitSet.class;
+		this.typeId = getName();
 		valid();
 	}
 

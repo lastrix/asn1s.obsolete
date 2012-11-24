@@ -92,11 +92,18 @@ public class Asn1s {
 	public static void main(final String... args) {
 		initLogging();
 		try {
-			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
+			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/testModule.asn");
 			logger.warn(s.getModulesString());
 			logger.warn(s.getTypesString());
+			final String asn1schema = s.getModule("TestModule").toASN1();
+			logger.warn(asn1schema);
+//			PrintWriter pw = new PrintWriter(new File("./test/res/testModule.asn"));
+//			pw.print(asn1schema);
+//			pw.close();
 		} catch (ASN1Exception e) {
 			logger.warn("Exception:", e);
+//		} catch (FileNotFoundException e) {
+//			logger.warn("Exception:", e);
 		}
 //		s.printDebugInfo();
 	}

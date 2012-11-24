@@ -43,6 +43,7 @@ public class ASN1UTF8String extends ASN1OctetString implements ASN1X690Type {
 		handledClass = String.class;
 		name = NAME;
 		this.tag = TAG;
+		this.typeId = getName();
 		valid();
 	}
 

@@ -43,6 +43,7 @@ public final class ASN1Null extends ASN1Type implements ASN1X690Type {
 		this.tag = TAG;
 		this.name = NAME;
 		this.handledClass = null;
+		this.typeId = getName();
 		valid();
 	}
 

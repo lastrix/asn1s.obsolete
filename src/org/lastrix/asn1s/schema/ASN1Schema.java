@@ -317,6 +317,17 @@ public final class ASN1Schema {
 	}
 
 	/**
+	 * Get module by its id
+	 *
+	 * @param id
+	 *
+	 * @return
+	 */
+	public ASN1Module getModule(String id) {
+		return modules.get(id);
+	}
+
+	/**
 	 * Delegate from pcs
 	 *
 	 * @param propertyName

@@ -443,6 +443,61 @@ public class ASN1Module {
 		                      );
 	}
 
+	/**
+	 * Converts this module to string
+	 *
+	 * @return
+	 */
+	public String toASN1() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getName());
+		sb.append(" DEFINITIONS ");
+		sb.append(defaultTaggingMethod.toString());
+		sb.append(" TAGS ");
+		if (extensibilityImplied) {
+			sb.append("EXTENSIBILITY IMPLIED ");
+		}
+		sb.append("::=\nBEGIN\n");
+
+		if (exportAll) {
+			sb.append("EXPORTS ALL;\n");
+		} else {
+			sb.append("EXPORTS ");
+			int i = 0;
+			for (String name : typesExported.keySet()) {
+				sb.append(name);
+				if (++i < typesExported.size()) {
+					sb.append(", ");
+				}
+			}
+			sb.append(";\n");
+		}
+
+		if (imports.size() > 0) {
+			sb.append("IMPORTS ");
+			for (SymbolsFromModule sfm : imports) {
+				final List<String> sym = sfm.getSymbols();
+				int i = 0;
+				for (String name : sym) {
+					sb.append(name);
+					if (++i < sym.size()) {
+						sb.append(", ");
+					}
+				}
+				sb.append(" FROM ");
+				sb.append(sfm.getModuleName());
+			}
+		}
+
+		for (ASN1Type type : types.values()) {
+			type.toASN1(sb);
+			sb.append("\n");
+		}
+
+		sb.append("END\n");
+		return sb.toString();
+	}
+
 	// ------------------------------------------------------------------------ //
 	// ----------------------- PRIVATE CLASSES -------------------------------- //
 	// ------------------------------------------------------------------------ //

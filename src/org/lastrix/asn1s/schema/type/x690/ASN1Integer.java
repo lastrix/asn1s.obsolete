@@ -54,6 +54,7 @@ public class ASN1Integer extends ASN1Type implements ASN1X690Type {
 			this.name = NAME + "-" + _class.getSimpleName();
 		}
 		this.tag = TAG;
+		this.typeId = getName();
 		valid();
 	}
 

@@ -42,6 +42,8 @@ public abstract class ASN1Type {
 	 */
 	public final static String VALID = "valid";
 
+	protected String typeId = null;
+
 	/**
 	 * Static method used to make a fully qualified type id.
 	 *
@@ -133,7 +135,7 @@ public abstract class ASN1Type {
 	 * @return an String
 	 */
 	public final String getTypeId() {
-		return makeTypeId(getName(), module.getName());
+		return typeId;
 	}
 
 	/**
@@ -348,4 +350,12 @@ public abstract class ASN1Type {
 	                                                                                                                 IOException,
 	                                                                                                                 ASN1Exception;
 
+	/**
+	 * Convert type to ASN1 schema representation
+	 *
+	 * @param sb
+	 */
+	public void toASN1(final StringBuilder sb) {
+		sb.append(name);
+	}
 }

@@ -16,16 +16,19 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/dev/java/ASN1S/antlr/ASN1.g 2011-12-07 12:23:49
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-24 19:37:38
 
 package org.lastrix.asn1s.schema.compiler.generated;
 
-//import org.lastrix.asn1s.schema.compiler.*;
-//import java.util.List;
-//import java.util.Collections;
-
 
 import org.antlr.runtime.*;
+
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 import org.antlr.runtime.tree.*;
 
 
@@ -384,7 +387,7 @@ public class ASN1Parser extends Parser {
 
 	public String[] getTokenNames() { return ASN1Parser.tokenNames; }
 
-	public String getGrammarFileName() { return "/home/lastrix/dev/java/ASN1S/antlr/ASN1.g"; }
+	public String getGrammarFileName() { return "/home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g"; }
 
 
 	public static class parse_return extends ParserRuleReturnScope {
@@ -397,7 +400,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "parse"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:98:1: parse : ( module )+ ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:94:1: parse : ( module )+ ;
 	public final ASN1Parser.parse_return parse() throws RecognitionException {
 		ASN1Parser.parse_return retval = new ASN1Parser.parse_return();
 		retval.start = input.LT(1);
@@ -409,13 +412,13 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:98:7: ( ( module )+ )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:98:9: ( module )+
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:94:7: ( ( module )+ )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:94:9: ( module )+
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:98:9: ( module )+
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:94:9: ( module )+
 				int cnt1 = 0;
 				loop1:
 				do {
@@ -429,7 +432,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt1) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:98:9: module
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:94:9: module
 						{
 							pushFollow(FOLLOW_module_in_parse277);
 							module1 = module();
@@ -485,7 +488,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "module"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:100:1: module : moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END' -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:96:1: module : moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END' -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList ) ;
 	public final ASN1Parser.module_return module() throws RecognitionException {
 		ASN1Parser.module_return retval = new ASN1Parser.module_return();
 		retval.start = input.LT(1);
@@ -525,8 +528,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_moduleIdentifier = new RewriteRuleSubtreeStream(adaptor, "rule moduleIdentifier");
 		RewriteRuleSubtreeStream stream_imports = new RewriteRuleSubtreeStream(adaptor, "rule imports");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:100:25: ( moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END' -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:101:3: moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:96:25: ( moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END' -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:97:3: moduleIdentifier 'DEFINITIONS' ( tagDefault )? ( extensionDefault )? '::=' 'BEGIN' ( exports )? ( imports )? assignmentList 'END'
 			{
 				pushFollow(FOLLOW_moduleIdentifier_in_module305);
 				moduleIdentifier2 = moduleIdentifier();
@@ -540,7 +543,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_104.add(string_literal3);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:102:3: ( tagDefault )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:98:3: ( tagDefault )?
 				int alt2 = 2;
 				int LA2_0 = input.LA(1);
 
@@ -549,7 +552,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt2) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:102:3: tagDefault
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:98:3: tagDefault
 					{
 						pushFollow(FOLLOW_tagDefault_in_module312);
 						tagDefault4 = tagDefault();
@@ -564,7 +567,7 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:102:15: ( extensionDefault )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:98:15: ( extensionDefault )?
 				int alt3 = 2;
 				int LA3_0 = input.LA(1);
 
@@ -573,7 +576,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt3) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:102:15: extensionDefault
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:98:15: extensionDefault
 					{
 						pushFollow(FOLLOW_extensionDefault_in_module315);
 						extensionDefault5 = extensionDefault();
@@ -598,7 +601,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_95.add(string_literal7);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:11: ( exports )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:11: ( exports )?
 				int alt4 = 2;
 				int LA4_0 = input.LA(1);
 
@@ -607,7 +610,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt4) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:11: exports
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:11: exports
 					{
 						pushFollow(FOLLOW_exports_in_module324);
 						exports8 = exports();
@@ -622,7 +625,7 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:20: ( imports )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:20: ( imports )?
 				int alt5 = 2;
 				int LA5_0 = input.LA(1);
 
@@ -631,7 +634,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt5) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:20: imports
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:20: imports
 					{
 						pushFollow(FOLLOW_imports_in_module327);
 						imports9 = imports();
@@ -659,7 +662,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: assignmentList, extensionDefault, exports, imports, tagDefault, moduleIdentifier
+				// elements: assignmentList, imports, tagDefault, moduleIdentifier, exports, extensionDefault
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -675,9 +678,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 103:50: -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList )
+					// 99:50: -> ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:53: ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:53: ^( MODULE moduleIdentifier ( tagDefault )? ( extensionDefault )? ( exports )? ( imports )? assignmentList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -687,28 +690,28 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_moduleIdentifier.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:79: ( tagDefault )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:79: ( tagDefault )?
 							if (stream_tagDefault.hasNext()) {
 								adaptor.addChild(root_1, stream_tagDefault.nextTree());
 
 							}
 							stream_tagDefault.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:91: ( extensionDefault )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:91: ( extensionDefault )?
 							if (stream_extensionDefault.hasNext()) {
 								adaptor.addChild(root_1, stream_extensionDefault.nextTree());
 
 							}
 							stream_extensionDefault.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:109: ( exports )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:109: ( exports )?
 							if (stream_exports.hasNext()) {
 								adaptor.addChild(root_1, stream_exports.nextTree());
 
 							}
 							stream_exports.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:103:118: ( imports )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:99:118: ( imports )?
 							if (stream_imports.hasNext()) {
 								adaptor.addChild(root_1, stream_imports.nextTree());
 
@@ -756,7 +759,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "moduleIdentifier"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:106:1: moduleIdentifier : ID ( definitiveIdentifier )? -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:102:1: moduleIdentifier : ID ( definitiveIdentifier )? -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? ) ;
 	public final ASN1Parser.moduleIdentifier_return moduleIdentifier() throws RecognitionException {
 		ASN1Parser.moduleIdentifier_return retval = new ASN1Parser.moduleIdentifier_return();
 		retval.start = input.LT(1);
@@ -772,15 +775,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_definitiveIdentifier = new RewriteRuleSubtreeStream(adaptor, "rule definitiveIdentifier");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:106:18: ( ID ( definitiveIdentifier )? -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:107:2: ID ( definitiveIdentifier )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:102:18: ( ID ( definitiveIdentifier )? -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:103:2: ID ( definitiveIdentifier )?
 			{
 				ID12 = (Token) match(input, ID, FOLLOW_ID_in_moduleIdentifier364);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_ID.add(ID12);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:107:5: ( definitiveIdentifier )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:103:5: ( definitiveIdentifier )?
 				int alt6 = 2;
 				int LA6_0 = input.LA(1);
 
@@ -789,7 +792,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt6) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:107:5: definitiveIdentifier
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:103:5: definitiveIdentifier
 					{
 						pushFollow(FOLLOW_definitiveIdentifier_in_moduleIdentifier366);
 						definitiveIdentifier13 = definitiveIdentifier();
@@ -805,7 +808,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: ID, definitiveIdentifier
+				// elements: definitiveIdentifier, ID
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -821,9 +824,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 107:27: -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? )
+					// 103:27: -> ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:107:30: ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:103:30: ^( MODULE_IDENTIFIER ID ( definitiveIdentifier )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -836,7 +839,7 @@ public class ASN1Parser extends Parser {
 							                stream_ID.nextNode()
 							                );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:107:53: ( definitiveIdentifier )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:103:53: ( definitiveIdentifier )?
 							if (stream_definitiveIdentifier.hasNext()) {
 								adaptor.addChild(root_1, stream_definitiveIdentifier.nextTree());
 
@@ -882,7 +885,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "definitiveIdentifier"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:111:1: definitiveIdentifier : '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:1: definitiveIdentifier : '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) ;
 	public final ASN1Parser.definitiveIdentifier_return definitiveIdentifier() throws RecognitionException {
 		ASN1Parser.definitiveIdentifier_return retval = new ASN1Parser.definitiveIdentifier_return();
 		retval.start = input.LT(1);
@@ -906,8 +909,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleSubtreeStream stream_definitiveObjIdComponent = new RewriteRuleSubtreeStream(adaptor, "rule definitiveObjIdComponent");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:111:22: ( '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:112:2: '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:22: ( '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:2: '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}'
 			{
 				char_literal14 = (Token) match(input, 159, FOLLOW_159_in_definitiveIdentifier389);
 				if (state.failed) return retval;
@@ -921,7 +924,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_definitiveObjIdComponent.add(definitiveObjIdComponent15.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:112:31: ( ',' definitiveObjIdComponent )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:31: ( ',' definitiveObjIdComponent )*
 				loop7:
 				do {
 					int alt7 = 2;
@@ -934,7 +937,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt7) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:112:32: ',' definitiveObjIdComponent
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:32: ',' definitiveObjIdComponent
 						{
 							char_literal16 = (Token) match(input, 83, FOLLOW_83_in_definitiveIdentifier394);
 							if (state.failed) return retval;
@@ -979,9 +982,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 113:2: -> ^( VEC ( definitiveObjIdComponent )+ )
+					// 109:2: -> ^( VEC ( definitiveObjIdComponent )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:113:5: ^( VEC ( definitiveObjIdComponent )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:109:5: ^( VEC ( definitiveObjIdComponent )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1037,7 +1040,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "definitiveObjIdComponent"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:116:1: definitiveObjIdComponent : ( nameNumberForm | ID -> ^( NAME_FORM ID ) | INT -> ^( NUMBER_FORM INT ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:112:1: definitiveObjIdComponent : ( nameNumberForm | ID -> ^( NAME_FORM ID ) | INT -> ^( NUMBER_FORM INT ) );
 	public final ASN1Parser.definitiveObjIdComponent_return definitiveObjIdComponent() throws RecognitionException {
 		ASN1Parser.definitiveObjIdComponent_return retval = new ASN1Parser.definitiveObjIdComponent_return();
 		retval.start = input.LT(1);
@@ -1056,7 +1059,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:116:25: ( nameNumberForm | ID -> ^( NAME_FORM ID ) | INT -> ^( NUMBER_FORM INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:112:25: ( nameNumberForm | ID -> ^( NAME_FORM ID ) | INT -> ^( NUMBER_FORM INT ) )
 			int alt8 = 3;
 			int LA8_0 = input.LA(1);
 
@@ -1093,7 +1096,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt8) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:117:3: nameNumberForm
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:113:3: nameNumberForm
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -1108,7 +1111,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:118:4: ID
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:114:4: ID
 				{
 					ID20 = (Token) match(input, ID, FOLLOW_ID_in_definitiveObjIdComponent425);
 					if (state.failed) return retval;
@@ -1132,9 +1135,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 118:7: -> ^( NAME_FORM ID )
+						// 114:7: -> ^( NAME_FORM ID )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:118:10: ^( NAME_FORM ID )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:114:10: ^( NAME_FORM ID )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1159,7 +1162,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:119:4: INT
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:115:4: INT
 				{
 					INT21 = (Token) match(input, INT, FOLLOW_INT_in_definitiveObjIdComponent438);
 					if (state.failed) return retval;
@@ -1183,9 +1186,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 119:8: -> ^( NUMBER_FORM INT )
+						// 115:8: -> ^( NUMBER_FORM INT )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:119:11: ^( NUMBER_FORM INT )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:115:11: ^( NUMBER_FORM INT )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1239,7 +1242,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionDefault"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:121:1: extensionDefault : 'EXTENSIBILITY' 'IMPLIED' -> ^( EXTENSIBILITY_IMPLIED ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:117:1: extensionDefault : 'EXTENSIBILITY' 'IMPLIED' -> ^( EXTENSIBILITY_IMPLIED ) ;
 	public final ASN1Parser.extensionDefault_return extensionDefault() throws RecognitionException {
 		ASN1Parser.extensionDefault_return retval = new ASN1Parser.extensionDefault_return();
 		retval.start = input.LT(1);
@@ -1256,8 +1259,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_118 = new RewriteRuleTokenStream(adaptor, "token 118");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:121:19: ( 'EXTENSIBILITY' 'IMPLIED' -> ^( EXTENSIBILITY_IMPLIED ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:122:3: 'EXTENSIBILITY' 'IMPLIED'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:117:19: ( 'EXTENSIBILITY' 'IMPLIED' -> ^( EXTENSIBILITY_IMPLIED ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:118:3: 'EXTENSIBILITY' 'IMPLIED'
 			{
 				string_literal22 = (Token) match(input, 110, FOLLOW_110_in_extensionDefault458);
 				if (state.failed) return retval;
@@ -1286,9 +1289,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 122:29: -> ^( EXTENSIBILITY_IMPLIED )
+					// 118:29: -> ^( EXTENSIBILITY_IMPLIED )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:122:32: ^( EXTENSIBILITY_IMPLIED )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:118:32: ^( EXTENSIBILITY_IMPLIED )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1335,7 +1338,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "tagDefault"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:124:1: tagDefault : taggingMethod 'TAGS' -> ^( TAGGING_METHOD taggingMethod ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:120:1: tagDefault : taggingMethod 'TAGS' -> ^( TAGGING_METHOD taggingMethod ) ;
 	public final ASN1Parser.tagDefault_return tagDefault() throws RecognitionException {
 		ASN1Parser.tagDefault_return retval = new ASN1Parser.tagDefault_return();
 		retval.start = input.LT(1);
@@ -1351,8 +1354,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_144 = new RewriteRuleTokenStream(adaptor, "token 144");
 		RewriteRuleSubtreeStream stream_taggingMethod = new RewriteRuleSubtreeStream(adaptor, "rule taggingMethod");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:124:14: ( taggingMethod 'TAGS' -> ^( TAGGING_METHOD taggingMethod ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:125:3: taggingMethod 'TAGS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:120:14: ( taggingMethod 'TAGS' -> ^( TAGGING_METHOD taggingMethod ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:121:3: taggingMethod 'TAGS'
 			{
 				pushFollow(FOLLOW_taggingMethod_in_tagDefault478);
 				taggingMethod24 = taggingMethod();
@@ -1383,9 +1386,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 125:24: -> ^( TAGGING_METHOD taggingMethod )
+					// 121:24: -> ^( TAGGING_METHOD taggingMethod )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:125:27: ^( TAGGING_METHOD taggingMethod )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:121:27: ^( TAGGING_METHOD taggingMethod )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1434,7 +1437,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "taggingMethod"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:127:1: taggingMethod : ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:123:1: taggingMethod : ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' );
 	public final ASN1Parser.taggingMethod_return taggingMethod() throws RecognitionException {
 		ASN1Parser.taggingMethod_return retval = new ASN1Parser.taggingMethod_return();
 		retval.start = input.LT(1);
@@ -1447,8 +1450,8 @@ public class ASN1Parser extends Parser {
 		CommonTree set26_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:127:17: ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:123:17: ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
@@ -1505,7 +1508,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "exports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:132:1: exports : ( 'EXPORTS' 'ALL' ';' -> ^( EXPORTS ALL ) | 'EXPORTS' symbolList ';' -> ^( EXPORTS symbolList ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:128:1: exports : ( 'EXPORTS' 'ALL' ';' -> ^( EXPORTS ALL ) | 'EXPORTS' symbolList ';' -> ^( EXPORTS symbolList ) );
 	public final ASN1Parser.exports_return exports() throws RecognitionException {
 		ASN1Parser.exports_return retval = new ASN1Parser.exports_return();
 		retval.start = input.LT(1);
@@ -1531,7 +1534,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
 		RewriteRuleSubtreeStream stream_symbolList = new RewriteRuleSubtreeStream(adaptor, "rule symbolList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:132:12: ( 'EXPORTS' 'ALL' ';' -> ^( EXPORTS ALL ) | 'EXPORTS' symbolList ';' -> ^( EXPORTS symbolList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:128:12: ( 'EXPORTS' 'ALL' ';' -> ^( EXPORTS ALL ) | 'EXPORTS' symbolList ';' -> ^( EXPORTS symbolList ) )
 			int alt9 = 2;
 			int LA9_0 = input.LA(1);
 
@@ -1566,7 +1569,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt9) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:133:3: 'EXPORTS' 'ALL' ';'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:129:3: 'EXPORTS' 'ALL' ';'
 				{
 					string_literal27 = (Token) match(input, 109, FOLLOW_109_in_exports523);
 					if (state.failed) return retval;
@@ -1600,9 +1603,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 133:23: -> ^( EXPORTS ALL )
+						// 129:23: -> ^( EXPORTS ALL )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:133:26: ^( EXPORTS ALL )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:129:26: ^( EXPORTS ALL )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1627,7 +1630,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:134:4: 'EXPORTS' symbolList ';'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:130:4: 'EXPORTS' symbolList ';'
 				{
 					string_literal30 = (Token) match(input, 109, FOLLOW_109_in_exports540);
 					if (state.failed) return retval;
@@ -1663,9 +1666,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 134:29: -> ^( EXPORTS symbolList )
+						// 130:29: -> ^( EXPORTS symbolList )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:134:32: ^( EXPORTS symbolList )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:130:32: ^( EXPORTS symbolList )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1716,7 +1719,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "symbolList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:136:1: symbolList : symbol ( ',' symbol )* -> ^( VEC ( symbol )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:132:1: symbolList : symbol ( ',' symbol )* -> ^( VEC ( symbol )+ ) ;
 	public final ASN1Parser.symbolList_return symbolList() throws RecognitionException {
 		ASN1Parser.symbolList_return retval = new ASN1Parser.symbolList_return();
 		retval.start = input.LT(1);
@@ -1734,8 +1737,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_symbol = new RewriteRuleSubtreeStream(adaptor, "rule symbol");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:136:14: ( symbol ( ',' symbol )* -> ^( VEC ( symbol )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:137:3: symbol ( ',' symbol )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:132:14: ( symbol ( ',' symbol )* -> ^( VEC ( symbol )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:3: symbol ( ',' symbol )*
 			{
 				pushFollow(FOLLOW_symbol_in_symbolList564);
 				symbol33 = symbol();
@@ -1744,7 +1747,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_symbol.add(symbol33.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:137:10: ( ',' symbol )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:10: ( ',' symbol )*
 				loop10:
 				do {
 					int alt10 = 2;
@@ -1757,7 +1760,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt10) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:137:12: ',' symbol
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:12: ',' symbol
 						{
 							char_literal34 = (Token) match(input, 83, FOLLOW_83_in_symbolList568);
 							if (state.failed) return retval;
@@ -1797,9 +1800,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 137:25: -> ^( VEC ( symbol )+ )
+					// 133:25: -> ^( VEC ( symbol )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:137:28: ^( VEC ( symbol )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:28: ^( VEC ( symbol )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1855,7 +1858,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "symbol"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:140:1: symbol : ID -> ^( SYMBOL ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:136:1: symbol : ID -> ^( SYMBOL ID ) ;
 	public final ASN1Parser.symbol_return symbol() throws RecognitionException {
 		ASN1Parser.symbol_return retval = new ASN1Parser.symbol_return();
 		retval.start = input.LT(1);
@@ -1869,8 +1872,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:140:11: ( ID -> ^( SYMBOL ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:141:3: ID
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:136:11: ( ID -> ^( SYMBOL ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:137:3: ID
 			{
 				ID36 = (Token) match(input, ID, FOLLOW_ID_in_symbol595);
 				if (state.failed) return retval;
@@ -1894,9 +1897,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 141:6: -> ^( SYMBOL ID )
+					// 137:6: -> ^( SYMBOL ID )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:141:9: ^( SYMBOL ID )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:137:9: ^( SYMBOL ID )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -1948,7 +1951,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "imports"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:143:1: imports : 'IMPORTS' symbolsFromModuleList ';' -> ^( IMPORTS symbolsFromModuleList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:139:1: imports : 'IMPORTS' symbolsFromModuleList ';' -> ^( IMPORTS symbolsFromModuleList ) ;
 	public final ASN1Parser.imports_return imports() throws RecognitionException {
 		ASN1Parser.imports_return retval = new ASN1Parser.imports_return();
 		retval.start = input.LT(1);
@@ -1967,8 +1970,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
 		RewriteRuleSubtreeStream stream_symbolsFromModuleList = new RewriteRuleSubtreeStream(adaptor, "rule symbolsFromModuleList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:143:12: ( 'IMPORTS' symbolsFromModuleList ';' -> ^( IMPORTS symbolsFromModuleList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:144:3: 'IMPORTS' symbolsFromModuleList ';'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:139:12: ( 'IMPORTS' symbolsFromModuleList ';' -> ^( IMPORTS symbolsFromModuleList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:140:3: 'IMPORTS' symbolsFromModuleList ';'
 			{
 				string_literal37 = (Token) match(input, 119, FOLLOW_119_in_imports616);
 				if (state.failed) return retval;
@@ -2004,9 +2007,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 144:39: -> ^( IMPORTS symbolsFromModuleList )
+					// 140:39: -> ^( IMPORTS symbolsFromModuleList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:144:42: ^( IMPORTS symbolsFromModuleList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:140:42: ^( IMPORTS symbolsFromModuleList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2055,7 +2058,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "symbolsFromModuleList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:146:1: symbolsFromModuleList : ( symbolsFromModule )+ -> ^( VEC ( symbolsFromModule )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:142:1: symbolsFromModuleList : ( symbolsFromModule )+ -> ^( VEC ( symbolsFromModule )+ ) ;
 	public final ASN1Parser.symbolsFromModuleList_return symbolsFromModuleList() throws RecognitionException {
 		ASN1Parser.symbolsFromModuleList_return retval = new ASN1Parser.symbolsFromModuleList_return();
 		retval.start = input.LT(1);
@@ -2068,10 +2071,10 @@ public class ASN1Parser extends Parser {
 
 		RewriteRuleSubtreeStream stream_symbolsFromModule = new RewriteRuleSubtreeStream(adaptor, "rule symbolsFromModule");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:146:24: ( ( symbolsFromModule )+ -> ^( VEC ( symbolsFromModule )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:147:3: ( symbolsFromModule )+
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:142:24: ( ( symbolsFromModule )+ -> ^( VEC ( symbolsFromModule )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:143:3: ( symbolsFromModule )+
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:147:3: ( symbolsFromModule )+
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:143:3: ( symbolsFromModule )+
 				int cnt11 = 0;
 				loop11:
 				do {
@@ -2085,7 +2088,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt11) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:147:3: symbolsFromModule
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:143:3: symbolsFromModule
 						{
 							pushFollow(FOLLOW_symbolsFromModule_in_symbolsFromModuleList639);
 							symbolsFromModule40 = symbolsFromModule();
@@ -2128,9 +2131,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 147:22: -> ^( VEC ( symbolsFromModule )+ )
+					// 143:22: -> ^( VEC ( symbolsFromModule )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:147:25: ^( VEC ( symbolsFromModule )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:143:25: ^( VEC ( symbolsFromModule )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2186,7 +2189,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "symbolsFromModule"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:149:1: symbolsFromModule : symbolList 'FROM' globalModuleReference -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:145:1: symbolsFromModule : symbolList 'FROM' globalModuleReference -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList ) ;
 	public final ASN1Parser.symbolsFromModule_return symbolsFromModule() throws RecognitionException {
 		ASN1Parser.symbolsFromModule_return retval = new ASN1Parser.symbolsFromModule_return();
 		retval.start = input.LT(1);
@@ -2205,8 +2208,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_globalModuleReference = new RewriteRuleSubtreeStream(adaptor, "rule globalModuleReference");
 		RewriteRuleSubtreeStream stream_symbolList = new RewriteRuleSubtreeStream(adaptor, "rule symbolList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:149:20: ( symbolList 'FROM' globalModuleReference -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:150:3: symbolList 'FROM' globalModuleReference
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:145:20: ( symbolList 'FROM' globalModuleReference -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:146:3: symbolList 'FROM' globalModuleReference
 			{
 				pushFollow(FOLLOW_symbolList_in_symbolsFromModule662);
 				symbolList41 = symbolList();
@@ -2244,9 +2247,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 150:43: -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList )
+					// 146:43: -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:150:46: ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:146:46: ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2297,7 +2300,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "globalModuleReference"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:153:1: globalModuleReference : ID ( assignedIdentifier )? -> ^( GLOBAL_MODULE_REFERENCE ID ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:149:1: globalModuleReference : ID ( assignedIdentifier )? -> ^( GLOBAL_MODULE_REFERENCE ID ) ;
 	public final ASN1Parser.globalModuleReference_return globalModuleReference() throws RecognitionException {
 		ASN1Parser.globalModuleReference_return retval = new ASN1Parser.globalModuleReference_return();
 		retval.start = input.LT(1);
@@ -2313,15 +2316,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_assignedIdentifier = new RewriteRuleSubtreeStream(adaptor, "rule assignedIdentifier");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:153:24: ( ID ( assignedIdentifier )? -> ^( GLOBAL_MODULE_REFERENCE ID ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:154:3: ID ( assignedIdentifier )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:149:24: ( ID ( assignedIdentifier )? -> ^( GLOBAL_MODULE_REFERENCE ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:3: ID ( assignedIdentifier )?
 			{
 				ID44 = (Token) match(input, ID, FOLLOW_ID_in_globalModuleReference688);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_ID.add(ID44);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:154:6: ( assignedIdentifier )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:6: ( assignedIdentifier )?
 				int alt12 = 2;
 				int LA12_0 = input.LA(1);
 
@@ -2336,7 +2339,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt12) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:154:6: assignedIdentifier
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:6: assignedIdentifier
 					{
 						pushFollow(FOLLOW_assignedIdentifier_in_globalModuleReference690);
 						assignedIdentifier45 = assignedIdentifier();
@@ -2368,9 +2371,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 154:26: -> ^( GLOBAL_MODULE_REFERENCE ID )
+					// 150:26: -> ^( GLOBAL_MODULE_REFERENCE ID )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:154:29: ^( GLOBAL_MODULE_REFERENCE ID )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:29: ^( GLOBAL_MODULE_REFERENCE ID )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2422,7 +2425,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "assignedIdentifier"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:156:1: assignedIdentifier : ( objectIdentifierValue | definedValue ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:152:1: assignedIdentifier : ( objectIdentifierValue | definedValue ) ;
 	public final ASN1Parser.assignedIdentifier_return assignedIdentifier() throws RecognitionException {
 		ASN1Parser.assignedIdentifier_return retval = new ASN1Parser.assignedIdentifier_return();
 		retval.start = input.LT(1);
@@ -2436,13 +2439,13 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:156:21: ( ( objectIdentifierValue | definedValue ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:157:3: ( objectIdentifierValue | definedValue )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:152:21: ( ( objectIdentifierValue | definedValue ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:3: ( objectIdentifierValue | definedValue )
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:157:3: ( objectIdentifierValue | definedValue )
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:3: ( objectIdentifierValue | definedValue )
 				int alt13 = 2;
 				int LA13_0 = input.LA(1);
 
@@ -2463,7 +2466,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt13) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:157:4: objectIdentifierValue
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:4: objectIdentifierValue
 					{
 						pushFollow(FOLLOW_objectIdentifierValue_in_assignedIdentifier711);
 						objectIdentifierValue46 = objectIdentifierValue();
@@ -2475,7 +2478,7 @@ public class ASN1Parser extends Parser {
 					}
 					break;
 					case 2:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:157:28: definedValue
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:28: definedValue
 					{
 						pushFollow(FOLLOW_definedValue_in_assignedIdentifier715);
 						definedValue47 = definedValue();
@@ -2520,7 +2523,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "definedValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:161:1: definedValue : ( ID '.' )? ID -> ^( VALUE_REFERENCE ID ( ID )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:157:1: definedValue : ( ID '.' )? ID -> ^( VALUE_REFERENCE ID ( ID )? ) ;
 	public final ASN1Parser.definedValue_return definedValue() throws RecognitionException {
 		ASN1Parser.definedValue_return retval = new ASN1Parser.definedValue_return();
 		retval.start = input.LT(1);
@@ -2539,10 +2542,10 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_84 = new RewriteRuleTokenStream(adaptor, "token 84");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:161:16: ( ( ID '.' )? ID -> ^( VALUE_REFERENCE ID ( ID )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:162:3: ( ID '.' )? ID
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:157:16: ( ( ID '.' )? ID -> ^( VALUE_REFERENCE ID ( ID )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:3: ( ID '.' )? ID
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:162:3: ( ID '.' )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:3: ( ID '.' )?
 				int alt14 = 2;
 				int LA14_0 = input.LA(1);
 
@@ -2555,7 +2558,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt14) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:162:4: ID '.'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:4: ID '.'
 					{
 						ID48 = (Token) match(input, ID, FOLLOW_ID_in_definedValue731);
 						if (state.failed) return retval;
@@ -2595,9 +2598,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 162:16: -> ^( VALUE_REFERENCE ID ( ID )? )
+					// 158:16: -> ^( VALUE_REFERENCE ID ( ID )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:162:19: ^( VALUE_REFERENCE ID ( ID )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:19: ^( VALUE_REFERENCE ID ( ID )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2610,7 +2613,7 @@ public class ASN1Parser extends Parser {
 							                stream_ID.nextNode()
 							                );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:162:40: ( ID )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:40: ( ID )?
 							if (stream_ID.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -2659,7 +2662,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "assignmentList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:165:1: assignmentList : ( assignment )+ -> ^( VEC ( assignment )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:161:1: assignmentList : ( assignment )+ -> ^( VEC ( assignment )+ ) ;
 	public final ASN1Parser.assignmentList_return assignmentList() throws RecognitionException {
 		ASN1Parser.assignmentList_return retval = new ASN1Parser.assignmentList_return();
 		retval.start = input.LT(1);
@@ -2672,10 +2675,10 @@ public class ASN1Parser extends Parser {
 
 		RewriteRuleSubtreeStream stream_assignment = new RewriteRuleSubtreeStream(adaptor, "rule assignment");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:165:18: ( ( assignment )+ -> ^( VEC ( assignment )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:166:3: ( assignment )+
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:161:18: ( ( assignment )+ -> ^( VEC ( assignment )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:162:3: ( assignment )+
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:166:3: ( assignment )+
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:162:3: ( assignment )+
 				int cnt15 = 0;
 				loop15:
 				do {
@@ -2689,7 +2692,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt15) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:166:3: assignment
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:162:3: assignment
 						{
 							pushFollow(FOLLOW_assignment_in_assignmentList761);
 							assignment51 = assignment();
@@ -2732,9 +2735,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 166:15: -> ^( VEC ( assignment )+ )
+					// 162:15: -> ^( VEC ( assignment )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:166:18: ^( VEC ( assignment )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:162:18: ^( VEC ( assignment )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -2790,7 +2793,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "assignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:168:1: assignment : ( ( ( CLASS_DEF )? ID '::=' )=> typeAssignment | valueAssignment );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:164:1: assignment : ( ( ( CLASS_DEF )? ID '::=' )=> typeAssignment | valueAssignment );
 	public final ASN1Parser.assignment_return assignment() throws RecognitionException {
 		ASN1Parser.assignment_return retval = new ASN1Parser.assignment_return();
 		retval.start = input.LT(1);
@@ -2804,7 +2807,7 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:168:14: ( ( ( CLASS_DEF )? ID '::=' )=> typeAssignment | valueAssignment )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:164:14: ( ( ( CLASS_DEF )? ID '::=' )=> typeAssignment | valueAssignment )
 			int alt16 = 2;
 			int LA16_0 = input.LA(1);
 
@@ -2932,7 +2935,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt16) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:169:3: ( ( CLASS_DEF )? ID '::=' )=> typeAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:3: ( ( CLASS_DEF )? ID '::=' )=> typeAssignment
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -2947,7 +2950,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:170:4: valueAssignment
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:166:4: valueAssignment
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -2991,7 +2994,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "valueAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:172:1: valueAssignment : ID type '::=' value ( ';' )? -> ^( VALUE_ASSIGNMENT ID type value ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:168:1: valueAssignment : ID type '::=' value ( ';' )? -> ^( VALUE_ASSIGNMENT ID type value ) ;
 	public final ASN1Parser.valueAssignment_return valueAssignment() throws RecognitionException {
 		ASN1Parser.valueAssignment_return retval = new ASN1Parser.valueAssignment_return();
 		retval.start = input.LT(1);
@@ -3016,8 +3019,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:172:19: ( ID type '::=' value ( ';' )? -> ^( VALUE_ASSIGNMENT ID type value ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:173:3: ID type '::=' value ( ';' )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:168:19: ( ID type '::=' value ( ';' )? -> ^( VALUE_ASSIGNMENT ID type value ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:3: ID type '::=' value ( ';' )?
 			{
 				ID54 = (Token) match(input, ID, FOLLOW_ID_in_valueAssignment811);
 				if (state.failed) return retval;
@@ -3043,7 +3046,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_value.add(value57.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:173:23: ( ';' )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:23: ( ';' )?
 				int alt17 = 2;
 				int LA17_0 = input.LA(1);
 
@@ -3052,7 +3055,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt17) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:173:23: ';'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:23: ';'
 					{
 						char_literal58 = (Token) match(input, 89, FOLLOW_89_in_valueAssignment819);
 						if (state.failed) return retval;
@@ -3066,7 +3069,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: ID, value, type
+				// elements: type, value, ID
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -3082,9 +3085,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 173:28: -> ^( VALUE_ASSIGNMENT ID type value )
+					// 169:28: -> ^( VALUE_ASSIGNMENT ID type value )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:173:31: ^( VALUE_ASSIGNMENT ID type value )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:31: ^( VALUE_ASSIGNMENT ID type value )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3140,7 +3143,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "value"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:175:1: value : ( booleanValue -> ^( VALUE booleanValue ) | numberValue -> ^( VALUE numberValue ) | objectIdentifierValue -> ^( VALUE objectIdentifierValue ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:171:1: value : ( booleanValue -> ^( VALUE booleanValue ) | numberValue -> ^( VALUE numberValue ) | objectIdentifierValue -> ^( VALUE objectIdentifierValue ) );
 	public final ASN1Parser.value_return value() throws RecognitionException {
 		ASN1Parser.value_return retval = new ASN1Parser.value_return();
 		retval.start = input.LT(1);
@@ -3159,7 +3162,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_numberValue = new RewriteRuleSubtreeStream(adaptor, "rule numberValue");
 		RewriteRuleSubtreeStream stream_booleanValue = new RewriteRuleSubtreeStream(adaptor, "rule booleanValue");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:175:10: ( booleanValue -> ^( VALUE booleanValue ) | numberValue -> ^( VALUE numberValue ) | objectIdentifierValue -> ^( VALUE objectIdentifierValue ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:171:10: ( booleanValue -> ^( VALUE booleanValue ) | numberValue -> ^( VALUE numberValue ) | objectIdentifierValue -> ^( VALUE objectIdentifierValue ) )
 			int alt18 = 3;
 			switch (input.LA(1)) {
 				case 111:
@@ -3193,7 +3196,7 @@ public class ASN1Parser extends Parser {
 
 			switch (alt18) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:176:3: booleanValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:172:3: booleanValue
 				{
 					pushFollow(FOLLOW_booleanValue_in_value845);
 					booleanValue59 = booleanValue();
@@ -3219,9 +3222,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 176:16: -> ^( VALUE booleanValue )
+						// 172:16: -> ^( VALUE booleanValue )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:176:19: ^( VALUE booleanValue )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:172:19: ^( VALUE booleanValue )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3243,7 +3246,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:177:4: numberValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:173:4: numberValue
 				{
 					pushFollow(FOLLOW_numberValue_in_value858);
 					numberValue60 = numberValue();
@@ -3269,9 +3272,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 177:16: -> ^( VALUE numberValue )
+						// 173:16: -> ^( VALUE numberValue )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:177:19: ^( VALUE numberValue )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:173:19: ^( VALUE numberValue )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3293,7 +3296,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:178:4: objectIdentifierValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:174:4: objectIdentifierValue
 				{
 					pushFollow(FOLLOW_objectIdentifierValue_in_value871);
 					objectIdentifierValue61 = objectIdentifierValue();
@@ -3319,9 +3322,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 178:26: -> ^( VALUE objectIdentifierValue )
+						// 174:26: -> ^( VALUE objectIdentifierValue )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:178:29: ^( VALUE objectIdentifierValue )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:174:29: ^( VALUE objectIdentifierValue )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3372,7 +3375,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "numberValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:181:1: numberValue : ( 'PLUS-INFINITY' -> ^( NUMBER PLUS_INFINITY ) | 'MINUS-INFINITY' -> ^( NUMBER MINUS_INFINITY ) | ID -> ^( NUMBER ID ) | ( INT ) -> ^( NUMBER INT ) | REAL_NUMBER -> ^( NUMBER REAL_NUMBER ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:177:1: numberValue : ( 'PLUS-INFINITY' -> ^( NUMBER PLUS_INFINITY ) | 'MINUS-INFINITY' -> ^( NUMBER MINUS_INFINITY ) | ID -> ^( NUMBER ID ) | ( INT ) -> ^( NUMBER INT ) | REAL_NUMBER -> ^( NUMBER REAL_NUMBER ) );
 	public final ASN1Parser.numberValue_return numberValue() throws RecognitionException {
 		ASN1Parser.numberValue_return retval = new ASN1Parser.numberValue_return();
 		retval.start = input.LT(1);
@@ -3398,7 +3401,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_REAL_NUMBER = new RewriteRuleTokenStream(adaptor, "token REAL_NUMBER");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:181:15: ( 'PLUS-INFINITY' -> ^( NUMBER PLUS_INFINITY ) | 'MINUS-INFINITY' -> ^( NUMBER MINUS_INFINITY ) | ID -> ^( NUMBER ID ) | ( INT ) -> ^( NUMBER INT ) | REAL_NUMBER -> ^( NUMBER REAL_NUMBER ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:177:15: ( 'PLUS-INFINITY' -> ^( NUMBER PLUS_INFINITY ) | 'MINUS-INFINITY' -> ^( NUMBER MINUS_INFINITY ) | ID -> ^( NUMBER ID ) | ( INT ) -> ^( NUMBER INT ) | REAL_NUMBER -> ^( NUMBER REAL_NUMBER ) )
 			int alt19 = 5;
 			switch (input.LA(1)) {
 				case 134: {
@@ -3435,7 +3438,7 @@ public class ASN1Parser extends Parser {
 
 			switch (alt19) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:182:3: 'PLUS-INFINITY'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:178:3: 'PLUS-INFINITY'
 				{
 					string_literal62 = (Token) match(input, 134, FOLLOW_134_in_numberValue892);
 					if (state.failed) return retval;
@@ -3459,9 +3462,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 182:19: -> ^( NUMBER PLUS_INFINITY )
+						// 178:19: -> ^( NUMBER PLUS_INFINITY )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:182:22: ^( NUMBER PLUS_INFINITY )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:178:22: ^( NUMBER PLUS_INFINITY )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3486,7 +3489,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:183:4: 'MINUS-INFINITY'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:179:4: 'MINUS-INFINITY'
 				{
 					string_literal63 = (Token) match(input, 126, FOLLOW_126_in_numberValue905);
 					if (state.failed) return retval;
@@ -3510,9 +3513,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 183:21: -> ^( NUMBER MINUS_INFINITY )
+						// 179:21: -> ^( NUMBER MINUS_INFINITY )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:183:24: ^( NUMBER MINUS_INFINITY )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:179:24: ^( NUMBER MINUS_INFINITY )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3537,7 +3540,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:184:4: ID
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:180:4: ID
 				{
 					ID64 = (Token) match(input, ID, FOLLOW_ID_in_numberValue918);
 					if (state.failed) return retval;
@@ -3561,9 +3564,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 184:7: -> ^( NUMBER ID )
+						// 180:7: -> ^( NUMBER ID )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:184:10: ^( NUMBER ID )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:180:10: ^( NUMBER ID )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3588,10 +3591,10 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:185:4: ( INT )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:4: ( INT )
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:185:4: ( INT )
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:185:5: INT
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:4: ( INT )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:5: INT
 					{
 						INT65 = (Token) match(input, INT, FOLLOW_INT_in_numberValue932);
 						if (state.failed) return retval;
@@ -3618,9 +3621,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 185:10: -> ^( NUMBER INT )
+						// 181:10: -> ^( NUMBER INT )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:185:13: ^( NUMBER INT )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:13: ^( NUMBER INT )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3645,7 +3648,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:186:4: REAL_NUMBER
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:182:4: REAL_NUMBER
 				{
 					REAL_NUMBER66 = (Token) match(input, REAL_NUMBER, FOLLOW_REAL_NUMBER_in_numberValue947);
 					if (state.failed) return retval;
@@ -3669,9 +3672,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 186:16: -> ^( NUMBER REAL_NUMBER )
+						// 182:16: -> ^( NUMBER REAL_NUMBER )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:186:19: ^( NUMBER REAL_NUMBER )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:182:19: ^( NUMBER REAL_NUMBER )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3725,7 +3728,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "objectIdentifierValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:188:1: objectIdentifierValue : 'OID_VALUE' ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:184:1: objectIdentifierValue : 'OID_VALUE' ;
 	public final ASN1Parser.objectIdentifierValue_return objectIdentifierValue() throws RecognitionException {
 		ASN1Parser.objectIdentifierValue_return retval = new ASN1Parser.objectIdentifierValue_return();
 		retval.start = input.LT(1);
@@ -3738,8 +3741,8 @@ public class ASN1Parser extends Parser {
 		CommonTree string_literal67_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:188:24: ( 'OID_VALUE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:189:3: 'OID_VALUE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:184:24: ( 'OID_VALUE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:185:3: 'OID_VALUE'
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
@@ -3783,7 +3786,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "booleanValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:191:1: booleanValue : ( 'TRUE' -> ^( TRUE ) | 'FALSE' -> ^( FALSE ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:187:1: booleanValue : ( 'TRUE' -> ^( TRUE ) | 'FALSE' -> ^( FALSE ) );
 	public final ASN1Parser.booleanValue_return booleanValue() throws RecognitionException {
 		ASN1Parser.booleanValue_return retval = new ASN1Parser.booleanValue_return();
 		retval.start = input.LT(1);
@@ -3800,7 +3803,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_111 = new RewriteRuleTokenStream(adaptor, "token 111");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:191:13: ( 'TRUE' -> ^( TRUE ) | 'FALSE' -> ^( FALSE ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:187:13: ( 'TRUE' -> ^( TRUE ) | 'FALSE' -> ^( FALSE ) )
 			int alt20 = 2;
 			int LA20_0 = input.LA(1);
 
@@ -3821,7 +3824,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt20) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:192:3: 'TRUE'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:188:3: 'TRUE'
 				{
 					string_literal68 = (Token) match(input, 145, FOLLOW_145_in_booleanValue975);
 					if (state.failed) return retval;
@@ -3845,9 +3848,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 192:10: -> ^( TRUE )
+						// 188:10: -> ^( TRUE )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:192:13: ^( TRUE )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:188:13: ^( TRUE )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3867,7 +3870,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:193:4: 'FALSE'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:189:4: 'FALSE'
 				{
 					string_literal69 = (Token) match(input, 111, FOLLOW_111_in_booleanValue986);
 					if (state.failed) return retval;
@@ -3891,9 +3894,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 193:12: -> ^( FALSE )
+						// 189:12: -> ^( FALSE )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:193:15: ^( FALSE )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:189:15: ^( FALSE )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -3942,7 +3945,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "typeAssignment"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:195:1: typeAssignment : ( CLASS_DEF )? ID '::=' type -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:191:1: typeAssignment : ( CLASS_DEF )? ID '::=' type -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type ) ;
 	public final ASN1Parser.typeAssignment_return typeAssignment() throws RecognitionException {
 		ASN1Parser.typeAssignment_return retval = new ASN1Parser.typeAssignment_return();
 		retval.start = input.LT(1);
@@ -3964,10 +3967,10 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_88 = new RewriteRuleTokenStream(adaptor, "token 88");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:195:18: ( ( CLASS_DEF )? ID '::=' type -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:196:3: ( CLASS_DEF )? ID '::=' type
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:191:18: ( ( CLASS_DEF )? ID '::=' type -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:3: ( CLASS_DEF )? ID '::=' type
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:196:3: ( CLASS_DEF )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:3: ( CLASS_DEF )?
 				int alt21 = 2;
 				int LA21_0 = input.LA(1);
 
@@ -3976,7 +3979,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt21) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:196:3: CLASS_DEF
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:3: CLASS_DEF
 					{
 						CLASS_DEF70 = (Token) match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_typeAssignment1004);
 						if (state.failed) return retval;
@@ -4007,7 +4010,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_type.add(type73.getTree());
 
 				// AST REWRITE
-				// elements: type, CLASS_DEF, ID
+				// elements: ID, type, CLASS_DEF
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -4023,9 +4026,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 196:28: -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type )
+					// 192:28: -> ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:196:31: ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:31: ^( TYPE_ASSIGNMENT ID ( CLASS_DEF )? type )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4038,7 +4041,7 @@ public class ASN1Parser extends Parser {
 							                stream_ID.nextNode()
 							                );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:196:52: ( CLASS_DEF )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:52: ( CLASS_DEF )?
 							if (stream_CLASS_DEF.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -4089,7 +4092,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "type"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:198:1: type : ( booleanType -> ^( TYPE booleanType ) | realType -> ^( TYPE realType ) | integerType -> ^( TYPE integerType ) | taggedType -> ^( TYPE taggedType ) | ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType -> ^( TYPE sequenceOfType ) | sequenceType -> ^( TYPE sequenceType ) | ( 'SET' ( constraint )? 'OF' )=> setOfType -> ^( TYPE setOfType ) | setType -> ^( TYPE setType ) | choiceType -> ^( TYPE choiceType ) | 'OBJECT' 'IDENTIFIER' -> ^( TYPE OID ) | characterStringType -> ^( TYPE characterStringType ) | bitStringType -> ^( TYPE bitStringType ) | enumeratedType -> ^( TYPE enumeratedType ) | 'OCTET' 'STRING' ( constraint )? -> ^( TYPE OCTET_STRING ( constraint )? ) | definedType -> ^( TYPE definedType ) | selectionType -> ^( TYPE selectionType ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:194:1: type : ( booleanType -> ^( TYPE booleanType ) | realType -> ^( TYPE realType ) | integerType -> ^( TYPE integerType ) | taggedType -> ^( TYPE taggedType ) | ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType -> ^( TYPE sequenceOfType ) | sequenceType -> ^( TYPE sequenceType ) | ( 'SET' ( constraint )? 'OF' )=> setOfType -> ^( TYPE setOfType ) | setType -> ^( TYPE setType ) | choiceType -> ^( TYPE choiceType ) | 'OBJECT' 'IDENTIFIER' -> ^( TYPE OID ) | characterStringType -> ^( TYPE characterStringType ) | bitStringType -> ^( TYPE bitStringType ) | enumeratedType -> ^( TYPE enumeratedType ) | 'OCTET' 'STRING' ( constraint )? -> ^( TYPE OCTET_STRING ( constraint )? ) | definedType -> ^( TYPE definedType ) | selectionType -> ^( TYPE selectionType ) );
 	public final ASN1Parser.type_return type() throws RecognitionException {
 		ASN1Parser.type_return retval = new ASN1Parser.type_return();
 		retval.start = input.LT(1);
@@ -4156,7 +4159,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_definedType = new RewriteRuleSubtreeStream(adaptor, "rule definedType");
 		RewriteRuleSubtreeStream stream_integerType = new RewriteRuleSubtreeStream(adaptor, "rule integerType");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:198:9: ( booleanType -> ^( TYPE booleanType ) | realType -> ^( TYPE realType ) | integerType -> ^( TYPE integerType ) | taggedType -> ^( TYPE taggedType ) | ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType -> ^( TYPE sequenceOfType ) | sequenceType -> ^( TYPE sequenceType ) | ( 'SET' ( constraint )? 'OF' )=> setOfType -> ^( TYPE setOfType ) | setType -> ^( TYPE setType ) | choiceType -> ^( TYPE choiceType ) | 'OBJECT' 'IDENTIFIER' -> ^( TYPE OID ) | characterStringType -> ^( TYPE characterStringType ) | bitStringType -> ^( TYPE bitStringType ) | enumeratedType -> ^( TYPE enumeratedType ) | 'OCTET' 'STRING' ( constraint )? -> ^( TYPE OCTET_STRING ( constraint )? ) | definedType -> ^( TYPE definedType ) | selectionType -> ^( TYPE selectionType ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:194:9: ( booleanType -> ^( TYPE booleanType ) | realType -> ^( TYPE realType ) | integerType -> ^( TYPE integerType ) | taggedType -> ^( TYPE taggedType ) | ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType -> ^( TYPE sequenceOfType ) | sequenceType -> ^( TYPE sequenceType ) | ( 'SET' ( constraint )? 'OF' )=> setOfType -> ^( TYPE setOfType ) | setType -> ^( TYPE setType ) | choiceType -> ^( TYPE choiceType ) | 'OBJECT' 'IDENTIFIER' -> ^( TYPE OID ) | characterStringType -> ^( TYPE characterStringType ) | bitStringType -> ^( TYPE bitStringType ) | enumeratedType -> ^( TYPE enumeratedType ) | 'OCTET' 'STRING' ( constraint )? -> ^( TYPE OCTET_STRING ( constraint )? ) | definedType -> ^( TYPE definedType ) | selectionType -> ^( TYPE selectionType ) )
 			int alt23 = 16;
 			switch (input.LA(1)) {
 				case 98: {
@@ -4246,7 +4249,7 @@ public class ASN1Parser extends Parser {
 				case ID: {
 					int LA23_13 = input.LA(2);
 
-					if ((LA23_13 == CLASS_DEF || LA23_13 == ID || (LA23_13 >= 80 && LA23_13 <= 84) || (LA23_13 >= 87 && LA23_13 <= 88) || (LA23_13
+					if ((LA23_13 == CLASS_DEF || LA23_13 == ID || (LA23_13 >= 80 && LA23_13 <= 84) || (LA23_13 >= 87 && LA23_13 <= 89) || (LA23_13
 					                                                                                                                       >= 96
 					                                                                                                                       && LA23_13
 					                                                                                                                          <= 100)
@@ -4285,6 +4288,7 @@ public class ASN1Parser extends Parser {
 				case 83:
 				case 87:
 				case 88:
+				case 89:
 				case 97:
 				case 103:
 				case 105:
@@ -4325,7 +4329,7 @@ public class ASN1Parser extends Parser {
 
 			switch (alt23) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:199:3: booleanType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:195:3: booleanType
 				{
 					pushFollow(FOLLOW_booleanType_in_type1037);
 					booleanType74 = booleanType();
@@ -4351,9 +4355,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 199:15: -> ^( TYPE booleanType )
+						// 195:15: -> ^( TYPE booleanType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:199:18: ^( TYPE booleanType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:195:18: ^( TYPE booleanType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4375,7 +4379,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:200:4: realType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:196:4: realType
 				{
 					pushFollow(FOLLOW_realType_in_type1050);
 					realType75 = realType();
@@ -4401,9 +4405,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 200:13: -> ^( TYPE realType )
+						// 196:13: -> ^( TYPE realType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:200:16: ^( TYPE realType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:196:16: ^( TYPE realType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4425,7 +4429,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:201:4: integerType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:197:4: integerType
 				{
 					pushFollow(FOLLOW_integerType_in_type1063);
 					integerType76 = integerType();
@@ -4451,9 +4455,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 201:16: -> ^( TYPE integerType )
+						// 197:16: -> ^( TYPE integerType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:201:19: ^( TYPE integerType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:197:19: ^( TYPE integerType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4475,7 +4479,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:202:4: taggedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:198:4: taggedType
 				{
 					pushFollow(FOLLOW_taggedType_in_type1076);
 					taggedType77 = taggedType();
@@ -4501,9 +4505,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 202:15: -> ^( TYPE taggedType )
+						// 198:15: -> ^( TYPE taggedType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:202:18: ^( TYPE taggedType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:198:18: ^( TYPE taggedType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4525,7 +4529,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:4: ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:4: ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType
 				{
 					pushFollow(FOLLOW_sequenceOfType_in_type1101);
 					sequenceOfType78 = sequenceOfType();
@@ -4551,9 +4555,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 203:53: -> ^( TYPE sequenceOfType )
+						// 199:53: -> ^( TYPE sequenceOfType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:56: ^( TYPE sequenceOfType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:56: ^( TYPE sequenceOfType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4575,7 +4579,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:204:4: sequenceType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:200:4: sequenceType
 				{
 					pushFollow(FOLLOW_sequenceType_in_type1114);
 					sequenceType79 = sequenceType();
@@ -4601,9 +4605,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 204:17: -> ^( TYPE sequenceType )
+						// 200:17: -> ^( TYPE sequenceType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:204:20: ^( TYPE sequenceType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:200:20: ^( TYPE sequenceType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4625,7 +4629,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 7:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:4: ( 'SET' ( constraint )? 'OF' )=> setOfType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:4: ( 'SET' ( constraint )? 'OF' )=> setOfType
 				{
 					pushFollow(FOLLOW_setOfType_in_type1138);
 					setOfType80 = setOfType();
@@ -4651,9 +4655,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 205:42: -> ^( TYPE setOfType )
+						// 201:42: -> ^( TYPE setOfType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:45: ^( TYPE setOfType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:45: ^( TYPE setOfType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4675,7 +4679,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 8:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:206:4: setType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:202:4: setType
 				{
 					pushFollow(FOLLOW_setType_in_type1151);
 					setType81 = setType();
@@ -4701,9 +4705,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 206:12: -> ^( TYPE setType )
+						// 202:12: -> ^( TYPE setType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:206:15: ^( TYPE setType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:202:15: ^( TYPE setType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4725,7 +4729,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 9:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:207:4: choiceType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:203:4: choiceType
 				{
 					pushFollow(FOLLOW_choiceType_in_type1164);
 					choiceType82 = choiceType();
@@ -4751,9 +4755,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 207:15: -> ^( TYPE choiceType )
+						// 203:15: -> ^( TYPE choiceType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:207:18: ^( TYPE choiceType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:203:18: ^( TYPE choiceType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4775,7 +4779,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 10:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:208:4: 'OBJECT' 'IDENTIFIER'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:204:4: 'OBJECT' 'IDENTIFIER'
 				{
 					string_literal83 = (Token) match(input, 128, FOLLOW_128_in_type1177);
 					if (state.failed) return retval;
@@ -4804,9 +4808,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 208:26: -> ^( TYPE OID )
+						// 204:26: -> ^( TYPE OID )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:208:29: ^( TYPE OID )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:204:29: ^( TYPE OID )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4831,7 +4835,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 11:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:209:4: characterStringType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:205:4: characterStringType
 				{
 					pushFollow(FOLLOW_characterStringType_in_type1192);
 					characterStringType85 = characterStringType();
@@ -4857,9 +4861,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 209:24: -> ^( TYPE characterStringType )
+						// 205:24: -> ^( TYPE characterStringType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:209:27: ^( TYPE characterStringType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:205:27: ^( TYPE characterStringType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4881,7 +4885,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 12:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:210:4: bitStringType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:206:4: bitStringType
 				{
 					pushFollow(FOLLOW_bitStringType_in_type1205);
 					bitStringType86 = bitStringType();
@@ -4907,9 +4911,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 210:18: -> ^( TYPE bitStringType )
+						// 206:18: -> ^( TYPE bitStringType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:210:21: ^( TYPE bitStringType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:206:21: ^( TYPE bitStringType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4931,7 +4935,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 13:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:211:4: enumeratedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:207:4: enumeratedType
 				{
 					pushFollow(FOLLOW_enumeratedType_in_type1218);
 					enumeratedType87 = enumeratedType();
@@ -4957,9 +4961,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 211:19: -> ^( TYPE enumeratedType )
+						// 207:19: -> ^( TYPE enumeratedType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:211:22: ^( TYPE enumeratedType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:207:22: ^( TYPE enumeratedType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -4981,7 +4985,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 14:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:212:4: 'OCTET' 'STRING' ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:4: 'OCTET' 'STRING' ( constraint )?
 				{
 					string_literal88 = (Token) match(input, 129, FOLLOW_129_in_type1231);
 					if (state.failed) return retval;
@@ -4993,7 +4997,7 @@ public class ASN1Parser extends Parser {
 					if (state.backtracking == 0) stream_142.add(string_literal89);
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:212:21: ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:21: ( constraint )?
 					int alt22 = 2;
 					int LA22_0 = input.LA(1);
 
@@ -5002,7 +5006,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt22) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:212:21: constraint
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:21: constraint
 						{
 							pushFollow(FOLLOW_constraint_in_type1235);
 							constraint90 = constraint();
@@ -5034,9 +5038,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 212:32: -> ^( TYPE OCTET_STRING ( constraint )? )
+						// 208:32: -> ^( TYPE OCTET_STRING ( constraint )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:212:35: ^( TYPE OCTET_STRING ( constraint )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:35: ^( TYPE OCTET_STRING ( constraint )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5049,7 +5053,7 @@ public class ASN1Parser extends Parser {
 								                (CommonTree) adaptor.create(OCTET_STRING, "OCTET_STRING")
 								                );
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:212:55: ( constraint )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:55: ( constraint )?
 								if (stream_constraint.hasNext()) {
 									adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -5068,7 +5072,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 15:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:213:4: definedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:209:4: definedType
 				{
 					pushFollow(FOLLOW_definedType_in_type1251);
 					definedType91 = definedType();
@@ -5094,9 +5098,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 213:16: -> ^( TYPE definedType )
+						// 209:16: -> ^( TYPE definedType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:213:19: ^( TYPE definedType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:209:19: ^( TYPE definedType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5118,7 +5122,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 16:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:214:4: selectionType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:210:4: selectionType
 				{
 					pushFollow(FOLLOW_selectionType_in_type1264);
 					selectionType92 = selectionType();
@@ -5144,9 +5148,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 214:18: -> ^( TYPE selectionType )
+						// 210:18: -> ^( TYPE selectionType )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:214:21: ^( TYPE selectionType )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:210:21: ^( TYPE selectionType )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5197,7 +5201,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "definedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:217:1: definedType : ( ( ID '.' )? ID ( constraint )? -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? ) | restrictedStringType ( constraint )? -> ^( CSTRING restrictedStringType ( constraint )? ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:213:1: definedType : ( ( ID '.' )? ID ( constraint )? -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? ) | restrictedStringType ( constraint )? -> ^( CSTRING restrictedStringType ( constraint )? ) );
 	public final ASN1Parser.definedType_return definedType() throws RecognitionException {
 		ASN1Parser.definedType_return retval = new ASN1Parser.definedType_return();
 		retval.start = input.LT(1);
@@ -5223,13 +5227,13 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_restrictedStringType = new RewriteRuleSubtreeStream(adaptor, "rule restrictedStringType");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:217:15: ( ( ID '.' )? ID ( constraint )? -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? ) | restrictedStringType ( constraint )? -> ^( CSTRING restrictedStringType ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:213:15: ( ( ID '.' )? ID ( constraint )? -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? ) | restrictedStringType ( constraint )? -> ^( CSTRING restrictedStringType ( constraint )? ) )
 			int alt27 = 2;
 			int LA27_0 = input.LA(1);
 
 			if ((LA27_0 == ID)) {
 				alt27 = 1;
-			} else if ((LA27_0 == CLASS_DEF || (LA27_0 >= 80 && LA27_0 <= 83) || (LA27_0 >= 87 && LA27_0 <= 88) || LA27_0 == 97 || LA27_0 == 103
+			} else if ((LA27_0 == CLASS_DEF || (LA27_0 >= 80 && LA27_0 <= 83) || (LA27_0 >= 87 && LA27_0 <= 89) || LA27_0 == 97 || LA27_0 == 103
 			            || LA27_0 == 105 || LA27_0 == 107 || (LA27_0 >= 113 && LA27_0 <= 115) || (LA27_0 >= 122 && LA27_0 <= 123) || LA27_0 == 127
 			            || LA27_0 == 132 || LA27_0 == 137 || LA27_0 == 143 || (LA27_0 >= 146 && LA27_0 <= 147) || (LA27_0 >= 149 && LA27_0 <= 152)
 			            || (LA27_0 >= 157 && LA27_0 <= 158) || (LA27_0 >= 160 && LA27_0 <= 161))) {
@@ -5247,9 +5251,9 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt27) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:3: ( ID '.' )? ID ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:3: ( ID '.' )? ID ( constraint )?
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:3: ( ID '.' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:3: ( ID '.' )?
 					int alt24 = 2;
 					int LA24_0 = input.LA(1);
 
@@ -5262,7 +5266,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt24) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:4: ID '.'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:4: ID '.'
 						{
 							ID93 = (Token) match(input, ID, FOLLOW_ID_in_definedType1286);
 							if (state.failed) return retval;
@@ -5285,7 +5289,7 @@ public class ASN1Parser extends Parser {
 					if (state.backtracking == 0) stream_ID.add(ID95);
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:16: ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:16: ( constraint )?
 					int alt25 = 2;
 					int LA25_0 = input.LA(1);
 
@@ -5294,7 +5298,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt25) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:16: constraint
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:16: constraint
 						{
 							pushFollow(FOLLOW_constraint_in_definedType1294);
 							constraint96 = constraint();
@@ -5310,7 +5314,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: ID, constraint, ID
+					// elements: constraint, ID, ID
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -5326,9 +5330,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 218:28: -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? )
+						// 214:28: -> ^( TYPE_REFERENCE ID ( ID )? ( constraint )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:31: ^( TYPE_REFERENCE ID ( ID )? ( constraint )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:31: ^( TYPE_REFERENCE ID ( ID )? ( constraint )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5341,7 +5345,7 @@ public class ASN1Parser extends Parser {
 								                stream_ID.nextNode()
 								                );
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:51: ( ID )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:51: ( ID )?
 								if (stream_ID.hasNext()) {
 									adaptor.addChild(
 									                root_1,
@@ -5351,7 +5355,7 @@ public class ASN1Parser extends Parser {
 								}
 								stream_ID.reset();
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:218:55: ( constraint )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:55: ( constraint )?
 								if (stream_constraint.hasNext()) {
 									adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -5370,7 +5374,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:219:5: restrictedStringType ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:5: restrictedStringType ( constraint )?
 				{
 					pushFollow(FOLLOW_restrictedStringType_in_definedType1315);
 					restrictedStringType97 = restrictedStringType();
@@ -5379,7 +5383,7 @@ public class ASN1Parser extends Parser {
 					if (state.failed) return retval;
 					if (state.backtracking == 0) stream_restrictedStringType.add(restrictedStringType97.getTree());
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:219:26: ( constraint )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:26: ( constraint )?
 					int alt26 = 2;
 					int LA26_0 = input.LA(1);
 
@@ -5388,7 +5392,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt26) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:219:26: constraint
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:26: constraint
 						{
 							pushFollow(FOLLOW_constraint_in_definedType1317);
 							constraint98 = constraint();
@@ -5404,7 +5408,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: restrictedStringType, constraint
+					// elements: constraint, restrictedStringType
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -5420,9 +5424,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 219:38: -> ^( CSTRING restrictedStringType ( constraint )? )
+						// 215:38: -> ^( CSTRING restrictedStringType ( constraint )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:219:41: ^( CSTRING restrictedStringType ( constraint )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:41: ^( CSTRING restrictedStringType ( constraint )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5432,7 +5436,7 @@ public class ASN1Parser extends Parser {
 
 								adaptor.addChild(root_1, stream_restrictedStringType.nextTree());
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:219:72: ( constraint )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:72: ( constraint )?
 								if (stream_constraint.hasNext()) {
 									adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -5480,7 +5484,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "selectionType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:221:1: selectionType : ID '<' type -> ^( SELECTION_TYPE ID type ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:217:1: selectionType : ID '<' type -> ^( SELECTION_TYPE ID type ) ;
 	public final ASN1Parser.selectionType_return selectionType() throws RecognitionException {
 		ASN1Parser.selectionType_return retval = new ASN1Parser.selectionType_return();
 		retval.start = input.LT(1);
@@ -5499,8 +5503,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:221:17: ( ID '<' type -> ^( SELECTION_TYPE ID type ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:222:3: ID '<' type
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:217:17: ( ID '<' type -> ^( SELECTION_TYPE ID type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:218:3: ID '<' type
 			{
 				ID99 = (Token) match(input, ID, FOLLOW_ID_in_selectionType1341);
 				if (state.failed) return retval;
@@ -5536,9 +5540,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 222:15: -> ^( SELECTION_TYPE ID type )
+					// 218:15: -> ^( SELECTION_TYPE ID type )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:222:18: ^( SELECTION_TYPE ID type )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:218:18: ^( SELECTION_TYPE ID type )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5592,7 +5596,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "enumeratedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:224:1: enumeratedType : 'ENUMERATED' '{' enumerations '}' -> ^( ENUMERATION enumerations ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:220:1: enumeratedType : 'ENUMERATED' '{' enumerations '}' -> ^( ENUMERATION enumerations ) ;
 	public final ASN1Parser.enumeratedType_return enumeratedType() throws RecognitionException {
 		ASN1Parser.enumeratedType_return retval = new ASN1Parser.enumeratedType_return();
 		retval.start = input.LT(1);
@@ -5614,8 +5618,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleSubtreeStream stream_enumerations = new RewriteRuleSubtreeStream(adaptor, "rule enumerations");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:224:18: ( 'ENUMERATED' '{' enumerations '}' -> ^( ENUMERATION enumerations ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:225:3: 'ENUMERATED' '{' enumerations '}'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:220:18: ( 'ENUMERATED' '{' enumerations '}' -> ^( ENUMERATION enumerations ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:221:3: 'ENUMERATED' '{' enumerations '}'
 			{
 				string_literal102 = (Token) match(input, 106, FOLLOW_106_in_enumeratedType1367);
 				if (state.failed) return retval;
@@ -5656,9 +5660,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 226:3: -> ^( ENUMERATION enumerations )
+					// 222:3: -> ^( ENUMERATION enumerations )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:226:6: ^( ENUMERATION enumerations )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:222:6: ^( ENUMERATION enumerations )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5707,7 +5711,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "enumerations"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:228:1: enumerations : enumerationItem ( ',' enumerationItem )* -> ^( VEC ( enumerationItem )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:224:1: enumerations : enumerationItem ( ',' enumerationItem )* -> ^( VEC ( enumerationItem )+ ) ;
 	public final ASN1Parser.enumerations_return enumerations() throws RecognitionException {
 		ASN1Parser.enumerations_return retval = new ASN1Parser.enumerations_return();
 		retval.start = input.LT(1);
@@ -5725,8 +5729,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_enumerationItem = new RewriteRuleSubtreeStream(adaptor, "rule enumerationItem");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:228:16: ( enumerationItem ( ',' enumerationItem )* -> ^( VEC ( enumerationItem )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:229:3: enumerationItem ( ',' enumerationItem )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:224:16: ( enumerationItem ( ',' enumerationItem )* -> ^( VEC ( enumerationItem )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:3: enumerationItem ( ',' enumerationItem )*
 			{
 				pushFollow(FOLLOW_enumerationItem_in_enumerations1395);
 				enumerationItem106 = enumerationItem();
@@ -5735,7 +5739,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_enumerationItem.add(enumerationItem106.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:229:19: ( ',' enumerationItem )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:19: ( ',' enumerationItem )*
 				loop28:
 				do {
 					int alt28 = 2;
@@ -5748,7 +5752,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt28) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:229:20: ',' enumerationItem
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:20: ',' enumerationItem
 						{
 							char_literal107 = (Token) match(input, 83, FOLLOW_83_in_enumerations1398);
 							if (state.failed) return retval;
@@ -5788,9 +5792,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 229:42: -> ^( VEC ( enumerationItem )+ )
+					// 225:42: -> ^( VEC ( enumerationItem )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:229:45: ^( VEC ( enumerationItem )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:45: ^( VEC ( enumerationItem )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5846,7 +5850,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "enumerationItem"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:231:1: enumerationItem : ( ( namedNumber )=> namedNumber | ID -> ^( ENUMERATION_ITEM ID ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:227:1: enumerationItem : ( ( namedNumber )=> namedNumber | ID -> ^( ENUMERATION_ITEM ID ) );
 	public final ASN1Parser.enumerationItem_return enumerationItem() throws RecognitionException {
 		ASN1Parser.enumerationItem_return retval = new ASN1Parser.enumerationItem_return();
 		retval.start = input.LT(1);
@@ -5862,7 +5866,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:231:19: ( ( namedNumber )=> namedNumber | ID -> ^( ENUMERATION_ITEM ID ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:227:19: ( ( namedNumber )=> namedNumber | ID -> ^( ENUMERATION_ITEM ID ) )
 			int alt29 = 2;
 			int LA29_0 = input.LA(1);
 
@@ -5897,7 +5901,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt29) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:232:3: ( namedNumber )=> namedNumber
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:228:3: ( namedNumber )=> namedNumber
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -5912,7 +5916,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:233:4: ID
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:229:4: ID
 				{
 					ID110 = (Token) match(input, ID, FOLLOW_ID_in_enumerationItem1434);
 					if (state.failed) return retval;
@@ -5936,9 +5940,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 233:7: -> ^( ENUMERATION_ITEM ID )
+						// 229:7: -> ^( ENUMERATION_ITEM ID )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:233:10: ^( ENUMERATION_ITEM ID )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:229:10: ^( ENUMERATION_ITEM ID )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -5992,7 +5996,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "bitStringType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:235:1: bitStringType : 'BIT' 'STRING' ( namedBitList )? -> ^( BIT_STRING namedBitList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:231:1: bitStringType : 'BIT' 'STRING' ( namedBitList )? -> ^( BIT_STRING namedBitList ) ;
 	public final ASN1Parser.bitStringType_return bitStringType() throws RecognitionException {
 		ASN1Parser.bitStringType_return retval = new ASN1Parser.bitStringType_return();
 		retval.start = input.LT(1);
@@ -6011,8 +6015,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_142 = new RewriteRuleTokenStream(adaptor, "token 142");
 		RewriteRuleSubtreeStream stream_namedBitList = new RewriteRuleSubtreeStream(adaptor, "rule namedBitList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:235:17: ( 'BIT' 'STRING' ( namedBitList )? -> ^( BIT_STRING namedBitList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:236:3: 'BIT' 'STRING' ( namedBitList )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:231:17: ( 'BIT' 'STRING' ( namedBitList )? -> ^( BIT_STRING namedBitList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:3: 'BIT' 'STRING' ( namedBitList )?
 			{
 				string_literal111 = (Token) match(input, 96, FOLLOW_96_in_bitStringType1454);
 				if (state.failed) return retval;
@@ -6024,7 +6028,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_142.add(string_literal112);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:236:18: ( namedBitList )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:18: ( namedBitList )?
 				int alt30 = 2;
 				int LA30_0 = input.LA(1);
 
@@ -6033,7 +6037,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt30) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:236:18: namedBitList
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:18: namedBitList
 					{
 						pushFollow(FOLLOW_namedBitList_in_bitStringType1458);
 						namedBitList113 = namedBitList();
@@ -6065,9 +6069,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 236:32: -> ^( BIT_STRING namedBitList )
+					// 232:32: -> ^( BIT_STRING namedBitList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:236:35: ^( BIT_STRING namedBitList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:35: ^( BIT_STRING namedBitList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -6116,7 +6120,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "namedBitList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:238:1: namedBitList : '{' nameNumberForm ( ',' nameNumberForm )* '}' -> ^( VEC ( nameNumberForm )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:234:1: namedBitList : '{' nameNumberForm ( ',' nameNumberForm )* '}' -> ^( VEC ( nameNumberForm )+ ) ;
 	public final ASN1Parser.namedBitList_return namedBitList() throws RecognitionException {
 		ASN1Parser.namedBitList_return retval = new ASN1Parser.namedBitList_return();
 		retval.start = input.LT(1);
@@ -6140,8 +6144,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleSubtreeStream stream_nameNumberForm = new RewriteRuleSubtreeStream(adaptor, "rule nameNumberForm");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:238:16: ( '{' nameNumberForm ( ',' nameNumberForm )* '}' -> ^( VEC ( nameNumberForm )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:239:3: '{' nameNumberForm ( ',' nameNumberForm )* '}'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:234:16: ( '{' nameNumberForm ( ',' nameNumberForm )* '}' -> ^( VEC ( nameNumberForm )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:3: '{' nameNumberForm ( ',' nameNumberForm )* '}'
 			{
 				char_literal114 = (Token) match(input, 159, FOLLOW_159_in_namedBitList1479);
 				if (state.failed) return retval;
@@ -6155,7 +6159,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_nameNumberForm.add(nameNumberForm115.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:239:22: ( ',' nameNumberForm )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:22: ( ',' nameNumberForm )*
 				loop31:
 				do {
 					int alt31 = 2;
@@ -6168,7 +6172,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt31) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:239:23: ',' nameNumberForm
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:23: ',' nameNumberForm
 						{
 							char_literal116 = (Token) match(input, 83, FOLLOW_83_in_namedBitList1484);
 							if (state.failed) return retval;
@@ -6213,9 +6217,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 240:3: -> ^( VEC ( nameNumberForm )+ )
+					// 236:3: -> ^( VEC ( nameNumberForm )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:240:6: ^( VEC ( nameNumberForm )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:236:6: ^( VEC ( nameNumberForm )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -6271,7 +6275,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "nameNumberForm"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:243:1: nameNumberForm : ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:239:1: nameNumberForm : ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) ;
 	public final ASN1Parser.nameNumberForm_return nameNumberForm() throws RecognitionException {
 		ASN1Parser.nameNumberForm_return retval = new ASN1Parser.nameNumberForm_return();
 		retval.start = input.LT(1);
@@ -6294,8 +6298,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:243:18: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:244:3: ID '(' INT ')'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:239:18: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:240:3: ID '(' INT ')'
 			{
 				ID119 = (Token) match(input, ID, FOLLOW_ID_in_nameNumberForm1514);
 				if (state.failed) return retval;
@@ -6334,9 +6338,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 244:18: -> ^( NAME_NUMBER_FORM ID INT )
+					// 240:18: -> ^( NAME_NUMBER_FORM ID INT )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:244:21: ^( NAME_NUMBER_FORM ID INT )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:240:21: ^( NAME_NUMBER_FORM ID INT )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -6393,7 +6397,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "characterStringType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:246:1: characterStringType : 'CHARACTER' 'STRING' ( constraint )? -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:242:1: characterStringType : 'CHARACTER' 'STRING' ( constraint )? -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? ) ;
 	public final ASN1Parser.characterStringType_return characterStringType() throws RecognitionException {
 		ASN1Parser.characterStringType_return retval = new ASN1Parser.characterStringType_return();
 		retval.start = input.LT(1);
@@ -6412,8 +6416,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_142 = new RewriteRuleTokenStream(adaptor, "token 142");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:246:22: ( 'CHARACTER' 'STRING' ( constraint )? -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:247:3: 'CHARACTER' 'STRING' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:242:22: ( 'CHARACTER' 'STRING' ( constraint )? -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:3: 'CHARACTER' 'STRING' ( constraint )?
 			{
 				string_literal123 = (Token) match(input, 99, FOLLOW_99_in_characterStringType1541);
 				if (state.failed) return retval;
@@ -6425,7 +6429,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_142.add(string_literal124);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:247:24: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:24: ( constraint )?
 				int alt32 = 2;
 				int LA32_0 = input.LA(1);
 
@@ -6434,7 +6438,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt32) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:247:24: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:24: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_characterStringType1545);
 						constraint125 = constraint();
@@ -6466,9 +6470,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 247:35: -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? )
+					// 243:35: -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:247:38: ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:38: ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -6481,7 +6485,7 @@ public class ASN1Parser extends Parser {
 							                (CommonTree) adaptor.create(UNRESTRICTED_CSTRING, "UNRESTRICTED_CSTRING")
 							                );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:247:70: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:70: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -6527,7 +6531,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "restrictedStringType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:250:1: restrictedStringType : (| 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:246:1: restrictedStringType : (| 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' );
 	public final ASN1Parser.restrictedStringType_return restrictedStringType() throws RecognitionException {
 		ASN1Parser.restrictedStringType_return retval = new ASN1Parser.restrictedStringType_return();
 		retval.start = input.LT(1);
@@ -6564,7 +6568,7 @@ public class ASN1Parser extends Parser {
 		CommonTree string_literal138_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:251:2: (| 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:247:2: (| 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' )
 			int alt33 = 14;
 			switch (input.LA(1)) {
 				case CLASS_DEF:
@@ -6575,6 +6579,7 @@ public class ASN1Parser extends Parser {
 				case 83:
 				case 87:
 				case 88:
+				case 89:
 				case 103:
 				case 105:
 				case 107:
@@ -6654,7 +6659,7 @@ public class ASN1Parser extends Parser {
 
 			switch (alt33) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:252:2: 
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:248:2: 
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6662,7 +6667,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:252:4: 'BMPString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:248:4: 'BMPString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6679,7 +6684,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:253:4: 'GeneralString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:249:4: 'GeneralString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6696,7 +6701,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:254:4: 'GraphicString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:250:4: 'GraphicString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6713,7 +6718,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:255:4: 'IA5String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:251:4: 'IA5String'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6730,7 +6735,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:256:4: 'ISO646String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:252:4: 'ISO646String'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6747,7 +6752,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 7:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:257:4: 'NumericString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:253:4: 'NumericString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6764,7 +6769,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 8:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:258:4: 'PrintableString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:254:4: 'PrintableString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6781,7 +6786,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 9:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:259:4: 'TeletexString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:255:4: 'TeletexString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6798,7 +6803,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 10:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:260:4: 'T61String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:256:4: 'T61String'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6815,7 +6820,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 11:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:261:4: 'UniversalString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:257:4: 'UniversalString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6832,7 +6837,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 12:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:262:4: 'UTF8String'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:258:4: 'UTF8String'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6849,7 +6854,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 13:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:263:4: 'VideotexString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:259:4: 'VideotexString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6866,7 +6871,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 14:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:264:4: 'VisibleString'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:260:4: 'VisibleString'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -6912,7 +6917,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "choiceType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:266:1: choiceType : 'CHOICE' '{' alternativesTypeLists '}' ( constraint )? -> ^( CHOICE alternativesTypeLists ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:262:1: choiceType : 'CHOICE' '{' alternativesTypeLists '}' ( constraint )? -> ^( CHOICE alternativesTypeLists ( constraint )? ) ;
 	public final ASN1Parser.choiceType_return choiceType() throws RecognitionException {
 		ASN1Parser.choiceType_return retval = new ASN1Parser.choiceType_return();
 		retval.start = input.LT(1);
@@ -6937,8 +6942,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_alternativesTypeLists = new RewriteRuleSubtreeStream(adaptor, "rule alternativesTypeLists");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:266:14: ( 'CHOICE' '{' alternativesTypeLists '}' ( constraint )? -> ^( CHOICE alternativesTypeLists ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:267:3: 'CHOICE' '{' alternativesTypeLists '}' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:262:14: ( 'CHOICE' '{' alternativesTypeLists '}' ( constraint )? -> ^( CHOICE alternativesTypeLists ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:3: 'CHOICE' '{' alternativesTypeLists '}' ( constraint )?
 			{
 				string_literal139 = (Token) match(input, 100, FOLLOW_100_in_choiceType1645);
 				if (state.failed) return retval;
@@ -6962,7 +6967,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_161.add(char_literal142);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:267:42: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:42: ( constraint )?
 				int alt34 = 2;
 				int LA34_0 = input.LA(1);
 
@@ -6971,7 +6976,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt34) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:267:42: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:42: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_choiceType1653);
 						constraint143 = constraint();
@@ -7003,9 +7008,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 267:54: -> ^( CHOICE alternativesTypeLists ( constraint )? )
+					// 263:54: -> ^( CHOICE alternativesTypeLists ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:267:57: ^( CHOICE alternativesTypeLists ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:57: ^( CHOICE alternativesTypeLists ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -7015,7 +7020,7 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_alternativesTypeLists.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:267:88: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:88: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -7061,7 +7066,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "alternativesTypeLists"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:269:1: alternativesTypeLists : alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )? -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:265:1: alternativesTypeLists : alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )? -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? ) ;
 	public final ASN1Parser.alternativesTypeLists_return alternativesTypeLists() throws RecognitionException {
 		ASN1Parser.alternativesTypeLists_return retval = new ASN1Parser.alternativesTypeLists_return();
 		retval.start = input.LT(1);
@@ -7091,8 +7096,8 @@ public class ASN1Parser extends Parser {
 		                                                                                                "rule extensionAdditionAlternativesList"
 		);
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:269:24: ( alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )? -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:3: alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:265:24: ( alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )? -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:3: alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
 			{
 				pushFollow(FOLLOW_alternativeTypeList_in_alternativesTypeLists1676);
 				alternativeTypeList144 = alternativeTypeList();
@@ -7101,7 +7106,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_alternativeTypeList.add(alternativeTypeList144.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:23: ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:23: ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
 				int alt37 = 2;
 				int LA37_0 = input.LA(1);
 
@@ -7110,7 +7115,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt37) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:24: ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )?
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:24: ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )?
 					{
 						char_literal145 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1679);
 						if (state.failed) return retval;
@@ -7124,7 +7129,7 @@ public class ASN1Parser extends Parser {
 						if (state.failed) return retval;
 						if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException146.getTree());
 
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:50: ( ',' extensionAdditionAlternativesList )?
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:50: ( ',' extensionAdditionAlternativesList )?
 						int alt35 = 2;
 						int LA35_0 = input.LA(1);
 
@@ -7137,7 +7142,7 @@ public class ASN1Parser extends Parser {
 						}
 						switch (alt35) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:51: ',' extensionAdditionAlternativesList
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:51: ',' extensionAdditionAlternativesList
 							{
 								char_literal147 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1684);
 								if (state.failed) return retval;
@@ -7159,7 +7164,7 @@ public class ASN1Parser extends Parser {
 						}
 
 
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:91: ( extensionEndMarker )?
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:91: ( extensionEndMarker )?
 						int alt36 = 2;
 						int LA36_0 = input.LA(1);
 
@@ -7168,7 +7173,7 @@ public class ASN1Parser extends Parser {
 						}
 						switch (alt36) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:270:91: extensionEndMarker
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:91: extensionEndMarker
 							{
 								pushFollow(FOLLOW_extensionEndMarker_in_alternativesTypeLists1690);
 								extensionEndMarker149 = extensionEndMarker();
@@ -7190,7 +7195,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: extensionEndMarker, extensionAdditionAlternativesList, alternativeTypeList, extensionAndException
+				// elements: alternativeTypeList, extensionAdditionAlternativesList, extensionAndException, extensionEndMarker
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7206,26 +7211,26 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 271:3: -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? )
+					// 267:3: -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:271:6: ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:6: ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(stream_alternativeTypeList.nextNode(), root_1);
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:271:28: ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
-							if (stream_extensionEndMarker.hasNext() || stream_extensionAdditionAlternativesList.hasNext()
-							    || stream_extensionAndException.hasNext()) {
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:28: ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
+							if (stream_extensionAdditionAlternativesList.hasNext() || stream_extensionAndException.hasNext()
+							    || stream_extensionEndMarker.hasNext()) {
 								adaptor.addChild(root_1, stream_extensionAndException.nextTree());
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:271:51: ( extensionAdditionAlternativesList )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:51: ( extensionAdditionAlternativesList )?
 								if (stream_extensionAdditionAlternativesList.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionAdditionAlternativesList.nextTree());
 
 								}
 								stream_extensionAdditionAlternativesList.reset();
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:271:86: ( extensionEndMarker )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:86: ( extensionEndMarker )?
 								if (stream_extensionEndMarker.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
@@ -7233,9 +7238,9 @@ public class ASN1Parser extends Parser {
 								stream_extensionEndMarker.reset();
 
 							}
-							stream_extensionEndMarker.reset();
 							stream_extensionAdditionAlternativesList.reset();
 							stream_extensionAndException.reset();
+							stream_extensionEndMarker.reset();
 
 							adaptor.addChild(root_0, root_1);
 						}
@@ -7276,7 +7281,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "alternativeTypeList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:273:1: alternativeTypeList : namedType ( ',' namedType )* -> ^( VEC ( namedType )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:269:1: alternativeTypeList : namedType ( ',' namedType )* -> ^( VEC ( namedType )+ ) ;
 	public final ASN1Parser.alternativeTypeList_return alternativeTypeList() throws RecognitionException {
 		ASN1Parser.alternativeTypeList_return retval = new ASN1Parser.alternativeTypeList_return();
 		retval.start = input.LT(1);
@@ -7294,8 +7299,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedType = new RewriteRuleSubtreeStream(adaptor, "rule namedType");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:273:22: ( namedType ( ',' namedType )* -> ^( VEC ( namedType )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:274:3: namedType ( ',' namedType )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:269:22: ( namedType ( ',' namedType )* -> ^( VEC ( namedType )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:3: namedType ( ',' namedType )*
 			{
 				pushFollow(FOLLOW_namedType_in_alternativeTypeList1723);
 				namedType150 = namedType();
@@ -7304,7 +7309,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_namedType.add(namedType150.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:274:13: ( ',' namedType )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:13: ( ',' namedType )*
 				loop38:
 				do {
 					int alt38 = 2;
@@ -7323,7 +7328,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt38) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:274:14: ',' namedType
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:14: ',' namedType
 						{
 							char_literal151 = (Token) match(input, 83, FOLLOW_83_in_alternativeTypeList1726);
 							if (state.failed) return retval;
@@ -7363,9 +7368,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 274:30: -> ^( VEC ( namedType )+ )
+					// 270:30: -> ^( VEC ( namedType )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:274:33: ^( VEC ( namedType )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:33: ^( VEC ( namedType )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -7421,7 +7426,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAdditionAlternativesList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:276:1: extensionAdditionAlternativesList : extensionAdditionAlternative ( ',' extensionAdditionAlternative )* -> ^( VEC ( extensionAdditionAlternative )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:272:1: extensionAdditionAlternativesList : extensionAdditionAlternative ( ',' extensionAdditionAlternative )* -> ^( VEC ( extensionAdditionAlternative )+ ) ;
 	public final ASN1Parser.extensionAdditionAlternativesList_return extensionAdditionAlternativesList() throws RecognitionException {
 		ASN1Parser.extensionAdditionAlternativesList_return retval = new ASN1Parser.extensionAdditionAlternativesList_return();
 		retval.start = input.LT(1);
@@ -7439,8 +7444,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAdditionAlternative = new RewriteRuleSubtreeStream(adaptor, "rule extensionAdditionAlternative");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:276:34: ( extensionAdditionAlternative ( ',' extensionAdditionAlternative )* -> ^( VEC ( extensionAdditionAlternative )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:277:3: extensionAdditionAlternative ( ',' extensionAdditionAlternative )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:272:34: ( extensionAdditionAlternative ( ',' extensionAdditionAlternative )* -> ^( VEC ( extensionAdditionAlternative )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:3: extensionAdditionAlternative ( ',' extensionAdditionAlternative )*
 			{
 				pushFollow(FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1748);
 				extensionAdditionAlternative153 = extensionAdditionAlternative();
@@ -7449,7 +7454,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_extensionAdditionAlternative.add(extensionAdditionAlternative153.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:277:32: ( ',' extensionAdditionAlternative )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:32: ( ',' extensionAdditionAlternative )*
 				loop39:
 				do {
 					int alt39 = 2;
@@ -7468,7 +7473,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt39) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:277:33: ',' extensionAdditionAlternative
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:33: ',' extensionAdditionAlternative
 						{
 							char_literal154 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditionAlternativesList1751);
 							if (state.failed) return retval;
@@ -7508,9 +7513,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 277:68: -> ^( VEC ( extensionAdditionAlternative )+ )
+					// 273:68: -> ^( VEC ( extensionAdditionAlternative )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:277:71: ^( VEC ( extensionAdditionAlternative )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:71: ^( VEC ( extensionAdditionAlternative )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -7566,7 +7571,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAdditionAlternative"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:279:1: extensionAdditionAlternative : ( extensionAdditionAlternativesGroup | namedType );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:275:1: extensionAdditionAlternative : ( extensionAdditionAlternativesGroup | namedType );
 	public final ASN1Parser.extensionAdditionAlternative_return extensionAdditionAlternative() throws RecognitionException {
 		ASN1Parser.extensionAdditionAlternative_return retval = new ASN1Parser.extensionAdditionAlternative_return();
 		retval.start = input.LT(1);
@@ -7580,7 +7585,7 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:279:30: ( extensionAdditionAlternativesGroup | namedType )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:275:30: ( extensionAdditionAlternativesGroup | namedType )
 			int alt40 = 2;
 			int LA40_0 = input.LA(1);
 
@@ -7601,7 +7606,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt40) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:280:3: extensionAdditionAlternativesGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:276:3: extensionAdditionAlternativesGroup
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -7616,7 +7621,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:280:40: namedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:276:40: namedType
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -7660,7 +7665,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAdditionAlternativesGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:282:1: extensionAdditionAlternativesGroup : '[[' ( INT ':' )? alternativeTypeList ']]' -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:278:1: extensionAdditionAlternativesGroup : '[[' ( INT ':' )? alternativeTypeList ']]' -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList ) ;
 	public final ASN1Parser.extensionAdditionAlternativesGroup_return extensionAdditionAlternativesGroup() throws RecognitionException {
 		ASN1Parser.extensionAdditionAlternativesGroup_return retval = new ASN1Parser.extensionAdditionAlternativesGroup_return();
 		retval.start = input.LT(1);
@@ -7685,15 +7690,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_155 = new RewriteRuleTokenStream(adaptor, "token 155");
 		RewriteRuleSubtreeStream stream_alternativeTypeList = new RewriteRuleSubtreeStream(adaptor, "rule alternativeTypeList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:282:35: ( '[[' ( INT ':' )? alternativeTypeList ']]' -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:283:3: '[[' ( INT ':' )? alternativeTypeList ']]'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:278:35: ( '[[' ( INT ':' )? alternativeTypeList ']]' -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:3: '[[' ( INT ':' )? alternativeTypeList ']]'
 			{
 				string_literal158 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionAlternativesGroup1787);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_155.add(string_literal158);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:283:8: ( INT ':' )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:8: ( INT ':' )?
 				int alt41 = 2;
 				int LA41_0 = input.LA(1);
 
@@ -7702,7 +7707,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt41) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:283:9: INT ':'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:9: INT ':'
 					{
 						INT159 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionAlternativesGroup1790);
 						if (state.failed) return retval;
@@ -7749,9 +7754,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 284:3: -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList )
+					// 280:3: -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:284:6: ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:280:6: ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -7762,7 +7767,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:284:46: ( INT )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:280:46: ( INT )?
 							if (stream_INT.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -7813,7 +7818,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "setType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:286:1: setType : 'SET' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SET ( componentTypeLists )? ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:282:1: setType : 'SET' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SET ( componentTypeLists )? ( constraint )? ) ;
 	public final ASN1Parser.setType_return setType() throws RecognitionException {
 		ASN1Parser.setType_return retval = new ASN1Parser.setType_return();
 		retval.start = input.LT(1);
@@ -7838,8 +7843,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		RewriteRuleSubtreeStream stream_componentTypeLists = new RewriteRuleSubtreeStream(adaptor, "rule componentTypeLists");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:286:12: ( 'SET' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SET ( componentTypeLists )? ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:3: 'SET' '{' ( componentTypeLists )? '}' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:282:12: ( 'SET' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SET ( componentTypeLists )? ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:3: 'SET' '{' ( componentTypeLists )? '}' ( constraint )?
 			{
 				string_literal163 = (Token) match(input, 140, FOLLOW_140_in_setType1826);
 				if (state.failed) return retval;
@@ -7851,7 +7856,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_159.add(char_literal164);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:13: ( componentTypeLists )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:13: ( componentTypeLists )?
 				int alt42 = 2;
 				int LA42_0 = input.LA(1);
 
@@ -7860,7 +7865,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt42) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:13: componentTypeLists
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:13: componentTypeLists
 					{
 						pushFollow(FOLLOW_componentTypeLists_in_setType1830);
 						componentTypeLists165 = componentTypeLists();
@@ -7880,7 +7885,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_161.add(char_literal166);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:37: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:37: ( constraint )?
 				int alt43 = 2;
 				int LA43_0 = input.LA(1);
 
@@ -7889,7 +7894,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt43) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:37: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:37: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_setType1835);
 						constraint167 = constraint();
@@ -7905,7 +7910,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: componentTypeLists, constraint
+				// elements: constraint, componentTypeLists
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7921,9 +7926,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 287:49: -> ^( SET ( componentTypeLists )? ( constraint )? )
+					// 283:49: -> ^( SET ( componentTypeLists )? ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:52: ^( SET ( componentTypeLists )? ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:52: ^( SET ( componentTypeLists )? ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -7931,14 +7936,14 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:58: ( componentTypeLists )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:58: ( componentTypeLists )?
 							if (stream_componentTypeLists.hasNext()) {
 								adaptor.addChild(root_1, stream_componentTypeLists.nextTree());
 
 							}
 							stream_componentTypeLists.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:287:78: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:78: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -7984,7 +7989,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "setOfType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:289:1: setOfType : 'SET' ( constraint )? 'OF' sOfComponentType -> ^( SETOF sOfComponentType ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:285:1: setOfType : 'SET' ( constraint )? 'OF' sOfComponentType -> ^( SETOF sOfComponentType ( constraint )? ) ;
 	public final ASN1Parser.setOfType_return setOfType() throws RecognitionException {
 		ASN1Parser.setOfType_return retval = new ASN1Parser.setOfType_return();
 		retval.start = input.LT(1);
@@ -8006,15 +8011,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_sOfComponentType = new RewriteRuleSubtreeStream(adaptor, "rule sOfComponentType");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:289:13: ( 'SET' ( constraint )? 'OF' sOfComponentType -> ^( SETOF sOfComponentType ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:290:3: 'SET' ( constraint )? 'OF' sOfComponentType
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:285:13: ( 'SET' ( constraint )? 'OF' sOfComponentType -> ^( SETOF sOfComponentType ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:3: 'SET' ( constraint )? 'OF' sOfComponentType
 			{
 				string_literal168 = (Token) match(input, 140, FOLLOW_140_in_setOfType1861);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_140.add(string_literal168);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:290:9: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:9: ( constraint )?
 				int alt44 = 2;
 				int LA44_0 = input.LA(1);
 
@@ -8023,7 +8028,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt44) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:290:9: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:9: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_setOfType1863);
 						constraint169 = constraint();
@@ -8067,9 +8072,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 290:43: -> ^( SETOF sOfComponentType ( constraint )? )
+					// 286:43: -> ^( SETOF sOfComponentType ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:290:46: ^( SETOF sOfComponentType ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:46: ^( SETOF sOfComponentType ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -8079,7 +8084,7 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_sOfComponentType.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:290:71: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:71: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -8125,7 +8130,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "sOfComponentType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:292:1: sOfComponentType : ( ( VALUE_ID )=> namedType | type );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:288:1: sOfComponentType : ( ( VALUE_ID )=> namedType | type );
 	public final ASN1Parser.sOfComponentType_return sOfComponentType() throws RecognitionException {
 		ASN1Parser.sOfComponentType_return retval = new ASN1Parser.sOfComponentType_return();
 		retval.start = input.LT(1);
@@ -8139,7 +8144,7 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:293:2: ( ( VALUE_ID )=> namedType | type )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:2: ( ( VALUE_ID )=> namedType | type )
 			int alt45 = 2;
 			int LA45_0 = input.LA(1);
 
@@ -8161,7 +8166,7 @@ public class ASN1Parser extends Parser {
 					throw nvae;
 
 				}
-			} else if ((LA45_0 == CLASS_DEF || (LA45_0 >= 80 && LA45_0 <= 83) || (LA45_0 >= 87 && LA45_0 <= 88) || (LA45_0 >= 96 && LA45_0 <= 100)
+			} else if ((LA45_0 == CLASS_DEF || (LA45_0 >= 80 && LA45_0 <= 83) || (LA45_0 >= 87 && LA45_0 <= 89) || (LA45_0 >= 96 && LA45_0 <= 100)
 			            || LA45_0 == 103 || (LA45_0 >= 105 && LA45_0 <= 107) || (LA45_0 >= 113 && LA45_0 <= 115) || (LA45_0 >= 121 && LA45_0 <= 123)
 			            || (LA45_0 >= 127 && LA45_0 <= 129) || LA45_0 == 132 || (LA45_0 >= 137 && LA45_0 <= 140) || LA45_0 == 143 || (LA45_0 >= 146
 			                                                                                                                          && LA45_0
@@ -8186,7 +8191,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt45) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:293:4: ( VALUE_ID )=> namedType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:4: ( VALUE_ID )=> namedType
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -8201,7 +8206,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:293:28: type
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:28: type
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -8245,7 +8250,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "sequenceType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:295:1: sequenceType : 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:291:1: sequenceType : 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? ) ;
 	public final ASN1Parser.sequenceType_return sequenceType() throws RecognitionException {
 		ASN1Parser.sequenceType_return retval = new ASN1Parser.sequenceType_return();
 		retval.start = input.LT(1);
@@ -8270,8 +8275,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		RewriteRuleSubtreeStream stream_componentTypeLists = new RewriteRuleSubtreeStream(adaptor, "rule componentTypeLists");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:295:16: ( 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:3: 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:291:16: ( 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:3: 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )?
 			{
 				string_literal174 = (Token) match(input, 139, FOLLOW_139_in_sequenceType1909);
 				if (state.failed) return retval;
@@ -8283,7 +8288,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_159.add(char_literal175);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:18: ( componentTypeLists )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:18: ( componentTypeLists )?
 				int alt46 = 2;
 				int LA46_0 = input.LA(1);
 
@@ -8292,7 +8297,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt46) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:18: componentTypeLists
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:18: componentTypeLists
 					{
 						pushFollow(FOLLOW_componentTypeLists_in_sequenceType1913);
 						componentTypeLists176 = componentTypeLists();
@@ -8312,7 +8317,7 @@ public class ASN1Parser extends Parser {
 				if (state.backtracking == 0) stream_161.add(char_literal177);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:42: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:42: ( constraint )?
 				int alt47 = 2;
 				int LA47_0 = input.LA(1);
 
@@ -8321,7 +8326,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt47) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:42: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:42: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_sequenceType1918);
 						constraint178 = constraint();
@@ -8353,9 +8358,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 297:53: -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? )
+					// 293:53: -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:56: ^( SEQUENCE ( componentTypeLists )? ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:56: ^( SEQUENCE ( componentTypeLists )? ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -8363,14 +8368,14 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:67: ( componentTypeLists )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:67: ( componentTypeLists )?
 							if (stream_componentTypeLists.hasNext()) {
 								adaptor.addChild(root_1, stream_componentTypeLists.nextTree());
 
 							}
 							stream_componentTypeLists.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:297:87: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:87: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -8416,7 +8421,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "componentTypeLists"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:299:1: componentTypeLists : ( componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? ) | extensionAndException ( extensionAdditions )? ( extensionEndMarker )? -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:295:1: componentTypeLists : ( componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? ) | extensionAndException ( extensionAdditions )? ( extensionEndMarker )? -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? ) );
 	public final ASN1Parser.componentTypeLists_return componentTypeLists() throws RecognitionException {
 		ASN1Parser.componentTypeLists_return retval = new ASN1Parser.componentTypeLists_return();
 		retval.start = input.LT(1);
@@ -8449,7 +8454,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_componentTypeList = new RewriteRuleSubtreeStream(adaptor, "rule componentTypeList");
 		RewriteRuleSubtreeStream stream_extensionAdditions = new RewriteRuleSubtreeStream(adaptor, "rule extensionAdditions");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:299:21: ( componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? ) | extensionAndException ( extensionAdditions )? ( extensionEndMarker )? -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:295:21: ( componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? ) | extensionAndException ( extensionAdditions )? ( extensionEndMarker )? -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? ) )
 			int alt54 = 2;
 			int LA54_0 = input.LA(1);
 
@@ -8470,7 +8475,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt54) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:3: componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:3: componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
 				{
 					pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1942);
 					componentTypeList179 = componentTypeList();
@@ -8479,7 +8484,7 @@ public class ASN1Parser extends Parser {
 					if (state.failed) return retval;
 					if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList179.getTree());
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:21: ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:21: ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
 					int alt51 = 2;
 					int LA51_0 = input.LA(1);
 
@@ -8488,7 +8493,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt51) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:22: ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:22: ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )?
 						{
 							char_literal180 = (Token) match(input, 83, FOLLOW_83_in_componentTypeLists1945);
 							if (state.failed) return retval;
@@ -8502,7 +8507,7 @@ public class ASN1Parser extends Parser {
 							if (state.failed) return retval;
 							if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException181.getTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:48: ( extensionAdditions )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:48: ( extensionAdditions )?
 							int alt48 = 2;
 							int LA48_0 = input.LA(1);
 
@@ -8515,7 +8520,7 @@ public class ASN1Parser extends Parser {
 							}
 							switch (alt48) {
 								case 1:
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:48: extensionAdditions
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:48: extensionAdditions
 								{
 									pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists1949);
 									extensionAdditions182 = extensionAdditions();
@@ -8530,7 +8535,7 @@ public class ASN1Parser extends Parser {
 							}
 
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:68: ( extensionEndMarker ( componentTypeList )? )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:68: ( extensionEndMarker ( componentTypeList )? )?
 							int alt50 = 2;
 							int LA50_0 = input.LA(1);
 
@@ -8539,7 +8544,7 @@ public class ASN1Parser extends Parser {
 							}
 							switch (alt50) {
 								case 1:
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:69: extensionEndMarker ( componentTypeList )?
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:69: extensionEndMarker ( componentTypeList )?
 								{
 									pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists1953);
 									extensionEndMarker183 = extensionEndMarker();
@@ -8548,7 +8553,7 @@ public class ASN1Parser extends Parser {
 									if (state.failed) return retval;
 									if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker183.getTree());
 
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:88: ( componentTypeList )?
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:88: ( componentTypeList )?
 									int alt49 = 2;
 									int LA49_0 = input.LA(1);
 
@@ -8557,7 +8562,7 @@ public class ASN1Parser extends Parser {
 									}
 									switch (alt49) {
 										case 1:
-											// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:300:88: componentTypeList
+											// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:88: componentTypeList
 										{
 											pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1955);
 											componentTypeList184 = componentTypeList();
@@ -8585,7 +8590,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: extensionAndException, extensionAdditions, componentTypeList, componentTypeList, extensionEndMarker
+					// elements: componentTypeList, extensionEndMarker, extensionAndException, componentTypeList, extensionAdditions
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -8601,30 +8606,30 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 301:3: -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? )
+						// 297:3: -> ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:301:6: ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:6: ^( componentTypeList ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(stream_componentTypeList.nextNode(), root_1);
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:301:26: ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
-								if (stream_extensionAndException.hasNext() || stream_extensionAdditions.hasNext()
-								    || stream_extensionEndMarker.hasNext()) {
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:26: ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
+								if (stream_extensionEndMarker.hasNext() || stream_extensionAndException.hasNext()
+								    || stream_extensionAdditions.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionAndException.nextTree());
 
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:301:49: ( extensionAdditions )?
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:49: ( extensionAdditions )?
 									if (stream_extensionAdditions.hasNext()) {
 										adaptor.addChild(root_1, stream_extensionAdditions.nextTree());
 
 									}
 									stream_extensionAdditions.reset();
 
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:301:69: ( extensionEndMarker ( componentTypeList )? )?
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:69: ( extensionEndMarker ( componentTypeList )? )?
 									if (stream_componentTypeList.hasNext() || stream_extensionEndMarker.hasNext()) {
 										adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
-										// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:301:89: ( componentTypeList )?
+										// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:89: ( componentTypeList )?
 										if (stream_componentTypeList.hasNext()) {
 											adaptor.addChild(root_1, stream_componentTypeList.nextTree());
 
@@ -8636,9 +8641,9 @@ public class ASN1Parser extends Parser {
 									stream_extensionEndMarker.reset();
 
 								}
+								stream_extensionEndMarker.reset();
 								stream_extensionAndException.reset();
 								stream_extensionAdditions.reset();
-								stream_extensionEndMarker.reset();
 
 								adaptor.addChild(root_0, root_1);
 							}
@@ -8652,7 +8657,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:302:4: extensionAndException ( extensionAdditions )? ( extensionEndMarker )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:4: extensionAndException ( extensionAdditions )? ( extensionEndMarker )?
 				{
 					pushFollow(FOLLOW_extensionAndException_in_componentTypeLists2006);
 					extensionAndException185 = extensionAndException();
@@ -8661,7 +8666,7 @@ public class ASN1Parser extends Parser {
 					if (state.failed) return retval;
 					if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException185.getTree());
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:302:26: ( extensionAdditions )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:26: ( extensionAdditions )?
 					int alt52 = 2;
 					int LA52_0 = input.LA(1);
 
@@ -8674,7 +8679,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt52) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:302:26: extensionAdditions
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:26: extensionAdditions
 						{
 							pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists2008);
 							extensionAdditions186 = extensionAdditions();
@@ -8689,7 +8694,7 @@ public class ASN1Parser extends Parser {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:302:46: ( extensionEndMarker )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:46: ( extensionEndMarker )?
 					int alt53 = 2;
 					int LA53_0 = input.LA(1);
 
@@ -8698,7 +8703,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt53) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:302:46: extensionEndMarker
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:46: extensionEndMarker
 						{
 							pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists2011);
 							extensionEndMarker187 = extensionEndMarker();
@@ -8714,7 +8719,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: extensionEndMarker, extensionAdditions, extensionAndException
+					// elements: extensionAdditions, extensionAndException, extensionEndMarker
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -8730,21 +8735,21 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 303:3: -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? )
+						// 299:3: -> ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:303:6: ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:299:6: ^( extensionAndException ( extensionAdditions )? ( extensionEndMarker )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(stream_extensionAndException.nextNode(), root_1);
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:303:30: ( extensionAdditions )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:299:30: ( extensionAdditions )?
 								if (stream_extensionAdditions.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionAdditions.nextTree());
 
 								}
 								stream_extensionAdditions.reset();
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:303:50: ( extensionEndMarker )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:299:50: ( extensionEndMarker )?
 								if (stream_extensionEndMarker.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
@@ -8792,7 +8797,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "componentTypeList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:305:1: componentTypeList : componentType ( ',' componentType )* -> ^( VEC ( componentType )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:301:1: componentTypeList : componentType ( ',' componentType )* -> ^( VEC ( componentType )+ ) ;
 	public final ASN1Parser.componentTypeList_return componentTypeList() throws RecognitionException {
 		ASN1Parser.componentTypeList_return retval = new ASN1Parser.componentTypeList_return();
 		retval.start = input.LT(1);
@@ -8810,8 +8815,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_componentType = new RewriteRuleSubtreeStream(adaptor, "rule componentType");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:305:20: ( componentType ( ',' componentType )* -> ^( VEC ( componentType )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:306:3: componentType ( ',' componentType )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:301:20: ( componentType ( ',' componentType )* -> ^( VEC ( componentType )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:3: componentType ( ',' componentType )*
 			{
 				pushFollow(FOLLOW_componentType_in_componentTypeList2040);
 				componentType188 = componentType();
@@ -8820,7 +8825,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_componentType.add(componentType188.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:306:17: ( ',' componentType )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:17: ( ',' componentType )*
 				loop55:
 				do {
 					int alt55 = 2;
@@ -8839,7 +8844,7 @@ public class ASN1Parser extends Parser {
 
 					switch (alt55) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:306:18: ',' componentType
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:18: ',' componentType
 						{
 							char_literal189 = (Token) match(input, 83, FOLLOW_83_in_componentTypeList2043);
 							if (state.failed) return retval;
@@ -8879,9 +8884,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 306:38: -> ^( VEC ( componentType )+ )
+					// 302:38: -> ^( VEC ( componentType )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:306:41: ^( VEC ( componentType )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:41: ^( VEC ( componentType )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -8937,7 +8942,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "componentType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:308:1: componentType : ( namedType ( componentTypeOption )? -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? ) | 'COMPONENTS' 'OF' type -> ^( COMPONENT_TYPE type ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:304:1: componentType : ( namedType ( componentTypeOption )? -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? ) | 'COMPONENTS' 'OF' type -> ^( COMPONENT_TYPE type ) );
 	public final ASN1Parser.componentType_return componentType() throws RecognitionException {
 		ASN1Parser.componentType_return retval = new ASN1Parser.componentType_return();
 		retval.start = input.LT(1);
@@ -8962,7 +8967,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_componentTypeOption = new RewriteRuleSubtreeStream(adaptor, "rule componentTypeOption");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:308:17: ( namedType ( componentTypeOption )? -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? ) | 'COMPONENTS' 'OF' type -> ^( COMPONENT_TYPE type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:304:17: ( namedType ( componentTypeOption )? -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? ) | 'COMPONENTS' 'OF' type -> ^( COMPONENT_TYPE type ) )
 			int alt57 = 2;
 			int LA57_0 = input.LA(1);
 
@@ -8983,7 +8988,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt57) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:309:3: namedType ( componentTypeOption )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:3: namedType ( componentTypeOption )?
 				{
 					pushFollow(FOLLOW_namedType_in_componentType2069);
 					namedType191 = namedType();
@@ -8992,7 +8997,7 @@ public class ASN1Parser extends Parser {
 					if (state.failed) return retval;
 					if (state.backtracking == 0) stream_namedType.add(namedType191.getTree());
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:309:13: ( componentTypeOption )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:13: ( componentTypeOption )?
 					int alt56 = 2;
 					int LA56_0 = input.LA(1);
 
@@ -9001,7 +9006,7 @@ public class ASN1Parser extends Parser {
 					}
 					switch (alt56) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:309:13: componentTypeOption
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:13: componentTypeOption
 						{
 							pushFollow(FOLLOW_componentTypeOption_in_componentType2071);
 							componentTypeOption192 = componentTypeOption();
@@ -9017,7 +9022,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: componentTypeOption, namedType
+					// elements: namedType, componentTypeOption
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -9033,9 +9038,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 309:34: -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? )
+						// 305:34: -> ^( COMPONENT_TYPE namedType ( componentTypeOption )? )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:309:37: ^( COMPONENT_TYPE namedType ( componentTypeOption )? )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:37: ^( COMPONENT_TYPE namedType ( componentTypeOption )? )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9045,7 +9050,7 @@ public class ASN1Parser extends Parser {
 
 								adaptor.addChild(root_1, stream_namedType.nextTree());
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:309:65: ( componentTypeOption )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:65: ( componentTypeOption )?
 								if (stream_componentTypeOption.hasNext()) {
 									adaptor.addChild(root_1, stream_componentTypeOption.nextTree());
 
@@ -9064,7 +9069,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:310:4: 'COMPONENTS' 'OF' type
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:306:4: 'COMPONENTS' 'OF' type
 				{
 					string_literal193 = (Token) match(input, 102, FOLLOW_102_in_componentType2090);
 					if (state.failed) return retval;
@@ -9100,9 +9105,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 310:27: -> ^( COMPONENT_TYPE type )
+						// 306:27: -> ^( COMPONENT_TYPE type )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:310:30: ^( COMPONENT_TYPE type )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:306:30: ^( COMPONENT_TYPE type )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9153,7 +9158,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "componentTypeOption"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:312:1: componentTypeOption : ( 'OPTIONAL' -> ^( COMPONENT_TYPE_OPTION ) | 'DEFAULT' value -> ^( COMPONENT_TYPE_OPTION value ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:308:1: componentTypeOption : ( 'OPTIONAL' -> ^( COMPONENT_TYPE_OPTION ) | 'DEFAULT' value -> ^( COMPONENT_TYPE_OPTION value ) );
 	public final ASN1Parser.componentTypeOption_return componentTypeOption() throws RecognitionException {
 		ASN1Parser.componentTypeOption_return retval = new ASN1Parser.componentTypeOption_return();
 		retval.start = input.LT(1);
@@ -9172,7 +9177,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_103 = new RewriteRuleTokenStream(adaptor, "token 103");
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:312:22: ( 'OPTIONAL' -> ^( COMPONENT_TYPE_OPTION ) | 'DEFAULT' value -> ^( COMPONENT_TYPE_OPTION value ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:308:22: ( 'OPTIONAL' -> ^( COMPONENT_TYPE_OPTION ) | 'DEFAULT' value -> ^( COMPONENT_TYPE_OPTION value ) )
 			int alt58 = 2;
 			int LA58_0 = input.LA(1);
 
@@ -9193,7 +9198,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt58) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:313:3: 'OPTIONAL'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:309:3: 'OPTIONAL'
 				{
 					string_literal196 = (Token) match(input, 132, FOLLOW_132_in_componentTypeOption2114);
 					if (state.failed) return retval;
@@ -9217,9 +9222,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 313:14: -> ^( COMPONENT_TYPE_OPTION )
+						// 309:14: -> ^( COMPONENT_TYPE_OPTION )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:313:17: ^( COMPONENT_TYPE_OPTION )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:309:17: ^( COMPONENT_TYPE_OPTION )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9239,7 +9244,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:314:4: 'DEFAULT' value
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:310:4: 'DEFAULT' value
 				{
 					string_literal197 = (Token) match(input, 103, FOLLOW_103_in_componentTypeOption2126);
 					if (state.failed) return retval;
@@ -9270,9 +9275,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 314:20: -> ^( COMPONENT_TYPE_OPTION value )
+						// 310:20: -> ^( COMPONENT_TYPE_OPTION value )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:314:23: ^( COMPONENT_TYPE_OPTION value )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:310:23: ^( COMPONENT_TYPE_OPTION value )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9323,7 +9328,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAdditions"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:316:1: extensionAdditions : ',' extensionAddition ( ',' extensionAddition )? -> ^( VEC ( extensionAddition )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:312:1: extensionAdditions : ',' extensionAddition ( ',' extensionAddition )? -> ^( VEC ( extensionAddition )+ ) ;
 	public final ASN1Parser.extensionAdditions_return extensionAdditions() throws RecognitionException {
 		ASN1Parser.extensionAdditions_return retval = new ASN1Parser.extensionAdditions_return();
 		retval.start = input.LT(1);
@@ -9343,8 +9348,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAddition = new RewriteRuleSubtreeStream(adaptor, "rule extensionAddition");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:316:21: ( ',' extensionAddition ( ',' extensionAddition )? -> ^( VEC ( extensionAddition )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:317:3: ',' extensionAddition ( ',' extensionAddition )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:312:21: ( ',' extensionAddition ( ',' extensionAddition )? -> ^( VEC ( extensionAddition )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:3: ',' extensionAddition ( ',' extensionAddition )?
 			{
 				char_literal199 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2149);
 				if (state.failed) return retval;
@@ -9358,7 +9363,7 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_extensionAddition.add(extensionAddition200.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:317:25: ( ',' extensionAddition )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:25: ( ',' extensionAddition )?
 				int alt59 = 2;
 				int LA59_0 = input.LA(1);
 
@@ -9371,7 +9376,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt59) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:317:26: ',' extensionAddition
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:26: ',' extensionAddition
 					{
 						char_literal201 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2154);
 						if (state.failed) return retval;
@@ -9408,9 +9413,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 317:50: -> ^( VEC ( extensionAddition )+ )
+					// 313:50: -> ^( VEC ( extensionAddition )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:317:53: ^( VEC ( extensionAddition )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:53: ^( VEC ( extensionAddition )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9466,7 +9471,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAddition"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:319:1: extensionAddition : ( componentType | extensionAdditionGroup );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:315:1: extensionAddition : ( componentType | extensionAdditionGroup );
 	public final ASN1Parser.extensionAddition_return extensionAddition() throws RecognitionException {
 		ASN1Parser.extensionAddition_return retval = new ASN1Parser.extensionAddition_return();
 		retval.start = input.LT(1);
@@ -9480,7 +9485,7 @@ public class ASN1Parser extends Parser {
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:319:20: ( componentType | extensionAdditionGroup )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:315:20: ( componentType | extensionAdditionGroup )
 			int alt60 = 2;
 			int LA60_0 = input.LA(1);
 
@@ -9501,7 +9506,7 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt60) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:320:3: componentType
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:316:3: componentType
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -9516,7 +9521,7 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:320:19: extensionAdditionGroup
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:316:19: extensionAdditionGroup
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
@@ -9560,7 +9565,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAdditionGroup"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:321:1: extensionAdditionGroup : '[[' ( INT ':' )? componentTypeList ']]' -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:317:1: extensionAdditionGroup : '[[' ( INT ':' )? componentTypeList ']]' -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList ) ;
 	public final ASN1Parser.extensionAdditionGroup_return extensionAdditionGroup() throws RecognitionException {
 		ASN1Parser.extensionAdditionGroup_return retval = new ASN1Parser.extensionAdditionGroup_return();
 		retval.start = input.LT(1);
@@ -9585,15 +9590,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_155 = new RewriteRuleTokenStream(adaptor, "token 155");
 		RewriteRuleSubtreeStream stream_componentTypeList = new RewriteRuleSubtreeStream(adaptor, "rule componentTypeList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:321:25: ( '[[' ( INT ':' )? componentTypeList ']]' -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:322:3: '[[' ( INT ':' )? componentTypeList ']]'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:317:25: ( '[[' ( INT ':' )? componentTypeList ']]' -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:3: '[[' ( INT ':' )? componentTypeList ']]'
 			{
 				string_literal205 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionGroup2196);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_155.add(string_literal205);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:322:8: ( INT ':' )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:8: ( INT ':' )?
 				int alt61 = 2;
 				int LA61_0 = input.LA(1);
 
@@ -9602,7 +9607,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt61) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:322:9: INT ':'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:9: INT ':'
 					{
 						INT206 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionGroup2199);
 						if (state.failed) return retval;
@@ -9633,7 +9638,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: componentTypeList, INT
+				// elements: INT, componentTypeList
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -9649,9 +9654,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 322:42: -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList )
+					// 318:42: -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:322:45: ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:45: ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9659,7 +9664,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:322:72: ( INT )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:72: ( INT )?
 							if (stream_INT.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -9710,7 +9715,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionEndMarker"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:324:1: extensionEndMarker : ',' '...' -> ^( EXTENSION_END_MARKER ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:320:1: extensionEndMarker : ',' '...' -> ^( EXTENSION_END_MARKER ) ;
 	public final ASN1Parser.extensionEndMarker_return extensionEndMarker() throws RecognitionException {
 		ASN1Parser.extensionEndMarker_return retval = new ASN1Parser.extensionEndMarker_return();
 		retval.start = input.LT(1);
@@ -9727,8 +9732,8 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_86 = new RewriteRuleTokenStream(adaptor, "token 86");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:324:21: ( ',' '...' -> ^( EXTENSION_END_MARKER ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:325:3: ',' '...'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:320:21: ( ',' '...' -> ^( EXTENSION_END_MARKER ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:321:3: ',' '...'
 			{
 				char_literal210 = (Token) match(input, 83, FOLLOW_83_in_extensionEndMarker2230);
 				if (state.failed) return retval;
@@ -9757,9 +9762,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 325:13: -> ^( EXTENSION_END_MARKER )
+					// 321:13: -> ^( EXTENSION_END_MARKER )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:325:16: ^( EXTENSION_END_MARKER )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:321:16: ^( EXTENSION_END_MARKER )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9806,7 +9811,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "extensionAndException"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:327:1: extensionAndException : '...' ( exceptionSpec )? -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:323:1: extensionAndException : '...' ( exceptionSpec )? -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? ) ;
 	public final ASN1Parser.extensionAndException_return extensionAndException() throws RecognitionException {
 		ASN1Parser.extensionAndException_return retval = new ASN1Parser.extensionAndException_return();
 		retval.start = input.LT(1);
@@ -9822,15 +9827,15 @@ public class ASN1Parser extends Parser {
 		RewriteRuleTokenStream stream_86 = new RewriteRuleTokenStream(adaptor, "token 86");
 		RewriteRuleSubtreeStream stream_exceptionSpec = new RewriteRuleSubtreeStream(adaptor, "rule exceptionSpec");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:327:24: ( '...' ( exceptionSpec )? -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:328:3: '...' ( exceptionSpec )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:323:24: ( '...' ( exceptionSpec )? -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:3: '...' ( exceptionSpec )?
 			{
 				string_literal212 = (Token) match(input, 86, FOLLOW_86_in_extensionAndException2251);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_86.add(string_literal212);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:328:9: ( exceptionSpec )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:9: ( exceptionSpec )?
 				int alt62 = 2;
 				int LA62_0 = input.LA(1);
 
@@ -9839,7 +9844,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt62) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:328:9: exceptionSpec
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:9: exceptionSpec
 					{
 						pushFollow(FOLLOW_exceptionSpec_in_extensionAndException2253);
 						exceptionSpec213 = exceptionSpec();
@@ -9871,9 +9876,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 328:24: -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? )
+					// 324:24: -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:328:27: ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:27: ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -9881,7 +9886,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:328:53: ( exceptionSpec )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:53: ( exceptionSpec )?
 							if (stream_exceptionSpec.hasNext()) {
 								adaptor.addChild(root_1, stream_exceptionSpec.nextTree());
 
@@ -9927,7 +9932,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "exceptionSpec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:330:1: exceptionSpec : ( ( '!' definedValue ) -> ^( EXCEPTION_SPEC definedValue ) | ( '!' type ':' value ) -> ^( EXCEPTION_SPEC type value ) | ( '!' INT ) -> ^( EXCEPTION_SPEC INT ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:326:1: exceptionSpec : ( ( '!' definedValue ) -> ^( EXCEPTION_SPEC definedValue ) | ( '!' type ':' value ) -> ^( EXCEPTION_SPEC type value ) | ( '!' INT ) -> ^( EXCEPTION_SPEC INT ) );
 	public final ASN1Parser.exceptionSpec_return exceptionSpec() throws RecognitionException {
 		ASN1Parser.exceptionSpec_return retval = new ASN1Parser.exceptionSpec_return();
 		retval.start = input.LT(1);
@@ -9959,7 +9964,7 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:330:17: ( ( '!' definedValue ) -> ^( EXCEPTION_SPEC definedValue ) | ( '!' type ':' value ) -> ^( EXCEPTION_SPEC type value ) | ( '!' INT ) -> ^( EXCEPTION_SPEC INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:326:17: ( ( '!' definedValue ) -> ^( EXCEPTION_SPEC definedValue ) | ( '!' type ':' value ) -> ^( EXCEPTION_SPEC type value ) | ( '!' INT ) -> ^( EXCEPTION_SPEC INT ) )
 			int alt63 = 3;
 			int LA63_0 = input.LA(1);
 
@@ -10086,10 +10091,10 @@ public class ASN1Parser extends Parser {
 			}
 			switch (alt63) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:331:3: ( '!' definedValue )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:3: ( '!' definedValue )
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:331:3: ( '!' definedValue )
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:331:4: '!' definedValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:3: ( '!' definedValue )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:4: '!' definedValue
 					{
 						char_literal214 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2276);
 						if (state.failed) return retval;
@@ -10123,9 +10128,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 331:23: -> ^( EXCEPTION_SPEC definedValue )
+						// 327:23: -> ^( EXCEPTION_SPEC definedValue )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:331:26: ^( EXCEPTION_SPEC definedValue )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:26: ^( EXCEPTION_SPEC definedValue )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10147,10 +10152,10 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:332:5: ( '!' type ':' value )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:5: ( '!' type ':' value )
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:332:5: ( '!' type ':' value )
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:332:7: '!' type ':' value
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:5: ( '!' type ':' value )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:7: '!' type ':' value
 					{
 						char_literal216 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2296);
 						if (state.failed) return retval;
@@ -10180,7 +10185,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: type, value
+					// elements: value, type
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -10196,9 +10201,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 332:28: -> ^( EXCEPTION_SPEC type value )
+						// 328:28: -> ^( EXCEPTION_SPEC type value )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:332:31: ^( EXCEPTION_SPEC type value )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:31: ^( EXCEPTION_SPEC type value )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10222,10 +10227,10 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:333:5: ( '!' INT )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:5: ( '!' INT )
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:333:5: ( '!' INT )
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:333:7: '!' INT
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:5: ( '!' INT )
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:7: '!' INT
 					{
 						char_literal220 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2322);
 						if (state.failed) return retval;
@@ -10257,9 +10262,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 333:17: -> ^( EXCEPTION_SPEC INT )
+						// 329:17: -> ^( EXCEPTION_SPEC INT )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:333:20: ^( EXCEPTION_SPEC INT )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:20: ^( EXCEPTION_SPEC INT )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10313,7 +10318,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "sequenceOfType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:336:1: sequenceOfType : 'SEQUENCE' ( constraint )? 'OF' sOfComponentType -> ^( SEQUENCEOF sOfComponentType ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:332:1: sequenceOfType : 'SEQUENCE' ( constraint )? 'OF' sOfComponentType ( ';' )? -> ^( SEQUENCEOF sOfComponentType ( constraint )? ) ;
 	public final ASN1Parser.sequenceOfType_return sequenceOfType() throws RecognitionException {
 		ASN1Parser.sequenceOfType_return retval = new ASN1Parser.sequenceOfType_return();
 		retval.start = input.LT(1);
@@ -10323,6 +10328,7 @@ public class ASN1Parser extends Parser {
 
 		Token string_literal222 = null;
 		Token string_literal224 = null;
+		Token char_literal226 = null;
 		ASN1Parser.constraint_return constraint223 = null;
 
 		ASN1Parser.sOfComponentType_return sOfComponentType225 = null;
@@ -10330,20 +10336,22 @@ public class ASN1Parser extends Parser {
 
 		CommonTree string_literal222_tree = null;
 		CommonTree string_literal224_tree = null;
+		CommonTree char_literal226_tree = null;
 		RewriteRuleTokenStream stream_139 = new RewriteRuleTokenStream(adaptor, "token 139");
 		RewriteRuleTokenStream stream_130 = new RewriteRuleTokenStream(adaptor, "token 130");
+		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
 		RewriteRuleSubtreeStream stream_sOfComponentType = new RewriteRuleSubtreeStream(adaptor, "rule sOfComponentType");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:336:18: ( 'SEQUENCE' ( constraint )? 'OF' sOfComponentType -> ^( SEQUENCEOF sOfComponentType ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:337:2: 'SEQUENCE' ( constraint )? 'OF' sOfComponentType
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:332:18: ( 'SEQUENCE' ( constraint )? 'OF' sOfComponentType ( ';' )? -> ^( SEQUENCEOF sOfComponentType ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:2: 'SEQUENCE' ( constraint )? 'OF' sOfComponentType ( ';' )?
 			{
 				string_literal222 = (Token) match(input, 139, FOLLOW_139_in_sequenceOfType2348);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_139.add(string_literal222);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:337:13: ( constraint )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:13: ( constraint )?
 				int alt64 = 2;
 				int LA64_0 = input.LA(1);
 
@@ -10352,7 +10360,7 @@ public class ASN1Parser extends Parser {
 				}
 				switch (alt64) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:337:13: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:13: constraint
 					{
 						pushFollow(FOLLOW_constraint_in_sequenceOfType2350);
 						constraint223 = constraint();
@@ -10379,8 +10387,30 @@ public class ASN1Parser extends Parser {
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_sOfComponentType.add(sOfComponentType225.getTree());
 
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:47: ( ';' )?
+				int alt65 = 2;
+				int LA65_0 = input.LA(1);
+
+				if ((LA65_0 == 89)) {
+					alt65 = 1;
+				}
+				switch (alt65) {
+					case 1:
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:47: ';'
+					{
+						char_literal226 = (Token) match(input, 89, FOLLOW_89_in_sequenceOfType2357);
+						if (state.failed) return retval;
+						if (state.backtracking == 0) stream_89.add(char_literal226);
+
+
+					}
+					break;
+
+				}
+
+
 				// AST REWRITE
-				// elements: constraint, sOfComponentType
+				// elements: sOfComponentType, constraint
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -10396,9 +10426,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 337:47: -> ^( SEQUENCEOF sOfComponentType ( constraint )? )
+					// 333:52: -> ^( SEQUENCEOF sOfComponentType ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:337:50: ^( SEQUENCEOF sOfComponentType ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:55: ^( SEQUENCEOF sOfComponentType ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10408,7 +10438,7 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_sOfComponentType.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:337:80: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:85: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -10454,7 +10484,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "namedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:339:1: namedType : ID type -> ^( NAMED_TYPE ID type ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:335:1: namedType : ID type -> ^( NAMED_TYPE ID type ) ;
 	public final ASN1Parser.namedType_return namedType() throws RecognitionException {
 		ASN1Parser.namedType_return retval = new ASN1Parser.namedType_return();
 		retval.start = input.LT(1);
@@ -10462,28 +10492,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID226 = null;
-		ASN1Parser.type_return type227 = null;
+		Token ID227 = null;
+		ASN1Parser.type_return type228 = null;
 
 
-		CommonTree ID226_tree = null;
+		CommonTree ID227_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:340:2: ( ID type -> ^( NAMED_TYPE ID type ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:341:2: ID type
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:336:2: ( ID type -> ^( NAMED_TYPE ID type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:337:2: ID type
 			{
-				ID226 = (Token) match(input, ID, FOLLOW_ID_in_namedType2376);
+				ID227 = (Token) match(input, ID, FOLLOW_ID_in_namedType2379);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID226);
+				if (state.backtracking == 0) stream_ID.add(ID227);
 
 
-				pushFollow(FOLLOW_type_in_namedType2378);
-				type227 = type();
+				pushFollow(FOLLOW_type_in_namedType2381);
+				type228 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type227.getTree());
+				if (state.backtracking == 0) stream_type.add(type228.getTree());
 
 				// AST REWRITE
 				// elements: type, ID
@@ -10502,9 +10532,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 341:10: -> ^( NAMED_TYPE ID type )
+					// 337:10: -> ^( NAMED_TYPE ID type )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:341:13: ^( NAMED_TYPE ID type )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:337:13: ^( NAMED_TYPE ID type )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10558,7 +10588,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "taggedType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:343:1: taggedType : '[' ( tagClass )? classNumber ']' ( taggingMethod )? type -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:339:1: taggedType : '[' ( tagClass )? classNumber ']' ( taggingMethod )? type -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type ) ;
 	public final ASN1Parser.taggedType_return taggedType() throws RecognitionException {
 		ASN1Parser.taggedType_return retval = new ASN1Parser.taggedType_return();
 		retval.start = input.LT(1);
@@ -10566,19 +10596,19 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal228 = null;
-		Token char_literal231 = null;
-		ASN1Parser.tagClass_return tagClass229 = null;
+		Token char_literal229 = null;
+		Token char_literal232 = null;
+		ASN1Parser.tagClass_return tagClass230 = null;
 
-		ASN1Parser.classNumber_return classNumber230 = null;
+		ASN1Parser.classNumber_return classNumber231 = null;
 
-		ASN1Parser.taggingMethod_return taggingMethod232 = null;
+		ASN1Parser.taggingMethod_return taggingMethod233 = null;
 
-		ASN1Parser.type_return type233 = null;
+		ASN1Parser.type_return type234 = null;
 
 
-		CommonTree char_literal228_tree = null;
-		CommonTree char_literal231_tree = null;
+		CommonTree char_literal229_tree = null;
+		CommonTree char_literal232_tree = null;
 		RewriteRuleTokenStream stream_156 = new RewriteRuleTokenStream(adaptor, "token 156");
 		RewriteRuleTokenStream stream_154 = new RewriteRuleTokenStream(adaptor, "token 154");
 		RewriteRuleSubtreeStream stream_taggingMethod = new RewriteRuleSubtreeStream(adaptor, "rule taggingMethod");
@@ -10586,67 +10616,31 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_tagClass = new RewriteRuleSubtreeStream(adaptor, "rule tagClass");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:343:14: ( '[' ( tagClass )? classNumber ']' ( taggingMethod )? type -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:3: '[' ( tagClass )? classNumber ']' ( taggingMethod )? type
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:339:14: ( '[' ( tagClass )? classNumber ']' ( taggingMethod )? type -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:3: '[' ( tagClass )? classNumber ']' ( taggingMethod )? type
 			{
-				char_literal228 = (Token) match(input, 154, FOLLOW_154_in_taggedType2400);
+				char_literal229 = (Token) match(input, 154, FOLLOW_154_in_taggedType2403);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_154.add(char_literal228);
+				if (state.backtracking == 0) stream_154.add(char_literal229);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:7: ( tagClass )?
-				int alt65 = 2;
-				int LA65_0 = input.LA(1);
-
-				if ((LA65_0 == 93 || LA65_0 == 136 || LA65_0 == 148)) {
-					alt65 = 1;
-				}
-				switch (alt65) {
-					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:7: tagClass
-					{
-						pushFollow(FOLLOW_tagClass_in_taggedType2402);
-						tagClass229 = tagClass();
-
-						state._fsp--;
-						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_tagClass.add(tagClass229.getTree());
-
-					}
-					break;
-
-				}
-
-
-				pushFollow(FOLLOW_classNumber_in_taggedType2405);
-				classNumber230 = classNumber();
-
-				state._fsp--;
-				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_classNumber.add(classNumber230.getTree());
-
-				char_literal231 = (Token) match(input, 156, FOLLOW_156_in_taggedType2407);
-				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_156.add(char_literal231);
-
-
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:33: ( taggingMethod )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:7: ( tagClass )?
 				int alt66 = 2;
 				int LA66_0 = input.LA(1);
 
-				if ((LA66_0 == 94 || LA66_0 == 108 || LA66_0 == 117)) {
+				if ((LA66_0 == 93 || LA66_0 == 136 || LA66_0 == 148)) {
 					alt66 = 1;
 				}
 				switch (alt66) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:33: taggingMethod
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:7: tagClass
 					{
-						pushFollow(FOLLOW_taggingMethod_in_taggedType2409);
-						taggingMethod232 = taggingMethod();
+						pushFollow(FOLLOW_tagClass_in_taggedType2405);
+						tagClass230 = tagClass();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod232.getTree());
+						if (state.backtracking == 0) stream_tagClass.add(tagClass230.getTree());
 
 					}
 					break;
@@ -10654,15 +10648,51 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_type_in_taggedType2412);
-				type233 = type();
+				pushFollow(FOLLOW_classNumber_in_taggedType2408);
+				classNumber231 = classNumber();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type233.getTree());
+				if (state.backtracking == 0) stream_classNumber.add(classNumber231.getTree());
+
+				char_literal232 = (Token) match(input, 156, FOLLOW_156_in_taggedType2410);
+				if (state.failed) return retval;
+				if (state.backtracking == 0) stream_156.add(char_literal232);
+
+
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:33: ( taggingMethod )?
+				int alt67 = 2;
+				int LA67_0 = input.LA(1);
+
+				if ((LA67_0 == 94 || LA67_0 == 108 || LA67_0 == 117)) {
+					alt67 = 1;
+				}
+				switch (alt67) {
+					case 1:
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:33: taggingMethod
+					{
+						pushFollow(FOLLOW_taggingMethod_in_taggedType2412);
+						taggingMethod233 = taggingMethod();
+
+						state._fsp--;
+						if (state.failed) return retval;
+						if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod233.getTree());
+
+					}
+					break;
+
+				}
+
+
+				pushFollow(FOLLOW_type_in_taggedType2415);
+				type234 = type();
+
+				state._fsp--;
+				if (state.failed) return retval;
+				if (state.backtracking == 0) stream_type.add(type234.getTree());
 
 				// AST REWRITE
-				// elements: taggingMethod, classNumber, type, tagClass
+				// elements: classNumber, type, tagClass, taggingMethod
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -10678,9 +10708,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 344:53: -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type )
+					// 340:53: -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:56: ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:56: ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10690,14 +10720,14 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_classNumber.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:82: ( tagClass )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:82: ( tagClass )?
 							if (stream_tagClass.hasNext()) {
 								adaptor.addChild(root_1, stream_tagClass.nextTree());
 
 							}
 							stream_tagClass.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:344:92: ( taggingMethod )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:92: ( taggingMethod )?
 							if (stream_taggingMethod.hasNext()) {
 								adaptor.addChild(root_1, stream_taggingMethod.nextTree());
 
@@ -10745,7 +10775,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "classNumber"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:346:1: classNumber : ( INT | definedValue );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:342:1: classNumber : ( INT | definedValue );
 	public final ASN1Parser.classNumber_return classNumber() throws RecognitionException {
 		ASN1Parser.classNumber_return retval = new ASN1Parser.classNumber_return();
 		retval.start = input.LT(1);
@@ -10753,62 +10783,62 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token INT234 = null;
-		ASN1Parser.definedValue_return definedValue235 = null;
+		Token INT235 = null;
+		ASN1Parser.definedValue_return definedValue236 = null;
 
 
-		CommonTree INT234_tree = null;
+		CommonTree INT235_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:346:15: ( INT | definedValue )
-			int alt67 = 2;
-			int LA67_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:342:15: ( INT | definedValue )
+			int alt68 = 2;
+			int LA68_0 = input.LA(1);
 
-			if ((LA67_0 == INT)) {
-				alt67 = 1;
-			} else if ((LA67_0 == ID)) {
-				alt67 = 2;
+			if ((LA68_0 == INT)) {
+				alt68 = 1;
+			} else if ((LA68_0 == ID)) {
+				alt68 = 2;
 			} else {
 				if (state.backtracking > 0) {
 					state.failed = true;
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 67, 0, input);
+				new NoViableAltException("", 68, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt67) {
+			switch (alt68) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:347:2: INT
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:343:2: INT
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					INT234 = (Token) match(input, INT, FOLLOW_INT_in_classNumber2439);
+					INT235 = (Token) match(input, INT, FOLLOW_INT_in_classNumber2442);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						INT234_tree =
-						(CommonTree) adaptor.create(INT234)
+						INT235_tree =
+						(CommonTree) adaptor.create(INT235)
 						;
-						adaptor.addChild(root_0, INT234_tree);
+						adaptor.addChild(root_0, INT235_tree);
 					}
 
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:347:8: definedValue
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:343:8: definedValue
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_definedValue_in_classNumber2443);
-					definedValue235 = definedValue();
+					pushFollow(FOLLOW_definedValue_in_classNumber2446);
+					definedValue236 = definedValue();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, definedValue235.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, definedValue236.getTree());
 
 				}
 				break;
@@ -10842,7 +10872,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "tagClass"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:349:1: tagClass : ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:345:1: tagClass : ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' );
 	public final ASN1Parser.tagClass_return tagClass() throws RecognitionException {
 		ASN1Parser.tagClass_return retval = new ASN1Parser.tagClass_return();
 		retval.start = input.LT(1);
@@ -10850,25 +10880,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set236 = null;
+		Token set237 = null;
 
-		CommonTree set236_tree = null;
+		CommonTree set237_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:349:10: ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:345:10: ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set236 = (Token) input.LT(1);
+				set237 = (Token) input.LT(1);
 
 				if (input.LA(1) == 93 || input.LA(1) == 136 || input.LA(1) == 148) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set236)
+						                (CommonTree) adaptor.create(set237)
 						                );
 					}
 					state.errorRecovery = false;
@@ -10913,7 +10943,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "realType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:352:1: realType : 'REAL' ( constraint )? -> ^( REAL ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:348:1: realType : 'REAL' ( constraint )? -> ^( REAL ( constraint )? ) ;
 	public final ASN1Parser.realType_return realType() throws RecognitionException {
 		ASN1Parser.realType_return retval = new ASN1Parser.realType_return();
 		retval.start = input.LT(1);
@@ -10921,39 +10951,39 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal237 = null;
-		ASN1Parser.constraint_return constraint238 = null;
+		Token string_literal238 = null;
+		ASN1Parser.constraint_return constraint239 = null;
 
 
-		CommonTree string_literal237_tree = null;
+		CommonTree string_literal238_tree = null;
 		RewriteRuleTokenStream stream_138 = new RewriteRuleTokenStream(adaptor, "token 138");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:352:12: ( 'REAL' ( constraint )? -> ^( REAL ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:353:3: 'REAL' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:348:12: ( 'REAL' ( constraint )? -> ^( REAL ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:3: 'REAL' ( constraint )?
 			{
-				string_literal237 = (Token) match(input, 138, FOLLOW_138_in_realType2472);
+				string_literal238 = (Token) match(input, 138, FOLLOW_138_in_realType2475);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_138.add(string_literal237);
+				if (state.backtracking == 0) stream_138.add(string_literal238);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:353:10: ( constraint )?
-				int alt68 = 2;
-				int LA68_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:10: ( constraint )?
+				int alt69 = 2;
+				int LA69_0 = input.LA(1);
 
-				if ((LA68_0 == 81)) {
-					alt68 = 1;
+				if ((LA69_0 == 81)) {
+					alt69 = 1;
 				}
-				switch (alt68) {
+				switch (alt69) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:353:10: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:10: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_realType2474);
-						constraint238 = constraint();
+						pushFollow(FOLLOW_constraint_in_realType2477);
+						constraint239 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint238.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint239.getTree());
 
 					}
 					break;
@@ -10978,9 +11008,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 353:22: -> ^( REAL ( constraint )? )
+					// 349:22: -> ^( REAL ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:353:25: ^( REAL ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:25: ^( REAL ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -10988,7 +11018,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:353:32: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:32: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -11034,7 +11064,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "integerType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:355:1: integerType : 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )? -> ^( INTEGER ( namedNumberList )? ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:351:1: integerType : 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )? -> ^( INTEGER ( namedNumberList )? ( constraint )? ) ;
 	public final ASN1Parser.integerType_return integerType() throws RecognitionException {
 		ASN1Parser.integerType_return retval = new ASN1Parser.integerType_return();
 		retval.start = input.LT(1);
@@ -11042,48 +11072,48 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal239 = null;
-		Token char_literal241 = null;
-		Token char_literal243 = null;
-		ASN1Parser.constraint_return constraint240 = null;
+		Token string_literal240 = null;
+		Token char_literal242 = null;
+		Token char_literal244 = null;
+		ASN1Parser.constraint_return constraint241 = null;
 
-		ASN1Parser.namedNumberList_return namedNumberList242 = null;
+		ASN1Parser.namedNumberList_return namedNumberList243 = null;
 
 
-		CommonTree string_literal239_tree = null;
-		CommonTree char_literal241_tree = null;
-		CommonTree char_literal243_tree = null;
+		CommonTree string_literal240_tree = null;
+		CommonTree char_literal242_tree = null;
+		CommonTree char_literal244_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_121 = new RewriteRuleTokenStream(adaptor, "token 121");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		RewriteRuleSubtreeStream stream_namedNumberList = new RewriteRuleSubtreeStream(adaptor, "rule namedNumberList");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:355:15: ( 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )? -> ^( INTEGER ( namedNumberList )? ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:3: 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:351:15: ( 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )? -> ^( INTEGER ( namedNumberList )? ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:3: 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )?
 			{
-				string_literal239 = (Token) match(input, 121, FOLLOW_121_in_integerType2496);
+				string_literal240 = (Token) match(input, 121, FOLLOW_121_in_integerType2499);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_121.add(string_literal239);
+				if (state.backtracking == 0) stream_121.add(string_literal240);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:13: ( constraint )?
-				int alt69 = 2;
-				int LA69_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:13: ( constraint )?
+				int alt70 = 2;
+				int LA70_0 = input.LA(1);
 
-				if ((LA69_0 == 81)) {
-					alt69 = 1;
+				if ((LA70_0 == 81)) {
+					alt70 = 1;
 				}
-				switch (alt69) {
+				switch (alt70) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:13: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:13: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_integerType2498);
-						constraint240 = constraint();
+						pushFollow(FOLLOW_constraint_in_integerType2501);
+						constraint241 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint240.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint241.getTree());
 
 					}
 					break;
@@ -11091,32 +11121,32 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:25: ( '{' namedNumberList '}' )?
-				int alt70 = 2;
-				int LA70_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:25: ( '{' namedNumberList '}' )?
+				int alt71 = 2;
+				int LA71_0 = input.LA(1);
 
-				if ((LA70_0 == 159)) {
-					alt70 = 1;
+				if ((LA71_0 == 159)) {
+					alt71 = 1;
 				}
-				switch (alt70) {
+				switch (alt71) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:26: '{' namedNumberList '}'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:26: '{' namedNumberList '}'
 					{
-						char_literal241 = (Token) match(input, 159, FOLLOW_159_in_integerType2502);
+						char_literal242 = (Token) match(input, 159, FOLLOW_159_in_integerType2505);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_159.add(char_literal241);
+						if (state.backtracking == 0) stream_159.add(char_literal242);
 
 
-						pushFollow(FOLLOW_namedNumberList_in_integerType2504);
-						namedNumberList242 = namedNumberList();
+						pushFollow(FOLLOW_namedNumberList_in_integerType2507);
+						namedNumberList243 = namedNumberList();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_namedNumberList.add(namedNumberList242.getTree());
+						if (state.backtracking == 0) stream_namedNumberList.add(namedNumberList243.getTree());
 
-						char_literal243 = (Token) match(input, 161, FOLLOW_161_in_integerType2506);
+						char_literal244 = (Token) match(input, 161, FOLLOW_161_in_integerType2509);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_161.add(char_literal243);
+						if (state.backtracking == 0) stream_161.add(char_literal244);
 
 
 					}
@@ -11142,9 +11172,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 356:52: -> ^( INTEGER ( namedNumberList )? ( constraint )? )
+					// 352:52: -> ^( INTEGER ( namedNumberList )? ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:55: ^( INTEGER ( namedNumberList )? ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:55: ^( INTEGER ( namedNumberList )? ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -11152,14 +11182,14 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:65: ( namedNumberList )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:65: ( namedNumberList )?
 							if (stream_namedNumberList.hasNext()) {
 								adaptor.addChild(root_1, stream_namedNumberList.nextTree());
 
 							}
 							stream_namedNumberList.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:356:82: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:82: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -11205,7 +11235,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "namedNumberList"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:358:1: namedNumberList : namedNumber ( ',' namedNumber )* -> ^( VEC ( namedNumber )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:354:1: namedNumberList : namedNumber ( ',' namedNumber )* -> ^( VEC ( namedNumber )+ ) ;
 	public final ASN1Parser.namedNumberList_return namedNumberList() throws RecognitionException {
 		ASN1Parser.namedNumberList_return retval = new ASN1Parser.namedNumberList_return();
 		retval.start = input.LT(1);
@@ -11213,58 +11243,58 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal245 = null;
-		ASN1Parser.namedNumber_return namedNumber244 = null;
+		Token char_literal246 = null;
+		ASN1Parser.namedNumber_return namedNumber245 = null;
 
-		ASN1Parser.namedNumber_return namedNumber246 = null;
+		ASN1Parser.namedNumber_return namedNumber247 = null;
 
 
-		CommonTree char_literal245_tree = null;
+		CommonTree char_literal246_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedNumber = new RewriteRuleSubtreeStream(adaptor, "rule namedNumber");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:358:18: ( namedNumber ( ',' namedNumber )* -> ^( VEC ( namedNumber )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:359:3: namedNumber ( ',' namedNumber )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:354:18: ( namedNumber ( ',' namedNumber )* -> ^( VEC ( namedNumber )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:3: namedNumber ( ',' namedNumber )*
 			{
-				pushFollow(FOLLOW_namedNumber_in_namedNumberList2531);
-				namedNumber244 = namedNumber();
+				pushFollow(FOLLOW_namedNumber_in_namedNumberList2534);
+				namedNumber245 = namedNumber();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_namedNumber.add(namedNumber244.getTree());
+				if (state.backtracking == 0) stream_namedNumber.add(namedNumber245.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:359:15: ( ',' namedNumber )*
-				loop71:
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:15: ( ',' namedNumber )*
+				loop72:
 				do {
-					int alt71 = 2;
-					int LA71_0 = input.LA(1);
+					int alt72 = 2;
+					int LA72_0 = input.LA(1);
 
-					if ((LA71_0 == 83)) {
-						alt71 = 1;
+					if ((LA72_0 == 83)) {
+						alt72 = 1;
 					}
 
 
-					switch (alt71) {
+					switch (alt72) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:359:16: ',' namedNumber
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:16: ',' namedNumber
 						{
-							char_literal245 = (Token) match(input, 83, FOLLOW_83_in_namedNumberList2534);
+							char_literal246 = (Token) match(input, 83, FOLLOW_83_in_namedNumberList2537);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal245);
+							if (state.backtracking == 0) stream_83.add(char_literal246);
 
 
-							pushFollow(FOLLOW_namedNumber_in_namedNumberList2536);
-							namedNumber246 = namedNumber();
+							pushFollow(FOLLOW_namedNumber_in_namedNumberList2539);
+							namedNumber247 = namedNumber();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_namedNumber.add(namedNumber246.getTree());
+							if (state.backtracking == 0) stream_namedNumber.add(namedNumber247.getTree());
 
 						}
 						break;
 
 						default:
-							break loop71;
+							break loop72;
 					}
 				} while (true);
 
@@ -11286,9 +11316,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 359:34: -> ^( VEC ( namedNumber )+ )
+					// 355:34: -> ^( VEC ( namedNumber )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:359:37: ^( VEC ( namedNumber )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:37: ^( VEC ( namedNumber )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -11344,7 +11374,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "namedNumber"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:361:1: namedNumber : ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:357:1: namedNumber : ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) ;
 	public final ASN1Parser.namedNumber_return namedNumber() throws RecognitionException {
 		ASN1Parser.namedNumber_return retval = new ASN1Parser.namedNumber_return();
 		retval.start = input.LT(1);
@@ -11352,46 +11382,46 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID247 = null;
-		Token char_literal248 = null;
-		Token INT249 = null;
-		Token char_literal250 = null;
+		Token ID248 = null;
+		Token char_literal249 = null;
+		Token INT250 = null;
+		Token char_literal251 = null;
 
-		CommonTree ID247_tree = null;
-		CommonTree char_literal248_tree = null;
-		CommonTree INT249_tree = null;
-		CommonTree char_literal250_tree = null;
+		CommonTree ID248_tree = null;
+		CommonTree char_literal249_tree = null;
+		CommonTree INT250_tree = null;
+		CommonTree char_literal251_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:361:14: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:362:3: ID '(' INT ')'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:357:14: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:358:3: ID '(' INT ')'
 			{
-				ID247 = (Token) match(input, ID, FOLLOW_ID_in_namedNumber2558);
+				ID248 = (Token) match(input, ID, FOLLOW_ID_in_namedNumber2561);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID247);
+				if (state.backtracking == 0) stream_ID.add(ID248);
 
 
-				char_literal248 = (Token) match(input, 81, FOLLOW_81_in_namedNumber2560);
+				char_literal249 = (Token) match(input, 81, FOLLOW_81_in_namedNumber2563);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_81.add(char_literal248);
+				if (state.backtracking == 0) stream_81.add(char_literal249);
 
 
-				INT249 = (Token) match(input, INT, FOLLOW_INT_in_namedNumber2562);
+				INT250 = (Token) match(input, INT, FOLLOW_INT_in_namedNumber2565);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_INT.add(INT249);
+				if (state.backtracking == 0) stream_INT.add(INT250);
 
 
-				char_literal250 = (Token) match(input, 82, FOLLOW_82_in_namedNumber2564);
+				char_literal251 = (Token) match(input, 82, FOLLOW_82_in_namedNumber2567);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_82.add(char_literal250);
+				if (state.backtracking == 0) stream_82.add(char_literal251);
 
 
 				// AST REWRITE
-				// elements: ID, INT
+				// elements: INT, ID
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -11407,9 +11437,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 362:18: -> ^( NAME_NUMBER_FORM ID INT )
+					// 358:18: -> ^( NAME_NUMBER_FORM ID INT )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:362:21: ^( NAME_NUMBER_FORM ID INT )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:358:21: ^( NAME_NUMBER_FORM ID INT )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -11466,7 +11496,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "booleanType"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:364:1: booleanType : 'BOOLEAN' ( constraint )? -> ^( BOOLEAN ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:360:1: booleanType : 'BOOLEAN' ( constraint )? -> ^( BOOLEAN ( constraint )? ) ;
 	public final ASN1Parser.booleanType_return booleanType() throws RecognitionException {
 		ASN1Parser.booleanType_return retval = new ASN1Parser.booleanType_return();
 		retval.start = input.LT(1);
@@ -11474,39 +11504,39 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal251 = null;
-		ASN1Parser.constraint_return constraint252 = null;
+		Token string_literal252 = null;
+		ASN1Parser.constraint_return constraint253 = null;
 
 
-		CommonTree string_literal251_tree = null;
+		CommonTree string_literal252_tree = null;
 		RewriteRuleTokenStream stream_98 = new RewriteRuleTokenStream(adaptor, "token 98");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:364:15: ( 'BOOLEAN' ( constraint )? -> ^( BOOLEAN ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:365:3: 'BOOLEAN' ( constraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:360:15: ( 'BOOLEAN' ( constraint )? -> ^( BOOLEAN ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:3: 'BOOLEAN' ( constraint )?
 			{
-				string_literal251 = (Token) match(input, 98, FOLLOW_98_in_booleanType2586);
+				string_literal252 = (Token) match(input, 98, FOLLOW_98_in_booleanType2589);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_98.add(string_literal251);
+				if (state.backtracking == 0) stream_98.add(string_literal252);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:365:13: ( constraint )?
-				int alt72 = 2;
-				int LA72_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:13: ( constraint )?
+				int alt73 = 2;
+				int LA73_0 = input.LA(1);
 
-				if ((LA72_0 == 81)) {
-					alt72 = 1;
+				if ((LA73_0 == 81)) {
+					alt73 = 1;
 				}
-				switch (alt72) {
+				switch (alt73) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:365:13: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:13: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_booleanType2588);
-						constraint252 = constraint();
+						pushFollow(FOLLOW_constraint_in_booleanType2591);
+						constraint253 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint252.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint253.getTree());
 
 					}
 					break;
@@ -11531,9 +11561,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 365:25: -> ^( BOOLEAN ( constraint )? )
+					// 361:25: -> ^( BOOLEAN ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:365:28: ^( BOOLEAN ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:28: ^( BOOLEAN ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -11541,7 +11571,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:365:38: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:38: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -11587,7 +11617,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "constraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:368:1: constraint : '(' constraintSpec ( exceptionSpec )? ')' -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:364:1: constraint : '(' constraintSpec ( exceptionSpec )? ')' -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? ) ;
 	public final ASN1Parser.constraint_return constraint() throws RecognitionException {
 		ASN1Parser.constraint_return retval = new ASN1Parser.constraint_return();
 		retval.start = input.LT(1);
@@ -11595,52 +11625,52 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal253 = null;
-		Token char_literal256 = null;
-		ASN1Parser.constraintSpec_return constraintSpec254 = null;
+		Token char_literal254 = null;
+		Token char_literal257 = null;
+		ASN1Parser.constraintSpec_return constraintSpec255 = null;
 
-		ASN1Parser.exceptionSpec_return exceptionSpec255 = null;
+		ASN1Parser.exceptionSpec_return exceptionSpec256 = null;
 
 
-		CommonTree char_literal253_tree = null;
-		CommonTree char_literal256_tree = null;
+		CommonTree char_literal254_tree = null;
+		CommonTree char_literal257_tree = null;
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 		RewriteRuleSubtreeStream stream_constraintSpec = new RewriteRuleSubtreeStream(adaptor, "rule constraintSpec");
 		RewriteRuleSubtreeStream stream_exceptionSpec = new RewriteRuleSubtreeStream(adaptor, "rule exceptionSpec");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:368:14: ( '(' constraintSpec ( exceptionSpec )? ')' -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:369:3: '(' constraintSpec ( exceptionSpec )? ')'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:364:14: ( '(' constraintSpec ( exceptionSpec )? ')' -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:3: '(' constraintSpec ( exceptionSpec )? ')'
 			{
-				char_literal253 = (Token) match(input, 81, FOLLOW_81_in_constraint2612);
+				char_literal254 = (Token) match(input, 81, FOLLOW_81_in_constraint2615);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_81.add(char_literal253);
+				if (state.backtracking == 0) stream_81.add(char_literal254);
 
 
-				pushFollow(FOLLOW_constraintSpec_in_constraint2614);
-				constraintSpec254 = constraintSpec();
+				pushFollow(FOLLOW_constraintSpec_in_constraint2617);
+				constraintSpec255 = constraintSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_constraintSpec.add(constraintSpec254.getTree());
+				if (state.backtracking == 0) stream_constraintSpec.add(constraintSpec255.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:369:22: ( exceptionSpec )?
-				int alt73 = 2;
-				int LA73_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:22: ( exceptionSpec )?
+				int alt74 = 2;
+				int LA74_0 = input.LA(1);
 
-				if ((LA73_0 == 80)) {
-					alt73 = 1;
+				if ((LA74_0 == 80)) {
+					alt74 = 1;
 				}
-				switch (alt73) {
+				switch (alt74) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:369:22: exceptionSpec
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:22: exceptionSpec
 					{
-						pushFollow(FOLLOW_exceptionSpec_in_constraint2616);
-						exceptionSpec255 = exceptionSpec();
+						pushFollow(FOLLOW_exceptionSpec_in_constraint2619);
+						exceptionSpec256 = exceptionSpec();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec255.getTree());
+						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec256.getTree());
 
 					}
 					break;
@@ -11648,9 +11678,9 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				char_literal256 = (Token) match(input, 82, FOLLOW_82_in_constraint2618);
+				char_literal257 = (Token) match(input, 82, FOLLOW_82_in_constraint2621);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_82.add(char_literal256);
+				if (state.backtracking == 0) stream_82.add(char_literal257);
 
 
 				// AST REWRITE
@@ -11670,9 +11700,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 370:3: -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? )
+					// 366:3: -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:370:6: ^( CONSTRAINT constraintSpec ( exceptionSpec )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:366:6: ^( CONSTRAINT constraintSpec ( exceptionSpec )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -11682,7 +11712,7 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_constraintSpec.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:370:34: ( exceptionSpec )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:366:34: ( exceptionSpec )?
 							if (stream_exceptionSpec.hasNext()) {
 								adaptor.addChild(root_1, stream_exceptionSpec.nextTree());
 
@@ -11728,7 +11758,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "constraintSpec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:373:1: constraintSpec : elementSetSpecs ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:369:1: constraintSpec : elementSetSpecs ;
 	public final ASN1Parser.constraintSpec_return constraintSpec() throws RecognitionException {
 		ASN1Parser.constraintSpec_return retval = new ASN1Parser.constraintSpec_return();
 		retval.start = input.LT(1);
@@ -11736,22 +11766,22 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.elementSetSpecs_return elementSetSpecs257 = null;
+		ASN1Parser.elementSetSpecs_return elementSetSpecs258 = null;
 
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:373:18: ( elementSetSpecs )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:374:3: elementSetSpecs
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:369:18: ( elementSetSpecs )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:370:3: elementSetSpecs
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				pushFollow(FOLLOW_elementSetSpecs_in_constraintSpec2645);
-				elementSetSpecs257 = elementSetSpecs();
+				pushFollow(FOLLOW_elementSetSpecs_in_constraintSpec2648);
+				elementSetSpecs258 = elementSetSpecs();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) adaptor.addChild(root_0, elementSetSpecs257.getTree());
+				if (state.backtracking == 0) adaptor.addChild(root_0, elementSetSpecs258.getTree());
 
 			}
 
@@ -11783,7 +11813,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "elementSetSpecs"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:376:1: elementSetSpecs : elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )? -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:372:1: elementSetSpecs : elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )? -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? ) ;
 	public final ASN1Parser.elementSetSpecs_return elementSetSpecs() throws RecognitionException {
 		ASN1Parser.elementSetSpecs_return retval = new ASN1Parser.elementSetSpecs_return();
 		retval.start = input.LT(1);
@@ -11791,69 +11821,69 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal260 = null;
-		ASN1Parser.elementSetSpec_return elementSetSpec258 = null;
+		Token char_literal261 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec259 = null;
 
-		ASN1Parser.extensionEndMarker_return extensionEndMarker259 = null;
+		ASN1Parser.extensionEndMarker_return extensionEndMarker260 = null;
 
-		ASN1Parser.elementSetSpec_return elementSetSpec261 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec262 = null;
 
 
-		CommonTree char_literal260_tree = null;
+		CommonTree char_literal261_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionEndMarker = new RewriteRuleSubtreeStream(adaptor, "rule extensionEndMarker");
 		RewriteRuleSubtreeStream stream_elementSetSpec = new RewriteRuleSubtreeStream(adaptor, "rule elementSetSpec");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:376:19: ( elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )? -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:377:3: elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:372:19: ( elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )? -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:3: elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )?
 			{
-				pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2657);
-				elementSetSpec258 = elementSetSpec();
+				pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2660);
+				elementSetSpec259 = elementSetSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec258.getTree());
+				if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec259.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:377:18: ( extensionEndMarker ( ',' elementSetSpec )? )?
-				int alt75 = 2;
-				int LA75_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:18: ( extensionEndMarker ( ',' elementSetSpec )? )?
+				int alt76 = 2;
+				int LA76_0 = input.LA(1);
 
-				if ((LA75_0 == 83)) {
-					alt75 = 1;
+				if ((LA76_0 == 83)) {
+					alt76 = 1;
 				}
-				switch (alt75) {
+				switch (alt76) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:377:19: extensionEndMarker ( ',' elementSetSpec )?
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:19: extensionEndMarker ( ',' elementSetSpec )?
 					{
-						pushFollow(FOLLOW_extensionEndMarker_in_elementSetSpecs2660);
-						extensionEndMarker259 = extensionEndMarker();
+						pushFollow(FOLLOW_extensionEndMarker_in_elementSetSpecs2663);
+						extensionEndMarker260 = extensionEndMarker();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker259.getTree());
+						if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker260.getTree());
 
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:377:38: ( ',' elementSetSpec )?
-						int alt74 = 2;
-						int LA74_0 = input.LA(1);
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:38: ( ',' elementSetSpec )?
+						int alt75 = 2;
+						int LA75_0 = input.LA(1);
 
-						if ((LA74_0 == 83)) {
-							alt74 = 1;
+						if ((LA75_0 == 83)) {
+							alt75 = 1;
 						}
-						switch (alt74) {
+						switch (alt75) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:377:40: ',' elementSetSpec
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:40: ',' elementSetSpec
 							{
-								char_literal260 = (Token) match(input, 83, FOLLOW_83_in_elementSetSpecs2664);
+								char_literal261 = (Token) match(input, 83, FOLLOW_83_in_elementSetSpecs2667);
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_83.add(char_literal260);
+								if (state.backtracking == 0) stream_83.add(char_literal261);
 
 
-								pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2666);
-								elementSetSpec261 = elementSetSpec();
+								pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2669);
+								elementSetSpec262 = elementSetSpec();
 
 								state._fsp--;
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec261.getTree());
+								if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec262.getTree());
 
 							}
 							break;
@@ -11868,7 +11898,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: elementSetSpec, extensionEndMarker, elementSetSpec
+				// elements: elementSetSpec, elementSetSpec, extensionEndMarker
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -11884,18 +11914,18 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 378:3: -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? )
+					// 374:3: -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:378:6: ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:374:6: ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(stream_elementSetSpec.nextNode(), root_1);
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:378:23: ( extensionEndMarker ( elementSetSpec )? )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:374:23: ( extensionEndMarker ( elementSetSpec )? )?
 							if (stream_elementSetSpec.hasNext() || stream_extensionEndMarker.hasNext()) {
 								adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:378:43: ( elementSetSpec )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:374:43: ( elementSetSpec )?
 								if (stream_elementSetSpec.hasNext()) {
 									adaptor.addChild(root_1, stream_elementSetSpec.nextTree());
 
@@ -11945,7 +11975,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "elementSetSpec"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:380:1: elementSetSpec : ( unions -> ^( UNION unions ) | 'ALL' exclusions -> ^( UNION 'ALL' exclusions ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:376:1: elementSetSpec : ( unions -> ^( UNION unions ) | 'ALL' exclusions -> ^( UNION 'ALL' exclusions ) );
 	public final ASN1Parser.elementSetSpec_return elementSetSpec() throws RecognitionException {
 		ASN1Parser.elementSetSpec_return retval = new ASN1Parser.elementSetSpec_return();
 		retval.start = input.LT(1);
@@ -11953,60 +11983,60 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal263 = null;
-		ASN1Parser.unions_return unions262 = null;
+		Token string_literal264 = null;
+		ASN1Parser.unions_return unions263 = null;
 
-		ASN1Parser.exclusions_return exclusions264 = null;
+		ASN1Parser.exclusions_return exclusions265 = null;
 
 
-		CommonTree string_literal263_tree = null;
+		CommonTree string_literal264_tree = null;
 		RewriteRuleTokenStream stream_92 = new RewriteRuleTokenStream(adaptor, "token 92");
 		RewriteRuleSubtreeStream stream_unions = new RewriteRuleSubtreeStream(adaptor, "rule unions");
 		RewriteRuleSubtreeStream stream_exclusions = new RewriteRuleSubtreeStream(adaptor, "rule exclusions");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:380:18: ( unions -> ^( UNION unions ) | 'ALL' exclusions -> ^( UNION 'ALL' exclusions ) )
-			int alt76 = 2;
-			int LA76_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:376:18: ( unions -> ^( UNION unions ) | 'ALL' exclusions -> ^( UNION 'ALL' exclusions ) )
+			int alt77 = 2;
+			int LA77_0 = input.LA(1);
 
-			if ((LA76_0 == ID || LA76_0 == INT || LA76_0 == REAL_NUMBER || (LA76_0 >= 80 && LA76_0 <= 83) || (LA76_0 >= 96 && LA76_0 <= 100) || (
-			                                                                                                                                    LA76_0
+			if ((LA77_0 == ID || LA77_0 == INT || LA77_0 == REAL_NUMBER || (LA77_0 >= 80 && LA77_0 <= 83) || (LA77_0 >= 96 && LA77_0 <= 100) || (
+			                                                                                                                                    LA77_0
 			                                                                                                                                    >= 106
 			                                                                                                                                    &&
-			                                                                                                                                    LA76_0
+			                                                                                                                                    LA77_0
 			                                                                                                                                    <= 107)
-			     || LA76_0 == 111 || (LA76_0 >= 113 && LA76_0 <= 115) || (LA76_0 >= 120 && LA76_0 <= 123) || (LA76_0 >= 125 && LA76_0 <= 129)
-			     || LA76_0 == 131 || (LA76_0 >= 133 && LA76_0 <= 134) || (LA76_0 >= 137 && LA76_0 <= 141) || LA76_0 == 143 || (LA76_0 >= 145
-			                                                                                                                   && LA76_0 <= 147) || (
-			                                                                                                                                        LA76_0
+			     || LA77_0 == 111 || (LA77_0 >= 113 && LA77_0 <= 115) || (LA77_0 >= 120 && LA77_0 <= 123) || (LA77_0 >= 125 && LA77_0 <= 129)
+			     || LA77_0 == 131 || (LA77_0 >= 133 && LA77_0 <= 134) || (LA77_0 >= 137 && LA77_0 <= 141) || LA77_0 == 143 || (LA77_0 >= 145
+			                                                                                                                   && LA77_0 <= 147) || (
+			                                                                                                                                        LA77_0
 			                                                                                                                                        >= 149
 			                                                                                                                                        &&
-			                                                                                                                                        LA76_0
+			                                                                                                                                        LA77_0
 			                                                                                                                                        <= 154)
-			     || LA76_0 == 158 || LA76_0 == 160)) {
-				alt76 = 1;
-			} else if ((LA76_0 == 92)) {
-				alt76 = 2;
+			     || LA77_0 == 158 || LA77_0 == 160)) {
+				alt77 = 1;
+			} else if ((LA77_0 == 92)) {
+				alt77 = 2;
 			} else {
 				if (state.backtracking > 0) {
 					state.failed = true;
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 76, 0, input);
+				new NoViableAltException("", 77, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt76) {
+			switch (alt77) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:381:3: unions
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:377:3: unions
 				{
-					pushFollow(FOLLOW_unions_in_elementSetSpec2698);
-					unions262 = unions();
+					pushFollow(FOLLOW_unions_in_elementSetSpec2701);
+					unions263 = unions();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_unions.add(unions262.getTree());
+					if (state.backtracking == 0) stream_unions.add(unions263.getTree());
 
 					// AST REWRITE
 					// elements: unions
@@ -12025,9 +12055,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 381:10: -> ^( UNION unions )
+						// 377:10: -> ^( UNION unions )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:381:13: ^( UNION unions )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:377:13: ^( UNION unions )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -12049,19 +12079,19 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:382:5: 'ALL' exclusions
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:378:5: 'ALL' exclusions
 				{
-					string_literal263 = (Token) match(input, 92, FOLLOW_92_in_elementSetSpec2712);
+					string_literal264 = (Token) match(input, 92, FOLLOW_92_in_elementSetSpec2715);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_92.add(string_literal263);
+					if (state.backtracking == 0) stream_92.add(string_literal264);
 
 
-					pushFollow(FOLLOW_exclusions_in_elementSetSpec2714);
-					exclusions264 = exclusions();
+					pushFollow(FOLLOW_exclusions_in_elementSetSpec2717);
+					exclusions265 = exclusions();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_exclusions.add(exclusions264.getTree());
+					if (state.backtracking == 0) stream_exclusions.add(exclusions265.getTree());
 
 					// AST REWRITE
 					// elements: exclusions, 92
@@ -12080,9 +12110,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 382:22: -> ^( UNION 'ALL' exclusions )
+						// 378:22: -> ^( UNION 'ALL' exclusions )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:382:25: ^( UNION 'ALL' exclusions )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:378:25: ^( UNION 'ALL' exclusions )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -12138,7 +12168,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "exclusions"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:384:1: exclusions : 'EXCEPT' elements -> ^( elements ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:380:1: exclusions : 'EXCEPT' elements -> ^( elements ) ;
 	public final ASN1Parser.exclusions_return exclusions() throws RecognitionException {
 		ASN1Parser.exclusions_return retval = new ASN1Parser.exclusions_return();
 		retval.start = input.LT(1);
@@ -12146,28 +12176,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal265 = null;
-		ASN1Parser.elements_return elements266 = null;
+		Token string_literal266 = null;
+		ASN1Parser.elements_return elements267 = null;
 
 
-		CommonTree string_literal265_tree = null;
+		CommonTree string_literal266_tree = null;
 		RewriteRuleTokenStream stream_107 = new RewriteRuleTokenStream(adaptor, "token 107");
 		RewriteRuleSubtreeStream stream_elements = new RewriteRuleSubtreeStream(adaptor, "rule elements");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:384:14: ( 'EXCEPT' elements -> ^( elements ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:385:3: 'EXCEPT' elements
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:380:14: ( 'EXCEPT' elements -> ^( elements ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:381:3: 'EXCEPT' elements
 			{
-				string_literal265 = (Token) match(input, 107, FOLLOW_107_in_exclusions2736);
+				string_literal266 = (Token) match(input, 107, FOLLOW_107_in_exclusions2739);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_107.add(string_literal265);
+				if (state.backtracking == 0) stream_107.add(string_literal266);
 
 
-				pushFollow(FOLLOW_elements_in_exclusions2738);
-				elements266 = elements();
+				pushFollow(FOLLOW_elements_in_exclusions2741);
+				elements267 = elements();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elements.add(elements266.getTree());
+				if (state.backtracking == 0) stream_elements.add(elements267.getTree());
 
 				// AST REWRITE
 				// elements: elements
@@ -12186,9 +12216,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 386:3: -> ^( elements )
+					// 382:3: -> ^( elements )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:386:6: ^( elements )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:382:6: ^( elements )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(stream_elements.nextNode(), root_1);
@@ -12232,7 +12262,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "unions"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:388:1: unions : intersections ( unionMark intersections )* -> ^( VEC ( intersections )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:384:1: unions : intersections ( unionMark intersections )* -> ^( VEC ( intersections )+ ) ;
 	public final ASN1Parser.unions_return unions() throws RecognitionException {
 		ASN1Parser.unions_return retval = new ASN1Parser.unions_return();
 		retval.start = input.LT(1);
@@ -12240,60 +12270,60 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.intersections_return intersections267 = null;
+		ASN1Parser.intersections_return intersections268 = null;
 
-		ASN1Parser.unionMark_return unionMark268 = null;
+		ASN1Parser.unionMark_return unionMark269 = null;
 
-		ASN1Parser.intersections_return intersections269 = null;
+		ASN1Parser.intersections_return intersections270 = null;
 
 
 		RewriteRuleSubtreeStream stream_unionMark = new RewriteRuleSubtreeStream(adaptor, "rule unionMark");
 		RewriteRuleSubtreeStream stream_intersections = new RewriteRuleSubtreeStream(adaptor, "rule intersections");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:388:11: ( intersections ( unionMark intersections )* -> ^( VEC ( intersections )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:389:3: intersections ( unionMark intersections )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:384:11: ( intersections ( unionMark intersections )* -> ^( VEC ( intersections )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:3: intersections ( unionMark intersections )*
 			{
-				pushFollow(FOLLOW_intersections_in_unions2760);
-				intersections267 = intersections();
+				pushFollow(FOLLOW_intersections_in_unions2763);
+				intersections268 = intersections();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_intersections.add(intersections267.getTree());
+				if (state.backtracking == 0) stream_intersections.add(intersections268.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:389:17: ( unionMark intersections )*
-				loop77:
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:17: ( unionMark intersections )*
+				loop78:
 				do {
-					int alt77 = 2;
-					int LA77_0 = input.LA(1);
+					int alt78 = 2;
+					int LA78_0 = input.LA(1);
 
-					if ((LA77_0 == 147 || LA77_0 == 160)) {
-						alt77 = 1;
+					if ((LA78_0 == 147 || LA78_0 == 160)) {
+						alt78 = 1;
 					}
 
 
-					switch (alt77) {
+					switch (alt78) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:389:18: unionMark intersections
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:18: unionMark intersections
 						{
-							pushFollow(FOLLOW_unionMark_in_unions2763);
-							unionMark268 = unionMark();
+							pushFollow(FOLLOW_unionMark_in_unions2766);
+							unionMark269 = unionMark();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_unionMark.add(unionMark268.getTree());
+							if (state.backtracking == 0) stream_unionMark.add(unionMark269.getTree());
 
-							pushFollow(FOLLOW_intersections_in_unions2765);
-							intersections269 = intersections();
+							pushFollow(FOLLOW_intersections_in_unions2768);
+							intersections270 = intersections();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersections.add(intersections269.getTree());
+							if (state.backtracking == 0) stream_intersections.add(intersections270.getTree());
 
 						}
 						break;
 
 						default:
-							break loop77;
+							break loop78;
 					}
 				} while (true);
 
@@ -12315,9 +12345,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 390:3: -> ^( VEC ( intersections )+ )
+					// 386:3: -> ^( VEC ( intersections )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:390:6: ^( VEC ( intersections )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:386:6: ^( VEC ( intersections )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -12373,7 +12403,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "intersections"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:392:1: intersections : intersectionElement ( intersectionMark intersectionElement )* -> ^( VEC ( intersectionElement )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:388:1: intersections : intersectionElement ( intersectionMark intersectionElement )* -> ^( VEC ( intersectionElement )+ ) ;
 	public final ASN1Parser.intersections_return intersections() throws RecognitionException {
 		ASN1Parser.intersections_return retval = new ASN1Parser.intersections_return();
 		retval.start = input.LT(1);
@@ -12381,60 +12411,60 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.intersectionElement_return intersectionElement270 = null;
+		ASN1Parser.intersectionElement_return intersectionElement271 = null;
 
-		ASN1Parser.intersectionMark_return intersectionMark271 = null;
+		ASN1Parser.intersectionMark_return intersectionMark272 = null;
 
-		ASN1Parser.intersectionElement_return intersectionElement272 = null;
+		ASN1Parser.intersectionElement_return intersectionElement273 = null;
 
 
 		RewriteRuleSubtreeStream stream_intersectionMark = new RewriteRuleSubtreeStream(adaptor, "rule intersectionMark");
 		RewriteRuleSubtreeStream stream_intersectionElement = new RewriteRuleSubtreeStream(adaptor, "rule intersectionElement");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:392:17: ( intersectionElement ( intersectionMark intersectionElement )* -> ^( VEC ( intersectionElement )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:393:3: intersectionElement ( intersectionMark intersectionElement )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:388:17: ( intersectionElement ( intersectionMark intersectionElement )* -> ^( VEC ( intersectionElement )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:3: intersectionElement ( intersectionMark intersectionElement )*
 			{
-				pushFollow(FOLLOW_intersectionElement_in_intersections2790);
-				intersectionElement270 = intersectionElement();
+				pushFollow(FOLLOW_intersectionElement_in_intersections2793);
+				intersectionElement271 = intersectionElement();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement270.getTree());
+				if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement271.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:393:23: ( intersectionMark intersectionElement )*
-				loop78:
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:23: ( intersectionMark intersectionElement )*
+				loop79:
 				do {
-					int alt78 = 2;
-					int LA78_0 = input.LA(1);
+					int alt79 = 2;
+					int LA79_0 = input.LA(1);
 
-					if ((LA78_0 == 122 || LA78_0 == 158)) {
-						alt78 = 1;
+					if ((LA79_0 == 122 || LA79_0 == 158)) {
+						alt79 = 1;
 					}
 
 
-					switch (alt78) {
+					switch (alt79) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:393:24: intersectionMark intersectionElement
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:24: intersectionMark intersectionElement
 						{
-							pushFollow(FOLLOW_intersectionMark_in_intersections2793);
-							intersectionMark271 = intersectionMark();
+							pushFollow(FOLLOW_intersectionMark_in_intersections2796);
+							intersectionMark272 = intersectionMark();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersectionMark.add(intersectionMark271.getTree());
+							if (state.backtracking == 0) stream_intersectionMark.add(intersectionMark272.getTree());
 
-							pushFollow(FOLLOW_intersectionElement_in_intersections2795);
-							intersectionElement272 = intersectionElement();
+							pushFollow(FOLLOW_intersectionElement_in_intersections2798);
+							intersectionElement273 = intersectionElement();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement272.getTree());
+							if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement273.getTree());
 
 						}
 						break;
 
 						default:
-							break loop78;
+							break loop79;
 					}
 				} while (true);
 
@@ -12456,9 +12486,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 394:3: -> ^( VEC ( intersectionElement )+ )
+					// 390:3: -> ^( VEC ( intersectionElement )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:394:6: ^( VEC ( intersectionElement )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:390:6: ^( VEC ( intersectionElement )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -12514,7 +12544,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "intersectionElement"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:396:1: intersectionElement : elements ( exclusions )? -> ^( INTERSECTION_ELEMENT elements ( exclusions )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:392:1: intersectionElement : elements ( exclusions )? -> ^( INTERSECTION_ELEMENT elements ( exclusions )? ) ;
 	public final ASN1Parser.intersectionElement_return intersectionElement() throws RecognitionException {
 		ASN1Parser.intersectionElement_return retval = new ASN1Parser.intersectionElement_return();
 		retval.start = input.LT(1);
@@ -12522,41 +12552,41 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.elements_return elements273 = null;
+		ASN1Parser.elements_return elements274 = null;
 
-		ASN1Parser.exclusions_return exclusions274 = null;
+		ASN1Parser.exclusions_return exclusions275 = null;
 
 
 		RewriteRuleSubtreeStream stream_exclusions = new RewriteRuleSubtreeStream(adaptor, "rule exclusions");
 		RewriteRuleSubtreeStream stream_elements = new RewriteRuleSubtreeStream(adaptor, "rule elements");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:396:22: ( elements ( exclusions )? -> ^( INTERSECTION_ELEMENT elements ( exclusions )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:397:3: elements ( exclusions )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:392:22: ( elements ( exclusions )? -> ^( INTERSECTION_ELEMENT elements ( exclusions )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:3: elements ( exclusions )?
 			{
-				pushFollow(FOLLOW_elements_in_intersectionElement2819);
-				elements273 = elements();
+				pushFollow(FOLLOW_elements_in_intersectionElement2822);
+				elements274 = elements();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elements.add(elements273.getTree());
+				if (state.backtracking == 0) stream_elements.add(elements274.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:397:12: ( exclusions )?
-				int alt79 = 2;
-				int LA79_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:12: ( exclusions )?
+				int alt80 = 2;
+				int LA80_0 = input.LA(1);
 
-				if ((LA79_0 == 107)) {
-					alt79 = 1;
+				if ((LA80_0 == 107)) {
+					alt80 = 1;
 				}
-				switch (alt79) {
+				switch (alt80) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:397:12: exclusions
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:12: exclusions
 					{
-						pushFollow(FOLLOW_exclusions_in_intersectionElement2821);
-						exclusions274 = exclusions();
+						pushFollow(FOLLOW_exclusions_in_intersectionElement2824);
+						exclusions275 = exclusions();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_exclusions.add(exclusions274.getTree());
+						if (state.backtracking == 0) stream_exclusions.add(exclusions275.getTree());
 
 					}
 					break;
@@ -12581,9 +12611,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 398:3: -> ^( INTERSECTION_ELEMENT elements ( exclusions )? )
+					// 394:3: -> ^( INTERSECTION_ELEMENT elements ( exclusions )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:398:6: ^( INTERSECTION_ELEMENT elements ( exclusions )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:394:6: ^( INTERSECTION_ELEMENT elements ( exclusions )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -12593,7 +12623,7 @@ public class ASN1Parser extends Parser {
 
 							adaptor.addChild(root_1, stream_elements.nextTree());
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:398:38: ( exclusions )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:394:38: ( exclusions )?
 							if (stream_exclusions.hasNext()) {
 								adaptor.addChild(root_1, stream_exclusions.nextTree());
 
@@ -12639,7 +12669,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "elements"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:400:1: elements : ( ( '(' )=> '(' elementSetSpec ')' -> ^( elementSetSpec ) | subtypeElements );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:396:1: elements : ( ( '(' )=> '(' elementSetSpec ')' -> ^( elementSetSpec ) | subtypeElements );
 	public final ASN1Parser.elements_return elements() throws RecognitionException {
 		ASN1Parser.elements_return retval = new ASN1Parser.elements_return();
 		retval.start = input.LT(1);
@@ -12647,77 +12677,77 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal275 = null;
-		Token char_literal277 = null;
-		ASN1Parser.elementSetSpec_return elementSetSpec276 = null;
+		Token char_literal276 = null;
+		Token char_literal278 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec277 = null;
 
-		ASN1Parser.subtypeElements_return subtypeElements278 = null;
+		ASN1Parser.subtypeElements_return subtypeElements279 = null;
 
 
-		CommonTree char_literal275_tree = null;
-		CommonTree char_literal277_tree = null;
+		CommonTree char_literal276_tree = null;
+		CommonTree char_literal278_tree = null;
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 		RewriteRuleSubtreeStream stream_elementSetSpec = new RewriteRuleSubtreeStream(adaptor, "rule elementSetSpec");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:400:12: ( ( '(' )=> '(' elementSetSpec ')' -> ^( elementSetSpec ) | subtypeElements )
-			int alt80 = 2;
-			int LA80_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:396:12: ( ( '(' )=> '(' elementSetSpec ')' -> ^( elementSetSpec ) | subtypeElements )
+			int alt81 = 2;
+			int LA81_0 = input.LA(1);
 
-			if ((LA80_0 == 81)) {
-				int LA80_1 = input.LA(2);
+			if ((LA81_0 == 81)) {
+				int LA81_1 = input.LA(2);
 
 				if ((synpred6_ASN1())) {
-					alt80 = 1;
+					alt81 = 1;
 				} else if ((true)) {
-					alt80 = 2;
+					alt81 = 2;
 				} else {
 					if (state.backtracking > 0) {
 						state.failed = true;
 						return retval;
 					}
 					NoViableAltException nvae =
-					new NoViableAltException("", 80, 1, input);
+					new NoViableAltException("", 81, 1, input);
 
 					throw nvae;
 
 				}
-			} else if ((LA80_0 == ID || LA80_0 == INT || LA80_0 == REAL_NUMBER || LA80_0 == 80 || (LA80_0 >= 82 && LA80_0 <= 83) || (LA80_0 >= 96
-			                                                                                                                         && LA80_0 <= 100)
-			            || (LA80_0 >= 106 && LA80_0 <= 107) || LA80_0 == 111 || (LA80_0 >= 113 && LA80_0 <= 115) || (LA80_0 >= 120 && LA80_0 <= 123)
-			            || (LA80_0 >= 125 && LA80_0 <= 129) || LA80_0 == 131 || (LA80_0 >= 133 && LA80_0 <= 134) || (LA80_0 >= 137 && LA80_0 <= 141)
-			            || LA80_0 == 143 || (LA80_0 >= 145 && LA80_0 <= 147) || (LA80_0 >= 149 && LA80_0 <= 154) || LA80_0 == 158 || LA80_0 == 160)) {
-				alt80 = 2;
+			} else if ((LA81_0 == ID || LA81_0 == INT || LA81_0 == REAL_NUMBER || LA81_0 == 80 || (LA81_0 >= 82 && LA81_0 <= 83) || (LA81_0 >= 96
+			                                                                                                                         && LA81_0 <= 100)
+			            || (LA81_0 >= 106 && LA81_0 <= 107) || LA81_0 == 111 || (LA81_0 >= 113 && LA81_0 <= 115) || (LA81_0 >= 120 && LA81_0 <= 123)
+			            || (LA81_0 >= 125 && LA81_0 <= 129) || LA81_0 == 131 || (LA81_0 >= 133 && LA81_0 <= 134) || (LA81_0 >= 137 && LA81_0 <= 141)
+			            || LA81_0 == 143 || (LA81_0 >= 145 && LA81_0 <= 147) || (LA81_0 >= 149 && LA81_0 <= 154) || LA81_0 == 158 || LA81_0 == 160)) {
+				alt81 = 2;
 			} else {
 				if (state.backtracking > 0) {
 					state.failed = true;
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 80, 0, input);
+				new NoViableAltException("", 81, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt80) {
+			switch (alt81) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:401:3: ( '(' )=> '(' elementSetSpec ')'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:3: ( '(' )=> '(' elementSetSpec ')'
 				{
-					char_literal275 = (Token) match(input, 81, FOLLOW_81_in_elements2853);
+					char_literal276 = (Token) match(input, 81, FOLLOW_81_in_elements2856);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_81.add(char_literal275);
+					if (state.backtracking == 0) stream_81.add(char_literal276);
 
 
-					pushFollow(FOLLOW_elementSetSpec_in_elements2855);
-					elementSetSpec276 = elementSetSpec();
+					pushFollow(FOLLOW_elementSetSpec_in_elements2858);
+					elementSetSpec277 = elementSetSpec();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec276.getTree());
+					if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec277.getTree());
 
-					char_literal277 = (Token) match(input, 82, FOLLOW_82_in_elements2857);
+					char_literal278 = (Token) match(input, 82, FOLLOW_82_in_elements2860);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_82.add(char_literal277);
+					if (state.backtracking == 0) stream_82.add(char_literal278);
 
 
 					// AST REWRITE
@@ -12737,9 +12767,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 401:35: -> ^( elementSetSpec )
+						// 397:35: -> ^( elementSetSpec )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:401:38: ^( elementSetSpec )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:38: ^( elementSetSpec )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(stream_elementSetSpec.nextNode(), root_1);
@@ -12756,17 +12786,17 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:402:4: subtypeElements
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:398:4: subtypeElements
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_subtypeElements_in_elements2868);
-					subtypeElements278 = subtypeElements();
+					pushFollow(FOLLOW_subtypeElements_in_elements2871);
+					subtypeElements279 = subtypeElements();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, subtypeElements278.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, subtypeElements279.getTree());
 
 				}
 				break;
@@ -12800,7 +12830,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "subtypeElements"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:404:1: subtypeElements : ( ( value )=> value -> ^( CONSTRAINT_VALUE value ) | valueRange | sizeConstraint | typeConstraint | innerTypeConstraint | patternConstraint );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:400:1: subtypeElements : ( ( value )=> value -> ^( CONSTRAINT_VALUE value ) | valueRange | sizeConstraint | typeConstraint | innerTypeConstraint | patternConstraint );
 	public final ASN1Parser.subtypeElements_return subtypeElements() throws RecognitionException {
 		ASN1Parser.subtypeElements_return retval = new ASN1Parser.subtypeElements_return();
 		retval.start = input.LT(1);
@@ -12808,48 +12838,48 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.value_return value279 = null;
+		ASN1Parser.value_return value280 = null;
 
-		ASN1Parser.valueRange_return valueRange280 = null;
+		ASN1Parser.valueRange_return valueRange281 = null;
 
-		ASN1Parser.sizeConstraint_return sizeConstraint281 = null;
+		ASN1Parser.sizeConstraint_return sizeConstraint282 = null;
 
-		ASN1Parser.typeConstraint_return typeConstraint282 = null;
+		ASN1Parser.typeConstraint_return typeConstraint283 = null;
 
-		ASN1Parser.innerTypeConstraint_return innerTypeConstraint283 = null;
+		ASN1Parser.innerTypeConstraint_return innerTypeConstraint284 = null;
 
-		ASN1Parser.patternConstraint_return patternConstraint284 = null;
+		ASN1Parser.patternConstraint_return patternConstraint285 = null;
 
 
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:404:19: ( ( value )=> value -> ^( CONSTRAINT_VALUE value ) | valueRange | sizeConstraint | typeConstraint | innerTypeConstraint | patternConstraint )
-			int alt81 = 6;
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:400:19: ( ( value )=> value -> ^( CONSTRAINT_VALUE value ) | valueRange | sizeConstraint | typeConstraint | innerTypeConstraint | patternConstraint )
+			int alt82 = 6;
 			switch (input.LA(1)) {
 				case 145: {
-					int LA81_1 = input.LA(2);
+					int LA82_1 = input.LA(2);
 
-					if ((LA81_1 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 122 || LA81_1 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 147 || LA81_1 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_1 == 85 || LA81_1 == 90)) {
-						alt81 = 2;
+					if ((LA82_1 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 122 || LA82_1 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 147 || LA82_1 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_1 == 85 || LA82_1 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 1, input);
+						new NoViableAltException("", 82, 1, input);
 
 						throw nvae;
 
@@ -12857,29 +12887,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 111: {
-					int LA81_2 = input.LA(2);
+					int LA82_2 = input.LA(2);
 
-					if ((LA81_2 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 122 || LA81_2 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 147 || LA81_2 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_2 == 85 || LA81_2 == 90)) {
-						alt81 = 2;
+					if ((LA82_2 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 122 || LA82_2 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 147 || LA82_2 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_2 == 85 || LA82_2 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 2, input);
+						new NoViableAltException("", 82, 2, input);
 
 						throw nvae;
 
@@ -12887,29 +12917,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 134: {
-					int LA81_3 = input.LA(2);
+					int LA82_3 = input.LA(2);
 
-					if ((LA81_3 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 122 || LA81_3 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 147 || LA81_3 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_3 == 85 || LA81_3 == 90)) {
-						alt81 = 2;
+					if ((LA82_3 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 122 || LA82_3 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 147 || LA82_3 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_3 == 85 || LA82_3 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 3, input);
+						new NoViableAltException("", 82, 3, input);
 
 						throw nvae;
 
@@ -12917,29 +12947,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 126: {
-					int LA81_4 = input.LA(2);
+					int LA82_4 = input.LA(2);
 
-					if ((LA81_4 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 122 || LA81_4 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 147 || LA81_4 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_4 == 85 || LA81_4 == 90)) {
-						alt81 = 2;
+					if ((LA82_4 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 122 || LA82_4 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 147 || LA82_4 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_4 == 85 || LA82_4 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 4, input);
+						new NoViableAltException("", 82, 4, input);
 
 						throw nvae;
 
@@ -12947,21 +12977,21 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case ID: {
-					int LA81_5 = input.LA(2);
+					int LA82_5 = input.LA(2);
 
-					if ((LA81_5 == 85 || LA81_5 == 90)) {
-						alt81 = 2;
+					if ((LA82_5 == 85 || LA82_5 == 90)) {
+						alt82 = 2;
 					} else if ((synpred7_ASN1())) {
-						alt81 = 1;
+						alt82 = 1;
 					} else if ((true)) {
-						alt81 = 4;
+						alt82 = 4;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 5, input);
+						new NoViableAltException("", 82, 5, input);
 
 						throw nvae;
 
@@ -12969,29 +12999,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case INT: {
-					int LA81_6 = input.LA(2);
+					int LA82_6 = input.LA(2);
 
-					if ((LA81_6 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 122 || LA81_6 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 147 || LA81_6 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_6 == 85 || LA81_6 == 90)) {
-						alt81 = 2;
+					if ((LA82_6 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 122 || LA82_6 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 147 || LA82_6 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_6 == 85 || LA82_6 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 6, input);
+						new NoViableAltException("", 82, 6, input);
 
 						throw nvae;
 
@@ -12999,29 +13029,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case REAL_NUMBER: {
-					int LA81_7 = input.LA(2);
+					int LA82_7 = input.LA(2);
 
-					if ((LA81_7 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 122 || LA81_7 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 147 || LA81_7 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_7 == 85 || LA81_7 == 90)) {
-						alt81 = 2;
+					if ((LA82_7 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 122 || LA82_7 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 147 || LA82_7 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_7 == 85 || LA82_7 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 7, input);
+						new NoViableAltException("", 82, 7, input);
 
 						throw nvae;
 
@@ -13029,29 +13059,29 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 131: {
-					int LA81_8 = input.LA(2);
+					int LA82_8 = input.LA(2);
 
-					if ((LA81_8 == 83) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 80) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 82) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 122 || LA81_8 == 158) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 147 || LA81_8 == 160) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 107) && (synpred7_ASN1())) {
-						alt81 = 1;
-					} else if ((LA81_8 == 85 || LA81_8 == 90)) {
-						alt81 = 2;
+					if ((LA82_8 == 83) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 80) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 82) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 122 || LA82_8 == 158) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 147 || LA82_8 == 160) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 107) && (synpred7_ASN1())) {
+						alt82 = 1;
+					} else if ((LA82_8 == 85 || LA82_8 == 90)) {
+						alt82 = 2;
 					} else {
 						if (state.backtracking > 0) {
 							state.failed = true;
 							return retval;
 						}
 						NoViableAltException nvae =
-						new NoViableAltException("", 81, 8, input);
+						new NoViableAltException("", 82, 8, input);
 
 						throw nvae;
 
@@ -13059,11 +13089,11 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 125: {
-					alt81 = 2;
+					alt82 = 2;
 				}
 				break;
 				case 141: {
-					alt81 = 3;
+					alt82 = 3;
 				}
 				break;
 				case 80:
@@ -13101,15 +13131,15 @@ public class ASN1Parser extends Parser {
 				case 154:
 				case 158:
 				case 160: {
-					alt81 = 4;
+					alt82 = 4;
 				}
 				break;
 				case 153: {
-					alt81 = 5;
+					alt82 = 5;
 				}
 				break;
 				case 133: {
-					alt81 = 6;
+					alt82 = 6;
 				}
 				break;
 				default:
@@ -13118,22 +13148,22 @@ public class ASN1Parser extends Parser {
 						return retval;
 					}
 					NoViableAltException nvae =
-					new NoViableAltException("", 81, 0, input);
+					new NoViableAltException("", 82, 0, input);
 
 					throw nvae;
 
 			}
 
-			switch (alt81) {
+			switch (alt82) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:405:3: ( value )=> value
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:3: ( value )=> value
 				{
-					pushFollow(FOLLOW_value_in_subtypeElements2884);
-					value279 = value();
+					pushFollow(FOLLOW_value_in_subtypeElements2887);
+					value280 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_value.add(value279.getTree());
+					if (state.backtracking == 0) stream_value.add(value280.getTree());
 
 					// AST REWRITE
 					// elements: value
@@ -13152,9 +13182,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 405:18: -> ^( CONSTRAINT_VALUE value )
+						// 401:18: -> ^( CONSTRAINT_VALUE value )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:405:21: ^( CONSTRAINT_VALUE value )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:21: ^( CONSTRAINT_VALUE value )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13176,77 +13206,77 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:406:4: valueRange
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:402:4: valueRange
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_valueRange_in_subtypeElements2897);
-					valueRange280 = valueRange();
+					pushFollow(FOLLOW_valueRange_in_subtypeElements2900);
+					valueRange281 = valueRange();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, valueRange280.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, valueRange281.getTree());
 
 				}
 				break;
 				case 3:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:407:4: sizeConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:403:4: sizeConstraint
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_sizeConstraint_in_subtypeElements2902);
-					sizeConstraint281 = sizeConstraint();
+					pushFollow(FOLLOW_sizeConstraint_in_subtypeElements2905);
+					sizeConstraint282 = sizeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, sizeConstraint281.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, sizeConstraint282.getTree());
 
 				}
 				break;
 				case 4:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:408:4: typeConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:404:4: typeConstraint
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_typeConstraint_in_subtypeElements2907);
-					typeConstraint282 = typeConstraint();
+					pushFollow(FOLLOW_typeConstraint_in_subtypeElements2910);
+					typeConstraint283 = typeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, typeConstraint282.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, typeConstraint283.getTree());
 
 				}
 				break;
 				case 5:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:409:4: innerTypeConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:405:4: innerTypeConstraint
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_innerTypeConstraint_in_subtypeElements2912);
-					innerTypeConstraint283 = innerTypeConstraint();
+					pushFollow(FOLLOW_innerTypeConstraint_in_subtypeElements2915);
+					innerTypeConstraint284 = innerTypeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, innerTypeConstraint283.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, innerTypeConstraint284.getTree());
 
 				}
 				break;
 				case 6:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:410:4: patternConstraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:406:4: patternConstraint
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_patternConstraint_in_subtypeElements2917);
-					patternConstraint284 = patternConstraint();
+					pushFollow(FOLLOW_patternConstraint_in_subtypeElements2920);
+					patternConstraint285 = patternConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, patternConstraint284.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, patternConstraint285.getTree());
 
 				}
 				break;
@@ -13280,7 +13310,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "innerTypeConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:412:1: innerTypeConstraint : ( 'WITH' 'COMPONENT' constraint -> ^( CONSTRAINT_INNER_TYPE constraint ) | 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}' -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints ) );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:408:1: innerTypeConstraint : ( 'WITH' 'COMPONENT' constraint -> ^( CONSTRAINT_INNER_TYPE constraint ) | 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}' -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints ) );
 	public final ASN1Parser.innerTypeConstraint_return innerTypeConstraint() throws RecognitionException {
 		ASN1Parser.innerTypeConstraint_return retval = new ASN1Parser.innerTypeConstraint_return();
 		retval.start = input.LT(1);
@@ -13288,27 +13318,27 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal285 = null;
 		Token string_literal286 = null;
-		Token string_literal288 = null;
+		Token string_literal287 = null;
 		Token string_literal289 = null;
-		Token char_literal290 = null;
-		Token string_literal291 = null;
-		Token char_literal292 = null;
-		Token char_literal294 = null;
-		ASN1Parser.constraint_return constraint287 = null;
+		Token string_literal290 = null;
+		Token char_literal291 = null;
+		Token string_literal292 = null;
+		Token char_literal293 = null;
+		Token char_literal295 = null;
+		ASN1Parser.constraint_return constraint288 = null;
 
-		ASN1Parser.typeConstraints_return typeConstraints293 = null;
+		ASN1Parser.typeConstraints_return typeConstraints294 = null;
 
 
-		CommonTree string_literal285_tree = null;
 		CommonTree string_literal286_tree = null;
-		CommonTree string_literal288_tree = null;
+		CommonTree string_literal287_tree = null;
 		CommonTree string_literal289_tree = null;
-		CommonTree char_literal290_tree = null;
-		CommonTree string_literal291_tree = null;
-		CommonTree char_literal292_tree = null;
-		CommonTree char_literal294_tree = null;
+		CommonTree string_literal290_tree = null;
+		CommonTree char_literal291_tree = null;
+		CommonTree string_literal292_tree = null;
+		CommonTree char_literal293_tree = null;
+		CommonTree char_literal295_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_153 = new RewriteRuleTokenStream(adaptor, "token 153");
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
@@ -13319,24 +13349,24 @@ public class ASN1Parser extends Parser {
 		RewriteRuleSubtreeStream stream_typeConstraints = new RewriteRuleSubtreeStream(adaptor, "rule typeConstraints");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:412:22: ( 'WITH' 'COMPONENT' constraint -> ^( CONSTRAINT_INNER_TYPE constraint ) | 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}' -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints ) )
-			int alt83 = 2;
-			int LA83_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:408:22: ( 'WITH' 'COMPONENT' constraint -> ^( CONSTRAINT_INNER_TYPE constraint ) | 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}' -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints ) )
+			int alt84 = 2;
+			int LA84_0 = input.LA(1);
 
-			if ((LA83_0 == 153)) {
-				int LA83_1 = input.LA(2);
+			if ((LA84_0 == 153)) {
+				int LA84_1 = input.LA(2);
 
-				if ((LA83_1 == 101)) {
-					alt83 = 1;
-				} else if ((LA83_1 == 102)) {
-					alt83 = 2;
+				if ((LA84_1 == 101)) {
+					alt84 = 1;
+				} else if ((LA84_1 == 102)) {
+					alt84 = 2;
 				} else {
 					if (state.backtracking > 0) {
 						state.failed = true;
 						return retval;
 					}
 					NoViableAltException nvae =
-					new NoViableAltException("", 83, 1, input);
+					new NoViableAltException("", 84, 1, input);
 
 					throw nvae;
 
@@ -13347,31 +13377,31 @@ public class ASN1Parser extends Parser {
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 83, 0, input);
+				new NoViableAltException("", 84, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt83) {
+			switch (alt84) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:413:3: 'WITH' 'COMPONENT' constraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:409:3: 'WITH' 'COMPONENT' constraint
 				{
-					string_literal285 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2928);
+					string_literal286 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2931);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_153.add(string_literal285);
+					if (state.backtracking == 0) stream_153.add(string_literal286);
 
 
-					string_literal286 = (Token) match(input, 101, FOLLOW_101_in_innerTypeConstraint2930);
+					string_literal287 = (Token) match(input, 101, FOLLOW_101_in_innerTypeConstraint2933);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_101.add(string_literal286);
+					if (state.backtracking == 0) stream_101.add(string_literal287);
 
 
-					pushFollow(FOLLOW_constraint_in_innerTypeConstraint2932);
-					constraint287 = constraint();
+					pushFollow(FOLLOW_constraint_in_innerTypeConstraint2935);
+					constraint288 = constraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_constraint.add(constraint287.getTree());
+					if (state.backtracking == 0) stream_constraint.add(constraint288.getTree());
 
 					// AST REWRITE
 					// elements: constraint
@@ -13390,9 +13420,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 413:33: -> ^( CONSTRAINT_INNER_TYPE constraint )
+						// 409:33: -> ^( CONSTRAINT_INNER_TYPE constraint )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:413:36: ^( CONSTRAINT_INNER_TYPE constraint )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:409:36: ^( CONSTRAINT_INNER_TYPE constraint )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13414,42 +13444,42 @@ public class ASN1Parser extends Parser {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:414:4: 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:4: 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}'
 				{
-					string_literal288 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2945);
+					string_literal289 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2948);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_153.add(string_literal288);
+					if (state.backtracking == 0) stream_153.add(string_literal289);
 
 
-					string_literal289 = (Token) match(input, 102, FOLLOW_102_in_innerTypeConstraint2947);
+					string_literal290 = (Token) match(input, 102, FOLLOW_102_in_innerTypeConstraint2950);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_102.add(string_literal289);
+					if (state.backtracking == 0) stream_102.add(string_literal290);
 
 
-					char_literal290 = (Token) match(input, 159, FOLLOW_159_in_innerTypeConstraint2949);
+					char_literal291 = (Token) match(input, 159, FOLLOW_159_in_innerTypeConstraint2952);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_159.add(char_literal290);
+					if (state.backtracking == 0) stream_159.add(char_literal291);
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:414:28: ( '...' ',' )?
-					int alt82 = 2;
-					int LA82_0 = input.LA(1);
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:28: ( '...' ',' )?
+					int alt83 = 2;
+					int LA83_0 = input.LA(1);
 
-					if ((LA82_0 == 86)) {
-						alt82 = 1;
+					if ((LA83_0 == 86)) {
+						alt83 = 1;
 					}
-					switch (alt82) {
+					switch (alt83) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:414:29: '...' ','
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:29: '...' ','
 						{
-							string_literal291 = (Token) match(input, 86, FOLLOW_86_in_innerTypeConstraint2952);
+							string_literal292 = (Token) match(input, 86, FOLLOW_86_in_innerTypeConstraint2955);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_86.add(string_literal291);
+							if (state.backtracking == 0) stream_86.add(string_literal292);
 
 
-							char_literal292 = (Token) match(input, 83, FOLLOW_83_in_innerTypeConstraint2954);
+							char_literal293 = (Token) match(input, 83, FOLLOW_83_in_innerTypeConstraint2957);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal292);
+							if (state.backtracking == 0) stream_83.add(char_literal293);
 
 
 						}
@@ -13458,20 +13488,20 @@ public class ASN1Parser extends Parser {
 					}
 
 
-					pushFollow(FOLLOW_typeConstraints_in_innerTypeConstraint2958);
-					typeConstraints293 = typeConstraints();
+					pushFollow(FOLLOW_typeConstraints_in_innerTypeConstraint2961);
+					typeConstraints294 = typeConstraints();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_typeConstraints.add(typeConstraints293.getTree());
+					if (state.backtracking == 0) stream_typeConstraints.add(typeConstraints294.getTree());
 
-					char_literal294 = (Token) match(input, 161, FOLLOW_161_in_innerTypeConstraint2960);
+					char_literal295 = (Token) match(input, 161, FOLLOW_161_in_innerTypeConstraint2963);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_161.add(char_literal294);
+					if (state.backtracking == 0) stream_161.add(char_literal295);
 
 
 					// AST REWRITE
-					// elements: typeConstraints, 86
+					// elements: 86, typeConstraints
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -13487,9 +13517,9 @@ public class ASN1Parser extends Parser {
 						);
 
 						root_0 = (CommonTree) adaptor.nil();
-						// 415:3: -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints )
+						// 411:3: -> ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:415:6: ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:411:6: ^( CONSTRAINT_INNER_TYPE ( '...' )? typeConstraints )
 							{
 								CommonTree root_1 = (CommonTree) adaptor.nil();
 								root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13497,7 +13527,7 @@ public class ASN1Parser extends Parser {
 								                                        , root_1
 								                                        );
 
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:415:30: ( '...' )?
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:411:30: ( '...' )?
 								if (stream_86.hasNext()) {
 									adaptor.addChild(
 									                root_1,
@@ -13550,7 +13580,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "typeConstraints"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:417:1: typeConstraints : namedConstraint ( ',' namedConstraint )* -> ^( VEC ( namedConstraint )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:413:1: typeConstraints : namedConstraint ( ',' namedConstraint )* -> ^( VEC ( namedConstraint )+ ) ;
 	public final ASN1Parser.typeConstraints_return typeConstraints() throws RecognitionException {
 		ASN1Parser.typeConstraints_return retval = new ASN1Parser.typeConstraints_return();
 		retval.start = input.LT(1);
@@ -13558,58 +13588,58 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal296 = null;
-		ASN1Parser.namedConstraint_return namedConstraint295 = null;
+		Token char_literal297 = null;
+		ASN1Parser.namedConstraint_return namedConstraint296 = null;
 
-		ASN1Parser.namedConstraint_return namedConstraint297 = null;
+		ASN1Parser.namedConstraint_return namedConstraint298 = null;
 
 
-		CommonTree char_literal296_tree = null;
+		CommonTree char_literal297_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedConstraint = new RewriteRuleSubtreeStream(adaptor, "rule namedConstraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:417:19: ( namedConstraint ( ',' namedConstraint )* -> ^( VEC ( namedConstraint )+ ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:418:3: namedConstraint ( ',' namedConstraint )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:413:19: ( namedConstraint ( ',' namedConstraint )* -> ^( VEC ( namedConstraint )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:3: namedConstraint ( ',' namedConstraint )*
 			{
-				pushFollow(FOLLOW_namedConstraint_in_typeConstraints2986);
-				namedConstraint295 = namedConstraint();
+				pushFollow(FOLLOW_namedConstraint_in_typeConstraints2989);
+				namedConstraint296 = namedConstraint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint295.getTree());
+				if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint296.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:418:19: ( ',' namedConstraint )*
-				loop84:
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:19: ( ',' namedConstraint )*
+				loop85:
 				do {
-					int alt84 = 2;
-					int LA84_0 = input.LA(1);
+					int alt85 = 2;
+					int LA85_0 = input.LA(1);
 
-					if ((LA84_0 == 83)) {
-						alt84 = 1;
+					if ((LA85_0 == 83)) {
+						alt85 = 1;
 					}
 
 
-					switch (alt84) {
+					switch (alt85) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:418:20: ',' namedConstraint
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:20: ',' namedConstraint
 						{
-							char_literal296 = (Token) match(input, 83, FOLLOW_83_in_typeConstraints2989);
+							char_literal297 = (Token) match(input, 83, FOLLOW_83_in_typeConstraints2992);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal296);
+							if (state.backtracking == 0) stream_83.add(char_literal297);
 
 
-							pushFollow(FOLLOW_namedConstraint_in_typeConstraints2991);
-							namedConstraint297 = namedConstraint();
+							pushFollow(FOLLOW_namedConstraint_in_typeConstraints2994);
+							namedConstraint298 = namedConstraint();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint297.getTree());
+							if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint298.getTree());
 
 						}
 						break;
 
 						default:
-							break loop84;
+							break loop85;
 					}
 				} while (true);
 
@@ -13631,9 +13661,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 419:3: -> ^( VEC ( namedConstraint )+ )
+					// 415:3: -> ^( VEC ( namedConstraint )+ )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:419:6: ^( VEC ( namedConstraint )+ )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:415:6: ^( VEC ( namedConstraint )+ )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13689,7 +13719,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "namedConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:421:1: namedConstraint : ID ( constraint )? ( presenceConstraint )? -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:417:1: namedConstraint : ID ( constraint )? ( presenceConstraint )? -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? ) ;
 	public final ASN1Parser.namedConstraint_return namedConstraint() throws RecognitionException {
 		ASN1Parser.namedConstraint_return retval = new ASN1Parser.namedConstraint_return();
 		retval.start = input.LT(1);
@@ -13697,42 +13727,42 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID298 = null;
-		ASN1Parser.constraint_return constraint299 = null;
+		Token ID299 = null;
+		ASN1Parser.constraint_return constraint300 = null;
 
-		ASN1Parser.presenceConstraint_return presenceConstraint300 = null;
+		ASN1Parser.presenceConstraint_return presenceConstraint301 = null;
 
 
-		CommonTree ID298_tree = null;
+		CommonTree ID299_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		RewriteRuleSubtreeStream stream_presenceConstraint = new RewriteRuleSubtreeStream(adaptor, "rule presenceConstraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:421:19: ( ID ( constraint )? ( presenceConstraint )? -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:422:3: ID ( constraint )? ( presenceConstraint )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:417:19: ( ID ( constraint )? ( presenceConstraint )? -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:3: ID ( constraint )? ( presenceConstraint )?
 			{
-				ID298 = (Token) match(input, ID, FOLLOW_ID_in_namedConstraint3017);
+				ID299 = (Token) match(input, ID, FOLLOW_ID_in_namedConstraint3020);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID298);
+				if (state.backtracking == 0) stream_ID.add(ID299);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:422:6: ( constraint )?
-				int alt85 = 2;
-				int LA85_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:6: ( constraint )?
+				int alt86 = 2;
+				int LA86_0 = input.LA(1);
 
-				if ((LA85_0 == 81)) {
-					alt85 = 1;
+				if ((LA86_0 == 81)) {
+					alt86 = 1;
 				}
-				switch (alt85) {
+				switch (alt86) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:422:6: constraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:6: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_namedConstraint3019);
-						constraint299 = constraint();
+						pushFollow(FOLLOW_constraint_in_namedConstraint3022);
+						constraint300 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint299.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint300.getTree());
 
 					}
 					break;
@@ -13740,23 +13770,23 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:422:18: ( presenceConstraint )?
-				int alt86 = 2;
-				int LA86_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:18: ( presenceConstraint )?
+				int alt87 = 2;
+				int LA87_0 = input.LA(1);
 
-				if ((LA86_0 == 91 || LA86_0 == 132 || LA86_0 == 135)) {
-					alt86 = 1;
+				if ((LA87_0 == 91 || LA87_0 == 132 || LA87_0 == 135)) {
+					alt87 = 1;
 				}
-				switch (alt86) {
+				switch (alt87) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:422:18: presenceConstraint
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:18: presenceConstraint
 					{
-						pushFollow(FOLLOW_presenceConstraint_in_namedConstraint3022);
-						presenceConstraint300 = presenceConstraint();
+						pushFollow(FOLLOW_presenceConstraint_in_namedConstraint3025);
+						presenceConstraint301 = presenceConstraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_presenceConstraint.add(presenceConstraint300.getTree());
+						if (state.backtracking == 0) stream_presenceConstraint.add(presenceConstraint301.getTree());
 
 					}
 					break;
@@ -13765,7 +13795,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: presenceConstraint, constraint, ID
+				// elements: ID, constraint, presenceConstraint
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -13781,9 +13811,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 423:3: -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? )
+					// 419:3: -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:423:6: ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:419:6: ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13796,14 +13826,14 @@ public class ASN1Parser extends Parser {
 							                stream_ID.nextNode()
 							                );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:423:28: ( presenceConstraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:419:28: ( presenceConstraint )?
 							if (stream_presenceConstraint.hasNext()) {
 								adaptor.addChild(root_1, stream_presenceConstraint.nextTree());
 
 							}
 							stream_presenceConstraint.reset();
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:423:48: ( constraint )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:419:48: ( constraint )?
 							if (stream_constraint.hasNext()) {
 								adaptor.addChild(root_1, stream_constraint.nextTree());
 
@@ -13849,7 +13879,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "presenceConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:425:1: presenceConstraint : ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:421:1: presenceConstraint : ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' );
 	public final ASN1Parser.presenceConstraint_return presenceConstraint() throws RecognitionException {
 		ASN1Parser.presenceConstraint_return retval = new ASN1Parser.presenceConstraint_return();
 		retval.start = input.LT(1);
@@ -13857,25 +13887,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set301 = null;
+		Token set302 = null;
 
-		CommonTree set301_tree = null;
+		CommonTree set302_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:425:21: ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:421:21: ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set301 = (Token) input.LT(1);
+				set302 = (Token) input.LT(1);
 
 				if (input.LA(1) == 91 || input.LA(1) == 132 || input.LA(1) == 135) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set301)
+						                (CommonTree) adaptor.create(set302)
 						                );
 					}
 					state.errorRecovery = false;
@@ -13920,7 +13950,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "typeConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:428:1: typeConstraint : ( 'INCLUDES' )? type -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:424:1: typeConstraint : ( 'INCLUDES' )? type -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type ) ;
 	public final ASN1Parser.typeConstraint_return typeConstraint() throws RecognitionException {
 		ASN1Parser.typeConstraint_return retval = new ASN1Parser.typeConstraint_return();
 		retval.start = input.LT(1);
@@ -13928,31 +13958,31 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal302 = null;
-		ASN1Parser.type_return type303 = null;
+		Token string_literal303 = null;
+		ASN1Parser.type_return type304 = null;
 
 
-		CommonTree string_literal302_tree = null;
+		CommonTree string_literal303_tree = null;
 		RewriteRuleTokenStream stream_120 = new RewriteRuleTokenStream(adaptor, "token 120");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:428:18: ( ( 'INCLUDES' )? type -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:429:3: ( 'INCLUDES' )? type
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:424:18: ( ( 'INCLUDES' )? type -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:425:3: ( 'INCLUDES' )? type
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:429:3: ( 'INCLUDES' )?
-				int alt87 = 2;
-				int LA87_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:425:3: ( 'INCLUDES' )?
+				int alt88 = 2;
+				int LA88_0 = input.LA(1);
 
-				if ((LA87_0 == 120)) {
-					alt87 = 1;
+				if ((LA88_0 == 120)) {
+					alt88 = 1;
 				}
-				switch (alt87) {
+				switch (alt88) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:429:3: 'INCLUDES'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:425:3: 'INCLUDES'
 					{
-						string_literal302 = (Token) match(input, 120, FOLLOW_120_in_typeConstraint3071);
+						string_literal303 = (Token) match(input, 120, FOLLOW_120_in_typeConstraint3074);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_120.add(string_literal302);
+						if (state.backtracking == 0) stream_120.add(string_literal303);
 
 
 					}
@@ -13961,12 +13991,12 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_type_in_typeConstraint3074);
-				type303 = type();
+				pushFollow(FOLLOW_type_in_typeConstraint3077);
+				type304 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type303.getTree());
+				if (state.backtracking == 0) stream_type.add(type304.getTree());
 
 				// AST REWRITE
 				// elements: 120, type
@@ -13985,9 +14015,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 430:3: -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type )
+					// 426:3: -> ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:430:6: ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:426:6: ^( CONSTRAINT_TYPE ( 'INCLUDES' )? type )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -13995,7 +14025,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:430:24: ( 'INCLUDES' )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:426:24: ( 'INCLUDES' )?
 							if (stream_120.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -14046,7 +14076,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "valueRange"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:432:1: valueRange : lowerEndPoint '..' upperEndPoint -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:428:1: valueRange : lowerEndPoint '..' upperEndPoint -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint ) ;
 	public final ASN1Parser.valueRange_return valueRange() throws RecognitionException {
 		ASN1Parser.valueRange_return retval = new ASN1Parser.valueRange_return();
 		retval.start = input.LT(1);
@@ -14054,41 +14084,41 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal305 = null;
-		ASN1Parser.lowerEndPoint_return lowerEndPoint304 = null;
+		Token string_literal306 = null;
+		ASN1Parser.lowerEndPoint_return lowerEndPoint305 = null;
 
-		ASN1Parser.upperEndPoint_return upperEndPoint306 = null;
+		ASN1Parser.upperEndPoint_return upperEndPoint307 = null;
 
 
-		CommonTree string_literal305_tree = null;
+		CommonTree string_literal306_tree = null;
 		RewriteRuleTokenStream stream_85 = new RewriteRuleTokenStream(adaptor, "token 85");
 		RewriteRuleSubtreeStream stream_upperEndPoint = new RewriteRuleSubtreeStream(adaptor, "rule upperEndPoint");
 		RewriteRuleSubtreeStream stream_lowerEndPoint = new RewriteRuleSubtreeStream(adaptor, "rule lowerEndPoint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:432:14: ( lowerEndPoint '..' upperEndPoint -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:433:3: lowerEndPoint '..' upperEndPoint
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:428:14: ( lowerEndPoint '..' upperEndPoint -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:429:3: lowerEndPoint '..' upperEndPoint
 			{
-				pushFollow(FOLLOW_lowerEndPoint_in_valueRange3099);
-				lowerEndPoint304 = lowerEndPoint();
+				pushFollow(FOLLOW_lowerEndPoint_in_valueRange3102);
+				lowerEndPoint305 = lowerEndPoint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_lowerEndPoint.add(lowerEndPoint304.getTree());
+				if (state.backtracking == 0) stream_lowerEndPoint.add(lowerEndPoint305.getTree());
 
-				string_literal305 = (Token) match(input, 85, FOLLOW_85_in_valueRange3101);
+				string_literal306 = (Token) match(input, 85, FOLLOW_85_in_valueRange3104);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_85.add(string_literal305);
+				if (state.backtracking == 0) stream_85.add(string_literal306);
 
 
-				pushFollow(FOLLOW_upperEndPoint_in_valueRange3103);
-				upperEndPoint306 = upperEndPoint();
+				pushFollow(FOLLOW_upperEndPoint_in_valueRange3106);
+				upperEndPoint307 = upperEndPoint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_upperEndPoint.add(upperEndPoint306.getTree());
+				if (state.backtracking == 0) stream_upperEndPoint.add(upperEndPoint307.getTree());
 
 				// AST REWRITE
-				// elements: upperEndPoint, lowerEndPoint
+				// elements: lowerEndPoint, upperEndPoint
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -14104,9 +14134,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 434:3: -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint )
+					// 430:3: -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:434:6: ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:430:6: ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -14157,7 +14187,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "lowerEndPoint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:436:1: lowerEndPoint : lowerEndValue ( '<' )? -> ^( ENDPOINT ( '<' )? lowerEndValue ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:432:1: lowerEndPoint : lowerEndValue ( '<' )? -> ^( ENDPOINT ( '<' )? lowerEndValue ) ;
 	public final ASN1Parser.lowerEndPoint_return lowerEndPoint() throws RecognitionException {
 		ASN1Parser.lowerEndPoint_return retval = new ASN1Parser.lowerEndPoint_return();
 		retval.start = input.LT(1);
@@ -14165,38 +14195,38 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal308 = null;
-		ASN1Parser.lowerEndValue_return lowerEndValue307 = null;
+		Token char_literal309 = null;
+		ASN1Parser.lowerEndValue_return lowerEndValue308 = null;
 
 
-		CommonTree char_literal308_tree = null;
+		CommonTree char_literal309_tree = null;
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_lowerEndValue = new RewriteRuleSubtreeStream(adaptor, "rule lowerEndValue");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:436:17: ( lowerEndValue ( '<' )? -> ^( ENDPOINT ( '<' )? lowerEndValue ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:437:3: lowerEndValue ( '<' )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:432:17: ( lowerEndValue ( '<' )? -> ^( ENDPOINT ( '<' )? lowerEndValue ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:3: lowerEndValue ( '<' )?
 			{
-				pushFollow(FOLLOW_lowerEndValue_in_lowerEndPoint3127);
-				lowerEndValue307 = lowerEndValue();
+				pushFollow(FOLLOW_lowerEndValue_in_lowerEndPoint3130);
+				lowerEndValue308 = lowerEndValue();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_lowerEndValue.add(lowerEndValue307.getTree());
+				if (state.backtracking == 0) stream_lowerEndValue.add(lowerEndValue308.getTree());
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:437:17: ( '<' )?
-				int alt88 = 2;
-				int LA88_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:17: ( '<' )?
+				int alt89 = 2;
+				int LA89_0 = input.LA(1);
 
-				if ((LA88_0 == 90)) {
-					alt88 = 1;
+				if ((LA89_0 == 90)) {
+					alt89 = 1;
 				}
-				switch (alt88) {
+				switch (alt89) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:437:17: '<'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:17: '<'
 					{
-						char_literal308 = (Token) match(input, 90, FOLLOW_90_in_lowerEndPoint3129);
+						char_literal309 = (Token) match(input, 90, FOLLOW_90_in_lowerEndPoint3132);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_90.add(char_literal308);
+						if (state.backtracking == 0) stream_90.add(char_literal309);
 
 
 					}
@@ -14206,7 +14236,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: 90, lowerEndValue
+				// elements: lowerEndValue, 90
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -14222,9 +14252,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 438:3: -> ^( ENDPOINT ( '<' )? lowerEndValue )
+					// 434:3: -> ^( ENDPOINT ( '<' )? lowerEndValue )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:438:6: ^( ENDPOINT ( '<' )? lowerEndValue )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:434:6: ^( ENDPOINT ( '<' )? lowerEndValue )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -14232,7 +14262,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:438:17: ( '<' )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:434:17: ( '<' )?
 							if (stream_90.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -14283,7 +14313,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "upperEndPoint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:440:1: upperEndPoint : ( '<' )? upperEndValue -> ^( ENDPOINT ( '<' )? upperEndValue ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:436:1: upperEndPoint : ( '<' )? upperEndValue -> ^( ENDPOINT ( '<' )? upperEndValue ) ;
 	public final ASN1Parser.upperEndPoint_return upperEndPoint() throws RecognitionException {
 		ASN1Parser.upperEndPoint_return retval = new ASN1Parser.upperEndPoint_return();
 		retval.start = input.LT(1);
@@ -14291,31 +14321,31 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal309 = null;
-		ASN1Parser.upperEndValue_return upperEndValue310 = null;
+		Token char_literal310 = null;
+		ASN1Parser.upperEndValue_return upperEndValue311 = null;
 
 
-		CommonTree char_literal309_tree = null;
+		CommonTree char_literal310_tree = null;
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_upperEndValue = new RewriteRuleSubtreeStream(adaptor, "rule upperEndValue");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:440:17: ( ( '<' )? upperEndValue -> ^( ENDPOINT ( '<' )? upperEndValue ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:441:3: ( '<' )? upperEndValue
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:436:17: ( ( '<' )? upperEndValue -> ^( ENDPOINT ( '<' )? upperEndValue ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:437:3: ( '<' )? upperEndValue
 			{
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:441:3: ( '<' )?
-				int alt89 = 2;
-				int LA89_0 = input.LA(1);
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:437:3: ( '<' )?
+				int alt90 = 2;
+				int LA90_0 = input.LA(1);
 
-				if ((LA89_0 == 90)) {
-					alt89 = 1;
+				if ((LA90_0 == 90)) {
+					alt90 = 1;
 				}
-				switch (alt89) {
+				switch (alt90) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:441:3: '<'
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:437:3: '<'
 					{
-						char_literal309 = (Token) match(input, 90, FOLLOW_90_in_upperEndPoint3155);
+						char_literal310 = (Token) match(input, 90, FOLLOW_90_in_upperEndPoint3158);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_90.add(char_literal309);
+						if (state.backtracking == 0) stream_90.add(char_literal310);
 
 
 					}
@@ -14324,12 +14354,12 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_upperEndValue_in_upperEndPoint3158);
-				upperEndValue310 = upperEndValue();
+				pushFollow(FOLLOW_upperEndValue_in_upperEndPoint3161);
+				upperEndValue311 = upperEndValue();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_upperEndValue.add(upperEndValue310.getTree());
+				if (state.backtracking == 0) stream_upperEndValue.add(upperEndValue311.getTree());
 
 				// AST REWRITE
 				// elements: 90, upperEndValue
@@ -14348,9 +14378,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 442:3: -> ^( ENDPOINT ( '<' )? upperEndValue )
+					// 438:3: -> ^( ENDPOINT ( '<' )? upperEndValue )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:442:6: ^( ENDPOINT ( '<' )? upperEndValue )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:438:6: ^( ENDPOINT ( '<' )? upperEndValue )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -14358,7 +14388,7 @@ public class ASN1Parser extends Parser {
 							                                        , root_1
 							                                        );
 
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:442:17: ( '<' )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:438:17: ( '<' )?
 							if (stream_90.hasNext()) {
 								adaptor.addChild(
 								                root_1,
@@ -14409,7 +14439,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "lowerEndValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:444:1: lowerEndValue : ( value | 'MIN' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:440:1: lowerEndValue : ( value | 'MIN' );
 	public final ASN1Parser.lowerEndValue_return lowerEndValue() throws RecognitionException {
 		ASN1Parser.lowerEndValue_return retval = new ASN1Parser.lowerEndValue_return();
 		retval.start = input.LT(1);
@@ -14417,62 +14447,62 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal312 = null;
-		ASN1Parser.value_return value311 = null;
+		Token string_literal313 = null;
+		ASN1Parser.value_return value312 = null;
 
 
-		CommonTree string_literal312_tree = null;
+		CommonTree string_literal313_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:444:17: ( value | 'MIN' )
-			int alt90 = 2;
-			int LA90_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:440:17: ( value | 'MIN' )
+			int alt91 = 2;
+			int LA91_0 = input.LA(1);
 
-			if ((LA90_0 == ID || LA90_0 == INT || LA90_0 == REAL_NUMBER || LA90_0 == 111 || LA90_0 == 126 || LA90_0 == 131 || LA90_0 == 134
-			     || LA90_0 == 145)) {
-				alt90 = 1;
-			} else if ((LA90_0 == 125)) {
-				alt90 = 2;
+			if ((LA91_0 == ID || LA91_0 == INT || LA91_0 == REAL_NUMBER || LA91_0 == 111 || LA91_0 == 126 || LA91_0 == 131 || LA91_0 == 134
+			     || LA91_0 == 145)) {
+				alt91 = 1;
+			} else if ((LA91_0 == 125)) {
+				alt91 = 2;
 			} else {
 				if (state.backtracking > 0) {
 					state.failed = true;
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 90, 0, input);
+				new NoViableAltException("", 91, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt90) {
+			switch (alt91) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:445:3: value
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:441:3: value
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_value_in_lowerEndValue3183);
-					value311 = value();
+					pushFollow(FOLLOW_value_in_lowerEndValue3186);
+					value312 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, value311.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, value312.getTree());
 
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:446:5: 'MIN'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:442:5: 'MIN'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal312 = (Token) match(input, 125, FOLLOW_125_in_lowerEndValue3190);
+					string_literal313 = (Token) match(input, 125, FOLLOW_125_in_lowerEndValue3193);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal312_tree =
-						(CommonTree) adaptor.create(string_literal312)
+						string_literal313_tree =
+						(CommonTree) adaptor.create(string_literal313)
 						;
-						adaptor.addChild(root_0, string_literal312_tree);
+						adaptor.addChild(root_0, string_literal313_tree);
 					}
 
 				}
@@ -14507,7 +14537,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "upperEndValue"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:448:1: upperEndValue : ( value | 'MAX' );
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:444:1: upperEndValue : ( value | 'MAX' );
 	public final ASN1Parser.upperEndValue_return upperEndValue() throws RecognitionException {
 		ASN1Parser.upperEndValue_return retval = new ASN1Parser.upperEndValue_return();
 		retval.start = input.LT(1);
@@ -14515,62 +14545,62 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal314 = null;
-		ASN1Parser.value_return value313 = null;
+		Token string_literal315 = null;
+		ASN1Parser.value_return value314 = null;
 
 
-		CommonTree string_literal314_tree = null;
+		CommonTree string_literal315_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:448:17: ( value | 'MAX' )
-			int alt91 = 2;
-			int LA91_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:444:17: ( value | 'MAX' )
+			int alt92 = 2;
+			int LA92_0 = input.LA(1);
 
-			if ((LA91_0 == ID || LA91_0 == INT || LA91_0 == REAL_NUMBER || LA91_0 == 111 || LA91_0 == 126 || LA91_0 == 131 || LA91_0 == 134
-			     || LA91_0 == 145)) {
-				alt91 = 1;
-			} else if ((LA91_0 == 124)) {
-				alt91 = 2;
+			if ((LA92_0 == ID || LA92_0 == INT || LA92_0 == REAL_NUMBER || LA92_0 == 111 || LA92_0 == 126 || LA92_0 == 131 || LA92_0 == 134
+			     || LA92_0 == 145)) {
+				alt92 = 1;
+			} else if ((LA92_0 == 124)) {
+				alt92 = 2;
 			} else {
 				if (state.backtracking > 0) {
 					state.failed = true;
 					return retval;
 				}
 				NoViableAltException nvae =
-				new NoViableAltException("", 91, 0, input);
+				new NoViableAltException("", 92, 0, input);
 
 				throw nvae;
 
 			}
-			switch (alt91) {
+			switch (alt92) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:449:3: value
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:445:3: value
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_value_in_upperEndValue3202);
-					value313 = value();
+					pushFollow(FOLLOW_value_in_upperEndValue3205);
+					value314 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, value313.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, value314.getTree());
 
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:450:5: 'MAX'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:446:5: 'MAX'
 				{
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal314 = (Token) match(input, 124, FOLLOW_124_in_upperEndValue3209);
+					string_literal315 = (Token) match(input, 124, FOLLOW_124_in_upperEndValue3212);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal314_tree =
-						(CommonTree) adaptor.create(string_literal314)
+						string_literal315_tree =
+						(CommonTree) adaptor.create(string_literal315)
 						;
-						adaptor.addChild(root_0, string_literal314_tree);
+						adaptor.addChild(root_0, string_literal315_tree);
 					}
 
 				}
@@ -14605,7 +14635,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "sizeConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:452:1: sizeConstraint : 'SIZE' constraint -> ^( CONSTRAINT_SIZE constraint ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:448:1: sizeConstraint : 'SIZE' constraint -> ^( CONSTRAINT_SIZE constraint ) ;
 	public final ASN1Parser.sizeConstraint_return sizeConstraint() throws RecognitionException {
 		ASN1Parser.sizeConstraint_return retval = new ASN1Parser.sizeConstraint_return();
 		retval.start = input.LT(1);
@@ -14613,28 +14643,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal315 = null;
-		ASN1Parser.constraint_return constraint316 = null;
+		Token string_literal316 = null;
+		ASN1Parser.constraint_return constraint317 = null;
 
 
-		CommonTree string_literal315_tree = null;
+		CommonTree string_literal316_tree = null;
 		RewriteRuleTokenStream stream_141 = new RewriteRuleTokenStream(adaptor, "token 141");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:452:18: ( 'SIZE' constraint -> ^( CONSTRAINT_SIZE constraint ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:453:3: 'SIZE' constraint
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:448:18: ( 'SIZE' constraint -> ^( CONSTRAINT_SIZE constraint ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:449:3: 'SIZE' constraint
 			{
-				string_literal315 = (Token) match(input, 141, FOLLOW_141_in_sizeConstraint3221);
+				string_literal316 = (Token) match(input, 141, FOLLOW_141_in_sizeConstraint3224);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_141.add(string_literal315);
+				if (state.backtracking == 0) stream_141.add(string_literal316);
 
 
-				pushFollow(FOLLOW_constraint_in_sizeConstraint3223);
-				constraint316 = constraint();
+				pushFollow(FOLLOW_constraint_in_sizeConstraint3226);
+				constraint317 = constraint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_constraint.add(constraint316.getTree());
+				if (state.backtracking == 0) stream_constraint.add(constraint317.getTree());
 
 				// AST REWRITE
 				// elements: constraint
@@ -14653,9 +14683,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 453:21: -> ^( CONSTRAINT_SIZE constraint )
+					// 449:21: -> ^( CONSTRAINT_SIZE constraint )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:453:24: ^( CONSTRAINT_SIZE constraint )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:449:24: ^( CONSTRAINT_SIZE constraint )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -14704,7 +14734,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "patternConstraint"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:455:1: patternConstraint : 'PATTERN' value -> ^( CONSTRAINT_PATTERN value ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:451:1: patternConstraint : 'PATTERN' value -> ^( CONSTRAINT_PATTERN value ) ;
 	public final ASN1Parser.patternConstraint_return patternConstraint() throws RecognitionException {
 		ASN1Parser.patternConstraint_return retval = new ASN1Parser.patternConstraint_return();
 		retval.start = input.LT(1);
@@ -14712,28 +14742,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal317 = null;
-		ASN1Parser.value_return value318 = null;
+		Token string_literal318 = null;
+		ASN1Parser.value_return value319 = null;
 
 
-		CommonTree string_literal317_tree = null;
+		CommonTree string_literal318_tree = null;
 		RewriteRuleTokenStream stream_133 = new RewriteRuleTokenStream(adaptor, "token 133");
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:455:20: ( 'PATTERN' value -> ^( CONSTRAINT_PATTERN value ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:456:3: 'PATTERN' value
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:451:20: ( 'PATTERN' value -> ^( CONSTRAINT_PATTERN value ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:452:3: 'PATTERN' value
 			{
-				string_literal317 = (Token) match(input, 133, FOLLOW_133_in_patternConstraint3242);
+				string_literal318 = (Token) match(input, 133, FOLLOW_133_in_patternConstraint3245);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_133.add(string_literal317);
+				if (state.backtracking == 0) stream_133.add(string_literal318);
 
 
-				pushFollow(FOLLOW_value_in_patternConstraint3244);
-				value318 = value();
+				pushFollow(FOLLOW_value_in_patternConstraint3247);
+				value319 = value();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_value.add(value318.getTree());
+				if (state.backtracking == 0) stream_value.add(value319.getTree());
 
 				// AST REWRITE
 				// elements: value
@@ -14752,9 +14782,9 @@ public class ASN1Parser extends Parser {
 					);
 
 					root_0 = (CommonTree) adaptor.nil();
-					// 456:19: -> ^( CONSTRAINT_PATTERN value )
+					// 452:19: -> ^( CONSTRAINT_PATTERN value )
 					{
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:456:22: ^( CONSTRAINT_PATTERN value )
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:452:22: ^( CONSTRAINT_PATTERN value )
 						{
 							CommonTree root_1 = (CommonTree) adaptor.nil();
 							root_1 = (CommonTree) adaptor.becomeRoot(
@@ -14803,7 +14833,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "unionMark"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:458:1: unionMark : ( '|' | 'UNION' ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:454:1: unionMark : ( '|' | 'UNION' ) ;
 	public final ASN1Parser.unionMark_return unionMark() throws RecognitionException {
 		ASN1Parser.unionMark_return retval = new ASN1Parser.unionMark_return();
 		retval.start = input.LT(1);
@@ -14811,25 +14841,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set319 = null;
+		Token set320 = null;
 
-		CommonTree set319_tree = null;
+		CommonTree set320_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:458:13: ( ( '|' | 'UNION' ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:454:13: ( ( '|' | 'UNION' ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set319 = (Token) input.LT(1);
+				set320 = (Token) input.LT(1);
 
 				if (input.LA(1) == 147 || input.LA(1) == 160) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set319)
+						                (CommonTree) adaptor.create(set320)
 						                );
 					}
 					state.errorRecovery = false;
@@ -14874,7 +14904,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "intersectionMark"
-	// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:461:1: intersectionMark : ( '^' | 'INTERSECTION' ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:457:1: intersectionMark : ( '^' | 'INTERSECTION' ) ;
 	public final ASN1Parser.intersectionMark_return intersectionMark() throws RecognitionException {
 		ASN1Parser.intersectionMark_return retval = new ASN1Parser.intersectionMark_return();
 		retval.start = input.LT(1);
@@ -14882,25 +14912,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set320 = null;
+		Token set321 = null;
 
-		CommonTree set320_tree = null;
+		CommonTree set321_tree = null;
 
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:461:20: ( ( '^' | 'INTERSECTION' ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:457:20: ( ( '^' | 'INTERSECTION' ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 			{
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set320 = (Token) input.LT(1);
+				set321 = (Token) input.LT(1);
 
 				if (input.LA(1) == 122 || input.LA(1) == 158) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set320)
+						                (CommonTree) adaptor.create(set321)
 						                );
 					}
 					state.errorRecovery = false;
@@ -14936,19 +14966,19 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred1_ASN1
 	public final void synpred1_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:169:3: ( ( CLASS_DEF )? ID '::=' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:169:4: ( CLASS_DEF )? ID '::='
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:3: ( ( CLASS_DEF )? ID '::=' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:4: ( CLASS_DEF )? ID '::='
 		{
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:169:4: ( CLASS_DEF )?
-			int alt92 = 2;
-			int LA92_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:4: ( CLASS_DEF )?
+			int alt93 = 2;
+			int LA93_0 = input.LA(1);
 
-			if ((LA92_0 == CLASS_DEF)) {
-				alt92 = 1;
+			if ((LA93_0 == CLASS_DEF)) {
+				alt93 = 1;
 			}
-			switch (alt92) {
+			switch (alt93) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:169:4: CLASS_DEF
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:4: CLASS_DEF
 				{
 					match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_synpred1_ASN1784);
 					if (state.failed) return;
@@ -14972,22 +15002,22 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred2_ASN1
 	public final void synpred2_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:4: ( 'SEQUENCE' ( constraint )? 'OF' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:5: 'SEQUENCE' ( constraint )? 'OF'
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:4: ( 'SEQUENCE' ( constraint )? 'OF' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:5: 'SEQUENCE' ( constraint )? 'OF'
 		{
 			match(input, 139, FOLLOW_139_in_synpred2_ASN11090);
 			if (state.failed) return;
 
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:16: ( constraint )?
-			int alt93 = 2;
-			int LA93_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:16: ( constraint )?
+			int alt94 = 2;
+			int LA94_0 = input.LA(1);
 
-			if ((LA93_0 == 81)) {
-				alt93 = 1;
+			if ((LA94_0 == 81)) {
+				alt94 = 1;
 			}
-			switch (alt93) {
+			switch (alt94) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:203:16: constraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:16: constraint
 				{
 					pushFollow(FOLLOW_constraint_in_synpred2_ASN11092);
 					constraint();
@@ -15011,22 +15041,22 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred3_ASN1
 	public final void synpred3_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:4: ( 'SET' ( constraint )? 'OF' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:5: 'SET' ( constraint )? 'OF'
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:4: ( 'SET' ( constraint )? 'OF' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:5: 'SET' ( constraint )? 'OF'
 		{
 			match(input, 140, FOLLOW_140_in_synpred3_ASN11128);
 			if (state.failed) return;
 
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:11: ( constraint )?
-			int alt94 = 2;
-			int LA94_0 = input.LA(1);
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:11: ( constraint )?
+			int alt95 = 2;
+			int LA95_0 = input.LA(1);
 
-			if ((LA94_0 == 81)) {
-				alt94 = 1;
+			if ((LA95_0 == 81)) {
+				alt95 = 1;
 			}
-			switch (alt94) {
+			switch (alt95) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:205:11: constraint
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:11: constraint
 				{
 					pushFollow(FOLLOW_constraint_in_synpred3_ASN11130);
 					constraint();
@@ -15050,8 +15080,8 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred4_ASN1
 	public final void synpred4_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:232:3: ( namedNumber )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:232:4: namedNumber
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:228:3: ( namedNumber )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:228:4: namedNumber
 		{
 			pushFollow(FOLLOW_namedNumber_in_synpred4_ASN11424);
 			namedNumber();
@@ -15066,8 +15096,8 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred5_ASN1
 	public final void synpred5_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:293:4: ( VALUE_ID )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:293:5: VALUE_ID
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:4: ( VALUE_ID )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:5: VALUE_ID
 		{
 			match(input, VALUE_ID, FOLLOW_VALUE_ID_in_synpred5_ASN11889);
 			if (state.failed) return;
@@ -15079,10 +15109,10 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred6_ASN1
 	public final void synpred6_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:401:3: ( '(' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:401:4: '('
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:3: ( '(' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:4: '('
 		{
-			match(input, 81, FOLLOW_81_in_synpred6_ASN12848);
+			match(input, 81, FOLLOW_81_in_synpred6_ASN12851);
 			if (state.failed) return;
 
 		}
@@ -15092,10 +15122,10 @@ public class ASN1Parser extends Parser {
 
 	// $ANTLR start synpred7_ASN1
 	public final void synpred7_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:405:3: ( value )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:405:4: value
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:3: ( value )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:4: value
 		{
-			pushFollow(FOLLOW_value_in_synpred7_ASN12881);
+			pushFollow(FOLLOW_value_in_synpred7_ASN12884);
 			value();
 
 			state._fsp--;
@@ -16477,535 +16507,541 @@ public class ASN1Parser extends Parser {
 	);
 	public static final BitSet FOLLOW_sOfComponentType_in_sequenceOfType2355                                 = new BitSet(
 	                                                                                                                     new long[]{
+	                                                                                                                               0x0000000000000002L,
+	                                                                                                                               0x0000000002000000L
+	                                                                                                                     }
+	);
+	public static final BitSet FOLLOW_89_in_sequenceOfType2357                                               = new BitSet(
+	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedType2376                                                    = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedType2379                                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_namedType2378                                                  = new BitSet(
+	public static final BitSet FOLLOW_type_in_namedType2381                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_154_in_taggedType2400                                                  = new BitSet(
+	public static final BitSet FOLLOW_154_in_taggedType2403                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L,
 	                                                                                                                               0x0000000020000000L,
 	                                                                                                                               0x0000000000100100L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_tagClass_in_taggedType2402                                             = new BitSet(
+	public static final BitSet FOLLOW_tagClass_in_taggedType2405                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_classNumber_in_taggedType2405                                          = new BitSet(
+	public static final BitSet FOLLOW_classNumber_in_taggedType2408                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000010000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_156_in_taggedType2407                                                  = new BitSet(
+	public static final BitSet FOLLOW_156_in_taggedType2410                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A2E141F40020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_taggingMethod_in_taggedType2409                                        = new BitSet(
+	public static final BitSet FOLLOW_taggingMethod_in_taggedType2412                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_taggedType2412                                                 = new BitSet(
+	public static final BitSet FOLLOW_type_in_taggedType2415                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_classNumber2439                                                 = new BitSet(
+	public static final BitSet FOLLOW_INT_in_classNumber2442                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_definedValue_in_classNumber2443                                        = new BitSet(
+	public static final BitSet FOLLOW_definedValue_in_classNumber2446                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_138_in_realType2472                                                    = new BitSet(
+	public static final BitSet FOLLOW_138_in_realType2475                                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_realType2474                                             = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_realType2477                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_121_in_integerType2496                                                 = new BitSet(
+	public static final BitSet FOLLOW_121_in_integerType2499                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_integerType2498                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_integerType2501                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_integerType2502                                                 = new BitSet(
+	public static final BitSet FOLLOW_159_in_integerType2505                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumberList_in_integerType2504                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumberList_in_integerType2507                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_integerType2506                                                 = new BitSet(
+	public static final BitSet FOLLOW_161_in_integerType2509                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2531                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2534                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_namedNumberList2534                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_namedNumberList2537                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2536                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2539                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedNumber2558                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedNumber2561                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_namedNumber2560                                                  = new BitSet(
+	public static final BitSet FOLLOW_81_in_namedNumber2563                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_namedNumber2562                                                 = new BitSet(
+	public static final BitSet FOLLOW_INT_in_namedNumber2565                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_namedNumber2564                                                  = new BitSet(
+	public static final BitSet FOLLOW_82_in_namedNumber2567                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_98_in_booleanType2586                                                  = new BitSet(
+	public static final BitSet FOLLOW_98_in_booleanType2589                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_booleanType2588                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_booleanType2591                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_constraint2612                                                   = new BitSet(
+	public static final BitSet FOLLOW_81_in_constraint2615                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraintSpec_in_constraint2614                                       = new BitSet(
+	public static final BitSet FOLLOW_constraintSpec_in_constraint2617                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000050000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exceptionSpec_in_constraint2616                                        = new BitSet(
+	public static final BitSet FOLLOW_exceptionSpec_in_constraint2619                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_constraint2618                                                   = new BitSet(
+	public static final BitSet FOLLOW_82_in_constraint2621                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpecs_in_constraintSpec2645                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpecs_in_constraintSpec2648                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2657                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2660                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionEndMarker_in_elementSetSpecs2660                              = new BitSet(
+	public static final BitSet FOLLOW_extensionEndMarker_in_elementSetSpecs2663                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_elementSetSpecs2664                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_elementSetSpecs2667                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2666                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2669                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_unions_in_elementSetSpec2698                                           = new BitSet(
+	public static final BitSet FOLLOW_unions_in_elementSetSpec2701                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_92_in_elementSetSpec2712                                               = new BitSet(
+	public static final BitSet FOLLOW_92_in_elementSetSpec2715                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000080000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exclusions_in_elementSetSpec2714                                       = new BitSet(
+	public static final BitSet FOLLOW_exclusions_in_elementSetSpec2717                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_107_in_exclusions2736                                                  = new BitSet(
+	public static final BitSet FOLLOW_107_in_exclusions2739                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elements_in_exclusions2738                                             = new BitSet(
+	public static final BitSet FOLLOW_elements_in_exclusions2741                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersections_in_unions2760                                            = new BitSet(
+	public static final BitSet FOLLOW_intersections_in_unions2763                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000100080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_unionMark_in_unions2763                                                = new BitSet(
+	public static final BitSet FOLLOW_unionMark_in_unions2766                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersections_in_unions2765                                            = new BitSet(
+	public static final BitSet FOLLOW_intersections_in_unions2768                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000100080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionElement_in_intersections2790                               = new BitSet(
+	public static final BitSet FOLLOW_intersectionElement_in_intersections2793                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0400000000000000L,
 	                                                                                                                               0x0000000040000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionMark_in_intersections2793                                  = new BitSet(
+	public static final BitSet FOLLOW_intersectionMark_in_intersections2796                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionElement_in_intersections2795                               = new BitSet(
+	public static final BitSet FOLLOW_intersectionElement_in_intersections2798                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0400000000000000L,
 	                                                                                                                               0x0000000040000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elements_in_intersectionElement2819                                    = new BitSet(
+	public static final BitSet FOLLOW_elements_in_intersectionElement2822                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000080000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exclusions_in_intersectionElement2821                                  = new BitSet(
+	public static final BitSet FOLLOW_exclusions_in_intersectionElement2824                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_elements2853                                                     = new BitSet(
+	public static final BitSet FOLLOW_81_in_elements2856                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elements2855                                         = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elements2858                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_elements2857                                                     = new BitSet(
+	public static final BitSet FOLLOW_82_in_elements2860                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_subtypeElements_in_elements2868                                        = new BitSet(
+	public static final BitSet FOLLOW_subtypeElements_in_elements2871                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_subtypeElements2884                                           = new BitSet(
+	public static final BitSet FOLLOW_value_in_subtypeElements2887                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_valueRange_in_subtypeElements2897                                      = new BitSet(
+	public static final BitSet FOLLOW_valueRange_in_subtypeElements2900                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sizeConstraint_in_subtypeElements2902                                  = new BitSet(
+	public static final BitSet FOLLOW_sizeConstraint_in_subtypeElements2905                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_typeConstraint_in_subtypeElements2907                                  = new BitSet(
+	public static final BitSet FOLLOW_typeConstraint_in_subtypeElements2910                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_innerTypeConstraint_in_subtypeElements2912                             = new BitSet(
+	public static final BitSet FOLLOW_innerTypeConstraint_in_subtypeElements2915                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_patternConstraint_in_subtypeElements2917                               = new BitSet(
+	public static final BitSet FOLLOW_patternConstraint_in_subtypeElements2920                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_153_in_innerTypeConstraint2928                                         = new BitSet(
+	public static final BitSet FOLLOW_153_in_innerTypeConstraint2931                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000002000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_101_in_innerTypeConstraint2930                                         = new BitSet(
+	public static final BitSet FOLLOW_101_in_innerTypeConstraint2933                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_innerTypeConstraint2932                                  = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_innerTypeConstraint2935                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_153_in_innerTypeConstraint2945                                         = new BitSet(
+	public static final BitSet FOLLOW_153_in_innerTypeConstraint2948                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_102_in_innerTypeConstraint2947                                         = new BitSet(
+	public static final BitSet FOLLOW_102_in_innerTypeConstraint2950                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_innerTypeConstraint2949                                         = new BitSet(
+	public static final BitSet FOLLOW_159_in_innerTypeConstraint2952                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000000000400000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_86_in_innerTypeConstraint2952                                          = new BitSet(
+	public static final BitSet FOLLOW_86_in_innerTypeConstraint2955                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_innerTypeConstraint2954                                          = new BitSet(
+	public static final BitSet FOLLOW_83_in_innerTypeConstraint2957                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_typeConstraints_in_innerTypeConstraint2958                             = new BitSet(
+	public static final BitSet FOLLOW_typeConstraints_in_innerTypeConstraint2961                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_innerTypeConstraint2960                                         = new BitSet(
+	public static final BitSet FOLLOW_161_in_innerTypeConstraint2963                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2986                                 = new BitSet(
+	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2989                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_typeConstraints2989                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_typeConstraints2992                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2991                                 = new BitSet(
+	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2994                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedConstraint3017                                              = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedConstraint3020                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000008020000L,
 	                                                                                                                               0x0000000000000090L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_namedConstraint3019                                      = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_namedConstraint3022                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000008000000L,
 	                                                                                                                               0x0000000000000090L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_presenceConstraint_in_namedConstraint3022                              = new BitSet(
+	public static final BitSet FOLLOW_presenceConstraint_in_namedConstraint3025                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_120_in_typeConstraint3071                                              = new BitSet(
+	public static final BitSet FOLLOW_120_in_typeConstraint3074                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_typeConstraint3074                                             = new BitSet(
+	public static final BitSet FOLLOW_type_in_typeConstraint3077                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_lowerEndPoint_in_valueRange3099                                        = new BitSet(
+	public static final BitSet FOLLOW_lowerEndPoint_in_valueRange3102                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000200000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_85_in_valueRange3101                                                   = new BitSet(
+	public static final BitSet FOLLOW_85_in_valueRange3104                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x5000800004000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_upperEndPoint_in_valueRange3103                                        = new BitSet(
+	public static final BitSet FOLLOW_upperEndPoint_in_valueRange3106                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_lowerEndValue_in_lowerEndPoint3127                                     = new BitSet(
+	public static final BitSet FOLLOW_lowerEndValue_in_lowerEndPoint3130                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000004000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_90_in_lowerEndPoint3129                                                = new BitSet(
+	public static final BitSet FOLLOW_90_in_lowerEndPoint3132                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_90_in_upperEndPoint3155                                                = new BitSet(
+	public static final BitSet FOLLOW_90_in_upperEndPoint3158                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x5000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_upperEndValue_in_upperEndPoint3158                                     = new BitSet(
+	public static final BitSet FOLLOW_upperEndValue_in_upperEndPoint3161                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_lowerEndValue3183                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_lowerEndValue3186                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_125_in_lowerEndValue3190                                               = new BitSet(
+	public static final BitSet FOLLOW_125_in_lowerEndValue3193                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_upperEndValue3202                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_upperEndValue3205                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_124_in_upperEndValue3209                                               = new BitSet(
+	public static final BitSet FOLLOW_124_in_upperEndValue3212                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_141_in_sizeConstraint3221                                              = new BitSet(
+	public static final BitSet FOLLOW_141_in_sizeConstraint3224                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_sizeConstraint3223                                       = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_sizeConstraint3226                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_133_in_patternConstraint3242                                           = new BitSet(
+	public static final BitSet FOLLOW_133_in_patternConstraint3245                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x4000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_patternConstraint3244                                         = new BitSet(
+	public static final BitSet FOLLOW_value_in_patternConstraint3247                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
@@ -17074,12 +17110,12 @@ public class ASN1Parser extends Parser {
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_synpred6_ASN12848                                                = new BitSet(
+	public static final BitSet FOLLOW_81_in_synpred6_ASN12851                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_synpred7_ASN12881                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_synpred7_ASN12884                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }

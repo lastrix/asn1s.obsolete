@@ -72,6 +72,7 @@ public class ASN1Real extends ASN1Type implements ASN1X690Type {
 			this.name = NAME + "-" + clazz.getSimpleName();
 		}
 		this.tag = TAG;
+		this.typeId = getName();
 		valid();
 	}
 

@@ -51,6 +51,7 @@ public class ASN1ComponentType extends ASN1Type {
 		this.name = type.getName();
 		this.type = type;
 		this.fieldName = fieldName;
+		this.typeId = getName();
 		invalid();
 	}
 
@@ -185,11 +186,19 @@ public class ASN1ComponentType extends ASN1Type {
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
 			type.onInstall(module, false);
 		}
+		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
 
 	@Override
 	public ASN1Tag getTag() {
 		return type.getTag();
+	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append(fieldName);
+		sb.append(" ");
+		sb.append(type.getTypeId());
 	}
 }

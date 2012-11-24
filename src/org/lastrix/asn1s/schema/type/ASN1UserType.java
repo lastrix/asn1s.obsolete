@@ -58,6 +58,7 @@ public class ASN1UserType extends ASN1Type {
 		}
 		this.name = name;
 		this.baseType = baseType;
+		this.typeId = getName();
 		invalid();
 	}
 
@@ -159,6 +160,7 @@ public class ASN1UserType extends ASN1Type {
 		if (!(baseType instanceof ASN1UserType) && (baseType.getModule() == null)) {
 			baseType.onInstall(module, false);
 		}
+		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
 
@@ -171,5 +173,17 @@ public class ASN1UserType extends ASN1Type {
 	@Override
 	public String getTypeString(final String prefix) {
 		return prefix + name + " ::= " + baseType.getTypeString(prefix);
+	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		if (getHandledClass() != null) {
+			sb.append("--#");
+			sb.append(getHandledClass().getName());
+			sb.append("#\n");
+		}
+		sb.append(name);
+		sb.append(" ::= ");
+		baseType.toASN1(sb);
 	}
 }

@@ -58,6 +58,7 @@ public class ASN1Sequence extends ASN1Type implements ASN1X690Type {
 		this.sequenceOf = sequenceOf;
 		this.name = "SEQUENCE@" + hashCode();
 		this.tag = TAG;
+		this.typeId = getName();
 		valid();
 	}
 
@@ -269,5 +270,26 @@ public class ASN1Sequence extends ASN1Type implements ASN1X690Type {
 			}
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append("SEQUENCE ");
+		if (sequenceOf) {
+			sb.append("OF ");
+			sb.append(componentType[0].getTypeId());
+			sb.append(";");
+		} else {
+			sb.append("{\n");
+			for (int i = 0; i < componentType.length; i++) {
+				sb.append("      ");
+				componentType[i].toASN1(sb);
+				if (i + 1 < componentType.length) {
+					sb.append(",");
+				}
+				sb.append("\n");
+			}
+			sb.append("}");
+		}
 	}
 }

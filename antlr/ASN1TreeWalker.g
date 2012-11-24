@@ -8,11 +8,13 @@ options {
 @header{
 package org.lastrix.asn1s.schema.compiler.generated;
 
+import org.lastrix.asn1s.schema.Presence;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.TaggingMethod;
 }
 
 @members {
+/*
 public enum Presence {
 	PRESENT,
 	ABSENT,
@@ -30,7 +32,7 @@ public enum TaggingMethod {
 	EXPLICIT,
 	AUTOMATIC;
 }
-
+*/
 public enum RestrictedCString{
 	BMPString,
 	GeneralString,

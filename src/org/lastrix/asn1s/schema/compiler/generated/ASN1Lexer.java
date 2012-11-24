@@ -16,12 +16,18 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/dev/java/ASN1S/antlr/ASN1.g 2011-12-07 12:23:49
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-24 19:37:38
 
 package org.lastrix.asn1s.schema.compiler.generated;
 
 
 import org.antlr.runtime.*;
+
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ASN1Lexer extends Lexer {
@@ -201,15 +207,15 @@ public class ASN1Lexer extends Lexer {
 		super(input, state);
 	}
 
-	public String getGrammarFileName() { return "/home/lastrix/dev/java/ASN1S/antlr/ASN1.g"; }
+	public String getGrammarFileName() { return "/home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g"; }
 
 	// $ANTLR start "T__80"
 	public final void mT__80() throws RecognitionException {
 		try {
 			int _type = T__80;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:6:7: ( '!' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:6:9: '!'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:6:7: ( '!' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:6:9: '!'
 			{
 				match('!');
 				if (state.failed) return;
@@ -229,8 +235,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__81;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:7:7: ( '(' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:7:9: '('
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:7:7: ( '(' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:7:9: '('
 			{
 				match('(');
 				if (state.failed) return;
@@ -250,8 +256,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__82;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:8:7: ( ')' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:8:9: ')'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:8:7: ( ')' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:8:9: ')'
 			{
 				match(')');
 				if (state.failed) return;
@@ -271,8 +277,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__83;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:9:7: ( ',' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:9:9: ','
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:9:7: ( ',' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:9:9: ','
 			{
 				match(',');
 				if (state.failed) return;
@@ -292,8 +298,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__84;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:10:7: ( '.' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:10:9: '.'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:10:7: ( '.' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:10:9: '.'
 			{
 				match('.');
 				if (state.failed) return;
@@ -313,8 +319,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__85;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:11:7: ( '..' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:11:9: '..'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:11:7: ( '..' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:11:9: '..'
 			{
 				match("..");
 				if (state.failed) return;
@@ -335,8 +341,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__86;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:12:7: ( '...' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:12:9: '...'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:12:7: ( '...' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:12:9: '...'
 			{
 				match("...");
 				if (state.failed) return;
@@ -357,8 +363,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__87;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:13:7: ( ':' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:13:9: ':'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:13:7: ( ':' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:13:9: ':'
 			{
 				match(':');
 				if (state.failed) return;
@@ -378,8 +384,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__88;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:14:7: ( '::=' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:14:9: '::='
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:14:7: ( '::=' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:14:9: '::='
 			{
 				match("::=");
 				if (state.failed) return;
@@ -400,8 +406,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__89;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:15:7: ( ';' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:15:9: ';'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:15:7: ( ';' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:15:9: ';'
 			{
 				match(';');
 				if (state.failed) return;
@@ -421,8 +427,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__90;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:16:7: ( '<' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:16:9: '<'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:16:7: ( '<' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:16:9: '<'
 			{
 				match('<');
 				if (state.failed) return;
@@ -442,8 +448,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__91;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:17:7: ( 'ABSENT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:17:9: 'ABSENT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:17:7: ( 'ABSENT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:17:9: 'ABSENT'
 			{
 				match("ABSENT");
 				if (state.failed) return;
@@ -464,8 +470,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__92;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:18:7: ( 'ALL' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:18:9: 'ALL'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:18:7: ( 'ALL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:18:9: 'ALL'
 			{
 				match("ALL");
 				if (state.failed) return;
@@ -486,8 +492,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__93;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:19:7: ( 'APPLICATION' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:19:9: 'APPLICATION'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:19:7: ( 'APPLICATION' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:19:9: 'APPLICATION'
 			{
 				match("APPLICATION");
 				if (state.failed) return;
@@ -508,8 +514,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__94;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:20:7: ( 'AUTOMATIC' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:20:9: 'AUTOMATIC'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:20:7: ( 'AUTOMATIC' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:20:9: 'AUTOMATIC'
 			{
 				match("AUTOMATIC");
 				if (state.failed) return;
@@ -530,8 +536,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__95;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:21:7: ( 'BEGIN' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:21:9: 'BEGIN'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:21:7: ( 'BEGIN' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:21:9: 'BEGIN'
 			{
 				match("BEGIN");
 				if (state.failed) return;
@@ -552,8 +558,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__96;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:22:7: ( 'BIT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:22:9: 'BIT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:22:7: ( 'BIT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:22:9: 'BIT'
 			{
 				match("BIT");
 				if (state.failed) return;
@@ -574,8 +580,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__97;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:23:7: ( 'BMPString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:23:9: 'BMPString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:23:7: ( 'BMPString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:23:9: 'BMPString'
 			{
 				match("BMPString");
 				if (state.failed) return;
@@ -596,8 +602,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__98;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:24:7: ( 'BOOLEAN' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:24:9: 'BOOLEAN'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:24:7: ( 'BOOLEAN' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:24:9: 'BOOLEAN'
 			{
 				match("BOOLEAN");
 				if (state.failed) return;
@@ -618,8 +624,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__99;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:25:7: ( 'CHARACTER' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:25:9: 'CHARACTER'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:25:7: ( 'CHARACTER' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:25:9: 'CHARACTER'
 			{
 				match("CHARACTER");
 				if (state.failed) return;
@@ -640,8 +646,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__100;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:26:8: ( 'CHOICE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:26:10: 'CHOICE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:26:8: ( 'CHOICE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:26:10: 'CHOICE'
 			{
 				match("CHOICE");
 				if (state.failed) return;
@@ -662,8 +668,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__101;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:27:8: ( 'COMPONENT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:27:10: 'COMPONENT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:27:8: ( 'COMPONENT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:27:10: 'COMPONENT'
 			{
 				match("COMPONENT");
 				if (state.failed) return;
@@ -684,8 +690,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__102;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:28:8: ( 'COMPONENTS' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:28:10: 'COMPONENTS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:28:8: ( 'COMPONENTS' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:28:10: 'COMPONENTS'
 			{
 				match("COMPONENTS");
 				if (state.failed) return;
@@ -706,8 +712,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__103;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:29:8: ( 'DEFAULT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:29:10: 'DEFAULT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:29:8: ( 'DEFAULT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:29:10: 'DEFAULT'
 			{
 				match("DEFAULT");
 				if (state.failed) return;
@@ -728,8 +734,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__104;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:30:8: ( 'DEFINITIONS' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:30:10: 'DEFINITIONS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:30:8: ( 'DEFINITIONS' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:30:10: 'DEFINITIONS'
 			{
 				match("DEFINITIONS");
 				if (state.failed) return;
@@ -750,8 +756,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__105;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:31:8: ( 'END' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:31:10: 'END'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:31:8: ( 'END' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:31:10: 'END'
 			{
 				match("END");
 				if (state.failed) return;
@@ -772,8 +778,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__106;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:32:8: ( 'ENUMERATED' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:32:10: 'ENUMERATED'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:32:8: ( 'ENUMERATED' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:32:10: 'ENUMERATED'
 			{
 				match("ENUMERATED");
 				if (state.failed) return;
@@ -794,8 +800,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__107;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:33:8: ( 'EXCEPT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:33:10: 'EXCEPT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:33:8: ( 'EXCEPT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:33:10: 'EXCEPT'
 			{
 				match("EXCEPT");
 				if (state.failed) return;
@@ -816,8 +822,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__108;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:34:8: ( 'EXPLICIT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:34:10: 'EXPLICIT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:34:8: ( 'EXPLICIT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:34:10: 'EXPLICIT'
 			{
 				match("EXPLICIT");
 				if (state.failed) return;
@@ -838,8 +844,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__109;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:35:8: ( 'EXPORTS' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:35:10: 'EXPORTS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:35:8: ( 'EXPORTS' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:35:10: 'EXPORTS'
 			{
 				match("EXPORTS");
 				if (state.failed) return;
@@ -860,8 +866,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__110;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:36:8: ( 'EXTENSIBILITY' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:36:10: 'EXTENSIBILITY'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:36:8: ( 'EXTENSIBILITY' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:36:10: 'EXTENSIBILITY'
 			{
 				match("EXTENSIBILITY");
 				if (state.failed) return;
@@ -882,8 +888,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__111;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:37:8: ( 'FALSE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:37:10: 'FALSE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:37:8: ( 'FALSE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:37:10: 'FALSE'
 			{
 				match("FALSE");
 				if (state.failed) return;
@@ -904,8 +910,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__112;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:38:8: ( 'FROM' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:38:10: 'FROM'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:38:8: ( 'FROM' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:38:10: 'FROM'
 			{
 				match("FROM");
 				if (state.failed) return;
@@ -926,8 +932,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__113;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:39:8: ( 'GeneralString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:39:10: 'GeneralString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:39:8: ( 'GeneralString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:39:10: 'GeneralString'
 			{
 				match("GeneralString");
 				if (state.failed) return;
@@ -948,8 +954,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__114;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:40:8: ( 'GraphicString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:40:10: 'GraphicString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:40:8: ( 'GraphicString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:40:10: 'GraphicString'
 			{
 				match("GraphicString");
 				if (state.failed) return;
@@ -970,8 +976,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__115;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:41:8: ( 'IA5String' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:41:10: 'IA5String'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:41:8: ( 'IA5String' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:41:10: 'IA5String'
 			{
 				match("IA5String");
 				if (state.failed) return;
@@ -992,8 +998,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__116;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:42:8: ( 'IDENTIFIER' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:42:10: 'IDENTIFIER'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:42:8: ( 'IDENTIFIER' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:42:10: 'IDENTIFIER'
 			{
 				match("IDENTIFIER");
 				if (state.failed) return;
@@ -1014,8 +1020,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__117;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:43:8: ( 'IMPLICIT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:43:10: 'IMPLICIT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:43:8: ( 'IMPLICIT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:43:10: 'IMPLICIT'
 			{
 				match("IMPLICIT");
 				if (state.failed) return;
@@ -1036,8 +1042,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__118;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:44:8: ( 'IMPLIED' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:44:10: 'IMPLIED'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:44:8: ( 'IMPLIED' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:44:10: 'IMPLIED'
 			{
 				match("IMPLIED");
 				if (state.failed) return;
@@ -1058,8 +1064,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__119;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:45:8: ( 'IMPORTS' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:45:10: 'IMPORTS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:45:8: ( 'IMPORTS' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:45:10: 'IMPORTS'
 			{
 				match("IMPORTS");
 				if (state.failed) return;
@@ -1080,8 +1086,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__120;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:46:8: ( 'INCLUDES' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:46:10: 'INCLUDES'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:46:8: ( 'INCLUDES' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:46:10: 'INCLUDES'
 			{
 				match("INCLUDES");
 				if (state.failed) return;
@@ -1102,8 +1108,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__121;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:47:8: ( 'INTEGER' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:47:10: 'INTEGER'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:47:8: ( 'INTEGER' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:47:10: 'INTEGER'
 			{
 				match("INTEGER");
 				if (state.failed) return;
@@ -1124,8 +1130,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__122;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:48:8: ( 'INTERSECTION' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:48:10: 'INTERSECTION'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:48:8: ( 'INTERSECTION' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:48:10: 'INTERSECTION'
 			{
 				match("INTERSECTION");
 				if (state.failed) return;
@@ -1146,8 +1152,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__123;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:49:8: ( 'ISO646String' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:49:10: 'ISO646String'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:49:8: ( 'ISO646String' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:49:10: 'ISO646String'
 			{
 				match("ISO646String");
 				if (state.failed) return;
@@ -1168,8 +1174,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__124;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:50:8: ( 'MAX' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:50:10: 'MAX'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:50:8: ( 'MAX' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:50:10: 'MAX'
 			{
 				match("MAX");
 				if (state.failed) return;
@@ -1190,8 +1196,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__125;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:51:8: ( 'MIN' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:51:10: 'MIN'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:51:8: ( 'MIN' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:51:10: 'MIN'
 			{
 				match("MIN");
 				if (state.failed) return;
@@ -1212,8 +1218,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__126;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:52:8: ( 'MINUS-INFINITY' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:52:10: 'MINUS-INFINITY'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:52:8: ( 'MINUS-INFINITY' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:52:10: 'MINUS-INFINITY'
 			{
 				match("MINUS-INFINITY");
 				if (state.failed) return;
@@ -1234,8 +1240,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__127;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:53:8: ( 'NumericString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:53:10: 'NumericString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:53:8: ( 'NumericString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:53:10: 'NumericString'
 			{
 				match("NumericString");
 				if (state.failed) return;
@@ -1256,8 +1262,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__128;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:54:8: ( 'OBJECT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:54:10: 'OBJECT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:54:8: ( 'OBJECT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:54:10: 'OBJECT'
 			{
 				match("OBJECT");
 				if (state.failed) return;
@@ -1278,8 +1284,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__129;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:55:8: ( 'OCTET' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:55:10: 'OCTET'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:55:8: ( 'OCTET' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:55:10: 'OCTET'
 			{
 				match("OCTET");
 				if (state.failed) return;
@@ -1300,8 +1306,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__130;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:56:8: ( 'OF' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:56:10: 'OF'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:56:8: ( 'OF' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:56:10: 'OF'
 			{
 				match("OF");
 				if (state.failed) return;
@@ -1322,8 +1328,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__131;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:57:8: ( 'OID_VALUE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:57:10: 'OID_VALUE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:57:8: ( 'OID_VALUE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:57:10: 'OID_VALUE'
 			{
 				match("OID_VALUE");
 				if (state.failed) return;
@@ -1344,8 +1350,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__132;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:58:8: ( 'OPTIONAL' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:58:10: 'OPTIONAL'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:58:8: ( 'OPTIONAL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:58:10: 'OPTIONAL'
 			{
 				match("OPTIONAL");
 				if (state.failed) return;
@@ -1366,8 +1372,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__133;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:59:8: ( 'PATTERN' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:59:10: 'PATTERN'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:59:8: ( 'PATTERN' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:59:10: 'PATTERN'
 			{
 				match("PATTERN");
 				if (state.failed) return;
@@ -1388,8 +1394,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__134;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:60:8: ( 'PLUS-INFINITY' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:60:10: 'PLUS-INFINITY'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:60:8: ( 'PLUS-INFINITY' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:60:10: 'PLUS-INFINITY'
 			{
 				match("PLUS-INFINITY");
 				if (state.failed) return;
@@ -1410,8 +1416,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__135;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:61:8: ( 'PRESENT' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:61:10: 'PRESENT'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:61:8: ( 'PRESENT' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:61:10: 'PRESENT'
 			{
 				match("PRESENT");
 				if (state.failed) return;
@@ -1432,8 +1438,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__136;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:62:8: ( 'PRIVATE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:62:10: 'PRIVATE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:62:8: ( 'PRIVATE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:62:10: 'PRIVATE'
 			{
 				match("PRIVATE");
 				if (state.failed) return;
@@ -1454,8 +1460,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__137;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:63:8: ( 'PrintableString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:63:10: 'PrintableString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:63:8: ( 'PrintableString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:63:10: 'PrintableString'
 			{
 				match("PrintableString");
 				if (state.failed) return;
@@ -1476,8 +1482,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__138;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:64:8: ( 'REAL' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:64:10: 'REAL'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:64:8: ( 'REAL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:64:10: 'REAL'
 			{
 				match("REAL");
 				if (state.failed) return;
@@ -1498,8 +1504,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__139;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:65:8: ( 'SEQUENCE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:65:10: 'SEQUENCE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:65:8: ( 'SEQUENCE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:65:10: 'SEQUENCE'
 			{
 				match("SEQUENCE");
 				if (state.failed) return;
@@ -1520,8 +1526,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__140;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:66:8: ( 'SET' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:66:10: 'SET'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:66:8: ( 'SET' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:66:10: 'SET'
 			{
 				match("SET");
 				if (state.failed) return;
@@ -1542,8 +1548,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__141;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:67:8: ( 'SIZE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:67:10: 'SIZE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:67:8: ( 'SIZE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:67:10: 'SIZE'
 			{
 				match("SIZE");
 				if (state.failed) return;
@@ -1564,8 +1570,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__142;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:68:8: ( 'STRING' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:68:10: 'STRING'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:68:8: ( 'STRING' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:68:10: 'STRING'
 			{
 				match("STRING");
 				if (state.failed) return;
@@ -1586,8 +1592,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__143;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:69:8: ( 'T61String' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:69:10: 'T61String'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:69:8: ( 'T61String' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:69:10: 'T61String'
 			{
 				match("T61String");
 				if (state.failed) return;
@@ -1608,8 +1614,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__144;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:70:8: ( 'TAGS' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:70:10: 'TAGS'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:70:8: ( 'TAGS' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:70:10: 'TAGS'
 			{
 				match("TAGS");
 				if (state.failed) return;
@@ -1630,8 +1636,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__145;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:71:8: ( 'TRUE' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:71:10: 'TRUE'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:71:8: ( 'TRUE' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:71:10: 'TRUE'
 			{
 				match("TRUE");
 				if (state.failed) return;
@@ -1652,8 +1658,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__146;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:72:8: ( 'TeletexString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:72:10: 'TeletexString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:72:8: ( 'TeletexString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:72:10: 'TeletexString'
 			{
 				match("TeletexString");
 				if (state.failed) return;
@@ -1674,8 +1680,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__147;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:73:8: ( 'UNION' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:73:10: 'UNION'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:73:8: ( 'UNION' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:73:10: 'UNION'
 			{
 				match("UNION");
 				if (state.failed) return;
@@ -1696,8 +1702,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__148;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:74:8: ( 'UNIVERSAL' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:74:10: 'UNIVERSAL'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:74:8: ( 'UNIVERSAL' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:74:10: 'UNIVERSAL'
 			{
 				match("UNIVERSAL");
 				if (state.failed) return;
@@ -1718,8 +1724,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__149;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:75:8: ( 'UTF8String' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:75:10: 'UTF8String'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:75:8: ( 'UTF8String' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:75:10: 'UTF8String'
 			{
 				match("UTF8String");
 				if (state.failed) return;
@@ -1740,8 +1746,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__150;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:76:8: ( 'UniversalString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:76:10: 'UniversalString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:76:8: ( 'UniversalString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:76:10: 'UniversalString'
 			{
 				match("UniversalString");
 				if (state.failed) return;
@@ -1762,8 +1768,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__151;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:77:8: ( 'VideotexString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:77:10: 'VideotexString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:77:8: ( 'VideotexString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:77:10: 'VideotexString'
 			{
 				match("VideotexString");
 				if (state.failed) return;
@@ -1784,8 +1790,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__152;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:78:8: ( 'VisibleString' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:78:10: 'VisibleString'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:78:8: ( 'VisibleString' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:78:10: 'VisibleString'
 			{
 				match("VisibleString");
 				if (state.failed) return;
@@ -1806,8 +1812,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__153;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:79:8: ( 'WITH' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:79:10: 'WITH'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:79:8: ( 'WITH' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:79:10: 'WITH'
 			{
 				match("WITH");
 				if (state.failed) return;
@@ -1828,8 +1834,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__154;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:80:8: ( '[' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:80:10: '['
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:80:8: ( '[' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:80:10: '['
 			{
 				match('[');
 				if (state.failed) return;
@@ -1849,8 +1855,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__155;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:81:8: ( '[[' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:81:10: '[['
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:81:8: ( '[[' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:81:10: '[['
 			{
 				match("[[");
 				if (state.failed) return;
@@ -1871,8 +1877,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__156;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:82:8: ( ']' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:82:10: ']'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:82:8: ( ']' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:82:10: ']'
 			{
 				match(']');
 				if (state.failed) return;
@@ -1892,8 +1898,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__157;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:83:8: ( ']]' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:83:10: ']]'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:83:8: ( ']]' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:83:10: ']]'
 			{
 				match("]]");
 				if (state.failed) return;
@@ -1914,8 +1920,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__158;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:84:8: ( '^' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:84:10: '^'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:84:8: ( '^' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:84:10: '^'
 			{
 				match('^');
 				if (state.failed) return;
@@ -1935,8 +1941,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__159;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:85:8: ( '{' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:85:10: '{'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:85:8: ( '{' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:85:10: '{'
 			{
 				match('{');
 				if (state.failed) return;
@@ -1956,8 +1962,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__160;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:86:8: ( '|' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:86:10: '|'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:86:8: ( '|' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:86:10: '|'
 			{
 				match('|');
 				if (state.failed) return;
@@ -1977,8 +1983,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = T__161;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:87:8: ( '}' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:87:10: '}'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:87:8: ( '}' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:87:10: '}'
 			{
 				match('}');
 				if (state.failed) return;
@@ -1996,8 +2002,8 @@ public class ASN1Lexer extends Lexer {
 	// $ANTLR start "VALUE_ID"
 	public final void mVALUE_ID() throws RecognitionException {
 		try {
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:10: ( ( 'a' .. 'z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:12: ( 'a' .. 'z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:10: ( ( 'a' .. 'z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:12: ( 'a' .. 'z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
 			{
 				if ((input.LA(1) >= 'a' && input.LA(1) <= 'z')) {
 					input.consume();
@@ -2013,7 +2019,7 @@ public class ASN1Lexer extends Lexer {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:23: ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:23: ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
 				loop2:
 				do {
 					int alt2 = 2;
@@ -2026,9 +2032,9 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt2) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:24: ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:24: ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:24: ( '-' )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:24: ( '-' )?
 							int alt1 = 2;
 							int LA1_0 = input.LA(1);
 
@@ -2037,7 +2043,7 @@ public class ASN1Lexer extends Lexer {
 							}
 							switch (alt1) {
 								case 1:
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:24: '-'
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:24: '-'
 								{
 									match('-');
 									if (state.failed) return;
@@ -2086,8 +2092,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:5: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:7: ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:5: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:7: ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
 			{
 				if ((input.LA(1) >= 'A' && input.LA(1) <= 'Z') || (input.LA(1) >= 'a' && input.LA(1) <= 'z')) {
 					input.consume();
@@ -2103,7 +2109,7 @@ public class ASN1Lexer extends Lexer {
 				}
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:27: ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:27: ( ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
 				loop4:
 				do {
 					int alt4 = 2;
@@ -2116,9 +2122,9 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt4) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:28: ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:28: ( '-' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
 						{
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:28: ( '-' )?
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:28: ( '-' )?
 							int alt3 = 2;
 							int LA3_0 = input.LA(1);
 
@@ -2127,7 +2133,7 @@ public class ASN1Lexer extends Lexer {
 							}
 							switch (alt3) {
 								case 1:
-									// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:467:28: '-'
+									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:463:28: '-'
 								{
 									match('-');
 									if (state.failed) return;
@@ -2177,7 +2183,7 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:6: ( '0' | ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:6: ( '0' | ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* )
 			int alt7 = 2;
 			int LA7_0 = input.LA(1);
 
@@ -2198,7 +2204,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			switch (alt7) {
 				case 1:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:8: '0'
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:8: '0'
 				{
 					match('0');
 					if (state.failed) return;
@@ -2206,9 +2212,9 @@ public class ASN1Lexer extends Lexer {
 				}
 				break;
 				case 2:
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:14: ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:14: ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )*
 				{
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:14: ( '-' )?
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:14: ( '-' )?
 					int alt5 = 2;
 					int LA5_0 = input.LA(1);
 
@@ -2217,7 +2223,7 @@ public class ASN1Lexer extends Lexer {
 					}
 					switch (alt5) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:14: '-'
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:14: '-'
 						{
 							match('-');
 							if (state.failed) return;
@@ -2242,7 +2248,7 @@ public class ASN1Lexer extends Lexer {
 					}
 
 
-					// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:469:29: ( '0' .. '9' )*
+					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:465:29: ( '0' .. '9' )*
 					loop6:
 					do {
 						int alt6 = 2;
@@ -2255,7 +2261,7 @@ public class ASN1Lexer extends Lexer {
 
 						switch (alt6) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 							{
 								if ((input.LA(1) >= '0' && input.LA(1) <= '9')) {
 									input.consume();
@@ -2297,8 +2303,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = REAL_NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:13: ( INT '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )? )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:15: INT '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )?
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:13: ( INT '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )? )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:15: INT '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )?
 			{
 				mINT();
 				if (state.failed) return;
@@ -2307,7 +2313,7 @@ public class ASN1Lexer extends Lexer {
 				match('.');
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:23: ( '0' .. '9' )+
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:23: ( '0' .. '9' )+
 				int cnt8 = 0;
 				loop8:
 				do {
@@ -2321,7 +2327,7 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt8) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:
 						{
 							if ((input.LA(1) >= '0' && input.LA(1) <= '9')) {
 								input.consume();
@@ -2354,7 +2360,7 @@ public class ASN1Lexer extends Lexer {
 				} while (true);
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:35: ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )?
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:35: ( ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT )?
 				int alt10 = 2;
 				int LA10_0 = input.LA(1);
 
@@ -2363,7 +2369,7 @@ public class ASN1Lexer extends Lexer {
 				}
 				switch (alt10) {
 					case 1:
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:36: ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:36: ( 'e' | 'E' ) ( ( '-' )=> '-' | '+' )? INT
 					{
 						if (input.LA(1) == 'E' || input.LA(1) == 'e') {
 							input.consume();
@@ -2379,7 +2385,7 @@ public class ASN1Lexer extends Lexer {
 						}
 
 
-						// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:46: ( ( '-' )=> '-' | '+' )?
+						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:46: ( ( '-' )=> '-' | '+' )?
 						int alt9 = 3;
 						int LA9_0 = input.LA(1);
 
@@ -2394,7 +2400,7 @@ public class ASN1Lexer extends Lexer {
 						}
 						switch (alt9) {
 							case 1:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:47: ( '-' )=> '-'
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:47: ( '-' )=> '-'
 							{
 								match('-');
 								if (state.failed) return;
@@ -2402,7 +2408,7 @@ public class ASN1Lexer extends Lexer {
 							}
 							break;
 							case 2:
-								// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:58: '+'
+								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:58: '+'
 							{
 								match('+');
 								if (state.failed) return;
@@ -2438,8 +2444,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = CLASS_DEF;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:472:11: ( '--' '#' ( options {greedy=false; } : . )* '\\n' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:472:13: '--' '#' ( options {greedy=false; } : . )* '\\n'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:468:11: ( '--' '#' ( options {greedy=false; } : . )* '\\n' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:468:13: '--' '#' ( options {greedy=false; } : . )* '\\n'
 			{
 				match("--");
 				if (state.failed) return;
@@ -2448,7 +2454,7 @@ public class ASN1Lexer extends Lexer {
 				match('#');
 				if (state.failed) return;
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:472:22: ( options {greedy=false; } : . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:468:22: ( options {greedy=false; } : . )*
 				loop11:
 				do {
 					int alt11 = 2;
@@ -2463,7 +2469,7 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt11) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:472:53: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:468:53: .
 						{
 							matchAny();
 							if (state.failed) return;
@@ -2495,14 +2501,14 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = COMMENT_LINE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:473:14: ( '--' ( options {greedy=false; } : . )* '\\n' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:473:16: '--' ( options {greedy=false; } : . )* '\\n'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:469:14: ( '--' ( options {greedy=false; } : . )* '\\n' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:469:16: '--' ( options {greedy=false; } : . )* '\\n'
 			{
 				match("--");
 				if (state.failed) return;
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:473:21: ( options {greedy=false; } : . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:469:21: ( options {greedy=false; } : . )*
 				loop12:
 				do {
 					int alt12 = 2;
@@ -2517,7 +2523,7 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt12) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:473:52: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:469:52: .
 						{
 							matchAny();
 							if (state.failed) return;
@@ -2551,14 +2557,14 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = ML_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:474:12: ( '/*' ( options {greedy=false; } : . )* '*/' )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:474:14: '/*' ( options {greedy=false; } : . )* '*/'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:470:12: ( '/*' ( options {greedy=false; } : . )* '*/' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:470:14: '/*' ( options {greedy=false; } : . )* '*/'
 			{
 				match("/*");
 				if (state.failed) return;
 
 
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:474:19: ( options {greedy=false; } : . )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:470:19: ( options {greedy=false; } : . )*
 				loop13:
 				do {
 					int alt13 = 2;
@@ -2581,7 +2587,7 @@ public class ASN1Lexer extends Lexer {
 
 					switch (alt13) {
 						case 1:
-							// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:474:46: .
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:470:46: .
 						{
 							matchAny();
 							if (state.failed) return;
@@ -2616,8 +2622,8 @@ public class ASN1Lexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:475:5: ( ( ' ' | '\\t' | '\\n' | '\\r' ) )
-			// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:475:7: ( ' ' | '\\t' | '\\n' | '\\r' )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:471:5: ( ( ' ' | '\\t' | '\\n' | '\\r' ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:471:7: ( ' ' | '\\t' | '\\n' | '\\r' )
 			{
 				if ((input.LA(1) >= '\t' && input.LA(1) <= '\n') || input.LA(1) == '\r' || input.LA(1) == ' ') {
 					input.consume();
@@ -2646,12 +2652,12 @@ public class ASN1Lexer extends Lexer {
 	// $ANTLR end "WS"
 
 	public void mTokens() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:8: ( T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | ID | INT | REAL_NUMBER | CLASS_DEF | COMMENT_LINE | ML_COMMENT | WS )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:8: ( T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | ID | INT | REAL_NUMBER | CLASS_DEF | COMMENT_LINE | ML_COMMENT | WS )
 		int alt14 = 89;
 		alt14 = dfa14.predict(input);
 		switch (alt14) {
 			case 1:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:10: T__80
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:10: T__80
 			{
 				mT__80();
 				if (state.failed) return;
@@ -2660,7 +2666,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 2:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:16: T__81
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:16: T__81
 			{
 				mT__81();
 				if (state.failed) return;
@@ -2669,7 +2675,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 3:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:22: T__82
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:22: T__82
 			{
 				mT__82();
 				if (state.failed) return;
@@ -2678,7 +2684,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 4:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:28: T__83
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:28: T__83
 			{
 				mT__83();
 				if (state.failed) return;
@@ -2687,7 +2693,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 5:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:34: T__84
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:34: T__84
 			{
 				mT__84();
 				if (state.failed) return;
@@ -2696,7 +2702,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 6:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:40: T__85
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:40: T__85
 			{
 				mT__85();
 				if (state.failed) return;
@@ -2705,7 +2711,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 7:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:46: T__86
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:46: T__86
 			{
 				mT__86();
 				if (state.failed) return;
@@ -2714,7 +2720,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 8:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:52: T__87
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:52: T__87
 			{
 				mT__87();
 				if (state.failed) return;
@@ -2723,7 +2729,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 9:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:58: T__88
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:58: T__88
 			{
 				mT__88();
 				if (state.failed) return;
@@ -2732,7 +2738,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 10:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:64: T__89
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:64: T__89
 			{
 				mT__89();
 				if (state.failed) return;
@@ -2741,7 +2747,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 11:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:70: T__90
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:70: T__90
 			{
 				mT__90();
 				if (state.failed) return;
@@ -2750,7 +2756,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 12:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:76: T__91
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:76: T__91
 			{
 				mT__91();
 				if (state.failed) return;
@@ -2759,7 +2765,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 13:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:82: T__92
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:82: T__92
 			{
 				mT__92();
 				if (state.failed) return;
@@ -2768,7 +2774,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 14:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:88: T__93
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:88: T__93
 			{
 				mT__93();
 				if (state.failed) return;
@@ -2777,7 +2783,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 15:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:94: T__94
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:94: T__94
 			{
 				mT__94();
 				if (state.failed) return;
@@ -2786,7 +2792,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 16:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:100: T__95
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:100: T__95
 			{
 				mT__95();
 				if (state.failed) return;
@@ -2795,7 +2801,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 17:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:106: T__96
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:106: T__96
 			{
 				mT__96();
 				if (state.failed) return;
@@ -2804,7 +2810,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 18:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:112: T__97
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:112: T__97
 			{
 				mT__97();
 				if (state.failed) return;
@@ -2813,7 +2819,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 19:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:118: T__98
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:118: T__98
 			{
 				mT__98();
 				if (state.failed) return;
@@ -2822,7 +2828,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 20:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:124: T__99
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:124: T__99
 			{
 				mT__99();
 				if (state.failed) return;
@@ -2831,7 +2837,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 21:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:130: T__100
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:130: T__100
 			{
 				mT__100();
 				if (state.failed) return;
@@ -2840,7 +2846,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 22:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:137: T__101
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:137: T__101
 			{
 				mT__101();
 				if (state.failed) return;
@@ -2849,7 +2855,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 23:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:144: T__102
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:144: T__102
 			{
 				mT__102();
 				if (state.failed) return;
@@ -2858,7 +2864,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 24:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:151: T__103
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:151: T__103
 			{
 				mT__103();
 				if (state.failed) return;
@@ -2867,7 +2873,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 25:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:158: T__104
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:158: T__104
 			{
 				mT__104();
 				if (state.failed) return;
@@ -2876,7 +2882,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 26:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:165: T__105
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:165: T__105
 			{
 				mT__105();
 				if (state.failed) return;
@@ -2885,7 +2891,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 27:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:172: T__106
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:172: T__106
 			{
 				mT__106();
 				if (state.failed) return;
@@ -2894,7 +2900,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 28:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:179: T__107
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:179: T__107
 			{
 				mT__107();
 				if (state.failed) return;
@@ -2903,7 +2909,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 29:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:186: T__108
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:186: T__108
 			{
 				mT__108();
 				if (state.failed) return;
@@ -2912,7 +2918,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 30:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:193: T__109
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:193: T__109
 			{
 				mT__109();
 				if (state.failed) return;
@@ -2921,7 +2927,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 31:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:200: T__110
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:200: T__110
 			{
 				mT__110();
 				if (state.failed) return;
@@ -2930,7 +2936,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 32:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:207: T__111
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:207: T__111
 			{
 				mT__111();
 				if (state.failed) return;
@@ -2939,7 +2945,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 33:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:214: T__112
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:214: T__112
 			{
 				mT__112();
 				if (state.failed) return;
@@ -2948,7 +2954,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 34:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:221: T__113
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:221: T__113
 			{
 				mT__113();
 				if (state.failed) return;
@@ -2957,7 +2963,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 35:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:228: T__114
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:228: T__114
 			{
 				mT__114();
 				if (state.failed) return;
@@ -2966,7 +2972,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 36:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:235: T__115
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:235: T__115
 			{
 				mT__115();
 				if (state.failed) return;
@@ -2975,7 +2981,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 37:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:242: T__116
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:242: T__116
 			{
 				mT__116();
 				if (state.failed) return;
@@ -2984,7 +2990,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 38:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:249: T__117
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:249: T__117
 			{
 				mT__117();
 				if (state.failed) return;
@@ -2993,7 +2999,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 39:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:256: T__118
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:256: T__118
 			{
 				mT__118();
 				if (state.failed) return;
@@ -3002,7 +3008,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 40:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:263: T__119
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:263: T__119
 			{
 				mT__119();
 				if (state.failed) return;
@@ -3011,7 +3017,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 41:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:270: T__120
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:270: T__120
 			{
 				mT__120();
 				if (state.failed) return;
@@ -3020,7 +3026,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 42:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:277: T__121
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:277: T__121
 			{
 				mT__121();
 				if (state.failed) return;
@@ -3029,7 +3035,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 43:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:284: T__122
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:284: T__122
 			{
 				mT__122();
 				if (state.failed) return;
@@ -3038,7 +3044,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 44:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:291: T__123
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:291: T__123
 			{
 				mT__123();
 				if (state.failed) return;
@@ -3047,7 +3053,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 45:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:298: T__124
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:298: T__124
 			{
 				mT__124();
 				if (state.failed) return;
@@ -3056,7 +3062,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 46:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:305: T__125
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:305: T__125
 			{
 				mT__125();
 				if (state.failed) return;
@@ -3065,7 +3071,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 47:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:312: T__126
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:312: T__126
 			{
 				mT__126();
 				if (state.failed) return;
@@ -3074,7 +3080,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 48:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:319: T__127
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:319: T__127
 			{
 				mT__127();
 				if (state.failed) return;
@@ -3083,7 +3089,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 49:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:326: T__128
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:326: T__128
 			{
 				mT__128();
 				if (state.failed) return;
@@ -3092,7 +3098,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 50:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:333: T__129
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:333: T__129
 			{
 				mT__129();
 				if (state.failed) return;
@@ -3101,7 +3107,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 51:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:340: T__130
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:340: T__130
 			{
 				mT__130();
 				if (state.failed) return;
@@ -3110,7 +3116,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 52:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:347: T__131
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:347: T__131
 			{
 				mT__131();
 				if (state.failed) return;
@@ -3119,7 +3125,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 53:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:354: T__132
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:354: T__132
 			{
 				mT__132();
 				if (state.failed) return;
@@ -3128,7 +3134,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 54:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:361: T__133
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:361: T__133
 			{
 				mT__133();
 				if (state.failed) return;
@@ -3137,7 +3143,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 55:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:368: T__134
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:368: T__134
 			{
 				mT__134();
 				if (state.failed) return;
@@ -3146,7 +3152,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 56:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:375: T__135
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:375: T__135
 			{
 				mT__135();
 				if (state.failed) return;
@@ -3155,7 +3161,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 57:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:382: T__136
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:382: T__136
 			{
 				mT__136();
 				if (state.failed) return;
@@ -3164,7 +3170,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 58:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:389: T__137
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:389: T__137
 			{
 				mT__137();
 				if (state.failed) return;
@@ -3173,7 +3179,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 59:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:396: T__138
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:396: T__138
 			{
 				mT__138();
 				if (state.failed) return;
@@ -3182,7 +3188,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 60:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:403: T__139
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:403: T__139
 			{
 				mT__139();
 				if (state.failed) return;
@@ -3191,7 +3197,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 61:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:410: T__140
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:410: T__140
 			{
 				mT__140();
 				if (state.failed) return;
@@ -3200,7 +3206,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 62:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:417: T__141
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:417: T__141
 			{
 				mT__141();
 				if (state.failed) return;
@@ -3209,7 +3215,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 63:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:424: T__142
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:424: T__142
 			{
 				mT__142();
 				if (state.failed) return;
@@ -3218,7 +3224,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 64:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:431: T__143
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:431: T__143
 			{
 				mT__143();
 				if (state.failed) return;
@@ -3227,7 +3233,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 65:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:438: T__144
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:438: T__144
 			{
 				mT__144();
 				if (state.failed) return;
@@ -3236,7 +3242,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 66:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:445: T__145
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:445: T__145
 			{
 				mT__145();
 				if (state.failed) return;
@@ -3245,7 +3251,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 67:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:452: T__146
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:452: T__146
 			{
 				mT__146();
 				if (state.failed) return;
@@ -3254,7 +3260,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 68:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:459: T__147
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:459: T__147
 			{
 				mT__147();
 				if (state.failed) return;
@@ -3263,7 +3269,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 69:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:466: T__148
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:466: T__148
 			{
 				mT__148();
 				if (state.failed) return;
@@ -3272,7 +3278,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 70:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:473: T__149
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:473: T__149
 			{
 				mT__149();
 				if (state.failed) return;
@@ -3281,7 +3287,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 71:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:480: T__150
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:480: T__150
 			{
 				mT__150();
 				if (state.failed) return;
@@ -3290,7 +3296,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 72:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:487: T__151
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:487: T__151
 			{
 				mT__151();
 				if (state.failed) return;
@@ -3299,7 +3305,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 73:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:494: T__152
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:494: T__152
 			{
 				mT__152();
 				if (state.failed) return;
@@ -3308,7 +3314,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 74:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:501: T__153
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:501: T__153
 			{
 				mT__153();
 				if (state.failed) return;
@@ -3317,7 +3323,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 75:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:508: T__154
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:508: T__154
 			{
 				mT__154();
 				if (state.failed) return;
@@ -3326,7 +3332,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 76:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:515: T__155
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:515: T__155
 			{
 				mT__155();
 				if (state.failed) return;
@@ -3335,7 +3341,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 77:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:522: T__156
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:522: T__156
 			{
 				mT__156();
 				if (state.failed) return;
@@ -3344,7 +3350,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 78:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:529: T__157
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:529: T__157
 			{
 				mT__157();
 				if (state.failed) return;
@@ -3353,7 +3359,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 79:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:536: T__158
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:536: T__158
 			{
 				mT__158();
 				if (state.failed) return;
@@ -3362,7 +3368,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 80:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:543: T__159
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:543: T__159
 			{
 				mT__159();
 				if (state.failed) return;
@@ -3371,7 +3377,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 81:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:550: T__160
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:550: T__160
 			{
 				mT__160();
 				if (state.failed) return;
@@ -3380,7 +3386,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 82:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:557: T__161
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:557: T__161
 			{
 				mT__161();
 				if (state.failed) return;
@@ -3389,7 +3395,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 83:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:564: ID
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:564: ID
 			{
 				mID();
 				if (state.failed) return;
@@ -3398,7 +3404,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 84:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:567: INT
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:567: INT
 			{
 				mINT();
 				if (state.failed) return;
@@ -3407,7 +3413,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 85:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:571: REAL_NUMBER
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:571: REAL_NUMBER
 			{
 				mREAL_NUMBER();
 				if (state.failed) return;
@@ -3416,7 +3422,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 86:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:583: CLASS_DEF
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:583: CLASS_DEF
 			{
 				mCLASS_DEF();
 				if (state.failed) return;
@@ -3425,7 +3431,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 87:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:593: COMMENT_LINE
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:593: COMMENT_LINE
 			{
 				mCOMMENT_LINE();
 				if (state.failed) return;
@@ -3434,7 +3440,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 88:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:606: ML_COMMENT
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:606: ML_COMMENT
 			{
 				mML_COMMENT();
 				if (state.failed) return;
@@ -3443,7 +3449,7 @@ public class ASN1Lexer extends Lexer {
 			}
 			break;
 			case 89:
-				// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:1:617: WS
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:1:617: WS
 			{
 				mWS();
 				if (state.failed) return;
@@ -3458,8 +3464,8 @@ public class ASN1Lexer extends Lexer {
 
 	// $ANTLR start synpred1_ASN1
 	public final void synpred1_ASN1_fragment() throws RecognitionException {
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:47: ( '-' )
-		// /home/lastrix/dev/java/ASN1S/antlr/ASN1.g:470:48: '-'
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:47: ( '-' )
+		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:466:48: '-'
 		{
 			match('-');
 			if (state.failed) return;

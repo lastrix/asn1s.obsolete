@@ -330,7 +330,7 @@ exceptionSpec			:
 		;
 
 sequenceOfType			:
-	'SEQUENCE' constraint? 'OF' sOfComponentType -> ^(SEQUENCEOF sOfComponentType constraint?);
+	'SEQUENCE' constraint? 'OF' sOfComponentType ';'? -> ^(SEQUENCEOF sOfComponentType constraint?);
 
 namedType
 	:

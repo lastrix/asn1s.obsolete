@@ -41,6 +41,7 @@ public class ASN1UnresolvedType extends ASN1Type {
 		}
 		this.name = name;
 		this.moduleId = moduleId;
+		this.typeId = getName();
 		invalid();
 	}
 

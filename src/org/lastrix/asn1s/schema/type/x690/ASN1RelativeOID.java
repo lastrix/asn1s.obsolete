@@ -45,6 +45,7 @@ public class ASN1RelativeOID extends ASN1Type implements ASN1X690Type {
 		this.tag = TAG;
 		this.name = NAME;
 		this.handledClass = ASN1RelativeObjectIdentifier.class;
+		this.typeId = getName();
 		valid();
 	}
 
