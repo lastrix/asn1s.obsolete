@@ -21,7 +21,6 @@ package org.lastrix.asn1s.schema.type.x690;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.exception.ASN1OptionalComponentSkippedException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
@@ -31,6 +30,7 @@ import org.lastrix.asn1s.util.Utils;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,10 +41,15 @@ import java.util.Set;
 public class ASN1Set extends ASN1Container implements ASN1X690Type {
 	private final Logger logger = Logger.getLogger(ASN1Set.class);
 
-	public final static ASN1Tag TAG = new ASN1Tag(17, TagClass.UNIVERSAL, true);
+	public final static ASN1Tag                    TAG      = new ASN1Tag(17, TagClass.UNIVERSAL, true);
+	public final        HashMap<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
+
 
 	public ASN1Set(final ASN1Type[] componentType, final boolean of) {
 		super(componentType, of, "SET@" + TAG.getTag(), TAG);
+		for (ASN1Type t : componentType) {
+			tag2type.put(t.getTag(), t);
+		}
 		valid();
 	}
 
@@ -101,36 +106,41 @@ public class ASN1Set extends ASN1Container implements ASN1X690Type {
 			}
 			return set;
 		} else {
-			if (value == null) {
-				throw new NullPointerException();
-			}
-			//read first header, so we won't sent null
-			ASN1Tag itemTag = null;
-
-			//TODO: poor coding, missing default values and not checking duplicate reads.
-			for (int i = 0; i < componentType.length; i++) {
-				if (itemTag == null) {
-					itemTag = ASN1Tag.readTag(is);
-				}
-				try {
-					getByTag(itemTag).read(value, is, itemTag, true);
-				} catch (ASN1OptionalComponentSkippedException e) {
-					//type reader told that we can not read such component but it is optional, so simply skip it
-					continue;
-				}
-				itemTag = null;
-			}
-
-			//check for indefinite form.
-			if (length == ASN1Length.FORM_INDEFINITE) {
-				final byte[] eocTest = new byte[]{0x7F, 0x7F};
-				is.read(eocTest);
-
-				if (eocTest[0] != eocTest[1] || eocTest[0] != 0x00) {
-					throw new ASN1ProtocolException("Indefinite encoding without EOC marker at end");
-				}
-			}
-			return value;
+			throw new UnsupportedOperationException("Not implemented!");
+//			if (value == null) {
+//				throw new NullPointerException();
+//			}
+//			//read first header, so we won't sent null
+//			ASN1Tag itemTag = null;
+//			int readObjects = 0;
+//			final HashMap<ASN1Type, Boolean> readFlag = new HashMap<ASN1Type, Boolean>();
+//
+//
+//
+//			//TODO: poor coding, missing default values and not checking duplicate reads.
+//			for (int i = 0; i < componentType.length; i++) {
+//				if (itemTag == null) {
+//					itemTag = ASN1Tag.readTag(is);
+//				}
+//				try {
+//					getByTag(itemTag).read(value, is, itemTag, true);
+//				} catch (ASN1OptionalComponentSkippedException e) {
+//					//type reader told that we can not read such component but it is optional, so simply skip it
+//					continue;
+//				}
+//				itemTag = null;
+//			}
+//
+//			//check for indefinite form.
+//			if (length == ASN1Length.FORM_INDEFINITE) {
+//				final byte[] eocTest = new byte[]{0x7F, 0x7F};
+//				is.read(eocTest);
+//
+//				if (eocTest[0] != eocTest[1] || eocTest[0] != 0x00) {
+//					throw new ASN1ProtocolException("Indefinite encoding without EOC marker at end");
+//				}
+//			}
+//			return value;
 		}
 	}
 
