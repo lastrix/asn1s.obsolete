@@ -22,7 +22,7 @@ package org.lastrix.asn1s.type;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1ObjectIdentifier extends ASN1RelativeObjectIdentifier {
+public final class ASN1ObjectIdentifier extends ASN1RelativeObjectIdentifier {
 	public ASN1ObjectIdentifier(final long[] oids) {
 		super(oids);
 	}

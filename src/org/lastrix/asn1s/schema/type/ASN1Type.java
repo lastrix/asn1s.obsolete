@@ -308,15 +308,14 @@ public abstract class ASN1Type {
 	}
 
 	/**
-	 * Return debug string containing formatted type
+	 * Convert type to ASN1 schema representation
 	 *
-	 * @param prefix - prefix for each string
-	 *
-	 * @return an String
+	 * @param sb
 	 */
-	public String getTypeString(final String prefix) {
-		return prefix + getTypeId();
+	public void toASN1(final StringBuilder sb) {
+		sb.append(name);
 	}
+
 
 	// ------------------------------------------------------------------------ //
 	// --------------------- ABSTRACT METHODS --------------------------------- //
@@ -349,13 +348,4 @@ public abstract class ASN1Type {
 	public abstract Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws
 	                                                                                                                 IOException,
 	                                                                                                                 ASN1Exception;
-
-	/**
-	 * Convert type to ASN1 schema representation
-	 *
-	 * @param sb
-	 */
-	public void toASN1(final StringBuilder sb) {
-		sb.append(name);
-	}
 }

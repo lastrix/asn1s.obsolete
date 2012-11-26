@@ -1,4 +1,4 @@
-TestModule DEFINITIONS EXPLICIT TAGS ::=
+TestModule { 1 2 111 } DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
 EXPORTS ListOfTestSeq, TestSeq;
 --#java.util.ArrayList#

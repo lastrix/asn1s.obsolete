@@ -16,18 +16,12 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-24 19:37:38
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-26 14:11:49
 
 package org.lastrix.asn1s.schema.compiler.generated;
 
 
 import org.antlr.runtime.*;
-
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ASN1Lexer extends Lexer {

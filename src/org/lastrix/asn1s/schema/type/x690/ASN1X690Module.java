@@ -61,7 +61,7 @@ public class ASN1X690Module extends ASN1Module {
 	 * Create ASN1 module that holds all default ASN.1 types.
 	 */
 	public ASN1X690Module() {
-		super(new ASN1ModuleId(MODULE_NAME), TaggingMethod.EXPLICIT, false, true, null, null, null);
+		super(new ASN1ModuleId(MODULE_NAME, null), TaggingMethod.EXPLICIT, false, true, null, null, null);
 		addType(new ASN1Integer(Long.class));
 		addType(new ASN1Integer(Integer.class));
 		addType(new ASN1Integer(Short.class));

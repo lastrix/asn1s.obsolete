@@ -171,11 +171,6 @@ public class ASN1UserType extends ASN1Type {
 	}
 
 	@Override
-	public String getTypeString(final String prefix) {
-		return prefix + name + " ::= " + baseType.getTypeString(prefix);
-	}
-
-	@Override
 	public void toASN1(final StringBuilder sb) {
 		if (getHandledClass() != null) {
 			sb.append("--#");

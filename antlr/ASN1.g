@@ -105,7 +105,7 @@ moduleIdentifier	:
 
 
 definitiveIdentifier	:
-	'{' definitiveObjIdComponent (',' definitiveObjIdComponent)* '}'
+	'{' definitiveObjIdComponent+ '}'
 	-> ^(VEC definitiveObjIdComponent+);
 
 

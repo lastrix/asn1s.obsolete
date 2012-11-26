@@ -93,16 +93,6 @@ public class ASN1ComponentType extends ASN1Type {
 	}
 
 	@Override
-	public String getTypeString(final String prefix) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(prefix);
-		sb.append(fieldName);
-		sb.append("\t");
-		sb.append(type.getTypeId());
-		return sb.toString();
-	}
-
-	@Override
 	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null || tag == null) {
 			throw new NullPointerException();

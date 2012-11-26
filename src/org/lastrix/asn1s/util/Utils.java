@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -149,7 +149,7 @@ public final class Utils {
 
 	/**
 	 * Make gaps between bytes, so if you got
-	 * {@code 10100101 10010110} and you need to gap 3 bits, you'll get
+	 * {@code 00000000 00000000 10100101 10010110} and you need to gap 3 bits, you'll get
 	 * {@code 00000001 00001001 00001100 00010110}.
 	 * Highest bits would be missed probably.
 	 *

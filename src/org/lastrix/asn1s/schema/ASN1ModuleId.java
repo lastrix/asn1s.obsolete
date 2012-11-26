@@ -18,6 +18,8 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
+
 /**
  * ASN1ModuleId - special class to make modules unique and be described as it expected in ASN.1 specifications.
  * See ITU-T X.690 paragraph 8.19.
@@ -27,14 +29,16 @@ package org.lastrix.asn1s.schema;
  *          TODO: OID
  */
 public class ASN1ModuleId {
-	private final String moduleName;
+	private final String               moduleName;
+	private final ASN1ObjectIdentifier oID;
 
-	public ASN1ModuleId(final String moduleName) {
+	public ASN1ModuleId(final String moduleName, final ASN1ObjectIdentifier oID) {
 		if (moduleName == null) {
 			throw new NullPointerException();
 		}
 		//TODO: add module name validation as described in spec?
 		this.moduleName = moduleName;
+		this.oID = oID;
 	}
 
 	@Override
@@ -54,7 +58,7 @@ public class ASN1ModuleId {
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new ASN1ModuleId(moduleName);
+		return new ASN1ModuleId(moduleName, oID);
 	}
 
 	public String getModuleName() {
@@ -64,5 +68,11 @@ public class ASN1ModuleId {
 	@Override
 	public String toString() {
 		return moduleName;
+	}
+
+	public void toASN1(final StringBuilder sb) {
+		sb.append(moduleName);
+		sb.append(" ");
+		sb.append(oID);
 	}
 }

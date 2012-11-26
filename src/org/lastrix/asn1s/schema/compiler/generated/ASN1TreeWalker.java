@@ -16,7 +16,7 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g 2012-11-24 19:38:08
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1TreeWalker.g 2012-11-26 14:26:08
 
 package org.lastrix.asn1s.schema.compiler.generated;
 

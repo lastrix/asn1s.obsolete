@@ -94,7 +94,6 @@ public class Asn1s {
 		try {
 			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/testModule.asn");
 			logger.warn(s.getModulesString());
-			logger.warn(s.getTypesString());
 			final String asn1schema = s.getModule("TestModule").toASN1();
 			logger.warn(asn1schema);
 //			PrintWriter pw = new PrintWriter(new File("./test/res/testModule.asn"));

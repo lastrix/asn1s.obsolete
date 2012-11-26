@@ -30,74 +30,42 @@ import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Class to handle sequences and sequences of values.
- * This class uses definite length form (buffers elements before writing them into output stream)
- *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Sequence extends ASN1Container {
-	private final Logger logger = Logger.getLogger(ASN1Sequence.class);
+public class ASN1Set extends ASN1Container implements ASN1X690Type {
+	private final Logger logger = Logger.getLogger(ASN1Set.class);
 
-	public final static ASN1Tag TAG = new ASN1Tag(16, TagClass.UNIVERSAL, true);
+	public final static ASN1Tag TAG = new ASN1Tag(17, TagClass.UNIVERSAL, true);
 
-	public ASN1Sequence(
-	                   final ASN1Type[] componentType,
-	                   final boolean of
-	                   ) {
-		super(componentType, of, "SEQUENCE@" + TAG.getTag(), TAG);
+	public ASN1Set(final ASN1Type[] componentType, final boolean of) {
+		super(componentType, of, "SET@" + TAG.getTag(), TAG);
 		valid();
 	}
 
 	@Override
 	public String toString() {
 		if (of) {
-			return "SEQUENCE OF " + componentType[0];
+			return "SET OF " + componentType[0];
 		}
-		return "SEQUENCE OF " + Arrays.toString(componentType);
+		return "SET OF " + Arrays.toString(componentType);
 	}
 
 	@Override
-	public void write(final Object value, final OutputStream os, boolean header) throws IOException, ASN1Exception {
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		// TODO: unimplemented method stub
 
-		if (header) {
-			//write header
-			os.write(TAG.asBytes());
-		}
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		if (of) {
-			// SEQUENCE OF
-			final List list = (List) value;
-			for (Object lo : list) {
-				componentType[0].write(lo, bos, true);
-			}
-		} else {
-			// SEQUENCE
-			for (ASN1Type t : componentType) {
-				t.write(value, bos, true);
-			}
-		}
-		final byte[] data = bos.toByteArray();
-
-		//store size
-		if (header) {
-			os.write(ASN1Length.asBytes(data.length));
-		}
-
-		//and now we can save our data.
-		os.write(data);
 	}
 
 	@Override
 	public Object read(Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null) {
-			value = new ArrayList();
+			value = new HashSet();
 		}
 		// TAG should be null in anyway
 		if (tag == null) {
@@ -113,44 +81,43 @@ public class ASN1Sequence extends ASN1Container {
 
 		final int length = ASN1Length.readLength(is);
 		if (of) {
-			final List list;
-			if (value instanceof List) {
-				list = (List) value;
+			final Set set;
+			if (value instanceof Set) {
+				set = (Set) value;
 			} else {
-				throw new IllegalArgumentException("ASN1SequenceOf does not allow any objects if it not implement java.util.List.");
+				throw new IllegalArgumentException("ASN1SetOf does not allow any objects if it not implement java.util.Set.");
 			}
 
 			//read all data
 			if (length == ASN1Length.FORM_INDEFINITE) {
-				throw new ASN1ProtocolException("SequenceOf doesn't support indefinite form");
+				throw new ASN1ProtocolException("SetOf doesn't support indefinite form");
 			}
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
 			Utils.transfer(is, bos, length);
 			final byte[] data = bos.toByteArray();
 			final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			while (bis.available() > 0) {
-				list.add(componentType[0].read(bis));
+				set.add(componentType[0].read(bis));
 			}
-			return list;
+			return set;
 		} else {
 			if (value == null) {
 				throw new NullPointerException();
 			}
 			//read first header, so we won't sent null
 			ASN1Tag itemTag = null;
-			for (ASN1Type t : componentType) {
-				// read header, if it is null for any reason
+
+			//TODO: poor coding, missing default values and not checking duplicate reads.
+			for (int i = 0; i < componentType.length; i++) {
 				if (itemTag == null) {
 					itemTag = ASN1Tag.readTag(is);
 				}
-				//now try to load field value into our o.
 				try {
-					t.read(value, is, itemTag, true);
+					getByTag(itemTag).read(value, is, itemTag, true);
 				} catch (ASN1OptionalComponentSkippedException e) {
 					//type reader told that we can not read such component but it is optional, so simply skip it
 					continue;
 				}
-				//set it to null, so next iteration would reread it.
 				itemTag = null;
 			}
 
@@ -167,9 +134,19 @@ public class ASN1Sequence extends ASN1Container {
 		}
 	}
 
+	private ASN1Type getByTag(final ASN1Tag itemTag) {
+		for (ASN1Type t : componentType) {
+			if (t.getTag().equals(itemTag)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+
 	@Override
 	public void toASN1(final StringBuilder sb) {
-		sb.append("SEQUENCE ");
+		sb.append("SET ");
 		if (of) {
 			sb.append("OF ");
 			sb.append(componentType[0].getTypeId());
@@ -186,5 +163,6 @@ public class ASN1Sequence extends ASN1Container {
 			}
 			sb.append("}");
 		}
+
 	}
 }

@@ -16,19 +16,12 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-24 19:37:38
+// $ANTLR 3.4 /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g 2012-11-26 14:11:48
 
 package org.lastrix.asn1s.schema.compiler.generated;
 
 
 import org.antlr.runtime.*;
-
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
 import org.antlr.runtime.tree.*;
 
 
@@ -662,7 +655,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: assignmentList, imports, tagDefault, moduleIdentifier, exports, extensionDefault
+				// elements: exports, moduleIdentifier, assignmentList, imports, extensionDefault, tagDefault
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -885,7 +878,7 @@ public class ASN1Parser extends Parser {
 
 
 	// $ANTLR start "definitiveIdentifier"
-	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:1: definitiveIdentifier : '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) ;
+	// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:1: definitiveIdentifier : '{' ( definitiveObjIdComponent )+ '}' -> ^( VEC ( definitiveObjIdComponent )+ ) ;
 	public final ASN1Parser.definitiveIdentifier_return definitiveIdentifier() throws RecognitionException {
 		ASN1Parser.definitiveIdentifier_return retval = new ASN1Parser.definitiveIdentifier_return();
 		retval.start = input.LT(1);
@@ -895,74 +888,66 @@ public class ASN1Parser extends Parser {
 
 		Token char_literal14 = null;
 		Token char_literal16 = null;
-		Token char_literal18 = null;
 		ASN1Parser.definitiveObjIdComponent_return definitiveObjIdComponent15 = null;
-
-		ASN1Parser.definitiveObjIdComponent_return definitiveObjIdComponent17 = null;
 
 
 		CommonTree char_literal14_tree = null;
 		CommonTree char_literal16_tree = null;
-		CommonTree char_literal18_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
-		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleSubtreeStream stream_definitiveObjIdComponent = new RewriteRuleSubtreeStream(adaptor, "rule definitiveObjIdComponent");
 		try {
-			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:22: ( '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}' -> ^( VEC ( definitiveObjIdComponent )+ ) )
-			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:2: '{' definitiveObjIdComponent ( ',' definitiveObjIdComponent )* '}'
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:107:22: ( '{' ( definitiveObjIdComponent )+ '}' -> ^( VEC ( definitiveObjIdComponent )+ ) )
+			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:2: '{' ( definitiveObjIdComponent )+ '}'
 			{
 				char_literal14 = (Token) match(input, 159, FOLLOW_159_in_definitiveIdentifier389);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) stream_159.add(char_literal14);
 
 
-				pushFollow(FOLLOW_definitiveObjIdComponent_in_definitiveIdentifier391);
-				definitiveObjIdComponent15 = definitiveObjIdComponent();
-
-				state._fsp--;
-				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_definitiveObjIdComponent.add(definitiveObjIdComponent15.getTree());
-
-				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:31: ( ',' definitiveObjIdComponent )*
+				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:6: ( definitiveObjIdComponent )+
+				int cnt7 = 0;
 				loop7:
 				do {
 					int alt7 = 2;
 					int LA7_0 = input.LA(1);
 
-					if ((LA7_0 == 83)) {
+					if ((LA7_0 == ID || LA7_0 == INT)) {
 						alt7 = 1;
 					}
 
 
 					switch (alt7) {
 						case 1:
-							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:32: ',' definitiveObjIdComponent
+							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:108:6: definitiveObjIdComponent
 						{
-							char_literal16 = (Token) match(input, 83, FOLLOW_83_in_definitiveIdentifier394);
-							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal16);
-
-
-							pushFollow(FOLLOW_definitiveObjIdComponent_in_definitiveIdentifier396);
-							definitiveObjIdComponent17 = definitiveObjIdComponent();
+							pushFollow(FOLLOW_definitiveObjIdComponent_in_definitiveIdentifier391);
+							definitiveObjIdComponent15 = definitiveObjIdComponent();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_definitiveObjIdComponent.add(definitiveObjIdComponent17.getTree());
+							if (state.backtracking == 0) stream_definitiveObjIdComponent.add(definitiveObjIdComponent15.getTree());
 
 						}
 						break;
 
 						default:
-							break loop7;
+							if (cnt7 >= 1) break loop7;
+							if (state.backtracking > 0) {
+								state.failed = true;
+								return retval;
+							}
+							EarlyExitException eee =
+							new EarlyExitException(7, input);
+							throw eee;
 					}
+					cnt7++;
 				} while (true);
 
 
-				char_literal18 = (Token) match(input, 161, FOLLOW_161_in_definitiveIdentifier400);
+				char_literal16 = (Token) match(input, 161, FOLLOW_161_in_definitiveIdentifier394);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal18);
+				if (state.backtracking == 0) stream_161.add(char_literal16);
 
 
 				// AST REWRITE
@@ -1048,13 +1033,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID20 = null;
-		Token INT21 = null;
-		ASN1Parser.nameNumberForm_return nameNumberForm19 = null;
+		Token ID18 = null;
+		Token INT19 = null;
+		ASN1Parser.nameNumberForm_return nameNumberForm17 = null;
 
 
-		CommonTree ID20_tree = null;
-		CommonTree INT21_tree = null;
+		CommonTree ID18_tree = null;
+		CommonTree INT19_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
@@ -1068,7 +1053,7 @@ public class ASN1Parser extends Parser {
 
 				if ((LA8_1 == 81)) {
 					alt8 = 1;
-				} else if ((LA8_1 == 83 || LA8_1 == 161)) {
+				} else if ((LA8_1 == ID || LA8_1 == INT || LA8_1 == 161)) {
 					alt8 = 2;
 				} else {
 					if (state.backtracking > 0) {
@@ -1101,21 +1086,21 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_nameNumberForm_in_definitiveObjIdComponent420);
-					nameNumberForm19 = nameNumberForm();
+					pushFollow(FOLLOW_nameNumberForm_in_definitiveObjIdComponent414);
+					nameNumberForm17 = nameNumberForm();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, nameNumberForm19.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, nameNumberForm17.getTree());
 
 				}
 				break;
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:114:4: ID
 				{
-					ID20 = (Token) match(input, ID, FOLLOW_ID_in_definitiveObjIdComponent425);
+					ID18 = (Token) match(input, ID, FOLLOW_ID_in_definitiveObjIdComponent419);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_ID.add(ID20);
+					if (state.backtracking == 0) stream_ID.add(ID18);
 
 
 					// AST REWRITE
@@ -1164,9 +1149,9 @@ public class ASN1Parser extends Parser {
 				case 3:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:115:4: INT
 				{
-					INT21 = (Token) match(input, INT, FOLLOW_INT_in_definitiveObjIdComponent438);
+					INT19 = (Token) match(input, INT, FOLLOW_INT_in_definitiveObjIdComponent432);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_INT.add(INT21);
+					if (state.backtracking == 0) stream_INT.add(INT19);
 
 
 					// AST REWRITE
@@ -1250,11 +1235,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal22 = null;
-		Token string_literal23 = null;
+		Token string_literal20 = null;
+		Token string_literal21 = null;
 
-		CommonTree string_literal22_tree = null;
-		CommonTree string_literal23_tree = null;
+		CommonTree string_literal20_tree = null;
+		CommonTree string_literal21_tree = null;
 		RewriteRuleTokenStream stream_110 = new RewriteRuleTokenStream(adaptor, "token 110");
 		RewriteRuleTokenStream stream_118 = new RewriteRuleTokenStream(adaptor, "token 118");
 
@@ -1262,14 +1247,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:117:19: ( 'EXTENSIBILITY' 'IMPLIED' -> ^( EXTENSIBILITY_IMPLIED ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:118:3: 'EXTENSIBILITY' 'IMPLIED'
 			{
-				string_literal22 = (Token) match(input, 110, FOLLOW_110_in_extensionDefault458);
+				string_literal20 = (Token) match(input, 110, FOLLOW_110_in_extensionDefault452);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_110.add(string_literal22);
+				if (state.backtracking == 0) stream_110.add(string_literal20);
 
 
-				string_literal23 = (Token) match(input, 118, FOLLOW_118_in_extensionDefault460);
+				string_literal21 = (Token) match(input, 118, FOLLOW_118_in_extensionDefault454);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_118.add(string_literal23);
+				if (state.backtracking == 0) stream_118.add(string_literal21);
 
 
 				// AST REWRITE
@@ -1346,27 +1331,27 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal25 = null;
-		ASN1Parser.taggingMethod_return taggingMethod24 = null;
+		Token string_literal23 = null;
+		ASN1Parser.taggingMethod_return taggingMethod22 = null;
 
 
-		CommonTree string_literal25_tree = null;
+		CommonTree string_literal23_tree = null;
 		RewriteRuleTokenStream stream_144 = new RewriteRuleTokenStream(adaptor, "token 144");
 		RewriteRuleSubtreeStream stream_taggingMethod = new RewriteRuleSubtreeStream(adaptor, "rule taggingMethod");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:120:14: ( taggingMethod 'TAGS' -> ^( TAGGING_METHOD taggingMethod ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:121:3: taggingMethod 'TAGS'
 			{
-				pushFollow(FOLLOW_taggingMethod_in_tagDefault478);
-				taggingMethod24 = taggingMethod();
+				pushFollow(FOLLOW_taggingMethod_in_tagDefault472);
+				taggingMethod22 = taggingMethod();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod24.getTree());
+				if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod22.getTree());
 
-				string_literal25 = (Token) match(input, 144, FOLLOW_144_in_tagDefault480);
+				string_literal23 = (Token) match(input, 144, FOLLOW_144_in_tagDefault474);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_144.add(string_literal25);
+				if (state.backtracking == 0) stream_144.add(string_literal23);
 
 
 				// AST REWRITE
@@ -1445,9 +1430,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set26 = null;
+		Token set24 = null;
 
-		CommonTree set26_tree = null;
+		CommonTree set24_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:123:17: ( 'EXPLICIT' | 'IMPLICIT' | 'AUTOMATIC' )
@@ -1456,14 +1441,14 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set26 = (Token) input.LT(1);
+				set24 = (Token) input.LT(1);
 
 				if (input.LA(1) == 94 || input.LA(1) == 108 || input.LA(1) == 117) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set26)
+						                (CommonTree) adaptor.create(set24)
 						                );
 					}
 					state.errorRecovery = false;
@@ -1516,19 +1501,19 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal27 = null;
+		Token string_literal25 = null;
+		Token string_literal26 = null;
+		Token char_literal27 = null;
 		Token string_literal28 = null;
-		Token char_literal29 = null;
-		Token string_literal30 = null;
-		Token char_literal32 = null;
-		ASN1Parser.symbolList_return symbolList31 = null;
+		Token char_literal30 = null;
+		ASN1Parser.symbolList_return symbolList29 = null;
 
 
-		CommonTree string_literal27_tree = null;
+		CommonTree string_literal25_tree = null;
+		CommonTree string_literal26_tree = null;
+		CommonTree char_literal27_tree = null;
 		CommonTree string_literal28_tree = null;
-		CommonTree char_literal29_tree = null;
-		CommonTree string_literal30_tree = null;
-		CommonTree char_literal32_tree = null;
+		CommonTree char_literal30_tree = null;
 		RewriteRuleTokenStream stream_109 = new RewriteRuleTokenStream(adaptor, "token 109");
 		RewriteRuleTokenStream stream_92 = new RewriteRuleTokenStream(adaptor, "token 92");
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
@@ -1571,19 +1556,19 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:129:3: 'EXPORTS' 'ALL' ';'
 				{
-					string_literal27 = (Token) match(input, 109, FOLLOW_109_in_exports523);
+					string_literal25 = (Token) match(input, 109, FOLLOW_109_in_exports517);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_109.add(string_literal27);
+					if (state.backtracking == 0) stream_109.add(string_literal25);
 
 
-					string_literal28 = (Token) match(input, 92, FOLLOW_92_in_exports525);
+					string_literal26 = (Token) match(input, 92, FOLLOW_92_in_exports519);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_92.add(string_literal28);
+					if (state.backtracking == 0) stream_92.add(string_literal26);
 
 
-					char_literal29 = (Token) match(input, 89, FOLLOW_89_in_exports527);
+					char_literal27 = (Token) match(input, 89, FOLLOW_89_in_exports521);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_89.add(char_literal29);
+					if (state.backtracking == 0) stream_89.add(char_literal27);
 
 
 					// AST REWRITE
@@ -1632,21 +1617,21 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:130:4: 'EXPORTS' symbolList ';'
 				{
-					string_literal30 = (Token) match(input, 109, FOLLOW_109_in_exports540);
+					string_literal28 = (Token) match(input, 109, FOLLOW_109_in_exports534);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_109.add(string_literal30);
+					if (state.backtracking == 0) stream_109.add(string_literal28);
 
 
-					pushFollow(FOLLOW_symbolList_in_exports542);
-					symbolList31 = symbolList();
+					pushFollow(FOLLOW_symbolList_in_exports536);
+					symbolList29 = symbolList();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_symbolList.add(symbolList31.getTree());
+					if (state.backtracking == 0) stream_symbolList.add(symbolList29.getTree());
 
-					char_literal32 = (Token) match(input, 89, FOLLOW_89_in_exports544);
+					char_literal30 = (Token) match(input, 89, FOLLOW_89_in_exports538);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_89.add(char_literal32);
+					if (state.backtracking == 0) stream_89.add(char_literal30);
 
 
 					// AST REWRITE
@@ -1727,25 +1712,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal34 = null;
+		Token char_literal32 = null;
+		ASN1Parser.symbol_return symbol31 = null;
+
 		ASN1Parser.symbol_return symbol33 = null;
 
-		ASN1Parser.symbol_return symbol35 = null;
 
-
-		CommonTree char_literal34_tree = null;
+		CommonTree char_literal32_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_symbol = new RewriteRuleSubtreeStream(adaptor, "rule symbol");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:132:14: ( symbol ( ',' symbol )* -> ^( VEC ( symbol )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:3: symbol ( ',' symbol )*
 			{
-				pushFollow(FOLLOW_symbol_in_symbolList564);
-				symbol33 = symbol();
+				pushFollow(FOLLOW_symbol_in_symbolList558);
+				symbol31 = symbol();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_symbol.add(symbol33.getTree());
+				if (state.backtracking == 0) stream_symbol.add(symbol31.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:10: ( ',' symbol )*
 				loop10:
@@ -1762,17 +1747,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:133:12: ',' symbol
 						{
-							char_literal34 = (Token) match(input, 83, FOLLOW_83_in_symbolList568);
+							char_literal32 = (Token) match(input, 83, FOLLOW_83_in_symbolList562);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal34);
+							if (state.backtracking == 0) stream_83.add(char_literal32);
 
 
-							pushFollow(FOLLOW_symbol_in_symbolList570);
-							symbol35 = symbol();
+							pushFollow(FOLLOW_symbol_in_symbolList564);
+							symbol33 = symbol();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_symbol.add(symbol35.getTree());
+							if (state.backtracking == 0) stream_symbol.add(symbol33.getTree());
 
 						}
 						break;
@@ -1866,18 +1851,18 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID36 = null;
+		Token ID34 = null;
 
-		CommonTree ID36_tree = null;
+		CommonTree ID34_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:136:11: ( ID -> ^( SYMBOL ID ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:137:3: ID
 			{
-				ID36 = (Token) match(input, ID, FOLLOW_ID_in_symbol595);
+				ID34 = (Token) match(input, ID, FOLLOW_ID_in_symbol589);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID36);
+				if (state.backtracking == 0) stream_ID.add(ID34);
 
 
 				// AST REWRITE
@@ -1959,13 +1944,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal37 = null;
-		Token char_literal39 = null;
-		ASN1Parser.symbolsFromModuleList_return symbolsFromModuleList38 = null;
+		Token string_literal35 = null;
+		Token char_literal37 = null;
+		ASN1Parser.symbolsFromModuleList_return symbolsFromModuleList36 = null;
 
 
-		CommonTree string_literal37_tree = null;
-		CommonTree char_literal39_tree = null;
+		CommonTree string_literal35_tree = null;
+		CommonTree char_literal37_tree = null;
 		RewriteRuleTokenStream stream_119 = new RewriteRuleTokenStream(adaptor, "token 119");
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
 		RewriteRuleSubtreeStream stream_symbolsFromModuleList = new RewriteRuleSubtreeStream(adaptor, "rule symbolsFromModuleList");
@@ -1973,21 +1958,21 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:139:12: ( 'IMPORTS' symbolsFromModuleList ';' -> ^( IMPORTS symbolsFromModuleList ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:140:3: 'IMPORTS' symbolsFromModuleList ';'
 			{
-				string_literal37 = (Token) match(input, 119, FOLLOW_119_in_imports616);
+				string_literal35 = (Token) match(input, 119, FOLLOW_119_in_imports610);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_119.add(string_literal37);
+				if (state.backtracking == 0) stream_119.add(string_literal35);
 
 
-				pushFollow(FOLLOW_symbolsFromModuleList_in_imports618);
-				symbolsFromModuleList38 = symbolsFromModuleList();
+				pushFollow(FOLLOW_symbolsFromModuleList_in_imports612);
+				symbolsFromModuleList36 = symbolsFromModuleList();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_symbolsFromModuleList.add(symbolsFromModuleList38.getTree());
+				if (state.backtracking == 0) stream_symbolsFromModuleList.add(symbolsFromModuleList36.getTree());
 
-				char_literal39 = (Token) match(input, 89, FOLLOW_89_in_imports620);
+				char_literal37 = (Token) match(input, 89, FOLLOW_89_in_imports614);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_89.add(char_literal39);
+				if (state.backtracking == 0) stream_89.add(char_literal37);
 
 
 				// AST REWRITE
@@ -2066,7 +2051,7 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.symbolsFromModule_return symbolsFromModule40 = null;
+		ASN1Parser.symbolsFromModule_return symbolsFromModule38 = null;
 
 
 		RewriteRuleSubtreeStream stream_symbolsFromModule = new RewriteRuleSubtreeStream(adaptor, "rule symbolsFromModule");
@@ -2090,12 +2075,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:143:3: symbolsFromModule
 						{
-							pushFollow(FOLLOW_symbolsFromModule_in_symbolsFromModuleList639);
-							symbolsFromModule40 = symbolsFromModule();
+							pushFollow(FOLLOW_symbolsFromModule_in_symbolsFromModuleList633);
+							symbolsFromModule38 = symbolsFromModule();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_symbolsFromModule.add(symbolsFromModule40.getTree());
+							if (state.backtracking == 0) stream_symbolsFromModule.add(symbolsFromModule38.getTree());
 
 						}
 						break;
@@ -2197,13 +2182,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal42 = null;
-		ASN1Parser.symbolList_return symbolList41 = null;
+		Token string_literal40 = null;
+		ASN1Parser.symbolList_return symbolList39 = null;
 
-		ASN1Parser.globalModuleReference_return globalModuleReference43 = null;
+		ASN1Parser.globalModuleReference_return globalModuleReference41 = null;
 
 
-		CommonTree string_literal42_tree = null;
+		CommonTree string_literal40_tree = null;
 		RewriteRuleTokenStream stream_112 = new RewriteRuleTokenStream(adaptor, "token 112");
 		RewriteRuleSubtreeStream stream_globalModuleReference = new RewriteRuleSubtreeStream(adaptor, "rule globalModuleReference");
 		RewriteRuleSubtreeStream stream_symbolList = new RewriteRuleSubtreeStream(adaptor, "rule symbolList");
@@ -2211,24 +2196,24 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:145:20: ( symbolList 'FROM' globalModuleReference -> ^( SYMBOLS_FROM_MODULE globalModuleReference symbolList ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:146:3: symbolList 'FROM' globalModuleReference
 			{
-				pushFollow(FOLLOW_symbolList_in_symbolsFromModule662);
-				symbolList41 = symbolList();
+				pushFollow(FOLLOW_symbolList_in_symbolsFromModule656);
+				symbolList39 = symbolList();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_symbolList.add(symbolList41.getTree());
+				if (state.backtracking == 0) stream_symbolList.add(symbolList39.getTree());
 
-				string_literal42 = (Token) match(input, 112, FOLLOW_112_in_symbolsFromModule664);
+				string_literal40 = (Token) match(input, 112, FOLLOW_112_in_symbolsFromModule658);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_112.add(string_literal42);
+				if (state.backtracking == 0) stream_112.add(string_literal40);
 
 
-				pushFollow(FOLLOW_globalModuleReference_in_symbolsFromModule666);
-				globalModuleReference43 = globalModuleReference();
+				pushFollow(FOLLOW_globalModuleReference_in_symbolsFromModule660);
+				globalModuleReference41 = globalModuleReference();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_globalModuleReference.add(globalModuleReference43.getTree());
+				if (state.backtracking == 0) stream_globalModuleReference.add(globalModuleReference41.getTree());
 
 				// AST REWRITE
 				// elements: symbolList, globalModuleReference
@@ -2308,20 +2293,20 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID44 = null;
-		ASN1Parser.assignedIdentifier_return assignedIdentifier45 = null;
+		Token ID42 = null;
+		ASN1Parser.assignedIdentifier_return assignedIdentifier43 = null;
 
 
-		CommonTree ID44_tree = null;
+		CommonTree ID42_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_assignedIdentifier = new RewriteRuleSubtreeStream(adaptor, "rule assignedIdentifier");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:149:24: ( ID ( assignedIdentifier )? -> ^( GLOBAL_MODULE_REFERENCE ID ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:3: ID ( assignedIdentifier )?
 			{
-				ID44 = (Token) match(input, ID, FOLLOW_ID_in_globalModuleReference688);
+				ID42 = (Token) match(input, ID, FOLLOW_ID_in_globalModuleReference682);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID44);
+				if (state.backtracking == 0) stream_ID.add(ID42);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:6: ( assignedIdentifier )?
@@ -2341,12 +2326,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:150:6: assignedIdentifier
 					{
-						pushFollow(FOLLOW_assignedIdentifier_in_globalModuleReference690);
-						assignedIdentifier45 = assignedIdentifier();
+						pushFollow(FOLLOW_assignedIdentifier_in_globalModuleReference684);
+						assignedIdentifier43 = assignedIdentifier();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_assignedIdentifier.add(assignedIdentifier45.getTree());
+						if (state.backtracking == 0) stream_assignedIdentifier.add(assignedIdentifier43.getTree());
 
 					}
 					break;
@@ -2433,9 +2418,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.objectIdentifierValue_return objectIdentifierValue46 = null;
+		ASN1Parser.objectIdentifierValue_return objectIdentifierValue44 = null;
 
-		ASN1Parser.definedValue_return definedValue47 = null;
+		ASN1Parser.definedValue_return definedValue45 = null;
 
 
 		try {
@@ -2468,24 +2453,24 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:4: objectIdentifierValue
 					{
-						pushFollow(FOLLOW_objectIdentifierValue_in_assignedIdentifier711);
-						objectIdentifierValue46 = objectIdentifierValue();
+						pushFollow(FOLLOW_objectIdentifierValue_in_assignedIdentifier705);
+						objectIdentifierValue44 = objectIdentifierValue();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) adaptor.addChild(root_0, objectIdentifierValue46.getTree());
+						if (state.backtracking == 0) adaptor.addChild(root_0, objectIdentifierValue44.getTree());
 
 					}
 					break;
 					case 2:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:153:28: definedValue
 					{
-						pushFollow(FOLLOW_definedValue_in_assignedIdentifier715);
-						definedValue47 = definedValue();
+						pushFollow(FOLLOW_definedValue_in_assignedIdentifier709);
+						definedValue45 = definedValue();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) adaptor.addChild(root_0, definedValue47.getTree());
+						if (state.backtracking == 0) adaptor.addChild(root_0, definedValue45.getTree());
 
 					}
 					break;
@@ -2531,13 +2516,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token ID46 = null;
+		Token char_literal47 = null;
 		Token ID48 = null;
-		Token char_literal49 = null;
-		Token ID50 = null;
 
+		CommonTree ID46_tree = null;
+		CommonTree char_literal47_tree = null;
 		CommonTree ID48_tree = null;
-		CommonTree char_literal49_tree = null;
-		CommonTree ID50_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_84 = new RewriteRuleTokenStream(adaptor, "token 84");
 
@@ -2560,14 +2545,14 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:158:4: ID '.'
 					{
-						ID48 = (Token) match(input, ID, FOLLOW_ID_in_definedValue731);
+						ID46 = (Token) match(input, ID, FOLLOW_ID_in_definedValue725);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_ID.add(ID48);
+						if (state.backtracking == 0) stream_ID.add(ID46);
 
 
-						char_literal49 = (Token) match(input, 84, FOLLOW_84_in_definedValue733);
+						char_literal47 = (Token) match(input, 84, FOLLOW_84_in_definedValue727);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_84.add(char_literal49);
+						if (state.backtracking == 0) stream_84.add(char_literal47);
 
 
 					}
@@ -2576,9 +2561,9 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				ID50 = (Token) match(input, ID, FOLLOW_ID_in_definedValue737);
+				ID48 = (Token) match(input, ID, FOLLOW_ID_in_definedValue731);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID50);
+				if (state.backtracking == 0) stream_ID.add(ID48);
 
 
 				// AST REWRITE
@@ -2670,7 +2655,7 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.assignment_return assignment51 = null;
+		ASN1Parser.assignment_return assignment49 = null;
 
 
 		RewriteRuleSubtreeStream stream_assignment = new RewriteRuleSubtreeStream(adaptor, "rule assignment");
@@ -2694,12 +2679,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:162:3: assignment
 						{
-							pushFollow(FOLLOW_assignment_in_assignmentList761);
-							assignment51 = assignment();
+							pushFollow(FOLLOW_assignment_in_assignmentList755);
+							assignment49 = assignment();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_assignment.add(assignment51.getTree());
+							if (state.backtracking == 0) stream_assignment.add(assignment49.getTree());
 
 						}
 						break;
@@ -2801,9 +2786,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.typeAssignment_return typeAssignment52 = null;
+		ASN1Parser.typeAssignment_return typeAssignment50 = null;
 
-		ASN1Parser.valueAssignment_return valueAssignment53 = null;
+		ASN1Parser.valueAssignment_return valueAssignment51 = null;
 
 
 		try {
@@ -2940,12 +2925,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_typeAssignment_in_assignment794);
-					typeAssignment52 = typeAssignment();
+					pushFollow(FOLLOW_typeAssignment_in_assignment788);
+					typeAssignment50 = typeAssignment();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, typeAssignment52.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, typeAssignment50.getTree());
 
 				}
 				break;
@@ -2955,12 +2940,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_valueAssignment_in_assignment799);
-					valueAssignment53 = valueAssignment();
+					pushFollow(FOLLOW_valueAssignment_in_assignment793);
+					valueAssignment51 = valueAssignment();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, valueAssignment53.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, valueAssignment51.getTree());
 
 				}
 				break;
@@ -3002,17 +2987,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID54 = null;
-		Token string_literal56 = null;
-		Token char_literal58 = null;
-		ASN1Parser.type_return type55 = null;
+		Token ID52 = null;
+		Token string_literal54 = null;
+		Token char_literal56 = null;
+		ASN1Parser.type_return type53 = null;
 
-		ASN1Parser.value_return value57 = null;
+		ASN1Parser.value_return value55 = null;
 
 
-		CommonTree ID54_tree = null;
-		CommonTree string_literal56_tree = null;
-		CommonTree char_literal58_tree = null;
+		CommonTree ID52_tree = null;
+		CommonTree string_literal54_tree = null;
+		CommonTree char_literal56_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_88 = new RewriteRuleTokenStream(adaptor, "token 88");
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
@@ -3022,29 +3007,29 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:168:19: ( ID type '::=' value ( ';' )? -> ^( VALUE_ASSIGNMENT ID type value ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:3: ID type '::=' value ( ';' )?
 			{
-				ID54 = (Token) match(input, ID, FOLLOW_ID_in_valueAssignment811);
+				ID52 = (Token) match(input, ID, FOLLOW_ID_in_valueAssignment805);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID54);
+				if (state.backtracking == 0) stream_ID.add(ID52);
 
 
-				pushFollow(FOLLOW_type_in_valueAssignment813);
-				type55 = type();
+				pushFollow(FOLLOW_type_in_valueAssignment807);
+				type53 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type55.getTree());
+				if (state.backtracking == 0) stream_type.add(type53.getTree());
 
-				string_literal56 = (Token) match(input, 88, FOLLOW_88_in_valueAssignment815);
+				string_literal54 = (Token) match(input, 88, FOLLOW_88_in_valueAssignment809);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_88.add(string_literal56);
+				if (state.backtracking == 0) stream_88.add(string_literal54);
 
 
-				pushFollow(FOLLOW_value_in_valueAssignment817);
-				value57 = value();
+				pushFollow(FOLLOW_value_in_valueAssignment811);
+				value55 = value();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_value.add(value57.getTree());
+				if (state.backtracking == 0) stream_value.add(value55.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:23: ( ';' )?
 				int alt17 = 2;
@@ -3057,9 +3042,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:169:23: ';'
 					{
-						char_literal58 = (Token) match(input, 89, FOLLOW_89_in_valueAssignment819);
+						char_literal56 = (Token) match(input, 89, FOLLOW_89_in_valueAssignment813);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_89.add(char_literal58);
+						if (state.backtracking == 0) stream_89.add(char_literal56);
 
 
 					}
@@ -3069,7 +3054,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: type, value, ID
+				// elements: ID, type, value
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -3151,11 +3136,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.booleanValue_return booleanValue59 = null;
+		ASN1Parser.booleanValue_return booleanValue57 = null;
 
-		ASN1Parser.numberValue_return numberValue60 = null;
+		ASN1Parser.numberValue_return numberValue58 = null;
 
-		ASN1Parser.objectIdentifierValue_return objectIdentifierValue61 = null;
+		ASN1Parser.objectIdentifierValue_return objectIdentifierValue59 = null;
 
 
 		RewriteRuleSubtreeStream stream_objectIdentifierValue = new RewriteRuleSubtreeStream(adaptor, "rule objectIdentifierValue");
@@ -3198,12 +3183,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:172:3: booleanValue
 				{
-					pushFollow(FOLLOW_booleanValue_in_value845);
-					booleanValue59 = booleanValue();
+					pushFollow(FOLLOW_booleanValue_in_value839);
+					booleanValue57 = booleanValue();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_booleanValue.add(booleanValue59.getTree());
+					if (state.backtracking == 0) stream_booleanValue.add(booleanValue57.getTree());
 
 					// AST REWRITE
 					// elements: booleanValue
@@ -3248,12 +3233,12 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:173:4: numberValue
 				{
-					pushFollow(FOLLOW_numberValue_in_value858);
-					numberValue60 = numberValue();
+					pushFollow(FOLLOW_numberValue_in_value852);
+					numberValue58 = numberValue();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_numberValue.add(numberValue60.getTree());
+					if (state.backtracking == 0) stream_numberValue.add(numberValue58.getTree());
 
 					// AST REWRITE
 					// elements: numberValue
@@ -3298,12 +3283,12 @@ public class ASN1Parser extends Parser {
 				case 3:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:174:4: objectIdentifierValue
 				{
-					pushFollow(FOLLOW_objectIdentifierValue_in_value871);
-					objectIdentifierValue61 = objectIdentifierValue();
+					pushFollow(FOLLOW_objectIdentifierValue_in_value865);
+					objectIdentifierValue59 = objectIdentifierValue();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_objectIdentifierValue.add(objectIdentifierValue61.getTree());
+					if (state.backtracking == 0) stream_objectIdentifierValue.add(objectIdentifierValue59.getTree());
 
 					// AST REWRITE
 					// elements: objectIdentifierValue
@@ -3383,17 +3368,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal62 = null;
-		Token string_literal63 = null;
-		Token ID64 = null;
-		Token INT65 = null;
-		Token REAL_NUMBER66 = null;
+		Token string_literal60 = null;
+		Token string_literal61 = null;
+		Token ID62 = null;
+		Token INT63 = null;
+		Token REAL_NUMBER64 = null;
 
-		CommonTree string_literal62_tree = null;
-		CommonTree string_literal63_tree = null;
-		CommonTree ID64_tree = null;
-		CommonTree INT65_tree = null;
-		CommonTree REAL_NUMBER66_tree = null;
+		CommonTree string_literal60_tree = null;
+		CommonTree string_literal61_tree = null;
+		CommonTree ID62_tree = null;
+		CommonTree INT63_tree = null;
+		CommonTree REAL_NUMBER64_tree = null;
 		RewriteRuleTokenStream stream_134 = new RewriteRuleTokenStream(adaptor, "token 134");
 		RewriteRuleTokenStream stream_126 = new RewriteRuleTokenStream(adaptor, "token 126");
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
@@ -3440,9 +3425,9 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:178:3: 'PLUS-INFINITY'
 				{
-					string_literal62 = (Token) match(input, 134, FOLLOW_134_in_numberValue892);
+					string_literal60 = (Token) match(input, 134, FOLLOW_134_in_numberValue886);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_134.add(string_literal62);
+					if (state.backtracking == 0) stream_134.add(string_literal60);
 
 
 					// AST REWRITE
@@ -3491,9 +3476,9 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:179:4: 'MINUS-INFINITY'
 				{
-					string_literal63 = (Token) match(input, 126, FOLLOW_126_in_numberValue905);
+					string_literal61 = (Token) match(input, 126, FOLLOW_126_in_numberValue899);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_126.add(string_literal63);
+					if (state.backtracking == 0) stream_126.add(string_literal61);
 
 
 					// AST REWRITE
@@ -3542,9 +3527,9 @@ public class ASN1Parser extends Parser {
 				case 3:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:180:4: ID
 				{
-					ID64 = (Token) match(input, ID, FOLLOW_ID_in_numberValue918);
+					ID62 = (Token) match(input, ID, FOLLOW_ID_in_numberValue912);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_ID.add(ID64);
+					if (state.backtracking == 0) stream_ID.add(ID62);
 
 
 					// AST REWRITE
@@ -3596,9 +3581,9 @@ public class ASN1Parser extends Parser {
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:4: ( INT )
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:181:5: INT
 					{
-						INT65 = (Token) match(input, INT, FOLLOW_INT_in_numberValue932);
+						INT63 = (Token) match(input, INT, FOLLOW_INT_in_numberValue926);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_INT.add(INT65);
+						if (state.backtracking == 0) stream_INT.add(INT63);
 
 
 					}
@@ -3650,9 +3635,9 @@ public class ASN1Parser extends Parser {
 				case 5:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:182:4: REAL_NUMBER
 				{
-					REAL_NUMBER66 = (Token) match(input, REAL_NUMBER, FOLLOW_REAL_NUMBER_in_numberValue947);
+					REAL_NUMBER64 = (Token) match(input, REAL_NUMBER, FOLLOW_REAL_NUMBER_in_numberValue941);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_REAL_NUMBER.add(REAL_NUMBER66);
+					if (state.backtracking == 0) stream_REAL_NUMBER.add(REAL_NUMBER64);
 
 
 					// AST REWRITE
@@ -3736,9 +3721,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal67 = null;
+		Token string_literal65 = null;
 
-		CommonTree string_literal67_tree = null;
+		CommonTree string_literal65_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:184:24: ( 'OID_VALUE' )
@@ -3747,13 +3732,13 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				string_literal67 = (Token) match(input, 131, FOLLOW_131_in_objectIdentifierValue966);
+				string_literal65 = (Token) match(input, 131, FOLLOW_131_in_objectIdentifierValue960);
 				if (state.failed) return retval;
 				if (state.backtracking == 0) {
-					string_literal67_tree =
-					(CommonTree) adaptor.create(string_literal67)
+					string_literal65_tree =
+					(CommonTree) adaptor.create(string_literal65)
 					;
-					adaptor.addChild(root_0, string_literal67_tree);
+					adaptor.addChild(root_0, string_literal65_tree);
 				}
 
 			}
@@ -3794,11 +3779,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal68 = null;
-		Token string_literal69 = null;
+		Token string_literal66 = null;
+		Token string_literal67 = null;
 
-		CommonTree string_literal68_tree = null;
-		CommonTree string_literal69_tree = null;
+		CommonTree string_literal66_tree = null;
+		CommonTree string_literal67_tree = null;
 		RewriteRuleTokenStream stream_145 = new RewriteRuleTokenStream(adaptor, "token 145");
 		RewriteRuleTokenStream stream_111 = new RewriteRuleTokenStream(adaptor, "token 111");
 
@@ -3826,9 +3811,9 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:188:3: 'TRUE'
 				{
-					string_literal68 = (Token) match(input, 145, FOLLOW_145_in_booleanValue975);
+					string_literal66 = (Token) match(input, 145, FOLLOW_145_in_booleanValue969);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_145.add(string_literal68);
+					if (state.backtracking == 0) stream_145.add(string_literal66);
 
 
 					// AST REWRITE
@@ -3872,9 +3857,9 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:189:4: 'FALSE'
 				{
-					string_literal69 = (Token) match(input, 111, FOLLOW_111_in_booleanValue986);
+					string_literal67 = (Token) match(input, 111, FOLLOW_111_in_booleanValue980);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_111.add(string_literal69);
+					if (state.backtracking == 0) stream_111.add(string_literal67);
 
 
 					// AST REWRITE
@@ -3953,15 +3938,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token CLASS_DEF70 = null;
-		Token ID71 = null;
-		Token string_literal72 = null;
-		ASN1Parser.type_return type73 = null;
+		Token CLASS_DEF68 = null;
+		Token ID69 = null;
+		Token string_literal70 = null;
+		ASN1Parser.type_return type71 = null;
 
 
-		CommonTree CLASS_DEF70_tree = null;
-		CommonTree ID71_tree = null;
-		CommonTree string_literal72_tree = null;
+		CommonTree CLASS_DEF68_tree = null;
+		CommonTree ID69_tree = null;
+		CommonTree string_literal70_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_CLASS_DEF = new RewriteRuleTokenStream(adaptor, "token CLASS_DEF");
 		RewriteRuleTokenStream stream_88 = new RewriteRuleTokenStream(adaptor, "token 88");
@@ -3981,9 +3966,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:192:3: CLASS_DEF
 					{
-						CLASS_DEF70 = (Token) match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_typeAssignment1004);
+						CLASS_DEF68 = (Token) match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_typeAssignment998);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_CLASS_DEF.add(CLASS_DEF70);
+						if (state.backtracking == 0) stream_CLASS_DEF.add(CLASS_DEF68);
 
 
 					}
@@ -3992,22 +3977,22 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				ID71 = (Token) match(input, ID, FOLLOW_ID_in_typeAssignment1007);
+				ID69 = (Token) match(input, ID, FOLLOW_ID_in_typeAssignment1001);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID71);
+				if (state.backtracking == 0) stream_ID.add(ID69);
 
 
-				string_literal72 = (Token) match(input, 88, FOLLOW_88_in_typeAssignment1009);
+				string_literal70 = (Token) match(input, 88, FOLLOW_88_in_typeAssignment1003);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_88.add(string_literal72);
+				if (state.backtracking == 0) stream_88.add(string_literal70);
 
 
-				pushFollow(FOLLOW_type_in_typeAssignment1011);
-				type73 = type();
+				pushFollow(FOLLOW_type_in_typeAssignment1005);
+				type71 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type73.getTree());
+				if (state.backtracking == 0) stream_type.add(type71.getTree());
 
 				// AST REWRITE
 				// elements: ID, type, CLASS_DEF
@@ -4100,45 +4085,45 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal83 = null;
-		Token string_literal84 = null;
-		Token string_literal88 = null;
-		Token string_literal89 = null;
-		ASN1Parser.booleanType_return booleanType74 = null;
+		Token string_literal81 = null;
+		Token string_literal82 = null;
+		Token string_literal86 = null;
+		Token string_literal87 = null;
+		ASN1Parser.booleanType_return booleanType72 = null;
 
-		ASN1Parser.realType_return realType75 = null;
+		ASN1Parser.realType_return realType73 = null;
 
-		ASN1Parser.integerType_return integerType76 = null;
+		ASN1Parser.integerType_return integerType74 = null;
 
-		ASN1Parser.taggedType_return taggedType77 = null;
+		ASN1Parser.taggedType_return taggedType75 = null;
 
-		ASN1Parser.sequenceOfType_return sequenceOfType78 = null;
+		ASN1Parser.sequenceOfType_return sequenceOfType76 = null;
 
-		ASN1Parser.sequenceType_return sequenceType79 = null;
+		ASN1Parser.sequenceType_return sequenceType77 = null;
 
-		ASN1Parser.setOfType_return setOfType80 = null;
+		ASN1Parser.setOfType_return setOfType78 = null;
 
-		ASN1Parser.setType_return setType81 = null;
+		ASN1Parser.setType_return setType79 = null;
 
-		ASN1Parser.choiceType_return choiceType82 = null;
+		ASN1Parser.choiceType_return choiceType80 = null;
 
-		ASN1Parser.characterStringType_return characterStringType85 = null;
+		ASN1Parser.characterStringType_return characterStringType83 = null;
 
-		ASN1Parser.bitStringType_return bitStringType86 = null;
+		ASN1Parser.bitStringType_return bitStringType84 = null;
 
-		ASN1Parser.enumeratedType_return enumeratedType87 = null;
+		ASN1Parser.enumeratedType_return enumeratedType85 = null;
 
-		ASN1Parser.constraint_return constraint90 = null;
+		ASN1Parser.constraint_return constraint88 = null;
 
-		ASN1Parser.definedType_return definedType91 = null;
+		ASN1Parser.definedType_return definedType89 = null;
 
-		ASN1Parser.selectionType_return selectionType92 = null;
+		ASN1Parser.selectionType_return selectionType90 = null;
 
 
-		CommonTree string_literal83_tree = null;
-		CommonTree string_literal84_tree = null;
-		CommonTree string_literal88_tree = null;
-		CommonTree string_literal89_tree = null;
+		CommonTree string_literal81_tree = null;
+		CommonTree string_literal82_tree = null;
+		CommonTree string_literal86_tree = null;
+		CommonTree string_literal87_tree = null;
 		RewriteRuleTokenStream stream_116 = new RewriteRuleTokenStream(adaptor, "token 116");
 		RewriteRuleTokenStream stream_128 = new RewriteRuleTokenStream(adaptor, "token 128");
 		RewriteRuleTokenStream stream_129 = new RewriteRuleTokenStream(adaptor, "token 129");
@@ -4331,12 +4316,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:195:3: booleanType
 				{
-					pushFollow(FOLLOW_booleanType_in_type1037);
-					booleanType74 = booleanType();
+					pushFollow(FOLLOW_booleanType_in_type1031);
+					booleanType72 = booleanType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_booleanType.add(booleanType74.getTree());
+					if (state.backtracking == 0) stream_booleanType.add(booleanType72.getTree());
 
 					// AST REWRITE
 					// elements: booleanType
@@ -4381,12 +4366,12 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:196:4: realType
 				{
-					pushFollow(FOLLOW_realType_in_type1050);
-					realType75 = realType();
+					pushFollow(FOLLOW_realType_in_type1044);
+					realType73 = realType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_realType.add(realType75.getTree());
+					if (state.backtracking == 0) stream_realType.add(realType73.getTree());
 
 					// AST REWRITE
 					// elements: realType
@@ -4431,12 +4416,12 @@ public class ASN1Parser extends Parser {
 				case 3:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:197:4: integerType
 				{
-					pushFollow(FOLLOW_integerType_in_type1063);
-					integerType76 = integerType();
+					pushFollow(FOLLOW_integerType_in_type1057);
+					integerType74 = integerType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_integerType.add(integerType76.getTree());
+					if (state.backtracking == 0) stream_integerType.add(integerType74.getTree());
 
 					// AST REWRITE
 					// elements: integerType
@@ -4481,12 +4466,12 @@ public class ASN1Parser extends Parser {
 				case 4:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:198:4: taggedType
 				{
-					pushFollow(FOLLOW_taggedType_in_type1076);
-					taggedType77 = taggedType();
+					pushFollow(FOLLOW_taggedType_in_type1070);
+					taggedType75 = taggedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_taggedType.add(taggedType77.getTree());
+					if (state.backtracking == 0) stream_taggedType.add(taggedType75.getTree());
 
 					// AST REWRITE
 					// elements: taggedType
@@ -4531,12 +4516,12 @@ public class ASN1Parser extends Parser {
 				case 5:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:4: ( 'SEQUENCE' ( constraint )? 'OF' )=> sequenceOfType
 				{
-					pushFollow(FOLLOW_sequenceOfType_in_type1101);
-					sequenceOfType78 = sequenceOfType();
+					pushFollow(FOLLOW_sequenceOfType_in_type1095);
+					sequenceOfType76 = sequenceOfType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_sequenceOfType.add(sequenceOfType78.getTree());
+					if (state.backtracking == 0) stream_sequenceOfType.add(sequenceOfType76.getTree());
 
 					// AST REWRITE
 					// elements: sequenceOfType
@@ -4581,12 +4566,12 @@ public class ASN1Parser extends Parser {
 				case 6:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:200:4: sequenceType
 				{
-					pushFollow(FOLLOW_sequenceType_in_type1114);
-					sequenceType79 = sequenceType();
+					pushFollow(FOLLOW_sequenceType_in_type1108);
+					sequenceType77 = sequenceType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_sequenceType.add(sequenceType79.getTree());
+					if (state.backtracking == 0) stream_sequenceType.add(sequenceType77.getTree());
 
 					// AST REWRITE
 					// elements: sequenceType
@@ -4631,12 +4616,12 @@ public class ASN1Parser extends Parser {
 				case 7:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:4: ( 'SET' ( constraint )? 'OF' )=> setOfType
 				{
-					pushFollow(FOLLOW_setOfType_in_type1138);
-					setOfType80 = setOfType();
+					pushFollow(FOLLOW_setOfType_in_type1132);
+					setOfType78 = setOfType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_setOfType.add(setOfType80.getTree());
+					if (state.backtracking == 0) stream_setOfType.add(setOfType78.getTree());
 
 					// AST REWRITE
 					// elements: setOfType
@@ -4681,12 +4666,12 @@ public class ASN1Parser extends Parser {
 				case 8:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:202:4: setType
 				{
-					pushFollow(FOLLOW_setType_in_type1151);
-					setType81 = setType();
+					pushFollow(FOLLOW_setType_in_type1145);
+					setType79 = setType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_setType.add(setType81.getTree());
+					if (state.backtracking == 0) stream_setType.add(setType79.getTree());
 
 					// AST REWRITE
 					// elements: setType
@@ -4731,12 +4716,12 @@ public class ASN1Parser extends Parser {
 				case 9:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:203:4: choiceType
 				{
-					pushFollow(FOLLOW_choiceType_in_type1164);
-					choiceType82 = choiceType();
+					pushFollow(FOLLOW_choiceType_in_type1158);
+					choiceType80 = choiceType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_choiceType.add(choiceType82.getTree());
+					if (state.backtracking == 0) stream_choiceType.add(choiceType80.getTree());
 
 					// AST REWRITE
 					// elements: choiceType
@@ -4781,14 +4766,14 @@ public class ASN1Parser extends Parser {
 				case 10:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:204:4: 'OBJECT' 'IDENTIFIER'
 				{
-					string_literal83 = (Token) match(input, 128, FOLLOW_128_in_type1177);
+					string_literal81 = (Token) match(input, 128, FOLLOW_128_in_type1171);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_128.add(string_literal83);
+					if (state.backtracking == 0) stream_128.add(string_literal81);
 
 
-					string_literal84 = (Token) match(input, 116, FOLLOW_116_in_type1179);
+					string_literal82 = (Token) match(input, 116, FOLLOW_116_in_type1173);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_116.add(string_literal84);
+					if (state.backtracking == 0) stream_116.add(string_literal82);
 
 
 					// AST REWRITE
@@ -4837,12 +4822,12 @@ public class ASN1Parser extends Parser {
 				case 11:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:205:4: characterStringType
 				{
-					pushFollow(FOLLOW_characterStringType_in_type1192);
-					characterStringType85 = characterStringType();
+					pushFollow(FOLLOW_characterStringType_in_type1186);
+					characterStringType83 = characterStringType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_characterStringType.add(characterStringType85.getTree());
+					if (state.backtracking == 0) stream_characterStringType.add(characterStringType83.getTree());
 
 					// AST REWRITE
 					// elements: characterStringType
@@ -4887,12 +4872,12 @@ public class ASN1Parser extends Parser {
 				case 12:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:206:4: bitStringType
 				{
-					pushFollow(FOLLOW_bitStringType_in_type1205);
-					bitStringType86 = bitStringType();
+					pushFollow(FOLLOW_bitStringType_in_type1199);
+					bitStringType84 = bitStringType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_bitStringType.add(bitStringType86.getTree());
+					if (state.backtracking == 0) stream_bitStringType.add(bitStringType84.getTree());
 
 					// AST REWRITE
 					// elements: bitStringType
@@ -4937,12 +4922,12 @@ public class ASN1Parser extends Parser {
 				case 13:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:207:4: enumeratedType
 				{
-					pushFollow(FOLLOW_enumeratedType_in_type1218);
-					enumeratedType87 = enumeratedType();
+					pushFollow(FOLLOW_enumeratedType_in_type1212);
+					enumeratedType85 = enumeratedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_enumeratedType.add(enumeratedType87.getTree());
+					if (state.backtracking == 0) stream_enumeratedType.add(enumeratedType85.getTree());
 
 					// AST REWRITE
 					// elements: enumeratedType
@@ -4987,14 +4972,14 @@ public class ASN1Parser extends Parser {
 				case 14:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:4: 'OCTET' 'STRING' ( constraint )?
 				{
-					string_literal88 = (Token) match(input, 129, FOLLOW_129_in_type1231);
+					string_literal86 = (Token) match(input, 129, FOLLOW_129_in_type1225);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_129.add(string_literal88);
+					if (state.backtracking == 0) stream_129.add(string_literal86);
 
 
-					string_literal89 = (Token) match(input, 142, FOLLOW_142_in_type1233);
+					string_literal87 = (Token) match(input, 142, FOLLOW_142_in_type1227);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_142.add(string_literal89);
+					if (state.backtracking == 0) stream_142.add(string_literal87);
 
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:21: ( constraint )?
@@ -5008,12 +4993,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:208:21: constraint
 						{
-							pushFollow(FOLLOW_constraint_in_type1235);
-							constraint90 = constraint();
+							pushFollow(FOLLOW_constraint_in_type1229);
+							constraint88 = constraint();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_constraint.add(constraint90.getTree());
+							if (state.backtracking == 0) stream_constraint.add(constraint88.getTree());
 
 						}
 						break;
@@ -5074,12 +5059,12 @@ public class ASN1Parser extends Parser {
 				case 15:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:209:4: definedType
 				{
-					pushFollow(FOLLOW_definedType_in_type1251);
-					definedType91 = definedType();
+					pushFollow(FOLLOW_definedType_in_type1245);
+					definedType89 = definedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_definedType.add(definedType91.getTree());
+					if (state.backtracking == 0) stream_definedType.add(definedType89.getTree());
 
 					// AST REWRITE
 					// elements: definedType
@@ -5124,12 +5109,12 @@ public class ASN1Parser extends Parser {
 				case 16:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:210:4: selectionType
 				{
-					pushFollow(FOLLOW_selectionType_in_type1264);
-					selectionType92 = selectionType();
+					pushFollow(FOLLOW_selectionType_in_type1258);
+					selectionType90 = selectionType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_selectionType.add(selectionType92.getTree());
+					if (state.backtracking == 0) stream_selectionType.add(selectionType90.getTree());
 
 					// AST REWRITE
 					// elements: selectionType
@@ -5209,19 +5194,19 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token ID91 = null;
+		Token char_literal92 = null;
 		Token ID93 = null;
-		Token char_literal94 = null;
-		Token ID95 = null;
+		ASN1Parser.constraint_return constraint94 = null;
+
+		ASN1Parser.restrictedStringType_return restrictedStringType95 = null;
+
 		ASN1Parser.constraint_return constraint96 = null;
 
-		ASN1Parser.restrictedStringType_return restrictedStringType97 = null;
 
-		ASN1Parser.constraint_return constraint98 = null;
-
-
+		CommonTree ID91_tree = null;
+		CommonTree char_literal92_tree = null;
 		CommonTree ID93_tree = null;
-		CommonTree char_literal94_tree = null;
-		CommonTree ID95_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_84 = new RewriteRuleTokenStream(adaptor, "token 84");
 		RewriteRuleSubtreeStream stream_restrictedStringType = new RewriteRuleSubtreeStream(adaptor, "rule restrictedStringType");
@@ -5268,14 +5253,14 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:4: ID '.'
 						{
-							ID93 = (Token) match(input, ID, FOLLOW_ID_in_definedType1286);
+							ID91 = (Token) match(input, ID, FOLLOW_ID_in_definedType1280);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_ID.add(ID93);
+							if (state.backtracking == 0) stream_ID.add(ID91);
 
 
-							char_literal94 = (Token) match(input, 84, FOLLOW_84_in_definedType1288);
+							char_literal92 = (Token) match(input, 84, FOLLOW_84_in_definedType1282);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_84.add(char_literal94);
+							if (state.backtracking == 0) stream_84.add(char_literal92);
 
 
 						}
@@ -5284,9 +5269,9 @@ public class ASN1Parser extends Parser {
 					}
 
 
-					ID95 = (Token) match(input, ID, FOLLOW_ID_in_definedType1292);
+					ID93 = (Token) match(input, ID, FOLLOW_ID_in_definedType1286);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_ID.add(ID95);
+					if (state.backtracking == 0) stream_ID.add(ID93);
 
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:16: ( constraint )?
@@ -5300,12 +5285,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:214:16: constraint
 						{
-							pushFollow(FOLLOW_constraint_in_definedType1294);
-							constraint96 = constraint();
+							pushFollow(FOLLOW_constraint_in_definedType1288);
+							constraint94 = constraint();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_constraint.add(constraint96.getTree());
+							if (state.backtracking == 0) stream_constraint.add(constraint94.getTree());
 
 						}
 						break;
@@ -5314,7 +5299,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: constraint, ID, ID
+					// elements: ID, constraint, ID
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -5376,12 +5361,12 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:5: restrictedStringType ( constraint )?
 				{
-					pushFollow(FOLLOW_restrictedStringType_in_definedType1315);
-					restrictedStringType97 = restrictedStringType();
+					pushFollow(FOLLOW_restrictedStringType_in_definedType1309);
+					restrictedStringType95 = restrictedStringType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_restrictedStringType.add(restrictedStringType97.getTree());
+					if (state.backtracking == 0) stream_restrictedStringType.add(restrictedStringType95.getTree());
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:26: ( constraint )?
 					int alt26 = 2;
@@ -5394,12 +5379,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:215:26: constraint
 						{
-							pushFollow(FOLLOW_constraint_in_definedType1317);
-							constraint98 = constraint();
+							pushFollow(FOLLOW_constraint_in_definedType1311);
+							constraint96 = constraint();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_constraint.add(constraint98.getTree());
+							if (state.backtracking == 0) stream_constraint.add(constraint96.getTree());
 
 						}
 						break;
@@ -5492,13 +5477,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID99 = null;
-		Token char_literal100 = null;
-		ASN1Parser.type_return type101 = null;
+		Token ID97 = null;
+		Token char_literal98 = null;
+		ASN1Parser.type_return type99 = null;
 
 
-		CommonTree ID99_tree = null;
-		CommonTree char_literal100_tree = null;
+		CommonTree ID97_tree = null;
+		CommonTree char_literal98_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
@@ -5506,25 +5491,25 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:217:17: ( ID '<' type -> ^( SELECTION_TYPE ID type ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:218:3: ID '<' type
 			{
-				ID99 = (Token) match(input, ID, FOLLOW_ID_in_selectionType1341);
+				ID97 = (Token) match(input, ID, FOLLOW_ID_in_selectionType1335);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID99);
+				if (state.backtracking == 0) stream_ID.add(ID97);
 
 
-				char_literal100 = (Token) match(input, 90, FOLLOW_90_in_selectionType1343);
+				char_literal98 = (Token) match(input, 90, FOLLOW_90_in_selectionType1337);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_90.add(char_literal100);
+				if (state.backtracking == 0) stream_90.add(char_literal98);
 
 
-				pushFollow(FOLLOW_type_in_selectionType1345);
-				type101 = type();
+				pushFollow(FOLLOW_type_in_selectionType1339);
+				type99 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type101.getTree());
+				if (state.backtracking == 0) stream_type.add(type99.getTree());
 
 				// AST REWRITE
-				// elements: ID, type
+				// elements: type, ID
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -5604,15 +5589,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal102 = null;
+		Token string_literal100 = null;
+		Token char_literal101 = null;
 		Token char_literal103 = null;
-		Token char_literal105 = null;
-		ASN1Parser.enumerations_return enumerations104 = null;
+		ASN1Parser.enumerations_return enumerations102 = null;
 
 
-		CommonTree string_literal102_tree = null;
+		CommonTree string_literal100_tree = null;
+		CommonTree char_literal101_tree = null;
 		CommonTree char_literal103_tree = null;
-		CommonTree char_literal105_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_106 = new RewriteRuleTokenStream(adaptor, "token 106");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
@@ -5621,26 +5606,26 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:220:18: ( 'ENUMERATED' '{' enumerations '}' -> ^( ENUMERATION enumerations ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:221:3: 'ENUMERATED' '{' enumerations '}'
 			{
-				string_literal102 = (Token) match(input, 106, FOLLOW_106_in_enumeratedType1367);
+				string_literal100 = (Token) match(input, 106, FOLLOW_106_in_enumeratedType1361);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_106.add(string_literal102);
+				if (state.backtracking == 0) stream_106.add(string_literal100);
 
 
-				char_literal103 = (Token) match(input, 159, FOLLOW_159_in_enumeratedType1369);
+				char_literal101 = (Token) match(input, 159, FOLLOW_159_in_enumeratedType1363);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_159.add(char_literal103);
+				if (state.backtracking == 0) stream_159.add(char_literal101);
 
 
-				pushFollow(FOLLOW_enumerations_in_enumeratedType1371);
-				enumerations104 = enumerations();
+				pushFollow(FOLLOW_enumerations_in_enumeratedType1365);
+				enumerations102 = enumerations();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_enumerations.add(enumerations104.getTree());
+				if (state.backtracking == 0) stream_enumerations.add(enumerations102.getTree());
 
-				char_literal105 = (Token) match(input, 161, FOLLOW_161_in_enumeratedType1373);
+				char_literal103 = (Token) match(input, 161, FOLLOW_161_in_enumeratedType1367);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal105);
+				if (state.backtracking == 0) stream_161.add(char_literal103);
 
 
 				// AST REWRITE
@@ -5719,25 +5704,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal107 = null;
+		Token char_literal105 = null;
+		ASN1Parser.enumerationItem_return enumerationItem104 = null;
+
 		ASN1Parser.enumerationItem_return enumerationItem106 = null;
 
-		ASN1Parser.enumerationItem_return enumerationItem108 = null;
 
-
-		CommonTree char_literal107_tree = null;
+		CommonTree char_literal105_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_enumerationItem = new RewriteRuleSubtreeStream(adaptor, "rule enumerationItem");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:224:16: ( enumerationItem ( ',' enumerationItem )* -> ^( VEC ( enumerationItem )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:3: enumerationItem ( ',' enumerationItem )*
 			{
-				pushFollow(FOLLOW_enumerationItem_in_enumerations1395);
-				enumerationItem106 = enumerationItem();
+				pushFollow(FOLLOW_enumerationItem_in_enumerations1389);
+				enumerationItem104 = enumerationItem();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_enumerationItem.add(enumerationItem106.getTree());
+				if (state.backtracking == 0) stream_enumerationItem.add(enumerationItem104.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:19: ( ',' enumerationItem )*
 				loop28:
@@ -5754,17 +5739,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:225:20: ',' enumerationItem
 						{
-							char_literal107 = (Token) match(input, 83, FOLLOW_83_in_enumerations1398);
+							char_literal105 = (Token) match(input, 83, FOLLOW_83_in_enumerations1392);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal107);
+							if (state.backtracking == 0) stream_83.add(char_literal105);
 
 
-							pushFollow(FOLLOW_enumerationItem_in_enumerations1400);
-							enumerationItem108 = enumerationItem();
+							pushFollow(FOLLOW_enumerationItem_in_enumerations1394);
+							enumerationItem106 = enumerationItem();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_enumerationItem.add(enumerationItem108.getTree());
+							if (state.backtracking == 0) stream_enumerationItem.add(enumerationItem106.getTree());
 
 						}
 						break;
@@ -5858,11 +5843,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID110 = null;
-		ASN1Parser.namedNumber_return namedNumber109 = null;
+		Token ID108 = null;
+		ASN1Parser.namedNumber_return namedNumber107 = null;
 
 
-		CommonTree ID110_tree = null;
+		CommonTree ID108_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 
 		try {
@@ -5906,21 +5891,21 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_namedNumber_in_enumerationItem1429);
-					namedNumber109 = namedNumber();
+					pushFollow(FOLLOW_namedNumber_in_enumerationItem1423);
+					namedNumber107 = namedNumber();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, namedNumber109.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, namedNumber107.getTree());
 
 				}
 				break;
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:229:4: ID
 				{
-					ID110 = (Token) match(input, ID, FOLLOW_ID_in_enumerationItem1434);
+					ID108 = (Token) match(input, ID, FOLLOW_ID_in_enumerationItem1428);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_ID.add(ID110);
+					if (state.backtracking == 0) stream_ID.add(ID108);
 
 
 					// AST REWRITE
@@ -6004,13 +5989,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal111 = null;
-		Token string_literal112 = null;
-		ASN1Parser.namedBitList_return namedBitList113 = null;
+		Token string_literal109 = null;
+		Token string_literal110 = null;
+		ASN1Parser.namedBitList_return namedBitList111 = null;
 
 
-		CommonTree string_literal111_tree = null;
-		CommonTree string_literal112_tree = null;
+		CommonTree string_literal109_tree = null;
+		CommonTree string_literal110_tree = null;
 		RewriteRuleTokenStream stream_96 = new RewriteRuleTokenStream(adaptor, "token 96");
 		RewriteRuleTokenStream stream_142 = new RewriteRuleTokenStream(adaptor, "token 142");
 		RewriteRuleSubtreeStream stream_namedBitList = new RewriteRuleSubtreeStream(adaptor, "rule namedBitList");
@@ -6018,14 +6003,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:231:17: ( 'BIT' 'STRING' ( namedBitList )? -> ^( BIT_STRING namedBitList ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:3: 'BIT' 'STRING' ( namedBitList )?
 			{
-				string_literal111 = (Token) match(input, 96, FOLLOW_96_in_bitStringType1454);
+				string_literal109 = (Token) match(input, 96, FOLLOW_96_in_bitStringType1448);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_96.add(string_literal111);
+				if (state.backtracking == 0) stream_96.add(string_literal109);
 
 
-				string_literal112 = (Token) match(input, 142, FOLLOW_142_in_bitStringType1456);
+				string_literal110 = (Token) match(input, 142, FOLLOW_142_in_bitStringType1450);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_142.add(string_literal112);
+				if (state.backtracking == 0) stream_142.add(string_literal110);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:18: ( namedBitList )?
@@ -6039,12 +6024,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:232:18: namedBitList
 					{
-						pushFollow(FOLLOW_namedBitList_in_bitStringType1458);
-						namedBitList113 = namedBitList();
+						pushFollow(FOLLOW_namedBitList_in_bitStringType1452);
+						namedBitList111 = namedBitList();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_namedBitList.add(namedBitList113.getTree());
+						if (state.backtracking == 0) stream_namedBitList.add(namedBitList111.getTree());
 
 					}
 					break;
@@ -6128,17 +6113,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token char_literal112 = null;
 		Token char_literal114 = null;
 		Token char_literal116 = null;
-		Token char_literal118 = null;
+		ASN1Parser.nameNumberForm_return nameNumberForm113 = null;
+
 		ASN1Parser.nameNumberForm_return nameNumberForm115 = null;
 
-		ASN1Parser.nameNumberForm_return nameNumberForm117 = null;
 
-
+		CommonTree char_literal112_tree = null;
 		CommonTree char_literal114_tree = null;
 		CommonTree char_literal116_tree = null;
-		CommonTree char_literal118_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
@@ -6147,17 +6132,17 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:234:16: ( '{' nameNumberForm ( ',' nameNumberForm )* '}' -> ^( VEC ( nameNumberForm )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:3: '{' nameNumberForm ( ',' nameNumberForm )* '}'
 			{
-				char_literal114 = (Token) match(input, 159, FOLLOW_159_in_namedBitList1479);
+				char_literal112 = (Token) match(input, 159, FOLLOW_159_in_namedBitList1473);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_159.add(char_literal114);
+				if (state.backtracking == 0) stream_159.add(char_literal112);
 
 
-				pushFollow(FOLLOW_nameNumberForm_in_namedBitList1481);
-				nameNumberForm115 = nameNumberForm();
+				pushFollow(FOLLOW_nameNumberForm_in_namedBitList1475);
+				nameNumberForm113 = nameNumberForm();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_nameNumberForm.add(nameNumberForm115.getTree());
+				if (state.backtracking == 0) stream_nameNumberForm.add(nameNumberForm113.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:22: ( ',' nameNumberForm )*
 				loop31:
@@ -6174,17 +6159,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:235:23: ',' nameNumberForm
 						{
-							char_literal116 = (Token) match(input, 83, FOLLOW_83_in_namedBitList1484);
+							char_literal114 = (Token) match(input, 83, FOLLOW_83_in_namedBitList1478);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal116);
+							if (state.backtracking == 0) stream_83.add(char_literal114);
 
 
-							pushFollow(FOLLOW_nameNumberForm_in_namedBitList1486);
-							nameNumberForm117 = nameNumberForm();
+							pushFollow(FOLLOW_nameNumberForm_in_namedBitList1480);
+							nameNumberForm115 = nameNumberForm();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_nameNumberForm.add(nameNumberForm117.getTree());
+							if (state.backtracking == 0) stream_nameNumberForm.add(nameNumberForm115.getTree());
 
 						}
 						break;
@@ -6195,9 +6180,9 @@ public class ASN1Parser extends Parser {
 				} while (true);
 
 
-				char_literal118 = (Token) match(input, 161, FOLLOW_161_in_namedBitList1490);
+				char_literal116 = (Token) match(input, 161, FOLLOW_161_in_namedBitList1484);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal118);
+				if (state.backtracking == 0) stream_161.add(char_literal116);
 
 
 				// AST REWRITE
@@ -6283,15 +6268,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID119 = null;
+		Token ID117 = null;
+		Token char_literal118 = null;
+		Token INT119 = null;
 		Token char_literal120 = null;
-		Token INT121 = null;
-		Token char_literal122 = null;
 
-		CommonTree ID119_tree = null;
+		CommonTree ID117_tree = null;
+		CommonTree char_literal118_tree = null;
+		CommonTree INT119_tree = null;
 		CommonTree char_literal120_tree = null;
-		CommonTree INT121_tree = null;
-		CommonTree char_literal122_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
@@ -6301,28 +6286,28 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:239:18: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:240:3: ID '(' INT ')'
 			{
-				ID119 = (Token) match(input, ID, FOLLOW_ID_in_nameNumberForm1514);
+				ID117 = (Token) match(input, ID, FOLLOW_ID_in_nameNumberForm1508);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID119);
+				if (state.backtracking == 0) stream_ID.add(ID117);
 
 
-				char_literal120 = (Token) match(input, 81, FOLLOW_81_in_nameNumberForm1516);
+				char_literal118 = (Token) match(input, 81, FOLLOW_81_in_nameNumberForm1510);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_81.add(char_literal120);
+				if (state.backtracking == 0) stream_81.add(char_literal118);
 
 
-				INT121 = (Token) match(input, INT, FOLLOW_INT_in_nameNumberForm1518);
+				INT119 = (Token) match(input, INT, FOLLOW_INT_in_nameNumberForm1512);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_INT.add(INT121);
+				if (state.backtracking == 0) stream_INT.add(INT119);
 
 
-				char_literal122 = (Token) match(input, 82, FOLLOW_82_in_nameNumberForm1520);
+				char_literal120 = (Token) match(input, 82, FOLLOW_82_in_nameNumberForm1514);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_82.add(char_literal122);
+				if (state.backtracking == 0) stream_82.add(char_literal120);
 
 
 				// AST REWRITE
-				// elements: INT, ID
+				// elements: ID, INT
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -6405,13 +6390,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal123 = null;
-		Token string_literal124 = null;
-		ASN1Parser.constraint_return constraint125 = null;
+		Token string_literal121 = null;
+		Token string_literal122 = null;
+		ASN1Parser.constraint_return constraint123 = null;
 
 
-		CommonTree string_literal123_tree = null;
-		CommonTree string_literal124_tree = null;
+		CommonTree string_literal121_tree = null;
+		CommonTree string_literal122_tree = null;
 		RewriteRuleTokenStream stream_99 = new RewriteRuleTokenStream(adaptor, "token 99");
 		RewriteRuleTokenStream stream_142 = new RewriteRuleTokenStream(adaptor, "token 142");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
@@ -6419,14 +6404,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:242:22: ( 'CHARACTER' 'STRING' ( constraint )? -> ^( CSTRING UNRESTRICTED_CSTRING ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:3: 'CHARACTER' 'STRING' ( constraint )?
 			{
-				string_literal123 = (Token) match(input, 99, FOLLOW_99_in_characterStringType1541);
+				string_literal121 = (Token) match(input, 99, FOLLOW_99_in_characterStringType1535);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_99.add(string_literal123);
+				if (state.backtracking == 0) stream_99.add(string_literal121);
 
 
-				string_literal124 = (Token) match(input, 142, FOLLOW_142_in_characterStringType1543);
+				string_literal122 = (Token) match(input, 142, FOLLOW_142_in_characterStringType1537);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_142.add(string_literal124);
+				if (state.backtracking == 0) stream_142.add(string_literal122);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:24: ( constraint )?
@@ -6440,12 +6425,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:243:24: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_characterStringType1545);
-						constraint125 = constraint();
+						pushFollow(FOLLOW_constraint_in_characterStringType1539);
+						constraint123 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint125.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint123.getTree());
 
 					}
 					break;
@@ -6539,6 +6524,8 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token string_literal124 = null;
+		Token string_literal125 = null;
 		Token string_literal126 = null;
 		Token string_literal127 = null;
 		Token string_literal128 = null;
@@ -6550,9 +6537,9 @@ public class ASN1Parser extends Parser {
 		Token string_literal134 = null;
 		Token string_literal135 = null;
 		Token string_literal136 = null;
-		Token string_literal137 = null;
-		Token string_literal138 = null;
 
+		CommonTree string_literal124_tree = null;
+		CommonTree string_literal125_tree = null;
 		CommonTree string_literal126_tree = null;
 		CommonTree string_literal127_tree = null;
 		CommonTree string_literal128_tree = null;
@@ -6564,8 +6551,6 @@ public class ASN1Parser extends Parser {
 		CommonTree string_literal134_tree = null;
 		CommonTree string_literal135_tree = null;
 		CommonTree string_literal136_tree = null;
-		CommonTree string_literal137_tree = null;
-		CommonTree string_literal138_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:247:2: (| 'BMPString' | 'GeneralString' | 'GraphicString' | 'IA5String' | 'ISO646String' | 'NumericString' | 'PrintableString' | 'TeletexString' | 'T61String' | 'UniversalString' | 'UTF8String' | 'VideotexString' | 'VisibleString' )
@@ -6672,13 +6657,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal126 = (Token) match(input, 97, FOLLOW_97_in_restrictedStringType1573);
+					string_literal124 = (Token) match(input, 97, FOLLOW_97_in_restrictedStringType1567);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal126_tree =
-						(CommonTree) adaptor.create(string_literal126)
+						string_literal124_tree =
+						(CommonTree) adaptor.create(string_literal124)
 						;
-						adaptor.addChild(root_0, string_literal126_tree);
+						adaptor.addChild(root_0, string_literal124_tree);
 					}
 
 				}
@@ -6689,13 +6674,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal127 = (Token) match(input, 113, FOLLOW_113_in_restrictedStringType1578);
+					string_literal125 = (Token) match(input, 113, FOLLOW_113_in_restrictedStringType1572);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal127_tree =
-						(CommonTree) adaptor.create(string_literal127)
+						string_literal125_tree =
+						(CommonTree) adaptor.create(string_literal125)
 						;
-						adaptor.addChild(root_0, string_literal127_tree);
+						adaptor.addChild(root_0, string_literal125_tree);
 					}
 
 				}
@@ -6706,13 +6691,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal128 = (Token) match(input, 114, FOLLOW_114_in_restrictedStringType1583);
+					string_literal126 = (Token) match(input, 114, FOLLOW_114_in_restrictedStringType1577);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal128_tree =
-						(CommonTree) adaptor.create(string_literal128)
+						string_literal126_tree =
+						(CommonTree) adaptor.create(string_literal126)
 						;
-						adaptor.addChild(root_0, string_literal128_tree);
+						adaptor.addChild(root_0, string_literal126_tree);
 					}
 
 				}
@@ -6723,13 +6708,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal129 = (Token) match(input, 115, FOLLOW_115_in_restrictedStringType1588);
+					string_literal127 = (Token) match(input, 115, FOLLOW_115_in_restrictedStringType1582);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal129_tree =
-						(CommonTree) adaptor.create(string_literal129)
+						string_literal127_tree =
+						(CommonTree) adaptor.create(string_literal127)
 						;
-						adaptor.addChild(root_0, string_literal129_tree);
+						adaptor.addChild(root_0, string_literal127_tree);
 					}
 
 				}
@@ -6740,13 +6725,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal130 = (Token) match(input, 123, FOLLOW_123_in_restrictedStringType1593);
+					string_literal128 = (Token) match(input, 123, FOLLOW_123_in_restrictedStringType1587);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal130_tree =
-						(CommonTree) adaptor.create(string_literal130)
+						string_literal128_tree =
+						(CommonTree) adaptor.create(string_literal128)
 						;
-						adaptor.addChild(root_0, string_literal130_tree);
+						adaptor.addChild(root_0, string_literal128_tree);
 					}
 
 				}
@@ -6757,13 +6742,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal131 = (Token) match(input, 127, FOLLOW_127_in_restrictedStringType1598);
+					string_literal129 = (Token) match(input, 127, FOLLOW_127_in_restrictedStringType1592);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal131_tree =
-						(CommonTree) adaptor.create(string_literal131)
+						string_literal129_tree =
+						(CommonTree) adaptor.create(string_literal129)
 						;
-						adaptor.addChild(root_0, string_literal131_tree);
+						adaptor.addChild(root_0, string_literal129_tree);
 					}
 
 				}
@@ -6774,13 +6759,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal132 = (Token) match(input, 137, FOLLOW_137_in_restrictedStringType1603);
+					string_literal130 = (Token) match(input, 137, FOLLOW_137_in_restrictedStringType1597);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal132_tree =
-						(CommonTree) adaptor.create(string_literal132)
+						string_literal130_tree =
+						(CommonTree) adaptor.create(string_literal130)
 						;
-						adaptor.addChild(root_0, string_literal132_tree);
+						adaptor.addChild(root_0, string_literal130_tree);
 					}
 
 				}
@@ -6791,13 +6776,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal133 = (Token) match(input, 146, FOLLOW_146_in_restrictedStringType1608);
+					string_literal131 = (Token) match(input, 146, FOLLOW_146_in_restrictedStringType1602);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal133_tree =
-						(CommonTree) adaptor.create(string_literal133)
+						string_literal131_tree =
+						(CommonTree) adaptor.create(string_literal131)
 						;
-						adaptor.addChild(root_0, string_literal133_tree);
+						adaptor.addChild(root_0, string_literal131_tree);
 					}
 
 				}
@@ -6808,13 +6793,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal134 = (Token) match(input, 143, FOLLOW_143_in_restrictedStringType1613);
+					string_literal132 = (Token) match(input, 143, FOLLOW_143_in_restrictedStringType1607);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal134_tree =
-						(CommonTree) adaptor.create(string_literal134)
+						string_literal132_tree =
+						(CommonTree) adaptor.create(string_literal132)
 						;
-						adaptor.addChild(root_0, string_literal134_tree);
+						adaptor.addChild(root_0, string_literal132_tree);
 					}
 
 				}
@@ -6825,13 +6810,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal135 = (Token) match(input, 150, FOLLOW_150_in_restrictedStringType1618);
+					string_literal133 = (Token) match(input, 150, FOLLOW_150_in_restrictedStringType1612);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal135_tree =
-						(CommonTree) adaptor.create(string_literal135)
+						string_literal133_tree =
+						(CommonTree) adaptor.create(string_literal133)
 						;
-						adaptor.addChild(root_0, string_literal135_tree);
+						adaptor.addChild(root_0, string_literal133_tree);
 					}
 
 				}
@@ -6842,13 +6827,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal136 = (Token) match(input, 149, FOLLOW_149_in_restrictedStringType1623);
+					string_literal134 = (Token) match(input, 149, FOLLOW_149_in_restrictedStringType1617);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal136_tree =
-						(CommonTree) adaptor.create(string_literal136)
+						string_literal134_tree =
+						(CommonTree) adaptor.create(string_literal134)
 						;
-						adaptor.addChild(root_0, string_literal136_tree);
+						adaptor.addChild(root_0, string_literal134_tree);
 					}
 
 				}
@@ -6859,13 +6844,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal137 = (Token) match(input, 151, FOLLOW_151_in_restrictedStringType1628);
+					string_literal135 = (Token) match(input, 151, FOLLOW_151_in_restrictedStringType1622);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal137_tree =
-						(CommonTree) adaptor.create(string_literal137)
+						string_literal135_tree =
+						(CommonTree) adaptor.create(string_literal135)
 						;
-						adaptor.addChild(root_0, string_literal137_tree);
+						adaptor.addChild(root_0, string_literal135_tree);
 					}
 
 				}
@@ -6876,13 +6861,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal138 = (Token) match(input, 152, FOLLOW_152_in_restrictedStringType1633);
+					string_literal136 = (Token) match(input, 152, FOLLOW_152_in_restrictedStringType1627);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal138_tree =
-						(CommonTree) adaptor.create(string_literal138)
+						string_literal136_tree =
+						(CommonTree) adaptor.create(string_literal136)
 						;
-						adaptor.addChild(root_0, string_literal138_tree);
+						adaptor.addChild(root_0, string_literal136_tree);
 					}
 
 				}
@@ -6925,17 +6910,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal139 = null;
+		Token string_literal137 = null;
+		Token char_literal138 = null;
 		Token char_literal140 = null;
-		Token char_literal142 = null;
-		ASN1Parser.alternativesTypeLists_return alternativesTypeLists141 = null;
+		ASN1Parser.alternativesTypeLists_return alternativesTypeLists139 = null;
 
-		ASN1Parser.constraint_return constraint143 = null;
+		ASN1Parser.constraint_return constraint141 = null;
 
 
-		CommonTree string_literal139_tree = null;
+		CommonTree string_literal137_tree = null;
+		CommonTree char_literal138_tree = null;
 		CommonTree char_literal140_tree = null;
-		CommonTree char_literal142_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleTokenStream stream_100 = new RewriteRuleTokenStream(adaptor, "token 100");
@@ -6945,26 +6930,26 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:262:14: ( 'CHOICE' '{' alternativesTypeLists '}' ( constraint )? -> ^( CHOICE alternativesTypeLists ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:3: 'CHOICE' '{' alternativesTypeLists '}' ( constraint )?
 			{
-				string_literal139 = (Token) match(input, 100, FOLLOW_100_in_choiceType1645);
+				string_literal137 = (Token) match(input, 100, FOLLOW_100_in_choiceType1639);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_100.add(string_literal139);
+				if (state.backtracking == 0) stream_100.add(string_literal137);
 
 
-				char_literal140 = (Token) match(input, 159, FOLLOW_159_in_choiceType1647);
+				char_literal138 = (Token) match(input, 159, FOLLOW_159_in_choiceType1641);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_159.add(char_literal140);
+				if (state.backtracking == 0) stream_159.add(char_literal138);
 
 
-				pushFollow(FOLLOW_alternativesTypeLists_in_choiceType1649);
-				alternativesTypeLists141 = alternativesTypeLists();
+				pushFollow(FOLLOW_alternativesTypeLists_in_choiceType1643);
+				alternativesTypeLists139 = alternativesTypeLists();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_alternativesTypeLists.add(alternativesTypeLists141.getTree());
+				if (state.backtracking == 0) stream_alternativesTypeLists.add(alternativesTypeLists139.getTree());
 
-				char_literal142 = (Token) match(input, 161, FOLLOW_161_in_choiceType1651);
+				char_literal140 = (Token) match(input, 161, FOLLOW_161_in_choiceType1645);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal142);
+				if (state.backtracking == 0) stream_161.add(char_literal140);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:42: ( constraint )?
@@ -6978,12 +6963,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:263:42: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_choiceType1653);
-						constraint143 = constraint();
+						pushFollow(FOLLOW_constraint_in_choiceType1647);
+						constraint141 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint143.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint141.getTree());
 
 					}
 					break;
@@ -6992,7 +6977,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: alternativesTypeLists, constraint
+				// elements: constraint, alternativesTypeLists
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7074,19 +7059,19 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token char_literal143 = null;
 		Token char_literal145 = null;
-		Token char_literal147 = null;
-		ASN1Parser.alternativeTypeList_return alternativeTypeList144 = null;
+		ASN1Parser.alternativeTypeList_return alternativeTypeList142 = null;
 
-		ASN1Parser.extensionAndException_return extensionAndException146 = null;
+		ASN1Parser.extensionAndException_return extensionAndException144 = null;
 
-		ASN1Parser.extensionAdditionAlternativesList_return extensionAdditionAlternativesList148 = null;
+		ASN1Parser.extensionAdditionAlternativesList_return extensionAdditionAlternativesList146 = null;
 
-		ASN1Parser.extensionEndMarker_return extensionEndMarker149 = null;
+		ASN1Parser.extensionEndMarker_return extensionEndMarker147 = null;
 
 
+		CommonTree char_literal143_tree = null;
 		CommonTree char_literal145_tree = null;
-		CommonTree char_literal147_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAndException = new RewriteRuleSubtreeStream(adaptor, "rule extensionAndException");
 		RewriteRuleSubtreeStream stream_alternativeTypeList = new RewriteRuleSubtreeStream(adaptor, "rule alternativeTypeList");
@@ -7099,12 +7084,12 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:265:24: ( alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )? -> ^( alternativeTypeList ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:3: alternativeTypeList ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
 			{
-				pushFollow(FOLLOW_alternativeTypeList_in_alternativesTypeLists1676);
-				alternativeTypeList144 = alternativeTypeList();
+				pushFollow(FOLLOW_alternativeTypeList_in_alternativesTypeLists1670);
+				alternativeTypeList142 = alternativeTypeList();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_alternativeTypeList.add(alternativeTypeList144.getTree());
+				if (state.backtracking == 0) stream_alternativeTypeList.add(alternativeTypeList142.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:23: ( ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
 				int alt37 = 2;
@@ -7117,17 +7102,17 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:24: ',' extensionAndException ( ',' extensionAdditionAlternativesList )? ( extensionEndMarker )?
 					{
-						char_literal145 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1679);
+						char_literal143 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1673);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_83.add(char_literal145);
+						if (state.backtracking == 0) stream_83.add(char_literal143);
 
 
-						pushFollow(FOLLOW_extensionAndException_in_alternativesTypeLists1681);
-						extensionAndException146 = extensionAndException();
+						pushFollow(FOLLOW_extensionAndException_in_alternativesTypeLists1675);
+						extensionAndException144 = extensionAndException();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException146.getTree());
+						if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException144.getTree());
 
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:50: ( ',' extensionAdditionAlternativesList )?
 						int alt35 = 2;
@@ -7144,18 +7129,18 @@ public class ASN1Parser extends Parser {
 							case 1:
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:51: ',' extensionAdditionAlternativesList
 							{
-								char_literal147 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1684);
+								char_literal145 = (Token) match(input, 83, FOLLOW_83_in_alternativesTypeLists1678);
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_83.add(char_literal147);
+								if (state.backtracking == 0) stream_83.add(char_literal145);
 
 
-								pushFollow(FOLLOW_extensionAdditionAlternativesList_in_alternativesTypeLists1686);
-								extensionAdditionAlternativesList148 = extensionAdditionAlternativesList();
+								pushFollow(FOLLOW_extensionAdditionAlternativesList_in_alternativesTypeLists1680);
+								extensionAdditionAlternativesList146 = extensionAdditionAlternativesList();
 
 								state._fsp--;
 								if (state.failed) return retval;
 								if (state.backtracking == 0) {
-									stream_extensionAdditionAlternativesList.add(extensionAdditionAlternativesList148.getTree());
+									stream_extensionAdditionAlternativesList.add(extensionAdditionAlternativesList146.getTree());
 								}
 
 							}
@@ -7175,12 +7160,12 @@ public class ASN1Parser extends Parser {
 							case 1:
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:266:91: extensionEndMarker
 							{
-								pushFollow(FOLLOW_extensionEndMarker_in_alternativesTypeLists1690);
-								extensionEndMarker149 = extensionEndMarker();
+								pushFollow(FOLLOW_extensionEndMarker_in_alternativesTypeLists1684);
+								extensionEndMarker147 = extensionEndMarker();
 
 								state._fsp--;
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker149.getTree());
+								if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker147.getTree());
 
 							}
 							break;
@@ -7195,7 +7180,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: alternativeTypeList, extensionAdditionAlternativesList, extensionAndException, extensionEndMarker
+				// elements: extensionAdditionAlternativesList, extensionEndMarker, alternativeTypeList, extensionAndException
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7219,8 +7204,8 @@ public class ASN1Parser extends Parser {
 							root_1 = (CommonTree) adaptor.becomeRoot(stream_alternativeTypeList.nextNode(), root_1);
 
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:28: ( extensionAndException ( extensionAdditionAlternativesList )? ( extensionEndMarker )? )?
-							if (stream_extensionAdditionAlternativesList.hasNext() || stream_extensionAndException.hasNext()
-							    || stream_extensionEndMarker.hasNext()) {
+							if (stream_extensionAdditionAlternativesList.hasNext() || stream_extensionEndMarker.hasNext()
+							    || stream_extensionAndException.hasNext()) {
 								adaptor.addChild(root_1, stream_extensionAndException.nextTree());
 
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:267:51: ( extensionAdditionAlternativesList )?
@@ -7239,8 +7224,8 @@ public class ASN1Parser extends Parser {
 
 							}
 							stream_extensionAdditionAlternativesList.reset();
-							stream_extensionAndException.reset();
 							stream_extensionEndMarker.reset();
+							stream_extensionAndException.reset();
 
 							adaptor.addChild(root_0, root_1);
 						}
@@ -7289,25 +7274,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal151 = null;
+		Token char_literal149 = null;
+		ASN1Parser.namedType_return namedType148 = null;
+
 		ASN1Parser.namedType_return namedType150 = null;
 
-		ASN1Parser.namedType_return namedType152 = null;
 
-
-		CommonTree char_literal151_tree = null;
+		CommonTree char_literal149_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedType = new RewriteRuleSubtreeStream(adaptor, "rule namedType");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:269:22: ( namedType ( ',' namedType )* -> ^( VEC ( namedType )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:3: namedType ( ',' namedType )*
 			{
-				pushFollow(FOLLOW_namedType_in_alternativeTypeList1723);
-				namedType150 = namedType();
+				pushFollow(FOLLOW_namedType_in_alternativeTypeList1717);
+				namedType148 = namedType();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_namedType.add(namedType150.getTree());
+				if (state.backtracking == 0) stream_namedType.add(namedType148.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:13: ( ',' namedType )*
 				loop38:
@@ -7330,17 +7315,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:270:14: ',' namedType
 						{
-							char_literal151 = (Token) match(input, 83, FOLLOW_83_in_alternativeTypeList1726);
+							char_literal149 = (Token) match(input, 83, FOLLOW_83_in_alternativeTypeList1720);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal151);
+							if (state.backtracking == 0) stream_83.add(char_literal149);
 
 
-							pushFollow(FOLLOW_namedType_in_alternativeTypeList1728);
-							namedType152 = namedType();
+							pushFollow(FOLLOW_namedType_in_alternativeTypeList1722);
+							namedType150 = namedType();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_namedType.add(namedType152.getTree());
+							if (state.backtracking == 0) stream_namedType.add(namedType150.getTree());
 
 						}
 						break;
@@ -7434,25 +7419,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal154 = null;
+		Token char_literal152 = null;
+		ASN1Parser.extensionAdditionAlternative_return extensionAdditionAlternative151 = null;
+
 		ASN1Parser.extensionAdditionAlternative_return extensionAdditionAlternative153 = null;
 
-		ASN1Parser.extensionAdditionAlternative_return extensionAdditionAlternative155 = null;
 
-
-		CommonTree char_literal154_tree = null;
+		CommonTree char_literal152_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAdditionAlternative = new RewriteRuleSubtreeStream(adaptor, "rule extensionAdditionAlternative");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:272:34: ( extensionAdditionAlternative ( ',' extensionAdditionAlternative )* -> ^( VEC ( extensionAdditionAlternative )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:3: extensionAdditionAlternative ( ',' extensionAdditionAlternative )*
 			{
-				pushFollow(FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1748);
-				extensionAdditionAlternative153 = extensionAdditionAlternative();
+				pushFollow(FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1742);
+				extensionAdditionAlternative151 = extensionAdditionAlternative();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_extensionAdditionAlternative.add(extensionAdditionAlternative153.getTree());
+				if (state.backtracking == 0) stream_extensionAdditionAlternative.add(extensionAdditionAlternative151.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:32: ( ',' extensionAdditionAlternative )*
 				loop39:
@@ -7475,17 +7460,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:273:33: ',' extensionAdditionAlternative
 						{
-							char_literal154 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditionAlternativesList1751);
+							char_literal152 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditionAlternativesList1745);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal154);
+							if (state.backtracking == 0) stream_83.add(char_literal152);
 
 
-							pushFollow(FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1753);
-							extensionAdditionAlternative155 = extensionAdditionAlternative();
+							pushFollow(FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1747);
+							extensionAdditionAlternative153 = extensionAdditionAlternative();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_extensionAdditionAlternative.add(extensionAdditionAlternative155.getTree());
+							if (state.backtracking == 0) stream_extensionAdditionAlternative.add(extensionAdditionAlternative153.getTree());
 
 						}
 						break;
@@ -7579,9 +7564,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.extensionAdditionAlternativesGroup_return extensionAdditionAlternativesGroup156 = null;
+		ASN1Parser.extensionAdditionAlternativesGroup_return extensionAdditionAlternativesGroup154 = null;
 
-		ASN1Parser.namedType_return namedType157 = null;
+		ASN1Parser.namedType_return namedType155 = null;
 
 
 		try {
@@ -7611,12 +7596,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_extensionAdditionAlternativesGroup_in_extensionAdditionAlternative1774);
-					extensionAdditionAlternativesGroup156 = extensionAdditionAlternativesGroup();
+					pushFollow(FOLLOW_extensionAdditionAlternativesGroup_in_extensionAdditionAlternative1768);
+					extensionAdditionAlternativesGroup154 = extensionAdditionAlternativesGroup();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, extensionAdditionAlternativesGroup156.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, extensionAdditionAlternativesGroup154.getTree());
 
 				}
 				break;
@@ -7626,12 +7611,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_namedType_in_extensionAdditionAlternative1778);
-					namedType157 = namedType();
+					pushFollow(FOLLOW_namedType_in_extensionAdditionAlternative1772);
+					namedType155 = namedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, namedType157.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, namedType155.getTree());
 
 				}
 				break;
@@ -7673,17 +7658,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal158 = null;
-		Token INT159 = null;
-		Token char_literal160 = null;
-		Token string_literal162 = null;
-		ASN1Parser.alternativeTypeList_return alternativeTypeList161 = null;
+		Token string_literal156 = null;
+		Token INT157 = null;
+		Token char_literal158 = null;
+		Token string_literal160 = null;
+		ASN1Parser.alternativeTypeList_return alternativeTypeList159 = null;
 
 
-		CommonTree string_literal158_tree = null;
-		CommonTree INT159_tree = null;
-		CommonTree char_literal160_tree = null;
-		CommonTree string_literal162_tree = null;
+		CommonTree string_literal156_tree = null;
+		CommonTree INT157_tree = null;
+		CommonTree char_literal158_tree = null;
+		CommonTree string_literal160_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_157 = new RewriteRuleTokenStream(adaptor, "token 157");
 		RewriteRuleTokenStream stream_87 = new RewriteRuleTokenStream(adaptor, "token 87");
@@ -7693,9 +7678,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:278:35: ( '[[' ( INT ':' )? alternativeTypeList ']]' -> ^( EXTENSION_ADDITION_ALTERNATIVES_GROUP ( INT )? alternativeTypeList ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:3: '[[' ( INT ':' )? alternativeTypeList ']]'
 			{
-				string_literal158 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionAlternativesGroup1787);
+				string_literal156 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionAlternativesGroup1781);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_155.add(string_literal158);
+				if (state.backtracking == 0) stream_155.add(string_literal156);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:8: ( INT ':' )?
@@ -7709,14 +7694,14 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:279:9: INT ':'
 					{
-						INT159 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionAlternativesGroup1790);
+						INT157 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionAlternativesGroup1784);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_INT.add(INT159);
+						if (state.backtracking == 0) stream_INT.add(INT157);
 
 
-						char_literal160 = (Token) match(input, 87, FOLLOW_87_in_extensionAdditionAlternativesGroup1792);
+						char_literal158 = (Token) match(input, 87, FOLLOW_87_in_extensionAdditionAlternativesGroup1786);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_87.add(char_literal160);
+						if (state.backtracking == 0) stream_87.add(char_literal158);
 
 
 					}
@@ -7725,20 +7710,20 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_alternativeTypeList_in_extensionAdditionAlternativesGroup1797);
-				alternativeTypeList161 = alternativeTypeList();
+				pushFollow(FOLLOW_alternativeTypeList_in_extensionAdditionAlternativesGroup1791);
+				alternativeTypeList159 = alternativeTypeList();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_alternativeTypeList.add(alternativeTypeList161.getTree());
+				if (state.backtracking == 0) stream_alternativeTypeList.add(alternativeTypeList159.getTree());
 
-				string_literal162 = (Token) match(input, 157, FOLLOW_157_in_extensionAdditionAlternativesGroup1799);
+				string_literal160 = (Token) match(input, 157, FOLLOW_157_in_extensionAdditionAlternativesGroup1793);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_157.add(string_literal162);
+				if (state.backtracking == 0) stream_157.add(string_literal160);
 
 
 				// AST REWRITE
-				// elements: INT, alternativeTypeList
+				// elements: alternativeTypeList, INT
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7826,17 +7811,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal163 = null;
+		Token string_literal161 = null;
+		Token char_literal162 = null;
 		Token char_literal164 = null;
-		Token char_literal166 = null;
-		ASN1Parser.componentTypeLists_return componentTypeLists165 = null;
+		ASN1Parser.componentTypeLists_return componentTypeLists163 = null;
 
-		ASN1Parser.constraint_return constraint167 = null;
+		ASN1Parser.constraint_return constraint165 = null;
 
 
-		CommonTree string_literal163_tree = null;
+		CommonTree string_literal161_tree = null;
+		CommonTree char_literal162_tree = null;
 		CommonTree char_literal164_tree = null;
-		CommonTree char_literal166_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
 		RewriteRuleTokenStream stream_140 = new RewriteRuleTokenStream(adaptor, "token 140");
@@ -7846,14 +7831,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:282:12: ( 'SET' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SET ( componentTypeLists )? ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:3: 'SET' '{' ( componentTypeLists )? '}' ( constraint )?
 			{
-				string_literal163 = (Token) match(input, 140, FOLLOW_140_in_setType1826);
+				string_literal161 = (Token) match(input, 140, FOLLOW_140_in_setType1820);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_140.add(string_literal163);
+				if (state.backtracking == 0) stream_140.add(string_literal161);
 
 
-				char_literal164 = (Token) match(input, 159, FOLLOW_159_in_setType1828);
+				char_literal162 = (Token) match(input, 159, FOLLOW_159_in_setType1822);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_159.add(char_literal164);
+				if (state.backtracking == 0) stream_159.add(char_literal162);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:13: ( componentTypeLists )?
@@ -7867,12 +7852,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:13: componentTypeLists
 					{
-						pushFollow(FOLLOW_componentTypeLists_in_setType1830);
-						componentTypeLists165 = componentTypeLists();
+						pushFollow(FOLLOW_componentTypeLists_in_setType1824);
+						componentTypeLists163 = componentTypeLists();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_componentTypeLists.add(componentTypeLists165.getTree());
+						if (state.backtracking == 0) stream_componentTypeLists.add(componentTypeLists163.getTree());
 
 					}
 					break;
@@ -7880,9 +7865,9 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				char_literal166 = (Token) match(input, 161, FOLLOW_161_in_setType1833);
+				char_literal164 = (Token) match(input, 161, FOLLOW_161_in_setType1827);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal166);
+				if (state.backtracking == 0) stream_161.add(char_literal164);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:37: ( constraint )?
@@ -7896,12 +7881,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:283:37: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_setType1835);
-						constraint167 = constraint();
+						pushFollow(FOLLOW_constraint_in_setType1829);
+						constraint165 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint167.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint165.getTree());
 
 					}
 					break;
@@ -7910,7 +7895,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: constraint, componentTypeLists
+				// elements: componentTypeLists, constraint
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -7997,15 +7982,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token string_literal166 = null;
 		Token string_literal168 = null;
-		Token string_literal170 = null;
-		ASN1Parser.constraint_return constraint169 = null;
+		ASN1Parser.constraint_return constraint167 = null;
 
-		ASN1Parser.sOfComponentType_return sOfComponentType171 = null;
+		ASN1Parser.sOfComponentType_return sOfComponentType169 = null;
 
 
+		CommonTree string_literal166_tree = null;
 		CommonTree string_literal168_tree = null;
-		CommonTree string_literal170_tree = null;
 		RewriteRuleTokenStream stream_140 = new RewriteRuleTokenStream(adaptor, "token 140");
 		RewriteRuleTokenStream stream_130 = new RewriteRuleTokenStream(adaptor, "token 130");
 		RewriteRuleSubtreeStream stream_sOfComponentType = new RewriteRuleSubtreeStream(adaptor, "rule sOfComponentType");
@@ -8014,9 +7999,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:285:13: ( 'SET' ( constraint )? 'OF' sOfComponentType -> ^( SETOF sOfComponentType ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:3: 'SET' ( constraint )? 'OF' sOfComponentType
 			{
-				string_literal168 = (Token) match(input, 140, FOLLOW_140_in_setOfType1861);
+				string_literal166 = (Token) match(input, 140, FOLLOW_140_in_setOfType1855);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_140.add(string_literal168);
+				if (state.backtracking == 0) stream_140.add(string_literal166);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:9: ( constraint )?
@@ -8030,12 +8015,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:286:9: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_setOfType1863);
-						constraint169 = constraint();
+						pushFollow(FOLLOW_constraint_in_setOfType1857);
+						constraint167 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint169.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint167.getTree());
 
 					}
 					break;
@@ -8043,17 +8028,17 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				string_literal170 = (Token) match(input, 130, FOLLOW_130_in_setOfType1866);
+				string_literal168 = (Token) match(input, 130, FOLLOW_130_in_setOfType1860);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_130.add(string_literal170);
+				if (state.backtracking == 0) stream_130.add(string_literal168);
 
 
-				pushFollow(FOLLOW_sOfComponentType_in_setOfType1868);
-				sOfComponentType171 = sOfComponentType();
+				pushFollow(FOLLOW_sOfComponentType_in_setOfType1862);
+				sOfComponentType169 = sOfComponentType();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_sOfComponentType.add(sOfComponentType171.getTree());
+				if (state.backtracking == 0) stream_sOfComponentType.add(sOfComponentType169.getTree());
 
 				// AST REWRITE
 				// elements: constraint, sOfComponentType
@@ -8138,9 +8123,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.namedType_return namedType172 = null;
+		ASN1Parser.namedType_return namedType170 = null;
 
-		ASN1Parser.type_return type173 = null;
+		ASN1Parser.type_return type171 = null;
 
 
 		try {
@@ -8196,12 +8181,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_namedType_in_sOfComponentType1892);
-					namedType172 = namedType();
+					pushFollow(FOLLOW_namedType_in_sOfComponentType1886);
+					namedType170 = namedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, namedType172.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, namedType170.getTree());
 
 				}
 				break;
@@ -8211,12 +8196,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_type_in_sOfComponentType1896);
-					type173 = type();
+					pushFollow(FOLLOW_type_in_sOfComponentType1890);
+					type171 = type();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, type173.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, type171.getTree());
 
 				}
 				break;
@@ -8258,17 +8243,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal174 = null;
+		Token string_literal172 = null;
+		Token char_literal173 = null;
 		Token char_literal175 = null;
-		Token char_literal177 = null;
-		ASN1Parser.componentTypeLists_return componentTypeLists176 = null;
+		ASN1Parser.componentTypeLists_return componentTypeLists174 = null;
 
-		ASN1Parser.constraint_return constraint178 = null;
+		ASN1Parser.constraint_return constraint176 = null;
 
 
-		CommonTree string_literal174_tree = null;
+		CommonTree string_literal172_tree = null;
+		CommonTree char_literal173_tree = null;
 		CommonTree char_literal175_tree = null;
-		CommonTree char_literal177_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_139 = new RewriteRuleTokenStream(adaptor, "token 139");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
@@ -8278,14 +8263,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:291:16: ( 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )? -> ^( SEQUENCE ( componentTypeLists )? ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:3: 'SEQUENCE' '{' ( componentTypeLists )? '}' ( constraint )?
 			{
-				string_literal174 = (Token) match(input, 139, FOLLOW_139_in_sequenceType1909);
+				string_literal172 = (Token) match(input, 139, FOLLOW_139_in_sequenceType1903);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_139.add(string_literal174);
+				if (state.backtracking == 0) stream_139.add(string_literal172);
 
 
-				char_literal175 = (Token) match(input, 159, FOLLOW_159_in_sequenceType1911);
+				char_literal173 = (Token) match(input, 159, FOLLOW_159_in_sequenceType1905);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_159.add(char_literal175);
+				if (state.backtracking == 0) stream_159.add(char_literal173);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:18: ( componentTypeLists )?
@@ -8299,12 +8284,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:18: componentTypeLists
 					{
-						pushFollow(FOLLOW_componentTypeLists_in_sequenceType1913);
-						componentTypeLists176 = componentTypeLists();
+						pushFollow(FOLLOW_componentTypeLists_in_sequenceType1907);
+						componentTypeLists174 = componentTypeLists();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_componentTypeLists.add(componentTypeLists176.getTree());
+						if (state.backtracking == 0) stream_componentTypeLists.add(componentTypeLists174.getTree());
 
 					}
 					break;
@@ -8312,9 +8297,9 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				char_literal177 = (Token) match(input, 161, FOLLOW_161_in_sequenceType1916);
+				char_literal175 = (Token) match(input, 161, FOLLOW_161_in_sequenceType1910);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_161.add(char_literal177);
+				if (state.backtracking == 0) stream_161.add(char_literal175);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:42: ( constraint )?
@@ -8328,12 +8313,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:293:42: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_sequenceType1918);
-						constraint178 = constraint();
+						pushFollow(FOLLOW_constraint_in_sequenceType1912);
+						constraint176 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint178.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint176.getTree());
 
 					}
 					break;
@@ -8429,25 +8414,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal180 = null;
-		ASN1Parser.componentTypeList_return componentTypeList179 = null;
+		Token char_literal178 = null;
+		ASN1Parser.componentTypeList_return componentTypeList177 = null;
 
-		ASN1Parser.extensionAndException_return extensionAndException181 = null;
+		ASN1Parser.extensionAndException_return extensionAndException179 = null;
 
-		ASN1Parser.extensionAdditions_return extensionAdditions182 = null;
+		ASN1Parser.extensionAdditions_return extensionAdditions180 = null;
 
-		ASN1Parser.extensionEndMarker_return extensionEndMarker183 = null;
+		ASN1Parser.extensionEndMarker_return extensionEndMarker181 = null;
 
-		ASN1Parser.componentTypeList_return componentTypeList184 = null;
+		ASN1Parser.componentTypeList_return componentTypeList182 = null;
 
-		ASN1Parser.extensionAndException_return extensionAndException185 = null;
+		ASN1Parser.extensionAndException_return extensionAndException183 = null;
 
-		ASN1Parser.extensionAdditions_return extensionAdditions186 = null;
+		ASN1Parser.extensionAdditions_return extensionAdditions184 = null;
 
-		ASN1Parser.extensionEndMarker_return extensionEndMarker187 = null;
+		ASN1Parser.extensionEndMarker_return extensionEndMarker185 = null;
 
 
-		CommonTree char_literal180_tree = null;
+		CommonTree char_literal178_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAndException = new RewriteRuleSubtreeStream(adaptor, "rule extensionAndException");
 		RewriteRuleSubtreeStream stream_extensionEndMarker = new RewriteRuleSubtreeStream(adaptor, "rule extensionEndMarker");
@@ -8477,12 +8462,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:3: componentTypeList ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
 				{
-					pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1942);
-					componentTypeList179 = componentTypeList();
+					pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1936);
+					componentTypeList177 = componentTypeList();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList179.getTree());
+					if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList177.getTree());
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:21: ( ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
 					int alt51 = 2;
@@ -8495,17 +8480,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:22: ',' extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )?
 						{
-							char_literal180 = (Token) match(input, 83, FOLLOW_83_in_componentTypeLists1945);
+							char_literal178 = (Token) match(input, 83, FOLLOW_83_in_componentTypeLists1939);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal180);
+							if (state.backtracking == 0) stream_83.add(char_literal178);
 
 
-							pushFollow(FOLLOW_extensionAndException_in_componentTypeLists1947);
-							extensionAndException181 = extensionAndException();
+							pushFollow(FOLLOW_extensionAndException_in_componentTypeLists1941);
+							extensionAndException179 = extensionAndException();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException181.getTree());
+							if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException179.getTree());
 
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:48: ( extensionAdditions )?
 							int alt48 = 2;
@@ -8522,12 +8507,12 @@ public class ASN1Parser extends Parser {
 								case 1:
 									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:48: extensionAdditions
 								{
-									pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists1949);
-									extensionAdditions182 = extensionAdditions();
+									pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists1943);
+									extensionAdditions180 = extensionAdditions();
 
 									state._fsp--;
 									if (state.failed) return retval;
-									if (state.backtracking == 0) stream_extensionAdditions.add(extensionAdditions182.getTree());
+									if (state.backtracking == 0) stream_extensionAdditions.add(extensionAdditions180.getTree());
 
 								}
 								break;
@@ -8546,12 +8531,12 @@ public class ASN1Parser extends Parser {
 								case 1:
 									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:69: extensionEndMarker ( componentTypeList )?
 								{
-									pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists1953);
-									extensionEndMarker183 = extensionEndMarker();
+									pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists1947);
+									extensionEndMarker181 = extensionEndMarker();
 
 									state._fsp--;
 									if (state.failed) return retval;
-									if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker183.getTree());
+									if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker181.getTree());
 
 									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:88: ( componentTypeList )?
 									int alt49 = 2;
@@ -8564,12 +8549,12 @@ public class ASN1Parser extends Parser {
 										case 1:
 											// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:296:88: componentTypeList
 										{
-											pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1955);
-											componentTypeList184 = componentTypeList();
+											pushFollow(FOLLOW_componentTypeList_in_componentTypeLists1949);
+											componentTypeList182 = componentTypeList();
 
 											state._fsp--;
 											if (state.failed) return retval;
-											if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList184.getTree());
+											if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList182.getTree());
 
 										}
 										break;
@@ -8590,7 +8575,7 @@ public class ASN1Parser extends Parser {
 
 
 					// AST REWRITE
-					// elements: componentTypeList, extensionEndMarker, extensionAndException, componentTypeList, extensionAdditions
+					// elements: extensionAdditions, extensionEndMarker, extensionAndException, componentTypeList, componentTypeList
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -8614,8 +8599,8 @@ public class ASN1Parser extends Parser {
 								root_1 = (CommonTree) adaptor.becomeRoot(stream_componentTypeList.nextNode(), root_1);
 
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:26: ( extensionAndException ( extensionAdditions )? ( extensionEndMarker ( componentTypeList )? )? )?
-								if (stream_extensionEndMarker.hasNext() || stream_extensionAndException.hasNext()
-								    || stream_extensionAdditions.hasNext()) {
+								if (stream_extensionAdditions.hasNext() || stream_extensionEndMarker.hasNext()
+								    || stream_extensionAndException.hasNext()) {
 									adaptor.addChild(root_1, stream_extensionAndException.nextTree());
 
 									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:49: ( extensionAdditions )?
@@ -8626,7 +8611,7 @@ public class ASN1Parser extends Parser {
 									stream_extensionAdditions.reset();
 
 									// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:69: ( extensionEndMarker ( componentTypeList )? )?
-									if (stream_componentTypeList.hasNext() || stream_extensionEndMarker.hasNext()) {
+									if (stream_extensionEndMarker.hasNext() || stream_componentTypeList.hasNext()) {
 										adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
 										// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:297:89: ( componentTypeList )?
@@ -8637,13 +8622,13 @@ public class ASN1Parser extends Parser {
 										stream_componentTypeList.reset();
 
 									}
-									stream_componentTypeList.reset();
 									stream_extensionEndMarker.reset();
+									stream_componentTypeList.reset();
 
 								}
+								stream_extensionAdditions.reset();
 								stream_extensionEndMarker.reset();
 								stream_extensionAndException.reset();
-								stream_extensionAdditions.reset();
 
 								adaptor.addChild(root_0, root_1);
 							}
@@ -8659,12 +8644,12 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:4: extensionAndException ( extensionAdditions )? ( extensionEndMarker )?
 				{
-					pushFollow(FOLLOW_extensionAndException_in_componentTypeLists2006);
-					extensionAndException185 = extensionAndException();
+					pushFollow(FOLLOW_extensionAndException_in_componentTypeLists2000);
+					extensionAndException183 = extensionAndException();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException185.getTree());
+					if (state.backtracking == 0) stream_extensionAndException.add(extensionAndException183.getTree());
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:26: ( extensionAdditions )?
 					int alt52 = 2;
@@ -8681,12 +8666,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:26: extensionAdditions
 						{
-							pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists2008);
-							extensionAdditions186 = extensionAdditions();
+							pushFollow(FOLLOW_extensionAdditions_in_componentTypeLists2002);
+							extensionAdditions184 = extensionAdditions();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_extensionAdditions.add(extensionAdditions186.getTree());
+							if (state.backtracking == 0) stream_extensionAdditions.add(extensionAdditions184.getTree());
 
 						}
 						break;
@@ -8705,12 +8690,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:298:46: extensionEndMarker
 						{
-							pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists2011);
-							extensionEndMarker187 = extensionEndMarker();
+							pushFollow(FOLLOW_extensionEndMarker_in_componentTypeLists2005);
+							extensionEndMarker185 = extensionEndMarker();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker187.getTree());
+							if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker185.getTree());
 
 						}
 						break;
@@ -8805,25 +8790,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal189 = null;
+		Token char_literal187 = null;
+		ASN1Parser.componentType_return componentType186 = null;
+
 		ASN1Parser.componentType_return componentType188 = null;
 
-		ASN1Parser.componentType_return componentType190 = null;
 
-
-		CommonTree char_literal189_tree = null;
+		CommonTree char_literal187_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_componentType = new RewriteRuleSubtreeStream(adaptor, "rule componentType");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:301:20: ( componentType ( ',' componentType )* -> ^( VEC ( componentType )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:3: componentType ( ',' componentType )*
 			{
-				pushFollow(FOLLOW_componentType_in_componentTypeList2040);
-				componentType188 = componentType();
+				pushFollow(FOLLOW_componentType_in_componentTypeList2034);
+				componentType186 = componentType();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_componentType.add(componentType188.getTree());
+				if (state.backtracking == 0) stream_componentType.add(componentType186.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:17: ( ',' componentType )*
 				loop55:
@@ -8846,17 +8831,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:302:18: ',' componentType
 						{
-							char_literal189 = (Token) match(input, 83, FOLLOW_83_in_componentTypeList2043);
+							char_literal187 = (Token) match(input, 83, FOLLOW_83_in_componentTypeList2037);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal189);
+							if (state.backtracking == 0) stream_83.add(char_literal187);
 
 
-							pushFollow(FOLLOW_componentType_in_componentTypeList2045);
-							componentType190 = componentType();
+							pushFollow(FOLLOW_componentType_in_componentTypeList2039);
+							componentType188 = componentType();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_componentType.add(componentType190.getTree());
+							if (state.backtracking == 0) stream_componentType.add(componentType188.getTree());
 
 						}
 						break;
@@ -8950,17 +8935,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal193 = null;
-		Token string_literal194 = null;
-		ASN1Parser.namedType_return namedType191 = null;
+		Token string_literal191 = null;
+		Token string_literal192 = null;
+		ASN1Parser.namedType_return namedType189 = null;
 
-		ASN1Parser.componentTypeOption_return componentTypeOption192 = null;
+		ASN1Parser.componentTypeOption_return componentTypeOption190 = null;
 
-		ASN1Parser.type_return type195 = null;
+		ASN1Parser.type_return type193 = null;
 
 
-		CommonTree string_literal193_tree = null;
-		CommonTree string_literal194_tree = null;
+		CommonTree string_literal191_tree = null;
+		CommonTree string_literal192_tree = null;
 		RewriteRuleTokenStream stream_102 = new RewriteRuleTokenStream(adaptor, "token 102");
 		RewriteRuleTokenStream stream_130 = new RewriteRuleTokenStream(adaptor, "token 130");
 		RewriteRuleSubtreeStream stream_namedType = new RewriteRuleSubtreeStream(adaptor, "rule namedType");
@@ -8990,12 +8975,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:3: namedType ( componentTypeOption )?
 				{
-					pushFollow(FOLLOW_namedType_in_componentType2069);
-					namedType191 = namedType();
+					pushFollow(FOLLOW_namedType_in_componentType2063);
+					namedType189 = namedType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_namedType.add(namedType191.getTree());
+					if (state.backtracking == 0) stream_namedType.add(namedType189.getTree());
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:13: ( componentTypeOption )?
 					int alt56 = 2;
@@ -9008,12 +8993,12 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:305:13: componentTypeOption
 						{
-							pushFollow(FOLLOW_componentTypeOption_in_componentType2071);
-							componentTypeOption192 = componentTypeOption();
+							pushFollow(FOLLOW_componentTypeOption_in_componentType2065);
+							componentTypeOption190 = componentTypeOption();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_componentTypeOption.add(componentTypeOption192.getTree());
+							if (state.backtracking == 0) stream_componentTypeOption.add(componentTypeOption190.getTree());
 
 						}
 						break;
@@ -9071,22 +9056,22 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:306:4: 'COMPONENTS' 'OF' type
 				{
-					string_literal193 = (Token) match(input, 102, FOLLOW_102_in_componentType2090);
+					string_literal191 = (Token) match(input, 102, FOLLOW_102_in_componentType2084);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_102.add(string_literal193);
+					if (state.backtracking == 0) stream_102.add(string_literal191);
 
 
-					string_literal194 = (Token) match(input, 130, FOLLOW_130_in_componentType2092);
+					string_literal192 = (Token) match(input, 130, FOLLOW_130_in_componentType2086);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_130.add(string_literal194);
+					if (state.backtracking == 0) stream_130.add(string_literal192);
 
 
-					pushFollow(FOLLOW_type_in_componentType2094);
-					type195 = type();
+					pushFollow(FOLLOW_type_in_componentType2088);
+					type193 = type();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_type.add(type195.getTree());
+					if (state.backtracking == 0) stream_type.add(type193.getTree());
 
 					// AST REWRITE
 					// elements: type
@@ -9166,13 +9151,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal196 = null;
-		Token string_literal197 = null;
-		ASN1Parser.value_return value198 = null;
+		Token string_literal194 = null;
+		Token string_literal195 = null;
+		ASN1Parser.value_return value196 = null;
 
 
-		CommonTree string_literal196_tree = null;
-		CommonTree string_literal197_tree = null;
+		CommonTree string_literal194_tree = null;
+		CommonTree string_literal195_tree = null;
 		RewriteRuleTokenStream stream_132 = new RewriteRuleTokenStream(adaptor, "token 132");
 		RewriteRuleTokenStream stream_103 = new RewriteRuleTokenStream(adaptor, "token 103");
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
@@ -9200,9 +9185,9 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:309:3: 'OPTIONAL'
 				{
-					string_literal196 = (Token) match(input, 132, FOLLOW_132_in_componentTypeOption2114);
+					string_literal194 = (Token) match(input, 132, FOLLOW_132_in_componentTypeOption2108);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_132.add(string_literal196);
+					if (state.backtracking == 0) stream_132.add(string_literal194);
 
 
 					// AST REWRITE
@@ -9246,17 +9231,17 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:310:4: 'DEFAULT' value
 				{
-					string_literal197 = (Token) match(input, 103, FOLLOW_103_in_componentTypeOption2126);
+					string_literal195 = (Token) match(input, 103, FOLLOW_103_in_componentTypeOption2120);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_103.add(string_literal197);
+					if (state.backtracking == 0) stream_103.add(string_literal195);
 
 
-					pushFollow(FOLLOW_value_in_componentTypeOption2128);
-					value198 = value();
+					pushFollow(FOLLOW_value_in_componentTypeOption2122);
+					value196 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_value.add(value198.getTree());
+					if (state.backtracking == 0) stream_value.add(value196.getTree());
 
 					// AST REWRITE
 					// elements: value
@@ -9336,32 +9321,32 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token char_literal197 = null;
 		Token char_literal199 = null;
-		Token char_literal201 = null;
+		ASN1Parser.extensionAddition_return extensionAddition198 = null;
+
 		ASN1Parser.extensionAddition_return extensionAddition200 = null;
 
-		ASN1Parser.extensionAddition_return extensionAddition202 = null;
 
-
+		CommonTree char_literal197_tree = null;
 		CommonTree char_literal199_tree = null;
-		CommonTree char_literal201_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionAddition = new RewriteRuleSubtreeStream(adaptor, "rule extensionAddition");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:312:21: ( ',' extensionAddition ( ',' extensionAddition )? -> ^( VEC ( extensionAddition )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:3: ',' extensionAddition ( ',' extensionAddition )?
 			{
-				char_literal199 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2149);
+				char_literal197 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2143);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_83.add(char_literal199);
+				if (state.backtracking == 0) stream_83.add(char_literal197);
 
 
-				pushFollow(FOLLOW_extensionAddition_in_extensionAdditions2151);
-				extensionAddition200 = extensionAddition();
+				pushFollow(FOLLOW_extensionAddition_in_extensionAdditions2145);
+				extensionAddition198 = extensionAddition();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_extensionAddition.add(extensionAddition200.getTree());
+				if (state.backtracking == 0) stream_extensionAddition.add(extensionAddition198.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:25: ( ',' extensionAddition )?
 				int alt59 = 2;
@@ -9378,17 +9363,17 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:313:26: ',' extensionAddition
 					{
-						char_literal201 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2154);
+						char_literal199 = (Token) match(input, 83, FOLLOW_83_in_extensionAdditions2148);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_83.add(char_literal201);
+						if (state.backtracking == 0) stream_83.add(char_literal199);
 
 
-						pushFollow(FOLLOW_extensionAddition_in_extensionAdditions2156);
-						extensionAddition202 = extensionAddition();
+						pushFollow(FOLLOW_extensionAddition_in_extensionAdditions2150);
+						extensionAddition200 = extensionAddition();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_extensionAddition.add(extensionAddition202.getTree());
+						if (state.backtracking == 0) stream_extensionAddition.add(extensionAddition200.getTree());
 
 					}
 					break;
@@ -9479,9 +9464,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.componentType_return componentType203 = null;
+		ASN1Parser.componentType_return componentType201 = null;
 
-		ASN1Parser.extensionAdditionGroup_return extensionAdditionGroup204 = null;
+		ASN1Parser.extensionAdditionGroup_return extensionAdditionGroup202 = null;
 
 
 		try {
@@ -9511,12 +9496,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_componentType_in_extensionAddition2181);
-					componentType203 = componentType();
+					pushFollow(FOLLOW_componentType_in_extensionAddition2175);
+					componentType201 = componentType();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, componentType203.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, componentType201.getTree());
 
 				}
 				break;
@@ -9526,12 +9511,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_extensionAdditionGroup_in_extensionAddition2185);
-					extensionAdditionGroup204 = extensionAdditionGroup();
+					pushFollow(FOLLOW_extensionAdditionGroup_in_extensionAddition2179);
+					extensionAdditionGroup202 = extensionAdditionGroup();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, extensionAdditionGroup204.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, extensionAdditionGroup202.getTree());
 
 				}
 				break;
@@ -9573,17 +9558,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal205 = null;
-		Token INT206 = null;
-		Token char_literal207 = null;
-		Token string_literal209 = null;
-		ASN1Parser.componentTypeList_return componentTypeList208 = null;
+		Token string_literal203 = null;
+		Token INT204 = null;
+		Token char_literal205 = null;
+		Token string_literal207 = null;
+		ASN1Parser.componentTypeList_return componentTypeList206 = null;
 
 
-		CommonTree string_literal205_tree = null;
-		CommonTree INT206_tree = null;
-		CommonTree char_literal207_tree = null;
-		CommonTree string_literal209_tree = null;
+		CommonTree string_literal203_tree = null;
+		CommonTree INT204_tree = null;
+		CommonTree char_literal205_tree = null;
+		CommonTree string_literal207_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_157 = new RewriteRuleTokenStream(adaptor, "token 157");
 		RewriteRuleTokenStream stream_87 = new RewriteRuleTokenStream(adaptor, "token 87");
@@ -9593,9 +9578,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:317:25: ( '[[' ( INT ':' )? componentTypeList ']]' -> ^( EXTENSION_ADDITION_GROUP ( INT )? componentTypeList ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:3: '[[' ( INT ':' )? componentTypeList ']]'
 			{
-				string_literal205 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionGroup2196);
+				string_literal203 = (Token) match(input, 155, FOLLOW_155_in_extensionAdditionGroup2190);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_155.add(string_literal205);
+				if (state.backtracking == 0) stream_155.add(string_literal203);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:8: ( INT ':' )?
@@ -9609,14 +9594,14 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:318:9: INT ':'
 					{
-						INT206 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionGroup2199);
+						INT204 = (Token) match(input, INT, FOLLOW_INT_in_extensionAdditionGroup2193);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_INT.add(INT206);
+						if (state.backtracking == 0) stream_INT.add(INT204);
 
 
-						char_literal207 = (Token) match(input, 87, FOLLOW_87_in_extensionAdditionGroup2201);
+						char_literal205 = (Token) match(input, 87, FOLLOW_87_in_extensionAdditionGroup2195);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_87.add(char_literal207);
+						if (state.backtracking == 0) stream_87.add(char_literal205);
 
 
 					}
@@ -9625,20 +9610,20 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_componentTypeList_in_extensionAdditionGroup2205);
-				componentTypeList208 = componentTypeList();
+				pushFollow(FOLLOW_componentTypeList_in_extensionAdditionGroup2199);
+				componentTypeList206 = componentTypeList();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList208.getTree());
+				if (state.backtracking == 0) stream_componentTypeList.add(componentTypeList206.getTree());
 
-				string_literal209 = (Token) match(input, 157, FOLLOW_157_in_extensionAdditionGroup2207);
+				string_literal207 = (Token) match(input, 157, FOLLOW_157_in_extensionAdditionGroup2201);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_157.add(string_literal209);
+				if (state.backtracking == 0) stream_157.add(string_literal207);
 
 
 				// AST REWRITE
-				// elements: INT, componentTypeList
+				// elements: componentTypeList, INT
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -9723,11 +9708,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal210 = null;
-		Token string_literal211 = null;
+		Token char_literal208 = null;
+		Token string_literal209 = null;
 
-		CommonTree char_literal210_tree = null;
-		CommonTree string_literal211_tree = null;
+		CommonTree char_literal208_tree = null;
+		CommonTree string_literal209_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleTokenStream stream_86 = new RewriteRuleTokenStream(adaptor, "token 86");
 
@@ -9735,14 +9720,14 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:320:21: ( ',' '...' -> ^( EXTENSION_END_MARKER ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:321:3: ',' '...'
 			{
-				char_literal210 = (Token) match(input, 83, FOLLOW_83_in_extensionEndMarker2230);
+				char_literal208 = (Token) match(input, 83, FOLLOW_83_in_extensionEndMarker2224);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_83.add(char_literal210);
+				if (state.backtracking == 0) stream_83.add(char_literal208);
 
 
-				string_literal211 = (Token) match(input, 86, FOLLOW_86_in_extensionEndMarker2232);
+				string_literal209 = (Token) match(input, 86, FOLLOW_86_in_extensionEndMarker2226);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_86.add(string_literal211);
+				if (state.backtracking == 0) stream_86.add(string_literal209);
 
 
 				// AST REWRITE
@@ -9819,20 +9804,20 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal212 = null;
-		ASN1Parser.exceptionSpec_return exceptionSpec213 = null;
+		Token string_literal210 = null;
+		ASN1Parser.exceptionSpec_return exceptionSpec211 = null;
 
 
-		CommonTree string_literal212_tree = null;
+		CommonTree string_literal210_tree = null;
 		RewriteRuleTokenStream stream_86 = new RewriteRuleTokenStream(adaptor, "token 86");
 		RewriteRuleSubtreeStream stream_exceptionSpec = new RewriteRuleSubtreeStream(adaptor, "rule exceptionSpec");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:323:24: ( '...' ( exceptionSpec )? -> ^( EXTENSION_AND_EXCEPTION ( exceptionSpec )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:3: '...' ( exceptionSpec )?
 			{
-				string_literal212 = (Token) match(input, 86, FOLLOW_86_in_extensionAndException2251);
+				string_literal210 = (Token) match(input, 86, FOLLOW_86_in_extensionAndException2245);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_86.add(string_literal212);
+				if (state.backtracking == 0) stream_86.add(string_literal210);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:9: ( exceptionSpec )?
@@ -9846,12 +9831,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:324:9: exceptionSpec
 					{
-						pushFollow(FOLLOW_exceptionSpec_in_extensionAndException2253);
-						exceptionSpec213 = exceptionSpec();
+						pushFollow(FOLLOW_exceptionSpec_in_extensionAndException2247);
+						exceptionSpec211 = exceptionSpec();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec213.getTree());
+						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec211.getTree());
 
 					}
 					break;
@@ -9940,23 +9925,23 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token char_literal212 = null;
 		Token char_literal214 = null;
 		Token char_literal216 = null;
 		Token char_literal218 = null;
-		Token char_literal220 = null;
-		Token INT221 = null;
-		ASN1Parser.definedValue_return definedValue215 = null;
+		Token INT219 = null;
+		ASN1Parser.definedValue_return definedValue213 = null;
 
-		ASN1Parser.type_return type217 = null;
+		ASN1Parser.type_return type215 = null;
 
-		ASN1Parser.value_return value219 = null;
+		ASN1Parser.value_return value217 = null;
 
 
+		CommonTree char_literal212_tree = null;
 		CommonTree char_literal214_tree = null;
 		CommonTree char_literal216_tree = null;
 		CommonTree char_literal218_tree = null;
-		CommonTree char_literal220_tree = null;
-		CommonTree INT221_tree = null;
+		CommonTree INT219_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_80 = new RewriteRuleTokenStream(adaptor, "token 80");
 		RewriteRuleTokenStream stream_87 = new RewriteRuleTokenStream(adaptor, "token 87");
@@ -10096,17 +10081,17 @@ public class ASN1Parser extends Parser {
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:3: ( '!' definedValue )
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:327:4: '!' definedValue
 					{
-						char_literal214 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2276);
+						char_literal212 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2270);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_80.add(char_literal214);
+						if (state.backtracking == 0) stream_80.add(char_literal212);
 
 
-						pushFollow(FOLLOW_definedValue_in_exceptionSpec2278);
-						definedValue215 = definedValue();
+						pushFollow(FOLLOW_definedValue_in_exceptionSpec2272);
+						definedValue213 = definedValue();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_definedValue.add(definedValue215.getTree());
+						if (state.backtracking == 0) stream_definedValue.add(definedValue213.getTree());
 
 					}
 
@@ -10157,35 +10142,35 @@ public class ASN1Parser extends Parser {
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:5: ( '!' type ':' value )
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:328:7: '!' type ':' value
 					{
-						char_literal216 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2296);
+						char_literal214 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2290);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_80.add(char_literal216);
+						if (state.backtracking == 0) stream_80.add(char_literal214);
 
 
-						pushFollow(FOLLOW_type_in_exceptionSpec2298);
-						type217 = type();
+						pushFollow(FOLLOW_type_in_exceptionSpec2292);
+						type215 = type();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_type.add(type217.getTree());
+						if (state.backtracking == 0) stream_type.add(type215.getTree());
 
-						char_literal218 = (Token) match(input, 87, FOLLOW_87_in_exceptionSpec2300);
+						char_literal216 = (Token) match(input, 87, FOLLOW_87_in_exceptionSpec2294);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_87.add(char_literal218);
+						if (state.backtracking == 0) stream_87.add(char_literal216);
 
 
-						pushFollow(FOLLOW_value_in_exceptionSpec2302);
-						value219 = value();
+						pushFollow(FOLLOW_value_in_exceptionSpec2296);
+						value217 = value();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_value.add(value219.getTree());
+						if (state.backtracking == 0) stream_value.add(value217.getTree());
 
 					}
 
 
 					// AST REWRITE
-					// elements: value, type
+					// elements: type, value
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -10232,14 +10217,14 @@ public class ASN1Parser extends Parser {
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:5: ( '!' INT )
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:329:7: '!' INT
 					{
-						char_literal220 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2322);
+						char_literal218 = (Token) match(input, 80, FOLLOW_80_in_exceptionSpec2316);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_80.add(char_literal220);
+						if (state.backtracking == 0) stream_80.add(char_literal218);
 
 
-						INT221 = (Token) match(input, INT, FOLLOW_INT_in_exceptionSpec2324);
+						INT219 = (Token) match(input, INT, FOLLOW_INT_in_exceptionSpec2318);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_INT.add(INT221);
+						if (state.backtracking == 0) stream_INT.add(INT219);
 
 
 					}
@@ -10326,17 +10311,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token string_literal220 = null;
 		Token string_literal222 = null;
-		Token string_literal224 = null;
-		Token char_literal226 = null;
-		ASN1Parser.constraint_return constraint223 = null;
+		Token char_literal224 = null;
+		ASN1Parser.constraint_return constraint221 = null;
 
-		ASN1Parser.sOfComponentType_return sOfComponentType225 = null;
+		ASN1Parser.sOfComponentType_return sOfComponentType223 = null;
 
 
+		CommonTree string_literal220_tree = null;
 		CommonTree string_literal222_tree = null;
-		CommonTree string_literal224_tree = null;
-		CommonTree char_literal226_tree = null;
+		CommonTree char_literal224_tree = null;
 		RewriteRuleTokenStream stream_139 = new RewriteRuleTokenStream(adaptor, "token 139");
 		RewriteRuleTokenStream stream_130 = new RewriteRuleTokenStream(adaptor, "token 130");
 		RewriteRuleTokenStream stream_89 = new RewriteRuleTokenStream(adaptor, "token 89");
@@ -10346,9 +10331,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:332:18: ( 'SEQUENCE' ( constraint )? 'OF' sOfComponentType ( ';' )? -> ^( SEQUENCEOF sOfComponentType ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:2: 'SEQUENCE' ( constraint )? 'OF' sOfComponentType ( ';' )?
 			{
-				string_literal222 = (Token) match(input, 139, FOLLOW_139_in_sequenceOfType2348);
+				string_literal220 = (Token) match(input, 139, FOLLOW_139_in_sequenceOfType2342);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_139.add(string_literal222);
+				if (state.backtracking == 0) stream_139.add(string_literal220);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:13: ( constraint )?
@@ -10362,12 +10347,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:13: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_sequenceOfType2350);
-						constraint223 = constraint();
+						pushFollow(FOLLOW_constraint_in_sequenceOfType2344);
+						constraint221 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint223.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint221.getTree());
 
 					}
 					break;
@@ -10375,17 +10360,17 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				string_literal224 = (Token) match(input, 130, FOLLOW_130_in_sequenceOfType2353);
+				string_literal222 = (Token) match(input, 130, FOLLOW_130_in_sequenceOfType2347);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_130.add(string_literal224);
+				if (state.backtracking == 0) stream_130.add(string_literal222);
 
 
-				pushFollow(FOLLOW_sOfComponentType_in_sequenceOfType2355);
-				sOfComponentType225 = sOfComponentType();
+				pushFollow(FOLLOW_sOfComponentType_in_sequenceOfType2349);
+				sOfComponentType223 = sOfComponentType();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_sOfComponentType.add(sOfComponentType225.getTree());
+				if (state.backtracking == 0) stream_sOfComponentType.add(sOfComponentType223.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:47: ( ';' )?
 				int alt65 = 2;
@@ -10398,9 +10383,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:333:47: ';'
 					{
-						char_literal226 = (Token) match(input, 89, FOLLOW_89_in_sequenceOfType2357);
+						char_literal224 = (Token) match(input, 89, FOLLOW_89_in_sequenceOfType2351);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_89.add(char_literal226);
+						if (state.backtracking == 0) stream_89.add(char_literal224);
 
 
 					}
@@ -10410,7 +10395,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: sOfComponentType, constraint
+				// elements: constraint, sOfComponentType
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -10492,28 +10477,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID227 = null;
-		ASN1Parser.type_return type228 = null;
+		Token ID225 = null;
+		ASN1Parser.type_return type226 = null;
 
 
-		CommonTree ID227_tree = null;
+		CommonTree ID225_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:336:2: ( ID type -> ^( NAMED_TYPE ID type ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:337:2: ID type
 			{
-				ID227 = (Token) match(input, ID, FOLLOW_ID_in_namedType2379);
+				ID225 = (Token) match(input, ID, FOLLOW_ID_in_namedType2373);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID227);
+				if (state.backtracking == 0) stream_ID.add(ID225);
 
 
-				pushFollow(FOLLOW_type_in_namedType2381);
-				type228 = type();
+				pushFollow(FOLLOW_type_in_namedType2375);
+				type226 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type228.getTree());
+				if (state.backtracking == 0) stream_type.add(type226.getTree());
 
 				// AST REWRITE
 				// elements: type, ID
@@ -10596,19 +10581,19 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal229 = null;
-		Token char_literal232 = null;
-		ASN1Parser.tagClass_return tagClass230 = null;
+		Token char_literal227 = null;
+		Token char_literal230 = null;
+		ASN1Parser.tagClass_return tagClass228 = null;
 
-		ASN1Parser.classNumber_return classNumber231 = null;
+		ASN1Parser.classNumber_return classNumber229 = null;
 
-		ASN1Parser.taggingMethod_return taggingMethod233 = null;
+		ASN1Parser.taggingMethod_return taggingMethod231 = null;
 
-		ASN1Parser.type_return type234 = null;
+		ASN1Parser.type_return type232 = null;
 
 
-		CommonTree char_literal229_tree = null;
-		CommonTree char_literal232_tree = null;
+		CommonTree char_literal227_tree = null;
+		CommonTree char_literal230_tree = null;
 		RewriteRuleTokenStream stream_156 = new RewriteRuleTokenStream(adaptor, "token 156");
 		RewriteRuleTokenStream stream_154 = new RewriteRuleTokenStream(adaptor, "token 154");
 		RewriteRuleSubtreeStream stream_taggingMethod = new RewriteRuleSubtreeStream(adaptor, "rule taggingMethod");
@@ -10619,9 +10604,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:339:14: ( '[' ( tagClass )? classNumber ']' ( taggingMethod )? type -> ^( TAGGED_TYPE classNumber ( tagClass )? ( taggingMethod )? type ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:3: '[' ( tagClass )? classNumber ']' ( taggingMethod )? type
 			{
-				char_literal229 = (Token) match(input, 154, FOLLOW_154_in_taggedType2403);
+				char_literal227 = (Token) match(input, 154, FOLLOW_154_in_taggedType2397);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_154.add(char_literal229);
+				if (state.backtracking == 0) stream_154.add(char_literal227);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:7: ( tagClass )?
@@ -10635,12 +10620,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:7: tagClass
 					{
-						pushFollow(FOLLOW_tagClass_in_taggedType2405);
-						tagClass230 = tagClass();
+						pushFollow(FOLLOW_tagClass_in_taggedType2399);
+						tagClass228 = tagClass();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_tagClass.add(tagClass230.getTree());
+						if (state.backtracking == 0) stream_tagClass.add(tagClass228.getTree());
 
 					}
 					break;
@@ -10648,16 +10633,16 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_classNumber_in_taggedType2408);
-				classNumber231 = classNumber();
+				pushFollow(FOLLOW_classNumber_in_taggedType2402);
+				classNumber229 = classNumber();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_classNumber.add(classNumber231.getTree());
+				if (state.backtracking == 0) stream_classNumber.add(classNumber229.getTree());
 
-				char_literal232 = (Token) match(input, 156, FOLLOW_156_in_taggedType2410);
+				char_literal230 = (Token) match(input, 156, FOLLOW_156_in_taggedType2404);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_156.add(char_literal232);
+				if (state.backtracking == 0) stream_156.add(char_literal230);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:33: ( taggingMethod )?
@@ -10671,12 +10656,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:340:33: taggingMethod
 					{
-						pushFollow(FOLLOW_taggingMethod_in_taggedType2412);
-						taggingMethod233 = taggingMethod();
+						pushFollow(FOLLOW_taggingMethod_in_taggedType2406);
+						taggingMethod231 = taggingMethod();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod233.getTree());
+						if (state.backtracking == 0) stream_taggingMethod.add(taggingMethod231.getTree());
 
 					}
 					break;
@@ -10684,15 +10669,15 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_type_in_taggedType2415);
-				type234 = type();
+				pushFollow(FOLLOW_type_in_taggedType2409);
+				type232 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type234.getTree());
+				if (state.backtracking == 0) stream_type.add(type232.getTree());
 
 				// AST REWRITE
-				// elements: classNumber, type, tagClass, taggingMethod
+				// elements: taggingMethod, tagClass, type, classNumber
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -10783,11 +10768,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token INT235 = null;
-		ASN1Parser.definedValue_return definedValue236 = null;
+		Token INT233 = null;
+		ASN1Parser.definedValue_return definedValue234 = null;
 
 
-		CommonTree INT235_tree = null;
+		CommonTree INT233_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:342:15: ( INT | definedValue )
@@ -10816,13 +10801,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					INT235 = (Token) match(input, INT, FOLLOW_INT_in_classNumber2442);
+					INT233 = (Token) match(input, INT, FOLLOW_INT_in_classNumber2436);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						INT235_tree =
-						(CommonTree) adaptor.create(INT235)
+						INT233_tree =
+						(CommonTree) adaptor.create(INT233)
 						;
-						adaptor.addChild(root_0, INT235_tree);
+						adaptor.addChild(root_0, INT233_tree);
 					}
 
 				}
@@ -10833,12 +10818,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_definedValue_in_classNumber2446);
-					definedValue236 = definedValue();
+					pushFollow(FOLLOW_definedValue_in_classNumber2440);
+					definedValue234 = definedValue();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, definedValue236.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, definedValue234.getTree());
 
 				}
 				break;
@@ -10880,9 +10865,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set237 = null;
+		Token set235 = null;
 
-		CommonTree set237_tree = null;
+		CommonTree set235_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:345:10: ( 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE' )
@@ -10891,14 +10876,14 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set237 = (Token) input.LT(1);
+				set235 = (Token) input.LT(1);
 
 				if (input.LA(1) == 93 || input.LA(1) == 136 || input.LA(1) == 148) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set237)
+						                (CommonTree) adaptor.create(set235)
 						                );
 					}
 					state.errorRecovery = false;
@@ -10951,20 +10936,20 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal238 = null;
-		ASN1Parser.constraint_return constraint239 = null;
+		Token string_literal236 = null;
+		ASN1Parser.constraint_return constraint237 = null;
 
 
-		CommonTree string_literal238_tree = null;
+		CommonTree string_literal236_tree = null;
 		RewriteRuleTokenStream stream_138 = new RewriteRuleTokenStream(adaptor, "token 138");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:348:12: ( 'REAL' ( constraint )? -> ^( REAL ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:3: 'REAL' ( constraint )?
 			{
-				string_literal238 = (Token) match(input, 138, FOLLOW_138_in_realType2475);
+				string_literal236 = (Token) match(input, 138, FOLLOW_138_in_realType2469);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_138.add(string_literal238);
+				if (state.backtracking == 0) stream_138.add(string_literal236);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:10: ( constraint )?
@@ -10978,12 +10963,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:349:10: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_realType2477);
-						constraint239 = constraint();
+						pushFollow(FOLLOW_constraint_in_realType2471);
+						constraint237 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint239.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint237.getTree());
 
 					}
 					break;
@@ -11072,17 +11057,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal240 = null;
+		Token string_literal238 = null;
+		Token char_literal240 = null;
 		Token char_literal242 = null;
-		Token char_literal244 = null;
-		ASN1Parser.constraint_return constraint241 = null;
+		ASN1Parser.constraint_return constraint239 = null;
 
-		ASN1Parser.namedNumberList_return namedNumberList243 = null;
+		ASN1Parser.namedNumberList_return namedNumberList241 = null;
 
 
-		CommonTree string_literal240_tree = null;
+		CommonTree string_literal238_tree = null;
+		CommonTree char_literal240_tree = null;
 		CommonTree char_literal242_tree = null;
-		CommonTree char_literal244_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_121 = new RewriteRuleTokenStream(adaptor, "token 121");
 		RewriteRuleTokenStream stream_159 = new RewriteRuleTokenStream(adaptor, "token 159");
@@ -11092,9 +11077,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:351:15: ( 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )? -> ^( INTEGER ( namedNumberList )? ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:3: 'INTEGER' ( constraint )? ( '{' namedNumberList '}' )?
 			{
-				string_literal240 = (Token) match(input, 121, FOLLOW_121_in_integerType2499);
+				string_literal238 = (Token) match(input, 121, FOLLOW_121_in_integerType2493);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_121.add(string_literal240);
+				if (state.backtracking == 0) stream_121.add(string_literal238);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:13: ( constraint )?
@@ -11108,12 +11093,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:13: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_integerType2501);
-						constraint241 = constraint();
+						pushFollow(FOLLOW_constraint_in_integerType2495);
+						constraint239 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint241.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint239.getTree());
 
 					}
 					break;
@@ -11132,21 +11117,21 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:352:26: '{' namedNumberList '}'
 					{
-						char_literal242 = (Token) match(input, 159, FOLLOW_159_in_integerType2505);
+						char_literal240 = (Token) match(input, 159, FOLLOW_159_in_integerType2499);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_159.add(char_literal242);
+						if (state.backtracking == 0) stream_159.add(char_literal240);
 
 
-						pushFollow(FOLLOW_namedNumberList_in_integerType2507);
-						namedNumberList243 = namedNumberList();
+						pushFollow(FOLLOW_namedNumberList_in_integerType2501);
+						namedNumberList241 = namedNumberList();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_namedNumberList.add(namedNumberList243.getTree());
+						if (state.backtracking == 0) stream_namedNumberList.add(namedNumberList241.getTree());
 
-						char_literal244 = (Token) match(input, 161, FOLLOW_161_in_integerType2509);
+						char_literal242 = (Token) match(input, 161, FOLLOW_161_in_integerType2503);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_161.add(char_literal244);
+						if (state.backtracking == 0) stream_161.add(char_literal242);
 
 
 					}
@@ -11243,25 +11228,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal246 = null;
+		Token char_literal244 = null;
+		ASN1Parser.namedNumber_return namedNumber243 = null;
+
 		ASN1Parser.namedNumber_return namedNumber245 = null;
 
-		ASN1Parser.namedNumber_return namedNumber247 = null;
 
-
-		CommonTree char_literal246_tree = null;
+		CommonTree char_literal244_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedNumber = new RewriteRuleSubtreeStream(adaptor, "rule namedNumber");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:354:18: ( namedNumber ( ',' namedNumber )* -> ^( VEC ( namedNumber )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:3: namedNumber ( ',' namedNumber )*
 			{
-				pushFollow(FOLLOW_namedNumber_in_namedNumberList2534);
-				namedNumber245 = namedNumber();
+				pushFollow(FOLLOW_namedNumber_in_namedNumberList2528);
+				namedNumber243 = namedNumber();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_namedNumber.add(namedNumber245.getTree());
+				if (state.backtracking == 0) stream_namedNumber.add(namedNumber243.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:15: ( ',' namedNumber )*
 				loop72:
@@ -11278,17 +11263,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:355:16: ',' namedNumber
 						{
-							char_literal246 = (Token) match(input, 83, FOLLOW_83_in_namedNumberList2537);
+							char_literal244 = (Token) match(input, 83, FOLLOW_83_in_namedNumberList2531);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal246);
+							if (state.backtracking == 0) stream_83.add(char_literal244);
 
 
-							pushFollow(FOLLOW_namedNumber_in_namedNumberList2539);
-							namedNumber247 = namedNumber();
+							pushFollow(FOLLOW_namedNumber_in_namedNumberList2533);
+							namedNumber245 = namedNumber();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_namedNumber.add(namedNumber247.getTree());
+							if (state.backtracking == 0) stream_namedNumber.add(namedNumber245.getTree());
 
 						}
 						break;
@@ -11382,15 +11367,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID248 = null;
+		Token ID246 = null;
+		Token char_literal247 = null;
+		Token INT248 = null;
 		Token char_literal249 = null;
-		Token INT250 = null;
-		Token char_literal251 = null;
 
-		CommonTree ID248_tree = null;
+		CommonTree ID246_tree = null;
+		CommonTree char_literal247_tree = null;
+		CommonTree INT248_tree = null;
 		CommonTree char_literal249_tree = null;
-		CommonTree INT250_tree = null;
-		CommonTree char_literal251_tree = null;
 		RewriteRuleTokenStream stream_INT = new RewriteRuleTokenStream(adaptor, "token INT");
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
@@ -11400,24 +11385,24 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:357:14: ( ID '(' INT ')' -> ^( NAME_NUMBER_FORM ID INT ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:358:3: ID '(' INT ')'
 			{
-				ID248 = (Token) match(input, ID, FOLLOW_ID_in_namedNumber2561);
+				ID246 = (Token) match(input, ID, FOLLOW_ID_in_namedNumber2555);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID248);
+				if (state.backtracking == 0) stream_ID.add(ID246);
 
 
-				char_literal249 = (Token) match(input, 81, FOLLOW_81_in_namedNumber2563);
+				char_literal247 = (Token) match(input, 81, FOLLOW_81_in_namedNumber2557);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_81.add(char_literal249);
+				if (state.backtracking == 0) stream_81.add(char_literal247);
 
 
-				INT250 = (Token) match(input, INT, FOLLOW_INT_in_namedNumber2565);
+				INT248 = (Token) match(input, INT, FOLLOW_INT_in_namedNumber2559);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_INT.add(INT250);
+				if (state.backtracking == 0) stream_INT.add(INT248);
 
 
-				char_literal251 = (Token) match(input, 82, FOLLOW_82_in_namedNumber2567);
+				char_literal249 = (Token) match(input, 82, FOLLOW_82_in_namedNumber2561);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_82.add(char_literal251);
+				if (state.backtracking == 0) stream_82.add(char_literal249);
 
 
 				// AST REWRITE
@@ -11504,20 +11489,20 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal252 = null;
-		ASN1Parser.constraint_return constraint253 = null;
+		Token string_literal250 = null;
+		ASN1Parser.constraint_return constraint251 = null;
 
 
-		CommonTree string_literal252_tree = null;
+		CommonTree string_literal250_tree = null;
 		RewriteRuleTokenStream stream_98 = new RewriteRuleTokenStream(adaptor, "token 98");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:360:15: ( 'BOOLEAN' ( constraint )? -> ^( BOOLEAN ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:3: 'BOOLEAN' ( constraint )?
 			{
-				string_literal252 = (Token) match(input, 98, FOLLOW_98_in_booleanType2589);
+				string_literal250 = (Token) match(input, 98, FOLLOW_98_in_booleanType2583);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_98.add(string_literal252);
+				if (state.backtracking == 0) stream_98.add(string_literal250);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:13: ( constraint )?
@@ -11531,12 +11516,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:361:13: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_booleanType2591);
-						constraint253 = constraint();
+						pushFollow(FOLLOW_constraint_in_booleanType2585);
+						constraint251 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint253.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint251.getTree());
 
 					}
 					break;
@@ -11625,15 +11610,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal254 = null;
-		Token char_literal257 = null;
-		ASN1Parser.constraintSpec_return constraintSpec255 = null;
+		Token char_literal252 = null;
+		Token char_literal255 = null;
+		ASN1Parser.constraintSpec_return constraintSpec253 = null;
 
-		ASN1Parser.exceptionSpec_return exceptionSpec256 = null;
+		ASN1Parser.exceptionSpec_return exceptionSpec254 = null;
 
 
-		CommonTree char_literal254_tree = null;
-		CommonTree char_literal257_tree = null;
+		CommonTree char_literal252_tree = null;
+		CommonTree char_literal255_tree = null;
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 		RewriteRuleSubtreeStream stream_constraintSpec = new RewriteRuleSubtreeStream(adaptor, "rule constraintSpec");
@@ -11642,17 +11627,17 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:364:14: ( '(' constraintSpec ( exceptionSpec )? ')' -> ^( CONSTRAINT constraintSpec ( exceptionSpec )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:3: '(' constraintSpec ( exceptionSpec )? ')'
 			{
-				char_literal254 = (Token) match(input, 81, FOLLOW_81_in_constraint2615);
+				char_literal252 = (Token) match(input, 81, FOLLOW_81_in_constraint2609);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_81.add(char_literal254);
+				if (state.backtracking == 0) stream_81.add(char_literal252);
 
 
-				pushFollow(FOLLOW_constraintSpec_in_constraint2617);
-				constraintSpec255 = constraintSpec();
+				pushFollow(FOLLOW_constraintSpec_in_constraint2611);
+				constraintSpec253 = constraintSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_constraintSpec.add(constraintSpec255.getTree());
+				if (state.backtracking == 0) stream_constraintSpec.add(constraintSpec253.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:22: ( exceptionSpec )?
 				int alt74 = 2;
@@ -11665,12 +11650,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:365:22: exceptionSpec
 					{
-						pushFollow(FOLLOW_exceptionSpec_in_constraint2619);
-						exceptionSpec256 = exceptionSpec();
+						pushFollow(FOLLOW_exceptionSpec_in_constraint2613);
+						exceptionSpec254 = exceptionSpec();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec256.getTree());
+						if (state.backtracking == 0) stream_exceptionSpec.add(exceptionSpec254.getTree());
 
 					}
 					break;
@@ -11678,13 +11663,13 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				char_literal257 = (Token) match(input, 82, FOLLOW_82_in_constraint2621);
+				char_literal255 = (Token) match(input, 82, FOLLOW_82_in_constraint2615);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_82.add(char_literal257);
+				if (state.backtracking == 0) stream_82.add(char_literal255);
 
 
 				// AST REWRITE
-				// elements: exceptionSpec, constraintSpec
+				// elements: constraintSpec, exceptionSpec
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -11766,7 +11751,7 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.elementSetSpecs_return elementSetSpecs258 = null;
+		ASN1Parser.elementSetSpecs_return elementSetSpecs256 = null;
 
 
 		try {
@@ -11776,12 +11761,12 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				pushFollow(FOLLOW_elementSetSpecs_in_constraintSpec2648);
-				elementSetSpecs258 = elementSetSpecs();
+				pushFollow(FOLLOW_elementSetSpecs_in_constraintSpec2642);
+				elementSetSpecs256 = elementSetSpecs();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) adaptor.addChild(root_0, elementSetSpecs258.getTree());
+				if (state.backtracking == 0) adaptor.addChild(root_0, elementSetSpecs256.getTree());
 
 			}
 
@@ -11821,15 +11806,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal261 = null;
-		ASN1Parser.elementSetSpec_return elementSetSpec259 = null;
+		Token char_literal259 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec257 = null;
 
-		ASN1Parser.extensionEndMarker_return extensionEndMarker260 = null;
+		ASN1Parser.extensionEndMarker_return extensionEndMarker258 = null;
 
-		ASN1Parser.elementSetSpec_return elementSetSpec262 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec260 = null;
 
 
-		CommonTree char_literal261_tree = null;
+		CommonTree char_literal259_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_extensionEndMarker = new RewriteRuleSubtreeStream(adaptor, "rule extensionEndMarker");
 		RewriteRuleSubtreeStream stream_elementSetSpec = new RewriteRuleSubtreeStream(adaptor, "rule elementSetSpec");
@@ -11837,12 +11822,12 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:372:19: ( elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )? -> ^( elementSetSpec ( extensionEndMarker ( elementSetSpec )? )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:3: elementSetSpec ( extensionEndMarker ( ',' elementSetSpec )? )?
 			{
-				pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2660);
-				elementSetSpec259 = elementSetSpec();
+				pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2654);
+				elementSetSpec257 = elementSetSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec259.getTree());
+				if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec257.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:18: ( extensionEndMarker ( ',' elementSetSpec )? )?
 				int alt76 = 2;
@@ -11855,12 +11840,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:19: extensionEndMarker ( ',' elementSetSpec )?
 					{
-						pushFollow(FOLLOW_extensionEndMarker_in_elementSetSpecs2663);
-						extensionEndMarker260 = extensionEndMarker();
+						pushFollow(FOLLOW_extensionEndMarker_in_elementSetSpecs2657);
+						extensionEndMarker258 = extensionEndMarker();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker260.getTree());
+						if (state.backtracking == 0) stream_extensionEndMarker.add(extensionEndMarker258.getTree());
 
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:38: ( ',' elementSetSpec )?
 						int alt75 = 2;
@@ -11873,17 +11858,17 @@ public class ASN1Parser extends Parser {
 							case 1:
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:373:40: ',' elementSetSpec
 							{
-								char_literal261 = (Token) match(input, 83, FOLLOW_83_in_elementSetSpecs2667);
+								char_literal259 = (Token) match(input, 83, FOLLOW_83_in_elementSetSpecs2661);
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_83.add(char_literal261);
+								if (state.backtracking == 0) stream_83.add(char_literal259);
 
 
-								pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2669);
-								elementSetSpec262 = elementSetSpec();
+								pushFollow(FOLLOW_elementSetSpec_in_elementSetSpecs2663);
+								elementSetSpec260 = elementSetSpec();
 
 								state._fsp--;
 								if (state.failed) return retval;
-								if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec262.getTree());
+								if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec260.getTree());
 
 							}
 							break;
@@ -11898,7 +11883,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: elementSetSpec, elementSetSpec, extensionEndMarker
+				// elements: extensionEndMarker, elementSetSpec, elementSetSpec
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -11922,7 +11907,7 @@ public class ASN1Parser extends Parser {
 							root_1 = (CommonTree) adaptor.becomeRoot(stream_elementSetSpec.nextNode(), root_1);
 
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:374:23: ( extensionEndMarker ( elementSetSpec )? )?
-							if (stream_elementSetSpec.hasNext() || stream_extensionEndMarker.hasNext()) {
+							if (stream_extensionEndMarker.hasNext() || stream_elementSetSpec.hasNext()) {
 								adaptor.addChild(root_1, stream_extensionEndMarker.nextTree());
 
 								// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:374:43: ( elementSetSpec )?
@@ -11933,8 +11918,8 @@ public class ASN1Parser extends Parser {
 								stream_elementSetSpec.reset();
 
 							}
-							stream_elementSetSpec.reset();
 							stream_extensionEndMarker.reset();
+							stream_elementSetSpec.reset();
 
 							adaptor.addChild(root_0, root_1);
 						}
@@ -11983,13 +11968,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal264 = null;
-		ASN1Parser.unions_return unions263 = null;
+		Token string_literal262 = null;
+		ASN1Parser.unions_return unions261 = null;
 
-		ASN1Parser.exclusions_return exclusions265 = null;
+		ASN1Parser.exclusions_return exclusions263 = null;
 
 
-		CommonTree string_literal264_tree = null;
+		CommonTree string_literal262_tree = null;
 		RewriteRuleTokenStream stream_92 = new RewriteRuleTokenStream(adaptor, "token 92");
 		RewriteRuleSubtreeStream stream_unions = new RewriteRuleSubtreeStream(adaptor, "rule unions");
 		RewriteRuleSubtreeStream stream_exclusions = new RewriteRuleSubtreeStream(adaptor, "rule exclusions");
@@ -12031,12 +12016,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:377:3: unions
 				{
-					pushFollow(FOLLOW_unions_in_elementSetSpec2701);
-					unions263 = unions();
+					pushFollow(FOLLOW_unions_in_elementSetSpec2695);
+					unions261 = unions();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_unions.add(unions263.getTree());
+					if (state.backtracking == 0) stream_unions.add(unions261.getTree());
 
 					// AST REWRITE
 					// elements: unions
@@ -12081,17 +12066,17 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:378:5: 'ALL' exclusions
 				{
-					string_literal264 = (Token) match(input, 92, FOLLOW_92_in_elementSetSpec2715);
+					string_literal262 = (Token) match(input, 92, FOLLOW_92_in_elementSetSpec2709);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_92.add(string_literal264);
+					if (state.backtracking == 0) stream_92.add(string_literal262);
 
 
-					pushFollow(FOLLOW_exclusions_in_elementSetSpec2717);
-					exclusions265 = exclusions();
+					pushFollow(FOLLOW_exclusions_in_elementSetSpec2711);
+					exclusions263 = exclusions();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_exclusions.add(exclusions265.getTree());
+					if (state.backtracking == 0) stream_exclusions.add(exclusions263.getTree());
 
 					// AST REWRITE
 					// elements: exclusions, 92
@@ -12176,28 +12161,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal266 = null;
-		ASN1Parser.elements_return elements267 = null;
+		Token string_literal264 = null;
+		ASN1Parser.elements_return elements265 = null;
 
 
-		CommonTree string_literal266_tree = null;
+		CommonTree string_literal264_tree = null;
 		RewriteRuleTokenStream stream_107 = new RewriteRuleTokenStream(adaptor, "token 107");
 		RewriteRuleSubtreeStream stream_elements = new RewriteRuleSubtreeStream(adaptor, "rule elements");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:380:14: ( 'EXCEPT' elements -> ^( elements ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:381:3: 'EXCEPT' elements
 			{
-				string_literal266 = (Token) match(input, 107, FOLLOW_107_in_exclusions2739);
+				string_literal264 = (Token) match(input, 107, FOLLOW_107_in_exclusions2733);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_107.add(string_literal266);
+				if (state.backtracking == 0) stream_107.add(string_literal264);
 
 
-				pushFollow(FOLLOW_elements_in_exclusions2741);
-				elements267 = elements();
+				pushFollow(FOLLOW_elements_in_exclusions2735);
+				elements265 = elements();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elements.add(elements267.getTree());
+				if (state.backtracking == 0) stream_elements.add(elements265.getTree());
 
 				// AST REWRITE
 				// elements: elements
@@ -12270,11 +12255,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		ASN1Parser.intersections_return intersections266 = null;
+
+		ASN1Parser.unionMark_return unionMark267 = null;
+
 		ASN1Parser.intersections_return intersections268 = null;
-
-		ASN1Parser.unionMark_return unionMark269 = null;
-
-		ASN1Parser.intersections_return intersections270 = null;
 
 
 		RewriteRuleSubtreeStream stream_unionMark = new RewriteRuleSubtreeStream(adaptor, "rule unionMark");
@@ -12283,12 +12268,12 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:384:11: ( intersections ( unionMark intersections )* -> ^( VEC ( intersections )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:3: intersections ( unionMark intersections )*
 			{
-				pushFollow(FOLLOW_intersections_in_unions2763);
-				intersections268 = intersections();
+				pushFollow(FOLLOW_intersections_in_unions2757);
+				intersections266 = intersections();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_intersections.add(intersections268.getTree());
+				if (state.backtracking == 0) stream_intersections.add(intersections266.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:17: ( unionMark intersections )*
 				loop78:
@@ -12305,19 +12290,19 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:385:18: unionMark intersections
 						{
-							pushFollow(FOLLOW_unionMark_in_unions2766);
-							unionMark269 = unionMark();
+							pushFollow(FOLLOW_unionMark_in_unions2760);
+							unionMark267 = unionMark();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_unionMark.add(unionMark269.getTree());
+							if (state.backtracking == 0) stream_unionMark.add(unionMark267.getTree());
 
-							pushFollow(FOLLOW_intersections_in_unions2768);
-							intersections270 = intersections();
+							pushFollow(FOLLOW_intersections_in_unions2762);
+							intersections268 = intersections();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersections.add(intersections270.getTree());
+							if (state.backtracking == 0) stream_intersections.add(intersections268.getTree());
 
 						}
 						break;
@@ -12411,11 +12396,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		ASN1Parser.intersectionElement_return intersectionElement269 = null;
+
+		ASN1Parser.intersectionMark_return intersectionMark270 = null;
+
 		ASN1Parser.intersectionElement_return intersectionElement271 = null;
-
-		ASN1Parser.intersectionMark_return intersectionMark272 = null;
-
-		ASN1Parser.intersectionElement_return intersectionElement273 = null;
 
 
 		RewriteRuleSubtreeStream stream_intersectionMark = new RewriteRuleSubtreeStream(adaptor, "rule intersectionMark");
@@ -12424,12 +12409,12 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:388:17: ( intersectionElement ( intersectionMark intersectionElement )* -> ^( VEC ( intersectionElement )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:3: intersectionElement ( intersectionMark intersectionElement )*
 			{
-				pushFollow(FOLLOW_intersectionElement_in_intersections2793);
-				intersectionElement271 = intersectionElement();
+				pushFollow(FOLLOW_intersectionElement_in_intersections2787);
+				intersectionElement269 = intersectionElement();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement271.getTree());
+				if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement269.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:23: ( intersectionMark intersectionElement )*
 				loop79:
@@ -12446,19 +12431,19 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:389:24: intersectionMark intersectionElement
 						{
-							pushFollow(FOLLOW_intersectionMark_in_intersections2796);
-							intersectionMark272 = intersectionMark();
+							pushFollow(FOLLOW_intersectionMark_in_intersections2790);
+							intersectionMark270 = intersectionMark();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersectionMark.add(intersectionMark272.getTree());
+							if (state.backtracking == 0) stream_intersectionMark.add(intersectionMark270.getTree());
 
-							pushFollow(FOLLOW_intersectionElement_in_intersections2798);
-							intersectionElement273 = intersectionElement();
+							pushFollow(FOLLOW_intersectionElement_in_intersections2792);
+							intersectionElement271 = intersectionElement();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement273.getTree());
+							if (state.backtracking == 0) stream_intersectionElement.add(intersectionElement271.getTree());
 
 						}
 						break;
@@ -12552,9 +12537,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.elements_return elements274 = null;
+		ASN1Parser.elements_return elements272 = null;
 
-		ASN1Parser.exclusions_return exclusions275 = null;
+		ASN1Parser.exclusions_return exclusions273 = null;
 
 
 		RewriteRuleSubtreeStream stream_exclusions = new RewriteRuleSubtreeStream(adaptor, "rule exclusions");
@@ -12563,12 +12548,12 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:392:22: ( elements ( exclusions )? -> ^( INTERSECTION_ELEMENT elements ( exclusions )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:3: elements ( exclusions )?
 			{
-				pushFollow(FOLLOW_elements_in_intersectionElement2822);
-				elements274 = elements();
+				pushFollow(FOLLOW_elements_in_intersectionElement2816);
+				elements272 = elements();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_elements.add(elements274.getTree());
+				if (state.backtracking == 0) stream_elements.add(elements272.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:12: ( exclusions )?
 				int alt80 = 2;
@@ -12581,12 +12566,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:393:12: exclusions
 					{
-						pushFollow(FOLLOW_exclusions_in_intersectionElement2824);
-						exclusions275 = exclusions();
+						pushFollow(FOLLOW_exclusions_in_intersectionElement2818);
+						exclusions273 = exclusions();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_exclusions.add(exclusions275.getTree());
+						if (state.backtracking == 0) stream_exclusions.add(exclusions273.getTree());
 
 					}
 					break;
@@ -12595,7 +12580,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: exclusions, elements
+				// elements: elements, exclusions
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -12677,15 +12662,15 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
+		Token char_literal274 = null;
 		Token char_literal276 = null;
-		Token char_literal278 = null;
-		ASN1Parser.elementSetSpec_return elementSetSpec277 = null;
+		ASN1Parser.elementSetSpec_return elementSetSpec275 = null;
 
-		ASN1Parser.subtypeElements_return subtypeElements279 = null;
+		ASN1Parser.subtypeElements_return subtypeElements277 = null;
 
 
+		CommonTree char_literal274_tree = null;
 		CommonTree char_literal276_tree = null;
-		CommonTree char_literal278_tree = null;
 		RewriteRuleTokenStream stream_82 = new RewriteRuleTokenStream(adaptor, "token 82");
 		RewriteRuleTokenStream stream_81 = new RewriteRuleTokenStream(adaptor, "token 81");
 		RewriteRuleSubtreeStream stream_elementSetSpec = new RewriteRuleSubtreeStream(adaptor, "rule elementSetSpec");
@@ -12733,21 +12718,21 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:3: ( '(' )=> '(' elementSetSpec ')'
 				{
-					char_literal276 = (Token) match(input, 81, FOLLOW_81_in_elements2856);
+					char_literal274 = (Token) match(input, 81, FOLLOW_81_in_elements2850);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_81.add(char_literal276);
+					if (state.backtracking == 0) stream_81.add(char_literal274);
 
 
-					pushFollow(FOLLOW_elementSetSpec_in_elements2858);
-					elementSetSpec277 = elementSetSpec();
+					pushFollow(FOLLOW_elementSetSpec_in_elements2852);
+					elementSetSpec275 = elementSetSpec();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec277.getTree());
+					if (state.backtracking == 0) stream_elementSetSpec.add(elementSetSpec275.getTree());
 
-					char_literal278 = (Token) match(input, 82, FOLLOW_82_in_elements2860);
+					char_literal276 = (Token) match(input, 82, FOLLOW_82_in_elements2854);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_82.add(char_literal278);
+					if (state.backtracking == 0) stream_82.add(char_literal276);
 
 
 					// AST REWRITE
@@ -12791,12 +12776,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_subtypeElements_in_elements2871);
-					subtypeElements279 = subtypeElements();
+					pushFollow(FOLLOW_subtypeElements_in_elements2865);
+					subtypeElements277 = subtypeElements();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, subtypeElements279.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, subtypeElements277.getTree());
 
 				}
 				break;
@@ -12838,17 +12823,17 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		ASN1Parser.value_return value280 = null;
+		ASN1Parser.value_return value278 = null;
 
-		ASN1Parser.valueRange_return valueRange281 = null;
+		ASN1Parser.valueRange_return valueRange279 = null;
 
-		ASN1Parser.sizeConstraint_return sizeConstraint282 = null;
+		ASN1Parser.sizeConstraint_return sizeConstraint280 = null;
 
-		ASN1Parser.typeConstraint_return typeConstraint283 = null;
+		ASN1Parser.typeConstraint_return typeConstraint281 = null;
 
-		ASN1Parser.innerTypeConstraint_return innerTypeConstraint284 = null;
+		ASN1Parser.innerTypeConstraint_return innerTypeConstraint282 = null;
 
-		ASN1Parser.patternConstraint_return patternConstraint285 = null;
+		ASN1Parser.patternConstraint_return patternConstraint283 = null;
 
 
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
@@ -13158,12 +13143,12 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:3: ( value )=> value
 				{
-					pushFollow(FOLLOW_value_in_subtypeElements2887);
-					value280 = value();
+					pushFollow(FOLLOW_value_in_subtypeElements2881);
+					value278 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_value.add(value280.getTree());
+					if (state.backtracking == 0) stream_value.add(value278.getTree());
 
 					// AST REWRITE
 					// elements: value
@@ -13211,12 +13196,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_valueRange_in_subtypeElements2900);
-					valueRange281 = valueRange();
+					pushFollow(FOLLOW_valueRange_in_subtypeElements2894);
+					valueRange279 = valueRange();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, valueRange281.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, valueRange279.getTree());
 
 				}
 				break;
@@ -13226,12 +13211,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_sizeConstraint_in_subtypeElements2905);
-					sizeConstraint282 = sizeConstraint();
+					pushFollow(FOLLOW_sizeConstraint_in_subtypeElements2899);
+					sizeConstraint280 = sizeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, sizeConstraint282.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, sizeConstraint280.getTree());
 
 				}
 				break;
@@ -13241,12 +13226,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_typeConstraint_in_subtypeElements2910);
-					typeConstraint283 = typeConstraint();
+					pushFollow(FOLLOW_typeConstraint_in_subtypeElements2904);
+					typeConstraint281 = typeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, typeConstraint283.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, typeConstraint281.getTree());
 
 				}
 				break;
@@ -13256,12 +13241,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_innerTypeConstraint_in_subtypeElements2915);
-					innerTypeConstraint284 = innerTypeConstraint();
+					pushFollow(FOLLOW_innerTypeConstraint_in_subtypeElements2909);
+					innerTypeConstraint282 = innerTypeConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, innerTypeConstraint284.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, innerTypeConstraint282.getTree());
 
 				}
 				break;
@@ -13271,12 +13256,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_patternConstraint_in_subtypeElements2920);
-					patternConstraint285 = patternConstraint();
+					pushFollow(FOLLOW_patternConstraint_in_subtypeElements2914);
+					patternConstraint283 = patternConstraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, patternConstraint285.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, patternConstraint283.getTree());
 
 				}
 				break;
@@ -13318,27 +13303,27 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal286 = null;
+		Token string_literal284 = null;
+		Token string_literal285 = null;
 		Token string_literal287 = null;
-		Token string_literal289 = null;
+		Token string_literal288 = null;
+		Token char_literal289 = null;
 		Token string_literal290 = null;
 		Token char_literal291 = null;
-		Token string_literal292 = null;
 		Token char_literal293 = null;
-		Token char_literal295 = null;
-		ASN1Parser.constraint_return constraint288 = null;
+		ASN1Parser.constraint_return constraint286 = null;
 
-		ASN1Parser.typeConstraints_return typeConstraints294 = null;
+		ASN1Parser.typeConstraints_return typeConstraints292 = null;
 
 
-		CommonTree string_literal286_tree = null;
+		CommonTree string_literal284_tree = null;
+		CommonTree string_literal285_tree = null;
 		CommonTree string_literal287_tree = null;
-		CommonTree string_literal289_tree = null;
+		CommonTree string_literal288_tree = null;
+		CommonTree char_literal289_tree = null;
 		CommonTree string_literal290_tree = null;
 		CommonTree char_literal291_tree = null;
-		CommonTree string_literal292_tree = null;
 		CommonTree char_literal293_tree = null;
-		CommonTree char_literal295_tree = null;
 		RewriteRuleTokenStream stream_161 = new RewriteRuleTokenStream(adaptor, "token 161");
 		RewriteRuleTokenStream stream_153 = new RewriteRuleTokenStream(adaptor, "token 153");
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
@@ -13386,22 +13371,22 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:409:3: 'WITH' 'COMPONENT' constraint
 				{
-					string_literal286 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2931);
+					string_literal284 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2925);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_153.add(string_literal286);
+					if (state.backtracking == 0) stream_153.add(string_literal284);
 
 
-					string_literal287 = (Token) match(input, 101, FOLLOW_101_in_innerTypeConstraint2933);
+					string_literal285 = (Token) match(input, 101, FOLLOW_101_in_innerTypeConstraint2927);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_101.add(string_literal287);
+					if (state.backtracking == 0) stream_101.add(string_literal285);
 
 
-					pushFollow(FOLLOW_constraint_in_innerTypeConstraint2935);
-					constraint288 = constraint();
+					pushFollow(FOLLOW_constraint_in_innerTypeConstraint2929);
+					constraint286 = constraint();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_constraint.add(constraint288.getTree());
+					if (state.backtracking == 0) stream_constraint.add(constraint286.getTree());
 
 					// AST REWRITE
 					// elements: constraint
@@ -13446,19 +13431,19 @@ public class ASN1Parser extends Parser {
 				case 2:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:4: 'WITH' 'COMPONENTS' '{' ( '...' ',' )? typeConstraints '}'
 				{
-					string_literal289 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2948);
+					string_literal287 = (Token) match(input, 153, FOLLOW_153_in_innerTypeConstraint2942);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_153.add(string_literal289);
+					if (state.backtracking == 0) stream_153.add(string_literal287);
 
 
-					string_literal290 = (Token) match(input, 102, FOLLOW_102_in_innerTypeConstraint2950);
+					string_literal288 = (Token) match(input, 102, FOLLOW_102_in_innerTypeConstraint2944);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_102.add(string_literal290);
+					if (state.backtracking == 0) stream_102.add(string_literal288);
 
 
-					char_literal291 = (Token) match(input, 159, FOLLOW_159_in_innerTypeConstraint2952);
+					char_literal289 = (Token) match(input, 159, FOLLOW_159_in_innerTypeConstraint2946);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_159.add(char_literal291);
+					if (state.backtracking == 0) stream_159.add(char_literal289);
 
 
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:28: ( '...' ',' )?
@@ -13472,14 +13457,14 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:410:29: '...' ','
 						{
-							string_literal292 = (Token) match(input, 86, FOLLOW_86_in_innerTypeConstraint2955);
+							string_literal290 = (Token) match(input, 86, FOLLOW_86_in_innerTypeConstraint2949);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_86.add(string_literal292);
+							if (state.backtracking == 0) stream_86.add(string_literal290);
 
 
-							char_literal293 = (Token) match(input, 83, FOLLOW_83_in_innerTypeConstraint2957);
+							char_literal291 = (Token) match(input, 83, FOLLOW_83_in_innerTypeConstraint2951);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal293);
+							if (state.backtracking == 0) stream_83.add(char_literal291);
 
 
 						}
@@ -13488,16 +13473,16 @@ public class ASN1Parser extends Parser {
 					}
 
 
-					pushFollow(FOLLOW_typeConstraints_in_innerTypeConstraint2961);
-					typeConstraints294 = typeConstraints();
+					pushFollow(FOLLOW_typeConstraints_in_innerTypeConstraint2955);
+					typeConstraints292 = typeConstraints();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_typeConstraints.add(typeConstraints294.getTree());
+					if (state.backtracking == 0) stream_typeConstraints.add(typeConstraints292.getTree());
 
-					char_literal295 = (Token) match(input, 161, FOLLOW_161_in_innerTypeConstraint2963);
+					char_literal293 = (Token) match(input, 161, FOLLOW_161_in_innerTypeConstraint2957);
 					if (state.failed) return retval;
-					if (state.backtracking == 0) stream_161.add(char_literal295);
+					if (state.backtracking == 0) stream_161.add(char_literal293);
 
 
 					// AST REWRITE
@@ -13588,25 +13573,25 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal297 = null;
+		Token char_literal295 = null;
+		ASN1Parser.namedConstraint_return namedConstraint294 = null;
+
 		ASN1Parser.namedConstraint_return namedConstraint296 = null;
 
-		ASN1Parser.namedConstraint_return namedConstraint298 = null;
 
-
-		CommonTree char_literal297_tree = null;
+		CommonTree char_literal295_tree = null;
 		RewriteRuleTokenStream stream_83 = new RewriteRuleTokenStream(adaptor, "token 83");
 		RewriteRuleSubtreeStream stream_namedConstraint = new RewriteRuleSubtreeStream(adaptor, "rule namedConstraint");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:413:19: ( namedConstraint ( ',' namedConstraint )* -> ^( VEC ( namedConstraint )+ ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:3: namedConstraint ( ',' namedConstraint )*
 			{
-				pushFollow(FOLLOW_namedConstraint_in_typeConstraints2989);
-				namedConstraint296 = namedConstraint();
+				pushFollow(FOLLOW_namedConstraint_in_typeConstraints2983);
+				namedConstraint294 = namedConstraint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint296.getTree());
+				if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint294.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:19: ( ',' namedConstraint )*
 				loop85:
@@ -13623,17 +13608,17 @@ public class ASN1Parser extends Parser {
 						case 1:
 							// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:414:20: ',' namedConstraint
 						{
-							char_literal297 = (Token) match(input, 83, FOLLOW_83_in_typeConstraints2992);
+							char_literal295 = (Token) match(input, 83, FOLLOW_83_in_typeConstraints2986);
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_83.add(char_literal297);
+							if (state.backtracking == 0) stream_83.add(char_literal295);
 
 
-							pushFollow(FOLLOW_namedConstraint_in_typeConstraints2994);
-							namedConstraint298 = namedConstraint();
+							pushFollow(FOLLOW_namedConstraint_in_typeConstraints2988);
+							namedConstraint296 = namedConstraint();
 
 							state._fsp--;
 							if (state.failed) return retval;
-							if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint298.getTree());
+							if (state.backtracking == 0) stream_namedConstraint.add(namedConstraint296.getTree());
 
 						}
 						break;
@@ -13727,13 +13712,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token ID299 = null;
-		ASN1Parser.constraint_return constraint300 = null;
+		Token ID297 = null;
+		ASN1Parser.constraint_return constraint298 = null;
 
-		ASN1Parser.presenceConstraint_return presenceConstraint301 = null;
+		ASN1Parser.presenceConstraint_return presenceConstraint299 = null;
 
 
-		CommonTree ID299_tree = null;
+		CommonTree ID297_tree = null;
 		RewriteRuleTokenStream stream_ID = new RewriteRuleTokenStream(adaptor, "token ID");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		RewriteRuleSubtreeStream stream_presenceConstraint = new RewriteRuleSubtreeStream(adaptor, "rule presenceConstraint");
@@ -13741,9 +13726,9 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:417:19: ( ID ( constraint )? ( presenceConstraint )? -> ^( NAMED_CONSTRAINT ID ( presenceConstraint )? ( constraint )? ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:3: ID ( constraint )? ( presenceConstraint )?
 			{
-				ID299 = (Token) match(input, ID, FOLLOW_ID_in_namedConstraint3020);
+				ID297 = (Token) match(input, ID, FOLLOW_ID_in_namedConstraint3014);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_ID.add(ID299);
+				if (state.backtracking == 0) stream_ID.add(ID297);
 
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:6: ( constraint )?
@@ -13757,12 +13742,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:6: constraint
 					{
-						pushFollow(FOLLOW_constraint_in_namedConstraint3022);
-						constraint300 = constraint();
+						pushFollow(FOLLOW_constraint_in_namedConstraint3016);
+						constraint298 = constraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_constraint.add(constraint300.getTree());
+						if (state.backtracking == 0) stream_constraint.add(constraint298.getTree());
 
 					}
 					break;
@@ -13781,12 +13766,12 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:418:18: presenceConstraint
 					{
-						pushFollow(FOLLOW_presenceConstraint_in_namedConstraint3025);
-						presenceConstraint301 = presenceConstraint();
+						pushFollow(FOLLOW_presenceConstraint_in_namedConstraint3019);
+						presenceConstraint299 = presenceConstraint();
 
 						state._fsp--;
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_presenceConstraint.add(presenceConstraint301.getTree());
+						if (state.backtracking == 0) stream_presenceConstraint.add(presenceConstraint299.getTree());
 
 					}
 					break;
@@ -13887,9 +13872,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set302 = null;
+		Token set300 = null;
 
-		CommonTree set302_tree = null;
+		CommonTree set300_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:421:21: ( 'PRESENT' | 'ABSENT' | 'OPTIONAL' )
@@ -13898,14 +13883,14 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set302 = (Token) input.LT(1);
+				set300 = (Token) input.LT(1);
 
 				if (input.LA(1) == 91 || input.LA(1) == 132 || input.LA(1) == 135) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set302)
+						                (CommonTree) adaptor.create(set300)
 						                );
 					}
 					state.errorRecovery = false;
@@ -13958,11 +13943,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal303 = null;
-		ASN1Parser.type_return type304 = null;
+		Token string_literal301 = null;
+		ASN1Parser.type_return type302 = null;
 
 
-		CommonTree string_literal303_tree = null;
+		CommonTree string_literal301_tree = null;
 		RewriteRuleTokenStream stream_120 = new RewriteRuleTokenStream(adaptor, "token 120");
 		RewriteRuleSubtreeStream stream_type = new RewriteRuleSubtreeStream(adaptor, "rule type");
 		try {
@@ -13980,9 +13965,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:425:3: 'INCLUDES'
 					{
-						string_literal303 = (Token) match(input, 120, FOLLOW_120_in_typeConstraint3074);
+						string_literal301 = (Token) match(input, 120, FOLLOW_120_in_typeConstraint3068);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_120.add(string_literal303);
+						if (state.backtracking == 0) stream_120.add(string_literal301);
 
 
 					}
@@ -13991,12 +13976,12 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_type_in_typeConstraint3077);
-				type304 = type();
+				pushFollow(FOLLOW_type_in_typeConstraint3071);
+				type302 = type();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_type.add(type304.getTree());
+				if (state.backtracking == 0) stream_type.add(type302.getTree());
 
 				// AST REWRITE
 				// elements: 120, type
@@ -14084,13 +14069,13 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal306 = null;
-		ASN1Parser.lowerEndPoint_return lowerEndPoint305 = null;
+		Token string_literal304 = null;
+		ASN1Parser.lowerEndPoint_return lowerEndPoint303 = null;
 
-		ASN1Parser.upperEndPoint_return upperEndPoint307 = null;
+		ASN1Parser.upperEndPoint_return upperEndPoint305 = null;
 
 
-		CommonTree string_literal306_tree = null;
+		CommonTree string_literal304_tree = null;
 		RewriteRuleTokenStream stream_85 = new RewriteRuleTokenStream(adaptor, "token 85");
 		RewriteRuleSubtreeStream stream_upperEndPoint = new RewriteRuleSubtreeStream(adaptor, "rule upperEndPoint");
 		RewriteRuleSubtreeStream stream_lowerEndPoint = new RewriteRuleSubtreeStream(adaptor, "rule lowerEndPoint");
@@ -14098,27 +14083,27 @@ public class ASN1Parser extends Parser {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:428:14: ( lowerEndPoint '..' upperEndPoint -> ^( CONSTRAINT_VALUE_RANGE lowerEndPoint upperEndPoint ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:429:3: lowerEndPoint '..' upperEndPoint
 			{
-				pushFollow(FOLLOW_lowerEndPoint_in_valueRange3102);
-				lowerEndPoint305 = lowerEndPoint();
+				pushFollow(FOLLOW_lowerEndPoint_in_valueRange3096);
+				lowerEndPoint303 = lowerEndPoint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_lowerEndPoint.add(lowerEndPoint305.getTree());
+				if (state.backtracking == 0) stream_lowerEndPoint.add(lowerEndPoint303.getTree());
 
-				string_literal306 = (Token) match(input, 85, FOLLOW_85_in_valueRange3104);
+				string_literal304 = (Token) match(input, 85, FOLLOW_85_in_valueRange3098);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_85.add(string_literal306);
+				if (state.backtracking == 0) stream_85.add(string_literal304);
 
 
-				pushFollow(FOLLOW_upperEndPoint_in_valueRange3106);
-				upperEndPoint307 = upperEndPoint();
+				pushFollow(FOLLOW_upperEndPoint_in_valueRange3100);
+				upperEndPoint305 = upperEndPoint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_upperEndPoint.add(upperEndPoint307.getTree());
+				if (state.backtracking == 0) stream_upperEndPoint.add(upperEndPoint305.getTree());
 
 				// AST REWRITE
-				// elements: lowerEndPoint, upperEndPoint
+				// elements: upperEndPoint, lowerEndPoint
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -14195,23 +14180,23 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal309 = null;
-		ASN1Parser.lowerEndValue_return lowerEndValue308 = null;
+		Token char_literal307 = null;
+		ASN1Parser.lowerEndValue_return lowerEndValue306 = null;
 
 
-		CommonTree char_literal309_tree = null;
+		CommonTree char_literal307_tree = null;
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_lowerEndValue = new RewriteRuleSubtreeStream(adaptor, "rule lowerEndValue");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:432:17: ( lowerEndValue ( '<' )? -> ^( ENDPOINT ( '<' )? lowerEndValue ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:3: lowerEndValue ( '<' )?
 			{
-				pushFollow(FOLLOW_lowerEndValue_in_lowerEndPoint3130);
-				lowerEndValue308 = lowerEndValue();
+				pushFollow(FOLLOW_lowerEndValue_in_lowerEndPoint3124);
+				lowerEndValue306 = lowerEndValue();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_lowerEndValue.add(lowerEndValue308.getTree());
+				if (state.backtracking == 0) stream_lowerEndValue.add(lowerEndValue306.getTree());
 
 				// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:17: ( '<' )?
 				int alt89 = 2;
@@ -14224,9 +14209,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:433:17: '<'
 					{
-						char_literal309 = (Token) match(input, 90, FOLLOW_90_in_lowerEndPoint3132);
+						char_literal307 = (Token) match(input, 90, FOLLOW_90_in_lowerEndPoint3126);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_90.add(char_literal309);
+						if (state.backtracking == 0) stream_90.add(char_literal307);
 
 
 					}
@@ -14236,7 +14221,7 @@ public class ASN1Parser extends Parser {
 
 
 				// AST REWRITE
-				// elements: lowerEndValue, 90
+				// elements: 90, lowerEndValue
 				// token labels: 
 				// rule labels: retval
 				// token list labels: 
@@ -14321,11 +14306,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token char_literal310 = null;
-		ASN1Parser.upperEndValue_return upperEndValue311 = null;
+		Token char_literal308 = null;
+		ASN1Parser.upperEndValue_return upperEndValue309 = null;
 
 
-		CommonTree char_literal310_tree = null;
+		CommonTree char_literal308_tree = null;
 		RewriteRuleTokenStream stream_90 = new RewriteRuleTokenStream(adaptor, "token 90");
 		RewriteRuleSubtreeStream stream_upperEndValue = new RewriteRuleSubtreeStream(adaptor, "rule upperEndValue");
 		try {
@@ -14343,9 +14328,9 @@ public class ASN1Parser extends Parser {
 					case 1:
 						// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:437:3: '<'
 					{
-						char_literal310 = (Token) match(input, 90, FOLLOW_90_in_upperEndPoint3158);
+						char_literal308 = (Token) match(input, 90, FOLLOW_90_in_upperEndPoint3152);
 						if (state.failed) return retval;
-						if (state.backtracking == 0) stream_90.add(char_literal310);
+						if (state.backtracking == 0) stream_90.add(char_literal308);
 
 
 					}
@@ -14354,12 +14339,12 @@ public class ASN1Parser extends Parser {
 				}
 
 
-				pushFollow(FOLLOW_upperEndValue_in_upperEndPoint3161);
-				upperEndValue311 = upperEndValue();
+				pushFollow(FOLLOW_upperEndValue_in_upperEndPoint3155);
+				upperEndValue309 = upperEndValue();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_upperEndValue.add(upperEndValue311.getTree());
+				if (state.backtracking == 0) stream_upperEndValue.add(upperEndValue309.getTree());
 
 				// AST REWRITE
 				// elements: 90, upperEndValue
@@ -14447,11 +14432,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal313 = null;
-		ASN1Parser.value_return value312 = null;
+		Token string_literal311 = null;
+		ASN1Parser.value_return value310 = null;
 
 
-		CommonTree string_literal313_tree = null;
+		CommonTree string_literal311_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:440:17: ( value | 'MIN' )
@@ -14481,12 +14466,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_value_in_lowerEndValue3186);
-					value312 = value();
+					pushFollow(FOLLOW_value_in_lowerEndValue3180);
+					value310 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, value312.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, value310.getTree());
 
 				}
 				break;
@@ -14496,13 +14481,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal313 = (Token) match(input, 125, FOLLOW_125_in_lowerEndValue3193);
+					string_literal311 = (Token) match(input, 125, FOLLOW_125_in_lowerEndValue3187);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal313_tree =
-						(CommonTree) adaptor.create(string_literal313)
+						string_literal311_tree =
+						(CommonTree) adaptor.create(string_literal311)
 						;
-						adaptor.addChild(root_0, string_literal313_tree);
+						adaptor.addChild(root_0, string_literal311_tree);
 					}
 
 				}
@@ -14545,11 +14530,11 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal315 = null;
-		ASN1Parser.value_return value314 = null;
+		Token string_literal313 = null;
+		ASN1Parser.value_return value312 = null;
 
 
-		CommonTree string_literal315_tree = null;
+		CommonTree string_literal313_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:444:17: ( value | 'MAX' )
@@ -14579,12 +14564,12 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					pushFollow(FOLLOW_value_in_upperEndValue3205);
-					value314 = value();
+					pushFollow(FOLLOW_value_in_upperEndValue3199);
+					value312 = value();
 
 					state._fsp--;
 					if (state.failed) return retval;
-					if (state.backtracking == 0) adaptor.addChild(root_0, value314.getTree());
+					if (state.backtracking == 0) adaptor.addChild(root_0, value312.getTree());
 
 				}
 				break;
@@ -14594,13 +14579,13 @@ public class ASN1Parser extends Parser {
 					root_0 = (CommonTree) adaptor.nil();
 
 
-					string_literal315 = (Token) match(input, 124, FOLLOW_124_in_upperEndValue3212);
+					string_literal313 = (Token) match(input, 124, FOLLOW_124_in_upperEndValue3206);
 					if (state.failed) return retval;
 					if (state.backtracking == 0) {
-						string_literal315_tree =
-						(CommonTree) adaptor.create(string_literal315)
+						string_literal313_tree =
+						(CommonTree) adaptor.create(string_literal313)
 						;
-						adaptor.addChild(root_0, string_literal315_tree);
+						adaptor.addChild(root_0, string_literal313_tree);
 					}
 
 				}
@@ -14643,28 +14628,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal316 = null;
-		ASN1Parser.constraint_return constraint317 = null;
+		Token string_literal314 = null;
+		ASN1Parser.constraint_return constraint315 = null;
 
 
-		CommonTree string_literal316_tree = null;
+		CommonTree string_literal314_tree = null;
 		RewriteRuleTokenStream stream_141 = new RewriteRuleTokenStream(adaptor, "token 141");
 		RewriteRuleSubtreeStream stream_constraint = new RewriteRuleSubtreeStream(adaptor, "rule constraint");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:448:18: ( 'SIZE' constraint -> ^( CONSTRAINT_SIZE constraint ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:449:3: 'SIZE' constraint
 			{
-				string_literal316 = (Token) match(input, 141, FOLLOW_141_in_sizeConstraint3224);
+				string_literal314 = (Token) match(input, 141, FOLLOW_141_in_sizeConstraint3218);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_141.add(string_literal316);
+				if (state.backtracking == 0) stream_141.add(string_literal314);
 
 
-				pushFollow(FOLLOW_constraint_in_sizeConstraint3226);
-				constraint317 = constraint();
+				pushFollow(FOLLOW_constraint_in_sizeConstraint3220);
+				constraint315 = constraint();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_constraint.add(constraint317.getTree());
+				if (state.backtracking == 0) stream_constraint.add(constraint315.getTree());
 
 				// AST REWRITE
 				// elements: constraint
@@ -14742,28 +14727,28 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal318 = null;
-		ASN1Parser.value_return value319 = null;
+		Token string_literal316 = null;
+		ASN1Parser.value_return value317 = null;
 
 
-		CommonTree string_literal318_tree = null;
+		CommonTree string_literal316_tree = null;
 		RewriteRuleTokenStream stream_133 = new RewriteRuleTokenStream(adaptor, "token 133");
 		RewriteRuleSubtreeStream stream_value = new RewriteRuleSubtreeStream(adaptor, "rule value");
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:451:20: ( 'PATTERN' value -> ^( CONSTRAINT_PATTERN value ) )
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:452:3: 'PATTERN' value
 			{
-				string_literal318 = (Token) match(input, 133, FOLLOW_133_in_patternConstraint3245);
+				string_literal316 = (Token) match(input, 133, FOLLOW_133_in_patternConstraint3239);
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_133.add(string_literal318);
+				if (state.backtracking == 0) stream_133.add(string_literal316);
 
 
-				pushFollow(FOLLOW_value_in_patternConstraint3247);
-				value319 = value();
+				pushFollow(FOLLOW_value_in_patternConstraint3241);
+				value317 = value();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if (state.backtracking == 0) stream_value.add(value319.getTree());
+				if (state.backtracking == 0) stream_value.add(value317.getTree());
 
 				// AST REWRITE
 				// elements: value
@@ -14841,9 +14826,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set320 = null;
+		Token set318 = null;
 
-		CommonTree set320_tree = null;
+		CommonTree set318_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:454:13: ( ( '|' | 'UNION' ) )
@@ -14852,14 +14837,14 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set320 = (Token) input.LT(1);
+				set318 = (Token) input.LT(1);
 
 				if (input.LA(1) == 147 || input.LA(1) == 160) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set320)
+						                (CommonTree) adaptor.create(set318)
 						                );
 					}
 					state.errorRecovery = false;
@@ -14912,9 +14897,9 @@ public class ASN1Parser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token set321 = null;
+		Token set319 = null;
 
-		CommonTree set321_tree = null;
+		CommonTree set319_tree = null;
 
 		try {
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:457:20: ( ( '^' | 'INTERSECTION' ) )
@@ -14923,14 +14908,14 @@ public class ASN1Parser extends Parser {
 				root_0 = (CommonTree) adaptor.nil();
 
 
-				set321 = (Token) input.LT(1);
+				set319 = (Token) input.LT(1);
 
 				if (input.LA(1) == 122 || input.LA(1) == 158) {
 					input.consume();
 					if (state.backtracking == 0) {
 						adaptor.addChild(
 						                root_0,
-						                (CommonTree) adaptor.create(set321)
+						                (CommonTree) adaptor.create(set319)
 						                );
 					}
 					state.errorRecovery = false;
@@ -14980,7 +14965,7 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:165:4: CLASS_DEF
 				{
-					match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_synpred1_ASN1784);
+					match(input, CLASS_DEF, FOLLOW_CLASS_DEF_in_synpred1_ASN1778);
 					if (state.failed) return;
 
 				}
@@ -14989,10 +14974,10 @@ public class ASN1Parser extends Parser {
 			}
 
 
-			match(input, ID, FOLLOW_ID_in_synpred1_ASN1787);
+			match(input, ID, FOLLOW_ID_in_synpred1_ASN1781);
 			if (state.failed) return;
 
-			match(input, 88, FOLLOW_88_in_synpred1_ASN1789);
+			match(input, 88, FOLLOW_88_in_synpred1_ASN1783);
 			if (state.failed) return;
 
 		}
@@ -15005,7 +14990,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:4: ( 'SEQUENCE' ( constraint )? 'OF' )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:5: 'SEQUENCE' ( constraint )? 'OF'
 		{
-			match(input, 139, FOLLOW_139_in_synpred2_ASN11090);
+			match(input, 139, FOLLOW_139_in_synpred2_ASN11084);
 			if (state.failed) return;
 
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:16: ( constraint )?
@@ -15019,7 +15004,7 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:199:16: constraint
 				{
-					pushFollow(FOLLOW_constraint_in_synpred2_ASN11092);
+					pushFollow(FOLLOW_constraint_in_synpred2_ASN11086);
 					constraint();
 
 					state._fsp--;
@@ -15031,7 +15016,7 @@ public class ASN1Parser extends Parser {
 			}
 
 
-			match(input, 130, FOLLOW_130_in_synpred2_ASN11095);
+			match(input, 130, FOLLOW_130_in_synpred2_ASN11089);
 			if (state.failed) return;
 
 		}
@@ -15044,7 +15029,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:4: ( 'SET' ( constraint )? 'OF' )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:5: 'SET' ( constraint )? 'OF'
 		{
-			match(input, 140, FOLLOW_140_in_synpred3_ASN11128);
+			match(input, 140, FOLLOW_140_in_synpred3_ASN11122);
 			if (state.failed) return;
 
 			// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:11: ( constraint )?
@@ -15058,7 +15043,7 @@ public class ASN1Parser extends Parser {
 				case 1:
 					// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:201:11: constraint
 				{
-					pushFollow(FOLLOW_constraint_in_synpred3_ASN11130);
+					pushFollow(FOLLOW_constraint_in_synpred3_ASN11124);
 					constraint();
 
 					state._fsp--;
@@ -15070,7 +15055,7 @@ public class ASN1Parser extends Parser {
 			}
 
 
-			match(input, 130, FOLLOW_130_in_synpred3_ASN11133);
+			match(input, 130, FOLLOW_130_in_synpred3_ASN11127);
 			if (state.failed) return;
 
 		}
@@ -15083,7 +15068,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:228:3: ( namedNumber )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:228:4: namedNumber
 		{
-			pushFollow(FOLLOW_namedNumber_in_synpred4_ASN11424);
+			pushFollow(FOLLOW_namedNumber_in_synpred4_ASN11418);
 			namedNumber();
 
 			state._fsp--;
@@ -15099,7 +15084,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:4: ( VALUE_ID )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:289:5: VALUE_ID
 		{
-			match(input, VALUE_ID, FOLLOW_VALUE_ID_in_synpred5_ASN11889);
+			match(input, VALUE_ID, FOLLOW_VALUE_ID_in_synpred5_ASN11883);
 			if (state.failed) return;
 
 		}
@@ -15112,7 +15097,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:3: ( '(' )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:397:4: '('
 		{
-			match(input, 81, FOLLOW_81_in_synpred6_ASN12851);
+			match(input, 81, FOLLOW_81_in_synpred6_ASN12845);
 			if (state.failed) return;
 
 		}
@@ -15125,7 +15110,7 @@ public class ASN1Parser extends Parser {
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:3: ( value )
 		// /home/lastrix/Dev/Java/ASN1S/antlr/ASN1.g:401:4: value
 		{
-			pushFollow(FOLLOW_value_in_synpred7_ASN12884);
+			pushFollow(FOLLOW_value_in_synpred7_ASN12878);
 			value();
 
 			state._fsp--;
@@ -15326,97 +15311,96 @@ public class ASN1Parser extends Parser {
 	);
 	public static final BitSet FOLLOW_definitiveObjIdComponent_in_definitiveIdentifier391                    = new BitSet(
 	                                                                                                                     new long[]{
+	                                                                                                                               0x0000004800000000L,
 	                                                                                                                               0x0000000000000000L,
-	                                                                                                                               0x0000000000080000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_definitiveIdentifier394                                          = new BitSet(
-	                                                                                                                     new long[]{
-	                                                                                                                               0x0000004800000000L
-	                                                                                                                     }
-	);
-	public static final BitSet FOLLOW_definitiveObjIdComponent_in_definitiveIdentifier396                    = new BitSet(
-	                                                                                                                     new long[]{
-	                                                                                                                               0x0000000000000000L,
-	                                                                                                                               0x0000000000080000L,
-	                                                                                                                               0x0000000200000000L
-	                                                                                                                     }
-	);
-	public static final BitSet FOLLOW_161_in_definitiveIdentifier400                                         = new BitSet(
+	public static final BitSet FOLLOW_161_in_definitiveIdentifier394                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_nameNumberForm_in_definitiveObjIdComponent420                          = new BitSet(
+	public static final BitSet FOLLOW_nameNumberForm_in_definitiveObjIdComponent414                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_definitiveObjIdComponent425                                      = new BitSet(
+	public static final BitSet FOLLOW_ID_in_definitiveObjIdComponent419                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_definitiveObjIdComponent438                                     = new BitSet(
+	public static final BitSet FOLLOW_INT_in_definitiveObjIdComponent432                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_110_in_extensionDefault458                                             = new BitSet(
+	public static final BitSet FOLLOW_110_in_extensionDefault452                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0040000000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_118_in_extensionDefault460                                             = new BitSet(
+	public static final BitSet FOLLOW_118_in_extensionDefault454                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_taggingMethod_in_tagDefault478                                         = new BitSet(
+	public static final BitSet FOLLOW_taggingMethod_in_tagDefault472                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000010000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_144_in_tagDefault480                                                   = new BitSet(
+	public static final BitSet FOLLOW_144_in_tagDefault474                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_109_in_exports523                                                      = new BitSet(
+	public static final BitSet FOLLOW_109_in_exports517                                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000010000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_92_in_exports525                                                       = new BitSet(
+	public static final BitSet FOLLOW_92_in_exports519                                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000002000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_89_in_exports527                                                       = new BitSet(
+	public static final BitSet FOLLOW_89_in_exports521                                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_109_in_exports540                                                      = new BitSet(
+	public static final BitSet FOLLOW_109_in_exports534                                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_symbolList_in_exports542                                               = new BitSet(
+	public static final BitSet FOLLOW_symbolList_in_exports536                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000002000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_89_in_exports544                                                       = new BitSet(
+	public static final BitSet FOLLOW_89_in_exports538                                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
+	                                                                                                                     }
+	);
+	public static final BitSet FOLLOW_symbol_in_symbolList558                                                = new BitSet(
+	                                                                                                                     new long[]{
+	                                                                                                                               0x0000000000000002L,
+	                                                                                                                               0x0000000000080000L
+	                                                                                                                     }
+	);
+	public static final BitSet FOLLOW_83_in_symbolList562                                                    = new BitSet(
+	                                                                                                                     new long[]{
+	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
 	public static final BitSet FOLLOW_symbol_in_symbolList564                                                = new BitSet(
@@ -15425,1697 +15409,1686 @@ public class ASN1Parser extends Parser {
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_symbolList568                                                    = new BitSet(
-	                                                                                                                     new long[]{
-	                                                                                                                               0x0000000800000000L
-	                                                                                                                     }
-	);
-	public static final BitSet FOLLOW_symbol_in_symbolList570                                                = new BitSet(
-	                                                                                                                     new long[]{
-	                                                                                                                               0x0000000000000002L,
-	                                                                                                                               0x0000000000080000L
-	                                                                                                                     }
-	);
-	public static final BitSet FOLLOW_ID_in_symbol595                                                        = new BitSet(
+	public static final BitSet FOLLOW_ID_in_symbol589                                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_119_in_imports616                                                      = new BitSet(
+	public static final BitSet FOLLOW_119_in_imports610                                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_symbolsFromModuleList_in_imports618                                    = new BitSet(
+	public static final BitSet FOLLOW_symbolsFromModuleList_in_imports612                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000002000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_89_in_imports620                                                       = new BitSet(
+	public static final BitSet FOLLOW_89_in_imports614                                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_symbolsFromModule_in_symbolsFromModuleList639                          = new BitSet(
+	public static final BitSet FOLLOW_symbolsFromModule_in_symbolsFromModuleList633                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_symbolList_in_symbolsFromModule662                                     = new BitSet(
+	public static final BitSet FOLLOW_symbolList_in_symbolsFromModule656                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0001000000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_112_in_symbolsFromModule664                                            = new BitSet(
+	public static final BitSet FOLLOW_112_in_symbolsFromModule658                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_globalModuleReference_in_symbolsFromModule666                          = new BitSet(
+	public static final BitSet FOLLOW_globalModuleReference_in_symbolsFromModule660                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_globalModuleReference688                                         = new BitSet(
+	public static final BitSet FOLLOW_ID_in_globalModuleReference682                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000008L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_assignedIdentifier_in_globalModuleReference690                         = new BitSet(
+	public static final BitSet FOLLOW_assignedIdentifier_in_globalModuleReference684                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_objectIdentifierValue_in_assignedIdentifier711                         = new BitSet(
+	public static final BitSet FOLLOW_objectIdentifierValue_in_assignedIdentifier705                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_definedValue_in_assignedIdentifier715                                  = new BitSet(
+	public static final BitSet FOLLOW_definedValue_in_assignedIdentifier709                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_definedValue731                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_definedValue725                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000100000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_84_in_definedValue733                                                  = new BitSet(
+	public static final BitSet FOLLOW_84_in_definedValue727                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_definedValue737                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_definedValue731                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_assignment_in_assignmentList761                                        = new BitSet(
+	public static final BitSet FOLLOW_assignment_in_assignmentList755                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000202L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_typeAssignment_in_assignment794                                        = new BitSet(
+	public static final BitSet FOLLOW_typeAssignment_in_assignment788                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_valueAssignment_in_assignment799                                       = new BitSet(
+	public static final BitSet FOLLOW_valueAssignment_in_assignment793                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_valueAssignment811                                               = new BitSet(
+	public static final BitSet FOLLOW_ID_in_valueAssignment805                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_valueAssignment813                                             = new BitSet(
+	public static final BitSet FOLLOW_type_in_valueAssignment807                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000001000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_88_in_valueAssignment815                                               = new BitSet(
+	public static final BitSet FOLLOW_88_in_valueAssignment809                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x4000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_valueAssignment817                                            = new BitSet(
+	public static final BitSet FOLLOW_value_in_valueAssignment811                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000002000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_89_in_valueAssignment819                                               = new BitSet(
+	public static final BitSet FOLLOW_89_in_valueAssignment813                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_booleanValue_in_value845                                               = new BitSet(
+	public static final BitSet FOLLOW_booleanValue_in_value839                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_numberValue_in_value858                                                = new BitSet(
+	public static final BitSet FOLLOW_numberValue_in_value852                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_objectIdentifierValue_in_value871                                      = new BitSet(
+	public static final BitSet FOLLOW_objectIdentifierValue_in_value865                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_134_in_numberValue892                                                  = new BitSet(
+	public static final BitSet FOLLOW_134_in_numberValue886                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_126_in_numberValue905                                                  = new BitSet(
+	public static final BitSet FOLLOW_126_in_numberValue899                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_numberValue918                                                   = new BitSet(
+	public static final BitSet FOLLOW_ID_in_numberValue912                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_numberValue932                                                  = new BitSet(
+	public static final BitSet FOLLOW_INT_in_numberValue926                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_REAL_NUMBER_in_numberValue947                                          = new BitSet(
+	public static final BitSet FOLLOW_REAL_NUMBER_in_numberValue941                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_131_in_objectIdentifierValue966                                        = new BitSet(
+	public static final BitSet FOLLOW_131_in_objectIdentifierValue960                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_145_in_booleanValue975                                                 = new BitSet(
+	public static final BitSet FOLLOW_145_in_booleanValue969                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_111_in_booleanValue986                                                 = new BitSet(
+	public static final BitSet FOLLOW_111_in_booleanValue980                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_CLASS_DEF_in_typeAssignment1004                                        = new BitSet(
+	public static final BitSet FOLLOW_CLASS_DEF_in_typeAssignment998                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_typeAssignment1007                                               = new BitSet(
+	public static final BitSet FOLLOW_ID_in_typeAssignment1001                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000001000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_88_in_typeAssignment1009                                               = new BitSet(
+	public static final BitSet FOLLOW_88_in_typeAssignment1003                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_typeAssignment1011                                             = new BitSet(
+	public static final BitSet FOLLOW_type_in_typeAssignment1005                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_booleanType_in_type1037                                                = new BitSet(
+	public static final BitSet FOLLOW_booleanType_in_type1031                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_realType_in_type1050                                                   = new BitSet(
+	public static final BitSet FOLLOW_realType_in_type1044                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_integerType_in_type1063                                                = new BitSet(
+	public static final BitSet FOLLOW_integerType_in_type1057                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_taggedType_in_type1076                                                 = new BitSet(
+	public static final BitSet FOLLOW_taggedType_in_type1070                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sequenceOfType_in_type1101                                             = new BitSet(
+	public static final BitSet FOLLOW_sequenceOfType_in_type1095                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sequenceType_in_type1114                                               = new BitSet(
+	public static final BitSet FOLLOW_sequenceType_in_type1108                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_setOfType_in_type1138                                                  = new BitSet(
+	public static final BitSet FOLLOW_setOfType_in_type1132                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_setType_in_type1151                                                    = new BitSet(
+	public static final BitSet FOLLOW_setType_in_type1145                                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_choiceType_in_type1164                                                 = new BitSet(
+	public static final BitSet FOLLOW_choiceType_in_type1158                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_128_in_type1177                                                        = new BitSet(
+	public static final BitSet FOLLOW_128_in_type1171                                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0010000000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_116_in_type1179                                                        = new BitSet(
+	public static final BitSet FOLLOW_116_in_type1173                                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_characterStringType_in_type1192                                        = new BitSet(
+	public static final BitSet FOLLOW_characterStringType_in_type1186                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_bitStringType_in_type1205                                              = new BitSet(
+	public static final BitSet FOLLOW_bitStringType_in_type1199                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_enumeratedType_in_type1218                                             = new BitSet(
+	public static final BitSet FOLLOW_enumeratedType_in_type1212                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_129_in_type1231                                                        = new BitSet(
+	public static final BitSet FOLLOW_129_in_type1225                                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000004000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_142_in_type1233                                                        = new BitSet(
+	public static final BitSet FOLLOW_142_in_type1227                                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_type1235                                                 = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_type1229                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_definedType_in_type1251                                                = new BitSet(
+	public static final BitSet FOLLOW_definedType_in_type1245                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_selectionType_in_type1264                                              = new BitSet(
+	public static final BitSet FOLLOW_selectionType_in_type1258                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_definedType1286                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_definedType1280                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000100000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_84_in_definedType1288                                                  = new BitSet(
+	public static final BitSet FOLLOW_84_in_definedType1282                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_definedType1292                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_definedType1286                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_definedType1294                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_definedType1288                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_restrictedStringType_in_definedType1315                                = new BitSet(
+	public static final BitSet FOLLOW_restrictedStringType_in_definedType1309                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_definedType1317                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_definedType1311                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_selectionType1341                                                = new BitSet(
+	public static final BitSet FOLLOW_ID_in_selectionType1335                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000004000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_90_in_selectionType1343                                                = new BitSet(
+	public static final BitSet FOLLOW_90_in_selectionType1337                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_selectionType1345                                              = new BitSet(
+	public static final BitSet FOLLOW_type_in_selectionType1339                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_106_in_enumeratedType1367                                              = new BitSet(
+	public static final BitSet FOLLOW_106_in_enumeratedType1361                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_enumeratedType1369                                              = new BitSet(
+	public static final BitSet FOLLOW_159_in_enumeratedType1363                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_enumerations_in_enumeratedType1371                                     = new BitSet(
+	public static final BitSet FOLLOW_enumerations_in_enumeratedType1365                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_enumeratedType1373                                              = new BitSet(
+	public static final BitSet FOLLOW_161_in_enumeratedType1367                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_enumerationItem_in_enumerations1395                                    = new BitSet(
+	public static final BitSet FOLLOW_enumerationItem_in_enumerations1389                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_enumerations1398                                                 = new BitSet(
+	public static final BitSet FOLLOW_83_in_enumerations1392                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_enumerationItem_in_enumerations1400                                    = new BitSet(
+	public static final BitSet FOLLOW_enumerationItem_in_enumerations1394                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_enumerationItem1429                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_enumerationItem1423                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_enumerationItem1434                                              = new BitSet(
+	public static final BitSet FOLLOW_ID_in_enumerationItem1428                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_96_in_bitStringType1454                                                = new BitSet(
+	public static final BitSet FOLLOW_96_in_bitStringType1448                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000004000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_142_in_bitStringType1456                                               = new BitSet(
+	public static final BitSet FOLLOW_142_in_bitStringType1450                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedBitList_in_bitStringType1458                                      = new BitSet(
+	public static final BitSet FOLLOW_namedBitList_in_bitStringType1452                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_namedBitList1479                                                = new BitSet(
+	public static final BitSet FOLLOW_159_in_namedBitList1473                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_nameNumberForm_in_namedBitList1481                                     = new BitSet(
+	public static final BitSet FOLLOW_nameNumberForm_in_namedBitList1475                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000080000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_namedBitList1484                                                 = new BitSet(
+	public static final BitSet FOLLOW_83_in_namedBitList1478                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_nameNumberForm_in_namedBitList1486                                     = new BitSet(
+	public static final BitSet FOLLOW_nameNumberForm_in_namedBitList1480                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000080000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_namedBitList1490                                                = new BitSet(
+	public static final BitSet FOLLOW_161_in_namedBitList1484                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_nameNumberForm1514                                               = new BitSet(
+	public static final BitSet FOLLOW_ID_in_nameNumberForm1508                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_nameNumberForm1516                                               = new BitSet(
+	public static final BitSet FOLLOW_81_in_nameNumberForm1510                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_nameNumberForm1518                                              = new BitSet(
+	public static final BitSet FOLLOW_INT_in_nameNumberForm1512                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_nameNumberForm1520                                               = new BitSet(
+	public static final BitSet FOLLOW_82_in_nameNumberForm1514                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_99_in_characterStringType1541                                          = new BitSet(
+	public static final BitSet FOLLOW_99_in_characterStringType1535                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000004000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_142_in_characterStringType1543                                         = new BitSet(
+	public static final BitSet FOLLOW_142_in_characterStringType1537                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_characterStringType1545                                  = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_characterStringType1539                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_97_in_restrictedStringType1573                                         = new BitSet(
+	public static final BitSet FOLLOW_97_in_restrictedStringType1567                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_113_in_restrictedStringType1578                                        = new BitSet(
+	public static final BitSet FOLLOW_113_in_restrictedStringType1572                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_114_in_restrictedStringType1583                                        = new BitSet(
+	public static final BitSet FOLLOW_114_in_restrictedStringType1577                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_115_in_restrictedStringType1588                                        = new BitSet(
+	public static final BitSet FOLLOW_115_in_restrictedStringType1582                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_123_in_restrictedStringType1593                                        = new BitSet(
+	public static final BitSet FOLLOW_123_in_restrictedStringType1587                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_127_in_restrictedStringType1598                                        = new BitSet(
+	public static final BitSet FOLLOW_127_in_restrictedStringType1592                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_137_in_restrictedStringType1603                                        = new BitSet(
+	public static final BitSet FOLLOW_137_in_restrictedStringType1597                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_146_in_restrictedStringType1608                                        = new BitSet(
+	public static final BitSet FOLLOW_146_in_restrictedStringType1602                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_143_in_restrictedStringType1613                                        = new BitSet(
+	public static final BitSet FOLLOW_143_in_restrictedStringType1607                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_150_in_restrictedStringType1618                                        = new BitSet(
+	public static final BitSet FOLLOW_150_in_restrictedStringType1612                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_149_in_restrictedStringType1623                                        = new BitSet(
+	public static final BitSet FOLLOW_149_in_restrictedStringType1617                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_151_in_restrictedStringType1628                                        = new BitSet(
+	public static final BitSet FOLLOW_151_in_restrictedStringType1622                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_152_in_restrictedStringType1633                                        = new BitSet(
+	public static final BitSet FOLLOW_152_in_restrictedStringType1627                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_100_in_choiceType1645                                                  = new BitSet(
+	public static final BitSet FOLLOW_100_in_choiceType1639                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_choiceType1647                                                  = new BitSet(
+	public static final BitSet FOLLOW_159_in_choiceType1641                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_alternativesTypeLists_in_choiceType1649                                = new BitSet(
+	public static final BitSet FOLLOW_alternativesTypeLists_in_choiceType1643                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_choiceType1651                                                  = new BitSet(
+	public static final BitSet FOLLOW_161_in_choiceType1645                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_choiceType1653                                           = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_choiceType1647                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_alternativeTypeList_in_alternativesTypeLists1676                       = new BitSet(
+	public static final BitSet FOLLOW_alternativeTypeList_in_alternativesTypeLists1670                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_alternativesTypeLists1679                                        = new BitSet(
+	public static final BitSet FOLLOW_83_in_alternativesTypeLists1673                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000400000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAndException_in_alternativesTypeLists1681                     = new BitSet(
+	public static final BitSet FOLLOW_extensionAndException_in_alternativesTypeLists1675                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_alternativesTypeLists1684                                        = new BitSet(
+	public static final BitSet FOLLOW_83_in_alternativesTypeLists1678                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000008000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditionAlternativesList_in_alternativesTypeLists1686         = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditionAlternativesList_in_alternativesTypeLists1680         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionEndMarker_in_alternativesTypeLists1690                        = new BitSet(
+	public static final BitSet FOLLOW_extensionEndMarker_in_alternativesTypeLists1684                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedType_in_alternativeTypeList1723                                   = new BitSet(
+	public static final BitSet FOLLOW_namedType_in_alternativeTypeList1717                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_alternativeTypeList1726                                          = new BitSet(
+	public static final BitSet FOLLOW_83_in_alternativeTypeList1720                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedType_in_alternativeTypeList1728                                   = new BitSet(
+	public static final BitSet FOLLOW_namedType_in_alternativeTypeList1722                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1748  = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1742  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_extensionAdditionAlternativesList1751                            = new BitSet(
+	public static final BitSet FOLLOW_83_in_extensionAdditionAlternativesList1745                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000008000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1753  = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditionAlternative_in_extensionAdditionAlternativesList1747  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditionAlternativesGroup_in_extensionAdditionAlternative1774 = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditionAlternativesGroup_in_extensionAdditionAlternative1768 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedType_in_extensionAdditionAlternative1778                          = new BitSet(
+	public static final BitSet FOLLOW_namedType_in_extensionAdditionAlternative1772                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_155_in_extensionAdditionAlternativesGroup1787                          = new BitSet(
+	public static final BitSet FOLLOW_155_in_extensionAdditionAlternativesGroup1781                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_extensionAdditionAlternativesGroup1790                          = new BitSet(
+	public static final BitSet FOLLOW_INT_in_extensionAdditionAlternativesGroup1784                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000800000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_87_in_extensionAdditionAlternativesGroup1792                           = new BitSet(
+	public static final BitSet FOLLOW_87_in_extensionAdditionAlternativesGroup1786                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_alternativeTypeList_in_extensionAdditionAlternativesGroup1797          = new BitSet(
+	public static final BitSet FOLLOW_alternativeTypeList_in_extensionAdditionAlternativesGroup1791          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000020000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_157_in_extensionAdditionAlternativesGroup1799                          = new BitSet(
+	public static final BitSet FOLLOW_157_in_extensionAdditionAlternativesGroup1793                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_140_in_setType1826                                                     = new BitSet(
+	public static final BitSet FOLLOW_140_in_setType1820                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_setType1828                                                     = new BitSet(
+	public static final BitSet FOLLOW_159_in_setType1822                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000400000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeLists_in_setType1830                                      = new BitSet(
+	public static final BitSet FOLLOW_componentTypeLists_in_setType1824                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_setType1833                                                     = new BitSet(
+	public static final BitSet FOLLOW_161_in_setType1827                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_setType1835                                              = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_setType1829                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_140_in_setOfType1861                                                   = new BitSet(
+	public static final BitSet FOLLOW_140_in_setOfType1855                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_setOfType1863                                            = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_setOfType1857                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_130_in_setOfType1866                                                   = new BitSet(
+	public static final BitSet FOLLOW_130_in_setOfType1860                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sOfComponentType_in_setOfType1868                                      = new BitSet(
+	public static final BitSet FOLLOW_sOfComponentType_in_setOfType1862                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedType_in_sOfComponentType1892                                      = new BitSet(
+	public static final BitSet FOLLOW_namedType_in_sOfComponentType1886                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_sOfComponentType1896                                           = new BitSet(
+	public static final BitSet FOLLOW_type_in_sOfComponentType1890                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_139_in_sequenceType1909                                                = new BitSet(
+	public static final BitSet FOLLOW_139_in_sequenceType1903                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_sequenceType1911                                                = new BitSet(
+	public static final BitSet FOLLOW_159_in_sequenceType1905                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000400000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeLists_in_sequenceType1913                                 = new BitSet(
+	public static final BitSet FOLLOW_componentTypeLists_in_sequenceType1907                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_sequenceType1916                                                = new BitSet(
+	public static final BitSet FOLLOW_161_in_sequenceType1910                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_sequenceType1918                                         = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_sequenceType1912                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeList_in_componentTypeLists1942                            = new BitSet(
+	public static final BitSet FOLLOW_componentTypeList_in_componentTypeLists1936                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_componentTypeLists1945                                           = new BitSet(
+	public static final BitSet FOLLOW_83_in_componentTypeLists1939                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000400000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAndException_in_componentTypeLists1947                        = new BitSet(
+	public static final BitSet FOLLOW_extensionAndException_in_componentTypeLists1941                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditions_in_componentTypeLists1949                           = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditions_in_componentTypeLists1943                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionEndMarker_in_componentTypeLists1953                           = new BitSet(
+	public static final BitSet FOLLOW_extensionEndMarker_in_componentTypeLists1947                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000002L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeList_in_componentTypeLists1955                            = new BitSet(
+	public static final BitSet FOLLOW_componentTypeList_in_componentTypeLists1949                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAndException_in_componentTypeLists2006                        = new BitSet(
+	public static final BitSet FOLLOW_extensionAndException_in_componentTypeLists2000                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditions_in_componentTypeLists2008                           = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditions_in_componentTypeLists2002                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionEndMarker_in_componentTypeLists2011                           = new BitSet(
+	public static final BitSet FOLLOW_extensionEndMarker_in_componentTypeLists2005                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentType_in_componentTypeList2040                                 = new BitSet(
+	public static final BitSet FOLLOW_componentType_in_componentTypeList2034                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_componentTypeList2043                                            = new BitSet(
+	public static final BitSet FOLLOW_83_in_componentTypeList2037                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentType_in_componentTypeList2045                                 = new BitSet(
+	public static final BitSet FOLLOW_componentType_in_componentTypeList2039                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedType_in_componentType2069                                         = new BitSet(
+	public static final BitSet FOLLOW_namedType_in_componentType2063                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000008000000000L,
 	                                                                                                                               0x0000000000000010L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeOption_in_componentType2071                               = new BitSet(
+	public static final BitSet FOLLOW_componentTypeOption_in_componentType2065                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_102_in_componentType2090                                               = new BitSet(
+	public static final BitSet FOLLOW_102_in_componentType2084                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_130_in_componentType2092                                               = new BitSet(
+	public static final BitSet FOLLOW_130_in_componentType2086                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_componentType2094                                              = new BitSet(
+	public static final BitSet FOLLOW_type_in_componentType2088                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_132_in_componentTypeOption2114                                         = new BitSet(
+	public static final BitSet FOLLOW_132_in_componentTypeOption2108                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_103_in_componentTypeOption2126                                         = new BitSet(
+	public static final BitSet FOLLOW_103_in_componentTypeOption2120                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x4000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_componentTypeOption2128                                       = new BitSet(
+	public static final BitSet FOLLOW_value_in_componentTypeOption2122                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_extensionAdditions2149                                           = new BitSet(
+	public static final BitSet FOLLOW_83_in_extensionAdditions2143                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000000000L,
 	                                                                                                                               0x0000000008000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAddition_in_extensionAdditions2151                            = new BitSet(
+	public static final BitSet FOLLOW_extensionAddition_in_extensionAdditions2145                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_extensionAdditions2154                                           = new BitSet(
+	public static final BitSet FOLLOW_83_in_extensionAdditions2148                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000000000L,
 	                                                                                                                               0x0000000008000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAddition_in_extensionAdditions2156                            = new BitSet(
+	public static final BitSet FOLLOW_extensionAddition_in_extensionAdditions2150                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentType_in_extensionAddition2181                                 = new BitSet(
+	public static final BitSet FOLLOW_componentType_in_extensionAddition2175                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionAdditionGroup_in_extensionAddition2185                        = new BitSet(
+	public static final BitSet FOLLOW_extensionAdditionGroup_in_extensionAddition2179                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_155_in_extensionAdditionGroup2196                                      = new BitSet(
+	public static final BitSet FOLLOW_155_in_extensionAdditionGroup2190                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_extensionAdditionGroup2199                                      = new BitSet(
+	public static final BitSet FOLLOW_INT_in_extensionAdditionGroup2193                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000800000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_87_in_extensionAdditionGroup2201                                       = new BitSet(
+	public static final BitSet FOLLOW_87_in_extensionAdditionGroup2195                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_componentTypeList_in_extensionAdditionGroup2205                        = new BitSet(
+	public static final BitSet FOLLOW_componentTypeList_in_extensionAdditionGroup2199                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000020000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_157_in_extensionAdditionGroup2207                                      = new BitSet(
+	public static final BitSet FOLLOW_157_in_extensionAdditionGroup2201                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_extensionEndMarker2230                                           = new BitSet(
+	public static final BitSet FOLLOW_83_in_extensionEndMarker2224                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000400000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_86_in_extensionEndMarker2232                                           = new BitSet(
+	public static final BitSet FOLLOW_86_in_extensionEndMarker2226                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_86_in_extensionAndException2251                                        = new BitSet(
+	public static final BitSet FOLLOW_86_in_extensionAndException2245                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000010000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exceptionSpec_in_extensionAndException2253                             = new BitSet(
+	public static final BitSet FOLLOW_exceptionSpec_in_extensionAndException2247                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_80_in_exceptionSpec2276                                                = new BitSet(
+	public static final BitSet FOLLOW_80_in_exceptionSpec2270                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_definedValue_in_exceptionSpec2278                                      = new BitSet(
+	public static final BitSet FOLLOW_definedValue_in_exceptionSpec2272                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_80_in_exceptionSpec2296                                                = new BitSet(
+	public static final BitSet FOLLOW_80_in_exceptionSpec2290                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_exceptionSpec2298                                              = new BitSet(
+	public static final BitSet FOLLOW_type_in_exceptionSpec2292                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000800000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_87_in_exceptionSpec2300                                                = new BitSet(
+	public static final BitSet FOLLOW_87_in_exceptionSpec2294                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x4000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_exceptionSpec2302                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_exceptionSpec2296                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_80_in_exceptionSpec2322                                                = new BitSet(
+	public static final BitSet FOLLOW_80_in_exceptionSpec2316                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_exceptionSpec2324                                               = new BitSet(
+	public static final BitSet FOLLOW_INT_in_exceptionSpec2318                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_139_in_sequenceOfType2348                                              = new BitSet(
+	public static final BitSet FOLLOW_139_in_sequenceOfType2342                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_sequenceOfType2350                                       = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_sequenceOfType2344                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_130_in_sequenceOfType2353                                              = new BitSet(
+	public static final BitSet FOLLOW_130_in_sequenceOfType2347                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sOfComponentType_in_sequenceOfType2355                                 = new BitSet(
+	public static final BitSet FOLLOW_sOfComponentType_in_sequenceOfType2349                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000002000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_89_in_sequenceOfType2357                                               = new BitSet(
+	public static final BitSet FOLLOW_89_in_sequenceOfType2351                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedType2379                                                    = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedType2373                                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_namedType2381                                                  = new BitSet(
+	public static final BitSet FOLLOW_type_in_namedType2375                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_154_in_taggedType2403                                                  = new BitSet(
+	public static final BitSet FOLLOW_154_in_taggedType2397                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L,
 	                                                                                                                               0x0000000020000000L,
 	                                                                                                                               0x0000000000100100L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_tagClass_in_taggedType2405                                             = new BitSet(
+	public static final BitSet FOLLOW_tagClass_in_taggedType2399                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_classNumber_in_taggedType2408                                          = new BitSet(
+	public static final BitSet FOLLOW_classNumber_in_taggedType2402                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000010000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_156_in_taggedType2410                                                  = new BitSet(
+	public static final BitSet FOLLOW_156_in_taggedType2404                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A2E141F40020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_taggingMethod_in_taggedType2412                                        = new BitSet(
+	public static final BitSet FOLLOW_taggingMethod_in_taggedType2406                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_taggedType2415                                                 = new BitSet(
+	public static final BitSet FOLLOW_type_in_taggedType2409                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_classNumber2442                                                 = new BitSet(
+	public static final BitSet FOLLOW_INT_in_classNumber2436                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_definedValue_in_classNumber2446                                        = new BitSet(
+	public static final BitSet FOLLOW_definedValue_in_classNumber2440                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_138_in_realType2475                                                    = new BitSet(
+	public static final BitSet FOLLOW_138_in_realType2469                                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_realType2477                                             = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_realType2471                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_121_in_integerType2499                                                 = new BitSet(
+	public static final BitSet FOLLOW_121_in_integerType2493                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_integerType2501                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_integerType2495                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_integerType2505                                                 = new BitSet(
+	public static final BitSet FOLLOW_159_in_integerType2499                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumberList_in_integerType2507                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumberList_in_integerType2501                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_integerType2509                                                 = new BitSet(
+	public static final BitSet FOLLOW_161_in_integerType2503                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2534                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2528                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_namedNumberList2537                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_namedNumberList2531                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2539                                     = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_namedNumberList2533                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedNumber2561                                                  = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedNumber2555                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_namedNumber2563                                                  = new BitSet(
+	public static final BitSet FOLLOW_81_in_namedNumber2557                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_INT_in_namedNumber2565                                                 = new BitSet(
+	public static final BitSet FOLLOW_INT_in_namedNumber2559                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_namedNumber2567                                                  = new BitSet(
+	public static final BitSet FOLLOW_82_in_namedNumber2561                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_98_in_booleanType2589                                                  = new BitSet(
+	public static final BitSet FOLLOW_98_in_booleanType2583                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_booleanType2591                                          = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_booleanType2585                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_constraint2615                                                   = new BitSet(
+	public static final BitSet FOLLOW_81_in_constraint2609                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraintSpec_in_constraint2617                                       = new BitSet(
+	public static final BitSet FOLLOW_constraintSpec_in_constraint2611                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000050000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exceptionSpec_in_constraint2619                                        = new BitSet(
+	public static final BitSet FOLLOW_exceptionSpec_in_constraint2613                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_constraint2621                                                   = new BitSet(
+	public static final BitSet FOLLOW_82_in_constraint2615                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpecs_in_constraintSpec2648                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpecs_in_constraintSpec2642                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2660                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2654                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_extensionEndMarker_in_elementSetSpecs2663                              = new BitSet(
+	public static final BitSet FOLLOW_extensionEndMarker_in_elementSetSpecs2657                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_elementSetSpecs2667                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_elementSetSpecs2661                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2669                                  = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elementSetSpecs2663                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_unions_in_elementSetSpec2701                                           = new BitSet(
+	public static final BitSet FOLLOW_unions_in_elementSetSpec2695                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_92_in_elementSetSpec2715                                               = new BitSet(
+	public static final BitSet FOLLOW_92_in_elementSetSpec2709                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000080000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exclusions_in_elementSetSpec2717                                       = new BitSet(
+	public static final BitSet FOLLOW_exclusions_in_elementSetSpec2711                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_107_in_exclusions2739                                                  = new BitSet(
+	public static final BitSet FOLLOW_107_in_exclusions2733                                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elements_in_exclusions2741                                             = new BitSet(
+	public static final BitSet FOLLOW_elements_in_exclusions2735                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersections_in_unions2763                                            = new BitSet(
+	public static final BitSet FOLLOW_intersections_in_unions2757                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000100080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_unionMark_in_unions2766                                                = new BitSet(
+	public static final BitSet FOLLOW_unionMark_in_unions2760                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersections_in_unions2768                                            = new BitSet(
+	public static final BitSet FOLLOW_intersections_in_unions2762                                            = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000100080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionElement_in_intersections2793                               = new BitSet(
+	public static final BitSet FOLLOW_intersectionElement_in_intersections2787                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0400000000000000L,
 	                                                                                                                               0x0000000040000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionMark_in_intersections2796                                  = new BitSet(
+	public static final BitSet FOLLOW_intersectionMark_in_intersections2790                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F00020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_intersectionElement_in_intersections2798                               = new BitSet(
+	public static final BitSet FOLLOW_intersectionElement_in_intersections2792                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0400000000000000L,
 	                                                                                                                               0x0000000040000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elements_in_intersectionElement2822                                    = new BitSet(
+	public static final BitSet FOLLOW_elements_in_intersectionElement2816                                    = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000080000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_exclusions_in_intersectionElement2824                                  = new BitSet(
+	public static final BitSet FOLLOW_exclusions_in_intersectionElement2818                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_elements2856                                                     = new BitSet(
+	public static final BitSet FOLLOW_81_in_elements2850                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0xEB0E841F10020000L,
 	                                                                                                                               0x0000000007E6BE6BL
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_elementSetSpec_in_elements2858                                         = new BitSet(
+	public static final BitSet FOLLOW_elementSetSpec_in_elements2852                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000040000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_82_in_elements2860                                                     = new BitSet(
+	public static final BitSet FOLLOW_82_in_elements2854                                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_subtypeElements_in_elements2871                                        = new BitSet(
+	public static final BitSet FOLLOW_subtypeElements_in_elements2865                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_subtypeElements2887                                           = new BitSet(
+	public static final BitSet FOLLOW_value_in_subtypeElements2881                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_valueRange_in_subtypeElements2900                                      = new BitSet(
+	public static final BitSet FOLLOW_valueRange_in_subtypeElements2894                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_sizeConstraint_in_subtypeElements2905                                  = new BitSet(
+	public static final BitSet FOLLOW_sizeConstraint_in_subtypeElements2899                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_typeConstraint_in_subtypeElements2910                                  = new BitSet(
+	public static final BitSet FOLLOW_typeConstraint_in_subtypeElements2904                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_innerTypeConstraint_in_subtypeElements2915                             = new BitSet(
+	public static final BitSet FOLLOW_innerTypeConstraint_in_subtypeElements2909                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_patternConstraint_in_subtypeElements2920                               = new BitSet(
+	public static final BitSet FOLLOW_patternConstraint_in_subtypeElements2914                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_153_in_innerTypeConstraint2931                                         = new BitSet(
+	public static final BitSet FOLLOW_153_in_innerTypeConstraint2925                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000002000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_101_in_innerTypeConstraint2933                                         = new BitSet(
+	public static final BitSet FOLLOW_101_in_innerTypeConstraint2927                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_innerTypeConstraint2935                                  = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_innerTypeConstraint2929                                  = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_153_in_innerTypeConstraint2948                                         = new BitSet(
+	public static final BitSet FOLLOW_153_in_innerTypeConstraint2942                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000004000000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_102_in_innerTypeConstraint2950                                         = new BitSet(
+	public static final BitSet FOLLOW_102_in_innerTypeConstraint2944                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000080000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_159_in_innerTypeConstraint2952                                         = new BitSet(
+	public static final BitSet FOLLOW_159_in_innerTypeConstraint2946                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x0000000000400000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_86_in_innerTypeConstraint2955                                          = new BitSet(
+	public static final BitSet FOLLOW_86_in_innerTypeConstraint2949                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_innerTypeConstraint2957                                          = new BitSet(
+	public static final BitSet FOLLOW_83_in_innerTypeConstraint2951                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_typeConstraints_in_innerTypeConstraint2961                             = new BitSet(
+	public static final BitSet FOLLOW_typeConstraints_in_innerTypeConstraint2955                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000200000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_161_in_innerTypeConstraint2963                                         = new BitSet(
+	public static final BitSet FOLLOW_161_in_innerTypeConstraint2957                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2989                                 = new BitSet(
+	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2983                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_83_in_typeConstraints2992                                              = new BitSet(
+	public static final BitSet FOLLOW_83_in_typeConstraints2986                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2994                                 = new BitSet(
+	public static final BitSet FOLLOW_namedConstraint_in_typeConstraints2988                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000000080000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_namedConstraint3020                                              = new BitSet(
+	public static final BitSet FOLLOW_ID_in_namedConstraint3014                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000008020000L,
 	                                                                                                                               0x0000000000000090L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_namedConstraint3022                                      = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_namedConstraint3016                                      = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000008000000L,
 	                                                                                                                               0x0000000000000090L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_presenceConstraint_in_namedConstraint3025                              = new BitSet(
+	public static final BitSet FOLLOW_presenceConstraint_in_namedConstraint3019                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_120_in_typeConstraint3074                                              = new BitSet(
+	public static final BitSet FOLLOW_120_in_typeConstraint3068                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L,
 	                                                                                                                               0x8A0E041F00020000L,
 	                                                                                                                               0x0000000005E49E03L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_type_in_typeConstraint3077                                             = new BitSet(
+	public static final BitSet FOLLOW_type_in_typeConstraint3071                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_lowerEndPoint_in_valueRange3102                                        = new BitSet(
+	public static final BitSet FOLLOW_lowerEndPoint_in_valueRange3096                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000200000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_85_in_valueRange3104                                                   = new BitSet(
+	public static final BitSet FOLLOW_85_in_valueRange3098                                                   = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x5000800004000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_upperEndPoint_in_valueRange3106                                        = new BitSet(
+	public static final BitSet FOLLOW_upperEndPoint_in_valueRange3100                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_lowerEndValue_in_lowerEndPoint3130                                     = new BitSet(
+	public static final BitSet FOLLOW_lowerEndValue_in_lowerEndPoint3124                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L,
 	                                                                                                                               0x0000000004000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_90_in_lowerEndPoint3132                                                = new BitSet(
+	public static final BitSet FOLLOW_90_in_lowerEndPoint3126                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_90_in_upperEndPoint3158                                                = new BitSet(
+	public static final BitSet FOLLOW_90_in_upperEndPoint3152                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x5000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_upperEndValue_in_upperEndPoint3161                                     = new BitSet(
+	public static final BitSet FOLLOW_upperEndValue_in_upperEndPoint3155                                     = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_lowerEndValue3186                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_lowerEndValue3180                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_125_in_lowerEndValue3193                                               = new BitSet(
+	public static final BitSet FOLLOW_125_in_lowerEndValue3187                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_upperEndValue3205                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_upperEndValue3199                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_124_in_upperEndValue3212                                               = new BitSet(
+	public static final BitSet FOLLOW_124_in_upperEndValue3206                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_141_in_sizeConstraint3224                                              = new BitSet(
+	public static final BitSet FOLLOW_141_in_sizeConstraint3218                                              = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_sizeConstraint3226                                       = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_sizeConstraint3220                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_133_in_patternConstraint3245                                           = new BitSet(
+	public static final BitSet FOLLOW_133_in_patternConstraint3239                                           = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0100004800000000L,
 	                                                                                                                               0x4000800000000000L,
 	                                                                                                                               0x0000000000020048L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_patternConstraint3247                                         = new BitSet(
+	public static final BitSet FOLLOW_value_in_patternConstraint3241                                         = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_CLASS_DEF_in_synpred1_ASN1784                                          = new BitSet(
+	public static final BitSet FOLLOW_CLASS_DEF_in_synpred1_ASN1778                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000800000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_ID_in_synpred1_ASN1787                                                 = new BitSet(
+	public static final BitSet FOLLOW_ID_in_synpred1_ASN1781                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000001000000L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_88_in_synpred1_ASN1789                                                 = new BitSet(
+	public static final BitSet FOLLOW_88_in_synpred1_ASN1783                                                 = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_139_in_synpred2_ASN11090                                               = new BitSet(
+	public static final BitSet FOLLOW_139_in_synpred2_ASN11084                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_synpred2_ASN11092                                        = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_synpred2_ASN11086                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_130_in_synpred2_ASN11095                                               = new BitSet(
+	public static final BitSet FOLLOW_130_in_synpred2_ASN11089                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_140_in_synpred3_ASN11128                                               = new BitSet(
+	public static final BitSet FOLLOW_140_in_synpred3_ASN11122                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000020000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_constraint_in_synpred3_ASN11130                                        = new BitSet(
+	public static final BitSet FOLLOW_constraint_in_synpred3_ASN11124                                        = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000000L,
 	                                                                                                                               0x0000000000000004L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_130_in_synpred3_ASN11133                                               = new BitSet(
+	public static final BitSet FOLLOW_130_in_synpred3_ASN11127                                               = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_namedNumber_in_synpred4_ASN11424                                       = new BitSet(
+	public static final BitSet FOLLOW_namedNumber_in_synpred4_ASN11418                                       = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_VALUE_ID_in_synpred5_ASN11889                                          = new BitSet(
+	public static final BitSet FOLLOW_VALUE_ID_in_synpred5_ASN11883                                          = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_81_in_synpred6_ASN12851                                                = new BitSet(
+	public static final BitSet FOLLOW_81_in_synpred6_ASN12845                                                = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }
 	);
-	public static final BitSet FOLLOW_value_in_synpred7_ASN12884                                             = new BitSet(
+	public static final BitSet FOLLOW_value_in_synpred7_ASN12878                                             = new BitSet(
 	                                                                                                                     new long[]{
 	                                                                                                                               0x0000000000000002L
 	                                                                                                                     }

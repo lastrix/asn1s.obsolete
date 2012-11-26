@@ -450,7 +450,7 @@ public class ASN1Module {
 	 */
 	public String toASN1() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getName());
+		getModuleId().toASN1(sb);
 		sb.append(" DEFINITIONS ");
 		sb.append(defaultTaggingMethod.toString());
 		sb.append(" TAGS ");

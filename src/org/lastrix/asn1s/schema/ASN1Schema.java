@@ -226,31 +226,6 @@ public final class ASN1Schema {
 		return sb.toString();
 	}
 
-	/**
-	 * Generates debug string that describes public types
-	 *
-	 * @return
-	 */
-	public String getTypesString() {
-		StringBuilder sb = new StringBuilder();
-		for (String module : types.keySet()) {
-			sb.append("Public types from module '");
-			sb.append(module);
-			sb.append("':\n");
-			final Map<String, ASN1Type> tl = types.get(module);
-			for (String typeName : tl.keySet()) {
-				sb.append("\t");
-				sb.append(typeName);
-				sb.append(" of type '");
-				sb.append(tl.get(typeName).getClass().getSimpleName());
-				sb.append("':\n");
-				sb.append(tl.get(typeName).getTypeString("\t\t"));
-				sb.append("\n");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
 
 	// ------------------------------------------------------------------------ //
 	// ----------------------- PRIVATE METHODS -------------------------------- //
