@@ -40,13 +40,15 @@ import java.lang.reflect.Field;
 public class ASN1ComponentType extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1ComponentType.class);
 
-	private final String   fieldName;
-	private       ASN1Type type;
+	private final String fieldName;
+
 	private final boolean optional = false;
+
+	private ASN1Type type;
+
 	private Field field;
-//	private final Object defaultValue;
 
-
+	//	private final Object defaultValue;
 	public ASN1ComponentType(final String fieldName, final ASN1Type type) {
 		this.name = type.getName();
 		this.type = type;
@@ -55,77 +57,21 @@ public class ASN1ComponentType extends ASN1Type {
 		invalid();
 	}
 
+
+	@Override
+	public ASN1Tag getTag() {
+		return type.getTag();
+	}
+
 	/**
-	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 * Returns optional
 	 *
-	 * @param o      - the object to be written
-	 * @param os     - the output stream
-	 * @param header - true if header should be written
-	 *
-	 * @throws IOException
+	 * @return
 	 */
-	@Override
-	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		//let's find field with name in object class
-		field = findField(o.getClass());
-		Object value = null;
-		try {
-			value = field.get(o);
-		} catch (IllegalAccessException e) {
-			throw new ASN1Exception(e);
-		}
-		type.write(value, os, true);
+	public boolean isOptional() {
+		return optional;
 	}
 
-	private Field findField(final Class clazz) throws ASN1Exception {
-		Field f = null;
-		Class c = clazz;
-		while (c != null) {
-			try {
-				f = c.getDeclaredField(fieldName);
-				f.setAccessible(true);
-			} catch (NoSuchFieldException e) {
-			}
-			c = c.getSuperclass();
-		}
-		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", name, clazz)); }
-		return f;
-	}
-
-	@Override
-	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
-		if (value == null || tag == null) {
-			throw new NullPointerException();
-		}
-		field = findField(value.getClass());
-		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
-		try {
-			// underlying type reader should always test header.
-			final Object ro = type.read(null, is, tag, true);
-			try {
-				field.set(value, ro);
-			} catch (Exception e) {
-				//we should catch everything, i don't trust it.
-				e.printStackTrace();
-				throw new ASN1ReadException("Unable to setup new value of field '" + name + "'.");
-			}
-		} catch (ASN1IncorrectTagException e) {
-			//we can allow state when object is not read only if it optional
-			if (optional) {
-				throw new ASN1OptionalComponentSkippedException();
-			} else {
-				//if not, so throw it again! :)
-				throw e;
-			}
-		}
-		//we should always return null here. Since we're not type readers, we are auxiliary modifier.
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		return name + " " + type;
-	}
 
 	@Override
 	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
@@ -169,6 +115,81 @@ public class ASN1ComponentType extends ASN1Type {
 		}
 	}
 
+
+	@Override
+	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		if (value == null || tag == null) {
+			throw new NullPointerException();
+		}
+		field = findField(value.getClass());
+		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
+		try {
+			// underlying type reader should always test header.
+			final Object ro = type.read(null, is, tag, true);
+			try {
+				field.set(value, ro);
+			} catch (Exception e) {
+				//we should catch everything, i don't trust it.
+				e.printStackTrace();
+				throw new ASN1ReadException("Unable to setup new value of field '" + name + "'.");
+			}
+		} catch (ASN1IncorrectTagException e) {
+			//we can allow state when object is not read only if it optional
+			if (optional) {
+				throw new ASN1OptionalComponentSkippedException();
+			} else {
+				//if not, so throw it again! :)
+				throw e;
+			}
+		}
+		//we should always return null here. Since we're not type readers, we are auxiliary modifier.
+		return null;
+	}
+
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append(fieldName);
+		sb.append(" ");
+		sb.append(type.getTypeId());
+	}
+
+
+	@Override
+	public String toString() {
+		return name + " " + type;
+	}
+
+
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		//let's find field with name in object class
+		field = findField(o.getClass());
+		Object value = null;
+		try {
+			value = field.get(o);
+		} catch (IllegalAccessException e) {
+			throw new ASN1Exception(e);
+		}
+		type.write(value, os, true);
+	}
+
+
+	/**
+	 * @param module
+	 * @param register
+	 *
+	 * @throws ASN1Exception
+	 */
 	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
 		if (register) {
 			module.install(this);
@@ -180,15 +201,26 @@ public class ASN1ComponentType extends ASN1Type {
 		valid();
 	}
 
-	@Override
-	public ASN1Tag getTag() {
-		return type.getTag();
-	}
 
-	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append(fieldName);
-		sb.append(" ");
-		sb.append(type.getTypeId());
+	/**
+	 * @param clazz
+	 *
+	 * @return
+	 *
+	 * @throws ASN1Exception
+	 */
+	private Field findField(final Class clazz) throws ASN1Exception {
+		Field f = null;
+		Class c = clazz;
+		while (c != null) {
+			try {
+				f = c.getDeclaredField(fieldName);
+				f.setAccessible(true);
+			} catch (NoSuchFieldException e) {
+			}
+			c = c.getSuperclass();
+		}
+		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", name, clazz)); }
+		return f;
 	}
 }

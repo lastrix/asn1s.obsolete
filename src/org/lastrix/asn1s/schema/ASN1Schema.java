@@ -54,9 +54,13 @@ import java.util.Map;
  */
 public final class ASN1Schema {
 	/**
+	 * Constant used in property change firing to let listeners know about new type installation.
+	 */
+	public final static String                 TYPE_INSTALLED = "typeInstalled";
+	/**
 	 * Each type has it's own tag, and it should be unique
 	 */
-	private final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
+	private final       Map<ASN1Tag, ASN1Type> tag2type       = new HashMap<ASN1Tag, ASN1Type>();
 
 	/**
 	 * Defines which ASN1Type should handle specified class
@@ -77,11 +81,6 @@ public final class ASN1Schema {
 	 * Property change support to let listeners know about new type installation.
 	 */
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-	/**
-	 * Constant used in property change firing to let listeners know about new type installation.
-	 */
-	public final static String TYPE_INSTALLED = "typeInstalled";
 
 
 	/**

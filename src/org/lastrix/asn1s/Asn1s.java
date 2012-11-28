@@ -91,6 +91,16 @@ public class Asn1s {
 
 	public static void main(final String... args) {
 		initLogging();
+
+//		final ByteArrayInputStream is = new ByteArrayInputStream(new byte[]{0x00, 0x00});
+//		try {
+//			ASN1Tag tag = ASN1Tag.readTag(is);
+//			logger.warn(tag);
+//			logger.warn(tag.isConstructed());
+//		} catch (ASN1Exception e) {
+//			logger.warn("Exception:", e);
+//		}
+
 		try {
 			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/testModule.asn");
 			logger.warn(s.getModulesString());

@@ -36,12 +36,6 @@ import java.io.InputStream;
  * @see #asBytes() - to get byte array representation, you could write it to stream
  */
 public final class ASN1Tag {
-
-	/**
-	 * Tag mask to extract 1-5th bits from first tag octet
-	 */
-	public static final int TAG_MASK = 0x1F;
-
 	/**
 	 * Class mask to extract 7th and 8th bits from first tag octet
 	 */
@@ -53,9 +47,9 @@ public final class ASN1Tag {
 	public static final int PC_MASK = 0x20;
 
 	/**
-	 * The tag number
+	 * Tag mask to extract 1-5th bits from first tag octet
 	 */
-	private final int tag;
+	public static final int TAG_MASK = 0x1F;
 
 	/**
 	 * The tag class, could be either UNIVERSAL, PRIVATE or APPLICATION
@@ -72,120 +66,10 @@ public final class ASN1Tag {
 	 */
 	private final byte[] bytes;
 
-
 	/**
-	 * Construct ASN1Tag
-	 *
-	 * @param tag         - the tag number
-	 * @param tagClass    - the tag class
-	 * @param constructed - the constructed flag
-	 *
-	 * @see #asBytes()
-	 * @see #readTag(InputStream)
+	 * The tag number
 	 */
-	public ASN1Tag(final int tag, final TagClass tagClass, final boolean constructed) {
-		super();
-		this.tag = tag;
-		this.tagClass = tagClass;
-		this.constructed = constructed;
-		// may be do it lazy?
-		this.bytes = toByteArray();
-	}
-
-	@Override
-	public String toString() {
-		//small hack, so constructed would only change bracket to brace
-		if (constructed) {
-			return String.format("ASN1Tag[%d %s]", tag, tagClass);
-		}
-		return String.format("ASN1Tag{%d %s}", tag, tagClass);
-	}
-
-	/**
-	 * Returns tag number
-	 *
-	 * @return an int
-	 */
-	public int getTag() {
-		return tag;
-	}
-
-	/**
-	 * Returns Tag Class
-	 *
-	 * @return an TagClass
-	 */
-	public TagClass getTagClass() {
-		return tagClass;
-	}
-
-	/**
-	 * Returns constructed
-	 *
-	 * @return an boolean
-	 */
-	public boolean isConstructed() {
-		return constructed;
-	}
-
-	@Override
-	public int hashCode() {
-		// we don't need to hash constructed, some classes don't like it, like Strings, see ITU-T X.690 paragraph 8.6.4.2
-		return tagClass.ordinal()
-		       | (tag << 2);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (obj instanceof ASN1Tag) {
-			// yes, there is no constructed checks. Since some types got very bad here (like Strings, see ITU-T X.690 paragraph 8.6.4.2)
-			// so it better not to check
-			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTagClass());
-		}
-		return false;
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return new ASN1Tag(tag, tagClass, constructed);
-	}
-
-	/**
-	 * Converts tag, tagClass and constructed to byte array, so you could write it
-	 *
-	 * @return an byte array
-	 */
-	private byte[] toByteArray() {
-		final long tagBits = Long.highestOneBit(getTag());
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(1);
-
-		if (tagBits > TAG_MASK) {
-			//write XX X 11111 byte
-			bos.write(TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
-
-			// now write tag number as described in ITU-T X.690 paragraph 8.1.2.4.3.
-			long mTag = Utils.makeByteGaps(getTag(), 1, Utils.UNSIGNED_BYTE_MASK);
-			final int bytesCount = Utils.getMinimumBytes(mTag);
-			for (int i = bytesCount - 1; i >= 0; i--) {
-				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
-			}
-		} else {
-			// one byte tag
-			bos.write(getTag() & TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
-		}
-		return bos.toByteArray();
-	}
-
-	/**
-	 * Returns byte array representation of this tag
-	 *
-	 * @return an byte array
-	 */
-	public byte[] asBytes() {
-		return bytes;
-	}
+	private final int tag;
 
 	/**
 	 * Private method for reading tags encoded with ASN.1
@@ -224,5 +108,139 @@ public final class ASN1Tag {
 		}
 		// now create class
 		return new ASN1Tag(tag, TagClass.getByCode(tagClass), constructed);
+	}
+
+
+	/**
+	 * Construct ASN1Tag
+	 *
+	 * @param tag         - the tag number
+	 * @param tagClass    - the tag class
+	 * @param constructed - the constructed flag
+	 *
+	 * @see #asBytes()
+	 * @see #readTag(InputStream)
+	 */
+	public ASN1Tag(final int tag, final TagClass tagClass, final boolean constructed) {
+		super();
+		this.tag = tag;
+		this.tagClass = tagClass;
+		this.constructed = constructed;
+		// may be do it lazy?
+		this.bytes = toByteArray();
+	}
+
+
+	/**
+	 * Returns tag number
+	 *
+	 * @return an int
+	 */
+	public int getTag() {
+		return tag;
+	}
+
+
+	/**
+	 * Returns Tag Class
+	 *
+	 * @return an TagClass
+	 */
+	public TagClass getTagClass() {
+		return tagClass;
+	}
+
+
+	/**
+	 * Returns constructed
+	 *
+	 * @return an boolean
+	 */
+	public boolean isConstructed() {
+		return constructed;
+	}
+
+
+	/**
+	 * Returns true whenever this tag is an eoc label.
+	 *
+	 * @return
+	 */
+	public boolean isEOC() {
+		return getTag() == 0 && getTagClass() == TagClass.UNIVERSAL && !isConstructed();
+	}
+
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new ASN1Tag(tag, tagClass, constructed);
+	}
+
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof ASN1Tag) {
+			// yes, there is no constructed checks. Since some types got very bad here (like Strings, see ITU-T X.690 paragraph 8.6.4.2)
+			// so it better not to check
+			return tag == ((ASN1Tag) obj).getTag() && tagClass.equals(((ASN1Tag) obj).getTagClass());
+		}
+		return false;
+	}
+
+
+	@Override
+	public int hashCode() {
+		// we don't need to hash constructed, some classes don't like it, like Strings, see ITU-T X.690 paragraph 8.6.4.2
+		return tagClass.ordinal()
+		       | (tag << 2);
+	}
+
+
+	@Override
+	public String toString() {
+		//small hack, so constructed would only change bracket to brace
+		if (constructed) {
+			return String.format("ASN1Tag[%d %s]", tag, tagClass);
+		}
+		return String.format("ASN1Tag{%d %s}", tag, tagClass);
+	}
+
+
+	/**
+	 * Converts tag, tagClass and constructed to byte array, so you could write it
+	 *
+	 * @return an byte array
+	 */
+	private byte[] toByteArray() {
+		final long tagBits = Long.highestOneBit(getTag());
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(1);
+
+		if (tagBits > TAG_MASK) {
+			//write XX X 11111 byte
+			bos.write(TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
+
+			// now write tag number as described in ITU-T X.690 paragraph 8.1.2.4.3.
+			long mTag = Utils.makeByteGaps(getTag(), 1, Utils.UNSIGNED_BYTE_MASK);
+			final int bytesCount = Utils.getMinimumBytes(mTag);
+			for (int i = bytesCount - 1; i >= 0; i--) {
+				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
+			}
+		} else {
+			// one byte tag
+			bos.write(getTag() & TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
+		}
+		return bos.toByteArray();
+	}
+
+
+	/**
+	 * Returns byte array representation of this tag
+	 *
+	 * @return an byte array
+	 */
+	public byte[] asBytes() {
+		return bytes;
 	}
 }

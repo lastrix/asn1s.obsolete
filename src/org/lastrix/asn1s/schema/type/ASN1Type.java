@@ -40,9 +40,45 @@ public abstract class ASN1Type {
 	/**
 	 * Constant used in property change support to notify about validity state change.
 	 */
-	public final static String VALID = "valid";
+	public final static String                VALID = "valid";
+	/**
+	 * Property change support used to notify listeners about validity changes.
+	 */
+	private final       PropertyChangeSupport pcs   = new PropertyChangeSupport(this);
+
+	/**
+	 * Flag that show object validity state.
+	 */
+	private boolean valid;
+
+	/**
+	 * Module that holds this type
+	 */
+	protected ASN1Module module = null;
+
+	/**
+	 * ASN1Tag used in index maps to choose valid handler for incoming object in
+	 * an ASN1 binary stream.
+	 */
+	protected ASN1Tag tag = null;
+
+	/**
+	 * Class used by this type, see {@link ASN1Schema} index HashMaps.
+	 */
+	protected Class handledClass;
+
+	/**
+	 * Name of this type
+	 */
+	protected String name;
 
 	protected String typeId = null;
+
+	/**
+	 * Flag that shows if type as exported.
+	 * Actually this variable has no real use in project.
+	 */
+	protected boolean exported = false;
 
 	/**
 	 * Static method used to make a fully qualified type id.
@@ -56,51 +92,6 @@ public abstract class ASN1Type {
 		return moduleId + "." + name;
 	}
 
-	/**
-	 * Name of this type
-	 */
-	protected String name;
-
-	/**
-	 * Module that holds this type
-	 */
-	protected ASN1Module module = null;
-
-	/**
-	 * Class used by this type, see {@link ASN1Schema} index HashMaps.
-	 */
-	protected Class handledClass;
-
-	/**
-	 * Flag that shows if type as exported.
-	 * Actually this variable has no real use in project.
-	 */
-	protected boolean exported = false;
-
-	/**
-	 * Flag that show object validity state.
-	 */
-	private boolean valid;
-
-	/**
-	 * ASN1Tag used in index maps to choose valid handler for incoming object in
-	 * an ASN1 binary stream.
-	 */
-	protected ASN1Tag tag = null;
-
-	/**
-	 * Property change support used to notify listeners about validity changes.
-	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-	/**
-	 * Returns class used by this type
-	 *
-	 * @return
-	 */
-	public Class getHandledClass() {
-		return handledClass;
-	}
 
 	/**
 	 * Returns module.
@@ -111,6 +102,17 @@ public abstract class ASN1Type {
 		return module;
 	}
 
+
+	/**
+	 * Setups new module for this type
+	 *
+	 * @param module - an ASN1Module
+	 */
+	protected void setModule(final ASN1Module module) {
+		this.module = module;
+	}
+
+
 	/**
 	 * Returns name of this type
 	 *
@@ -120,14 +122,6 @@ public abstract class ASN1Type {
 		return name;
 	}
 
-	/**
-	 * Return tag
-	 *
-	 * @return an ASN1Tag
-	 */
-	public ASN1Tag getTag() {
-		return tag;
-	}
 
 	/**
 	 * Returns fully qualified type name.
@@ -138,6 +132,7 @@ public abstract class ASN1Type {
 		return typeId;
 	}
 
+
 	/**
 	 * Returns true if this type is constructed
 	 *
@@ -147,6 +142,7 @@ public abstract class ASN1Type {
 		return getTag().isConstructed();
 	}
 
+
 	/**
 	 * Returns true if this type is valid: all types resolved, handled classes found.
 	 *
@@ -155,6 +151,120 @@ public abstract class ASN1Type {
 	public final boolean isValid() {
 		return valid;
 	}
+
+
+	/**
+	 * Returns class used by this type
+	 *
+	 * @return
+	 */
+	public Class getHandledClass() {
+		return handledClass;
+	}
+
+
+	/**
+	 * Delegate from Module
+	 *
+	 * @return
+	 */
+	public String getModuleName() {
+		return getModule().getName();
+	}
+
+
+	/**
+	 * Return tag
+	 *
+	 * @return an ASN1Tag
+	 */
+	public ASN1Tag getTag() {
+		return tag;
+	}
+
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
+
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param oldValue
+	 * @param newValue
+	 */
+	protected final void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
+		pcs.firePropertyChange(
+		                      propertyName,
+		                      oldValue,
+		                      newValue
+		                      );
+	}
+
+
+	/**
+	 * Sets valid field to false, fires pcs to notify others about state change
+	 */
+	protected final void invalid() {
+		firePropertyChange(VALID, this.valid, false);
+		this.valid = false;
+	}
+
+
+	/**
+	 * Sets valid field to true, fires pcs to notify others about state change
+	 */
+	protected final void valid() {
+		firePropertyChange(VALID, this.valid, true);
+		this.valid = true;
+	}
+
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param listener
+	 */
+	public final void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(
+		                             propertyName,
+		                             listener
+		                             );
+	}
+
+
+	/**
+	 * Read object of type from input stream
+	 *
+	 * @param is - the input stream
+	 *
+	 * @return an Object or null
+	 *
+	 * @throws IOException   thrown from I/O
+	 * @throws ASN1Exception if selected type reader can not acquire data
+	 */
+	public final Object read(final InputStream is) throws IOException, ASN1Exception {
+		return read(null, is, null, false);
+	}
+
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param listener
+	 */
+	public final void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(
+		                                propertyName,
+		                                listener
+		                                );
+	}
+
 
 	/**
 	 * Called when type should be exported. This method could be called only after #onInstall(ASN1Module)
@@ -171,6 +281,7 @@ public abstract class ASN1Type {
 		schema.install(this);
 	}
 
+
 	/**
 	 * Called when type should be imported to module
 	 *
@@ -181,6 +292,7 @@ public abstract class ASN1Type {
 	public void onImport(ASN1Module module) throws IllegalStateException {
 		module.importType(this);
 	}
+
 
 	/**
 	 * Called when type should be installed in module.
@@ -204,108 +316,6 @@ public abstract class ASN1Type {
 		}
 	}
 
-	/**
-	 * Read object of type from input stream
-	 *
-	 * @param is - the input stream
-	 *
-	 * @return an Object or null
-	 *
-	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
-	 */
-	public final Object read(final InputStream is) throws IOException, ASN1Exception {
-		return read(null, is, null, false);
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
-
-
-	// ------------------------------------------------------------------------ //
-	// ----------------------- PROTECTED METHODS------------------------------- //
-	// ------------------------------------------------------------------------ //
-
-	/**
-	 * Sets valid field to false, fires pcs to notify others about state change
-	 */
-	protected final void invalid() {
-		firePropertyChange(VALID, this.valid, false);
-		this.valid = false;
-	}
-
-	/**
-	 * Setups new module for this type
-	 *
-	 * @param module - an ASN1Module
-	 */
-	protected void setModule(final ASN1Module module) {
-		this.module = module;
-	}
-
-	/**
-	 * Sets valid field to true, fires pcs to notify others about state change
-	 */
-	protected final void valid() {
-		firePropertyChange(VALID, this.valid, true);
-		this.valid = true;
-	}
-
-	// ------------------------------------------------------------------------ //
-	// ----------------------- DELEGATES -------------------------------------- //
-	// ------------------------------------------------------------------------ //
-
-	/**
-	 * Delegate from pcs
-	 *
-	 * @param propertyName
-	 * @param listener
-	 */
-	public final void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(
-		                             propertyName,
-		                             listener
-		                             );
-	}
-
-	/**
-	 * Delegate from pcs
-	 *
-	 * @param propertyName
-	 * @param listener
-	 */
-	public final void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(
-		                                propertyName,
-		                                listener
-		                                );
-	}
-
-	/**
-	 * Delegate from pcs
-	 *
-	 * @param propertyName
-	 * @param oldValue
-	 * @param newValue
-	 */
-	protected final void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
-		pcs.firePropertyChange(
-		                      propertyName,
-		                      oldValue,
-		                      newValue
-		                      );
-	}
-
-	/**
-	 * Delegate from Module
-	 *
-	 * @return
-	 */
-	public String getModuleName() {
-		return getModule().getName();
-	}
 
 	/**
 	 * Convert type to ASN1 schema representation
@@ -316,21 +326,6 @@ public abstract class ASN1Type {
 		sb.append(name);
 	}
 
-
-	// ------------------------------------------------------------------------ //
-	// --------------------- ABSTRACT METHODS --------------------------------- //
-	// ------------------------------------------------------------------------ //
-
-	/**
-	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
-	 *
-	 * @param o      - the object to be written
-	 * @param os     - the output stream
-	 * @param header - true if header should be written
-	 *
-	 * @throws IOException
-	 */
-	public abstract void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception;
 
 	/**
 	 * Read object of type from input stream
@@ -348,4 +343,16 @@ public abstract class ASN1Type {
 	public abstract Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws
 	                                                                                                                 IOException,
 	                                                                                                                 ASN1Exception;
+
+
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	public abstract void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception;
 }
