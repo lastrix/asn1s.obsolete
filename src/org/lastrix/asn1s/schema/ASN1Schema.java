@@ -23,6 +23,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1TypeHandlerNotFoundException;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Lexer;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1Parser;
@@ -52,11 +53,36 @@ import java.util.Map;
  * @version 1.0
  */
 public final class ASN1Schema {
+	/**
+	 * Each type has it's own tag, and it should be unique
+	 */
+	private final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
+
+	/**
+	 * Defines which ASN1Type should handle specified class
+	 */
+	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
+
+	/**
+	 * Modules in this schema
+	 */
+	private final Map<String, ASN1Module> modules = new HashMap<String, ASN1Module>();
+
+	/**
+	 * Stores all types sorted by their module
+	 */
+	private final Map<String, Map<String, ASN1Type>> types = new HashMap<String, Map<String, ASN1Type>>();
+
+	/**
+	 * Property change support to let listeners know about new type installation.
+	 */
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
 	 * Constant used in property change firing to let listeners know about new type installation.
 	 */
 	public final static String TYPE_INSTALLED = "typeInstalled";
+
 
 	/**
 	 * Create new schema and load modules into it
@@ -68,6 +94,7 @@ public final class ASN1Schema {
 	public static ASN1Schema loadSchema(String fileName) throws ASN1Exception {
 		return loadSchema(fileName, null);
 	}
+
 
 	/**
 	 * Create new schema (if necessary) and load modules into it
@@ -103,30 +130,6 @@ public final class ASN1Schema {
 		}
 	}
 
-	/**
-	 * Modules in this schema
-	 */
-	private final Map<String, ASN1Module> modules = new HashMap<String, ASN1Module>();
-
-	/**
-	 * Defines which ASN1Type should handle specified class
-	 */
-	private final Map<Class, ASN1Type> class2type = new HashMap<Class, ASN1Type>();
-
-	/**
-	 * Each type has it's own tag, and it should be unique
-	 */
-	private final Map<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
-
-	/**
-	 * Stores all types sorted by their module
-	 */
-	private final Map<String, Map<String, ASN1Type>> types = new HashMap<String, Map<String, ASN1Type>>();
-
-	/**
-	 * Property change support to let listeners know about new type installation.
-	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
 	 * Default constructor. Makes schema with default types.
@@ -135,81 +138,6 @@ public final class ASN1Schema {
 		addModule(new ASN1X690Module());
 	}
 
-	/**
-	 * Add module to this schema, module should invalidated for schema after that.
-	 *
-	 * @param module - the module to be added
-	 */
-	public void addModule(final ASN1Module module) throws ASN1Exception {
-		//if it fail, no module would be added.
-		module.deploy(this);
-		modules.put(module.getName(), module);
-	}
-
-	/**
-	 * Returns type by its full type id (moduleName.name)
-	 *
-	 * @param name     - type name
-	 * @param moduleId - module id
-	 *
-	 * @return
-	 */
-	public ASN1Type getType(final String name, final String moduleId) {
-		Map<String, ASN1Type> map = types.get(moduleId);
-		if (map != null) {
-			return map.get(name);
-		}
-		return null;
-	}
-
-
-	/**
-	 * Install type in this schema, this will make specified type as global type
-	 * that could be used in {@link #read(InputStream)} and {@link #write(Object, OutputStream)}
-	 *
-	 * @param type - the type to be installed
-	 */
-	public void install(final ASN1Type type) {
-		if (type == null) {
-			throw new NullPointerException();
-		}
-		// get module's map which holds exports for type's module
-		Map<String, ASN1Type> map = types.get(type.getModule().getName());
-		if (map == null) {
-			map = new HashMap<String, ASN1Type>();
-			types.put(type.getModule().getName(), map);
-		}
-		map.put(type.getName(), type);
-
-		// build index
-		tag2type.put(type.getTag(), type);
-		class2type.put(type.getHandledClass(), type);
-
-		// notification
-		firePropertyChange(TYPE_INSTALLED, null, type);
-	}
-
-	/**
-	 * Read object from InputStream decoding it with ASN.1
-	 *
-	 * @param is - the InputStream
-	 *
-	 * @return an Object
-	 */
-	public Object read(InputStream is) throws ASN1Exception, IOException {
-		final ASN1Tag tag = ASN1Tag.readTag(is);
-		return getHandler(tag).read(null, is, tag, true);
-	}
-
-	/**
-	 * Write object into OutputStream encoding it with ASN.1
-	 *
-	 * @param o  - the object to be saved
-	 * @param os - the output stream
-	 */
-	public void write(Object o, OutputStream os) throws ASN1Exception, IOException {
-		getHandler(o).write(o, os, true);
-	}
 
 	/**
 	 * Generate debug string containing modules in this schema
@@ -244,6 +172,7 @@ public final class ASN1Schema {
 		return tag2type.get(tag);
 	}
 
+
 	/**
 	 * Returns handler for certain class
 	 *
@@ -260,47 +189,6 @@ public final class ASN1Schema {
 		return class2type.get(o.getClass());
 	}
 
-	// ------------------------------------------------------------------------ //
-	// ----------------------- DELEGATES -------------------------------------- //
-	// ------------------------------------------------------------------------ //
-
-	/**
-	 * Delegate from pcs
-	 *
-	 * @param propertyName
-	 * @param listener
-	 */
-	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(
-		                             propertyName,
-		                             listener
-		                             );
-	}
-
-
-	/**
-	 * Delegate from pcs
-	 *
-	 * @param propertyName
-	 * @param listener
-	 */
-	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(
-		                                propertyName,
-		                                listener
-		                                );
-	}
-
-	/**
-	 * Get module by its id
-	 *
-	 * @param id
-	 *
-	 * @return
-	 */
-	public ASN1Module getModule(String id) {
-		return modules.get(id);
-	}
 
 	/**
 	 * Delegate from pcs
@@ -317,4 +205,136 @@ public final class ASN1Schema {
 		                      );
 	}
 
+
+	/**
+	 * Add module to this schema, module should invalidated for schema after that.
+	 *
+	 * @param module - the module to be added
+	 */
+	public void addModule(final ASN1Module module) throws ASN1Exception {
+		//if it fail, no module would be added.
+		module.deploy(this);
+		modules.put(module.getName(), module);
+	}
+
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(
+		                             propertyName,
+		                             listener
+		                             );
+	}
+
+
+	/**
+	 * Get module by its id
+	 *
+	 * @param id
+	 *
+	 * @return
+	 */
+	public ASN1Module getModule(String id) {
+		return modules.get(id);
+	}
+
+
+	/**
+	 * Returns type by its full type id (moduleName.name)
+	 *
+	 * @param name     - type name
+	 * @param moduleId - module id
+	 *
+	 * @return
+	 */
+	public ASN1Type getType(final String name, final String moduleId) {
+		Map<String, ASN1Type> map = types.get(moduleId);
+		if (map != null) {
+			return map.get(name);
+		}
+		return null;
+	}
+
+
+	/**
+	 * Install type in this schema, this will make specified type as global type
+	 * that could be used in {@link #read(InputStream)} and {@link #write(Object, OutputStream)}
+	 *
+	 * @param type - the type to be installed
+	 */
+	public void install(final ASN1Type type) {
+		if (type == null) {
+			// null is not allowed
+			throw new NullPointerException();
+		}
+		// get module's map which holds exports for type's module
+		Map<String, ASN1Type> map = types.get(type.getModule().getName());
+		if (map == null) {
+			map = new HashMap<String, ASN1Type>();
+			types.put(type.getModule().getName(), map);
+		}
+		map.put(type.getName(), type);
+
+		// build index
+		tag2type.put(type.getTag(), type);
+		class2type.put(type.getHandledClass(), type);
+
+		// notification
+		firePropertyChange(TYPE_INSTALLED, null, type);
+	}
+
+
+	/**
+	 * Read object from InputStream decoding it with ASN.1
+	 *
+	 * @param is - the InputStream
+	 *
+	 * @return an Object
+	 */
+	public Object read(InputStream is) throws ASN1Exception, IOException {
+		final ASN1Tag tag = ASN1Tag.readTag(is);
+		final ASN1Type handler = getHandler(tag);
+		if (handler == null) {
+			throw new ASN1TypeHandlerNotFoundException("Cannot handle tag " + tag);
+		}
+		return handler.read(null, is, tag, true);
+	}
+
+
+	/**
+	 * Delegate from pcs
+	 *
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(
+		                                propertyName,
+		                                listener
+		                                );
+	}
+
+
+	/**
+	 * Write object into OutputStream encoding it with ASN.1
+	 *
+	 * @param o  - the object to be saved
+	 * @param os - the output stream
+	 */
+	public void write(Object o, OutputStream os) throws ASN1Exception, IOException {
+		final ASN1Type handler = getHandler(o);
+		if (handler == null) {
+			if (o != null) {
+				throw new ASN1TypeHandlerNotFoundException("Cannot handle class " + o.getClass());
+			} else {
+				throw new ASN1TypeHandlerNotFoundException("Cannot handle null.");
+			}
+		}
+		handler.write(o, os, true);
+	}
 }

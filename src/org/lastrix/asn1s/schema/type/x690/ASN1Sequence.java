@@ -54,45 +54,6 @@ public class ASN1Sequence extends ASN1Container {
 		valid();
 	}
 
-	@Override
-	public String toString() {
-		if (of) {
-			return "SEQUENCE OF " + componentType[0];
-		}
-		return "SEQUENCE OF " + Arrays.toString(componentType);
-	}
-
-	@Override
-	public void write(final Object value, final OutputStream os, boolean header) throws IOException, ASN1Exception {
-
-		if (header) {
-			//write header
-			os.write(TAG.asBytes());
-		}
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		if (of) {
-			// SEQUENCE OF
-			final List list = (List) value;
-			for (Object lo : list) {
-				componentType[0].write(lo, bos, true);
-			}
-		} else {
-			// SEQUENCE
-			for (ASN1Type t : componentType) {
-				t.write(value, bos, true);
-			}
-		}
-		final byte[] data = bos.toByteArray();
-
-		//store size
-		if (header) {
-			os.write(ASN1Length.asBytes(data.length));
-		}
-
-		//and now we can save our data.
-		os.write(data);
-	}
 
 	@Override
 	public Object read(Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
@@ -167,6 +128,16 @@ public class ASN1Sequence extends ASN1Container {
 		}
 	}
 
+
+	@Override
+	public String toString() {
+		if (of) {
+			return "SEQUENCE OF " + componentType[0];
+		}
+		return "SEQUENCE OF " + Arrays.toString(componentType);
+	}
+
+
 	@Override
 	public void toASN1(final StringBuilder sb) {
 		sb.append("SEQUENCE ");
@@ -186,5 +157,37 @@ public class ASN1Sequence extends ASN1Container {
 			}
 			sb.append("}");
 		}
+	}
+
+
+	@Override
+	public void write(final Object value, final OutputStream os, boolean header) throws IOException, ASN1Exception {
+		if (header) {
+			//write header
+			os.write(TAG.asBytes());
+		}
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
+		if (of) {
+			// SEQUENCE OF
+			final List list = (List) value;
+			for (Object lo : list) {
+				componentType[0].write(lo, bos, true);
+			}
+		} else {
+			// SEQUENCE
+			for (ASN1Type t : componentType) {
+				t.write(value, bos, true);
+			}
+		}
+		final byte[] data = bos.toByteArray();
+
+		//store size
+		if (header) {
+			os.write(ASN1Length.asBytes(data.length));
+		}
+
+		//and now we can save our data.
+		os.write(data);
 	}
 }
