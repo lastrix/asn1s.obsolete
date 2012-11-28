@@ -47,7 +47,7 @@ import java.util.Map;
  * To get starting with ASN1Schema you may make a clean copy of it by calling empty constructor. This clean schema
  * contains only basic types defined in ITU-T X.680 and ITU-T X.690, except sequences, sets and other complex
  * objects that can not be "just loaded".
- * The complete list of allowed types listed in {@link ASN1X690Module.IMPORTS};
+ * The complete list of allowed types listed in ASN1X690Module.IMPORTS;
  *
  * @author lastrix
  * @version 1.0
