@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * Class for writing/reading specified object's field to/from ASN.1 notation.
@@ -62,6 +63,7 @@ public class ASN1ComponentType extends ASN1Type {
 	public ASN1Tag getTag() {
 		return type.getTag();
 	}
+
 
 	/**
 	 * Returns optional
@@ -173,14 +175,19 @@ public class ASN1ComponentType extends ASN1Type {
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
 		//let's find field with name in object class
-		field = findField(o.getClass());
-		Object value = null;
-		try {
-			value = field.get(o);
-		} catch (IllegalAccessException e) {
-			throw new ASN1Exception(e);
+		if (o instanceof Map) {
+			Object value = ((Map) o).get(fieldName);
+			type.write(value, os, true);
+		} else {
+			field = findField(o.getClass());
+			Object value = null;
+			try {
+				value = field.get(o);
+			} catch (IllegalAccessException e) {
+				throw new ASN1Exception(e);
+			}
+			type.write(value, os, true);
 		}
-		type.write(value, os, true);
 	}
 
 
