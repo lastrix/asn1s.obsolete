@@ -25,6 +25,7 @@ import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.compiler.generated.ASN1TreeWalker;
 import org.lastrix.asn1s.schema.constraint.*;
 import org.lastrix.asn1s.schema.type.*;
+import org.lastrix.asn1s.schema.type.x690.ASN1Choice;
 import org.lastrix.asn1s.schema.type.x690.ASN1Sequence;
 import org.lastrix.asn1s.schema.type.x690.ASN1Set;
 import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
@@ -350,14 +351,14 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openChoice() {
-		// TODO: unimplemented method stub
-		super.openChoice();
+		stack.push(BlockTag.CHOICE);
 	}
 
 	@Override
 	protected void closeChoice() {
-		// TODO: unimplemented method stub
-		super.closeChoice();
+		final LinkedList<Object> chStack = transferTill(BlockTag.CHOICE);
+		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) chStack.poll();
+		stack.push(new ASN1Choice(componentTypes.toArray(new ASN1Type[componentTypes.size()])));
 	}
 
 	@Override
@@ -860,6 +861,6 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		SEQUENCE,
 		NAMED_TYPE,
 		COMPONENT_TYPE,
-		SETOF, SET, MODULE_ID
+		SETOF, SET, CHOICE, MODULE_ID
 	}
 }
