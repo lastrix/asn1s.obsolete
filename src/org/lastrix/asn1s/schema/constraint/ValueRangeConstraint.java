@@ -58,4 +58,13 @@ public class ValueRangeConstraint extends Constraint {
 		return "ValueRangeConstraint{" + ((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : "")
 		       + " .. " + ((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES) + '}';
 	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+//		sb.append("(");
+		sb.append(((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : ""));
+		sb.append(" .. ");
+		sb.append(((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES));
+//		sb.append(")");
+	}
 }

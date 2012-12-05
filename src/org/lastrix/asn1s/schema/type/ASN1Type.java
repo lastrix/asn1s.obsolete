@@ -324,6 +324,8 @@ public abstract class ASN1Type {
 	 */
 	public void toASN1(final StringBuilder sb) {
 		sb.append(name);
+//		sb.append(" of ");
+//		sb.append(this.getClass().getName());
 	}
 
 

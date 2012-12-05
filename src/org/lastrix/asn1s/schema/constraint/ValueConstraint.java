@@ -34,4 +34,9 @@ public class ValueConstraint extends Constraint {
 		return "ValueConstraint{" + value +
 		       '}';
 	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append(value);
+	}
 }

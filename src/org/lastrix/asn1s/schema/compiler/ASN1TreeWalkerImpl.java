@@ -514,10 +514,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void openUnion(final boolean except) {
 		stack.push(BlockTag.UNION);
 		stack.push(except);
+		logger.warn("OPEN UNION");
 	}
 
 	@Override
 	protected void closeUnion() {
+		logger.warn("CLOSE UNION");
 		final LinkedList<Object> unionStack = transferTill(BlockTag.UNION);
 		Boolean except = (Boolean) unionStack.poll();
 		Object o = unionStack.poll();
@@ -535,11 +537,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openIntersectionElement() {
+		logger.warn("OPEN IntersectionElement");
 		stack.push(BlockTag.INTERSECTION);
 	}
 
 	@Override
 	protected void closeIntersectionElement() {
+		logger.warn("CLOSE IntersectionElement");
 		final LinkedList<Object> intStack = transferTill(BlockTag.INTERSECTION);
 		stack.push(new Intersection((Constraint) intStack.poll(), (Constraint) intStack.poll()));
 	}

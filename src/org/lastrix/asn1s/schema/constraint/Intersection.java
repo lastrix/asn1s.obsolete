@@ -38,4 +38,8 @@ public class Intersection {
 		       ", except=" + except +
 		       '}';
 	}
+
+	public void toASN1(final StringBuilder sb) {
+		constraint.toASN1(sb);
+	}
 }

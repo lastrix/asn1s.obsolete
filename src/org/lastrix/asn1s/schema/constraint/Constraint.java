@@ -28,4 +28,7 @@ public class Constraint {
 	public String toString() {
 		return "Constraint";
 	}
+
+	public void toASN1(final StringBuilder sb) {
+	}
 }

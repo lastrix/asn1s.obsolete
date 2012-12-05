@@ -49,4 +49,24 @@ public class Union {
 	public Vector<Vector> getUnions() {
 		return unions;
 	}
+
+	public void toASN1(final StringBuilder sb) {
+		int i = 0;
+		for (; i < unions.size() - 1; i++) {
+			intersectionToASN1(sb, unions.get(i));
+			sb.append(" | ");
+		}
+		intersectionToASN1(sb, unions.get(i));
+	}
+
+	private void intersectionToASN1(final StringBuilder sb, final Vector vector) {
+		Vector<Intersection> inters = vector;
+		int i = 0;
+		for (; i < inters.size() - 1; i++) {
+			inters.get(i).toASN1(sb);
+			sb.append(" ^ ");
+		}
+		inters.get(i).toASN1(sb);
+	}
+
 }

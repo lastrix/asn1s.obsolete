@@ -138,4 +138,11 @@ public class ASN1ConstrainedType extends ASN1Type {
 	public ASN1Tag getTag() {
 		return type.getTag();
 	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		type.toASN1(sb);
+		sb.append(" ");
+		constraint.toASN1(sb);
+	}
 }

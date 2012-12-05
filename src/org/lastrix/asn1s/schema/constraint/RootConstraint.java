@@ -34,4 +34,12 @@ public class RootConstraint extends Constraint {
 		return "RootConstraint{" + union +
 		       '}';
 	}
+
+	@Override
+	public void toASN1(final StringBuilder sb) {
+		sb.append("( ");
+		union.toASN1(sb);
+		sb.append(" )");
+//		super.toASN1(sb);
+	}
 }

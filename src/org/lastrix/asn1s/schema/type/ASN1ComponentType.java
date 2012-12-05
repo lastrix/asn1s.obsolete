@@ -153,7 +153,8 @@ public class ASN1ComponentType extends ASN1Type {
 	public void toASN1(final StringBuilder sb) {
 		sb.append(fieldName);
 		sb.append(" ");
-		sb.append(type.getTypeId());
+		type.toASN1(sb);
+//		sb.append(type.getTypeId());
 	}
 
 
