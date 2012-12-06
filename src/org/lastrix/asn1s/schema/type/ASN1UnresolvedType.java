@@ -20,12 +20,12 @@ package org.lastrix.asn1s.schema.type;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
-import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /**
  * @author lastrix
@@ -83,22 +83,24 @@ public class ASN1UnresolvedType extends ASN1Type {
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException {
-		throw new UnsupportedOperationException("You trying to use " + this);
-	}
-
-	@Override
-	public void onExport(final ASN1Schema schema) throws IllegalStateException {
-		throw new UnsupportedOperationException("You trying to use " + this);
-	}
-
-	@Override
-	public void onImport(final ASN1Module module) throws IllegalStateException {
+	public void onInstall(final ASN1Module module) throws IllegalStateException {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 
 	@Override
 	public ASN1Tag getTag() {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
+
+	@Override
+	public void typeResolved(
+	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
+	                        ) {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 }

@@ -24,7 +24,6 @@ import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.type.ASN1RelativeObjectIdentifier;
 import org.lastrix.asn1s.util.Utils;
 
@@ -37,7 +36,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1RelativeOID extends ASN1Type implements ASN1X690Type {
+public class ASN1RelativeOID extends ASN1X690Type {
 	public final static String  NAME = "RELATIVE-OID";
 	public final static ASN1Tag TAG  = new ASN1Tag(0x0D, TagClass.UNIVERSAL, false);
 
@@ -163,5 +162,4 @@ public class ASN1RelativeOID extends ASN1Type implements ASN1X690Type {
 		}
 		os.write((int) (mValue & Utils.BYTE_MASK));
 	}
-
 }

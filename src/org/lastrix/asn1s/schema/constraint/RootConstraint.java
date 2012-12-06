@@ -18,11 +18,15 @@
 
 package org.lastrix.asn1s.schema.constraint;
 
+import org.lastrix.asn1s.schema.ASN1SchemaObject;
+
+import java.io.PrintWriter;
+
 /**
  * @author lastrix
  * @version 1.0
  */
-public class RootConstraint extends Constraint {
+public class RootConstraint extends Constraint implements ASN1SchemaObject {
 	private final Union union;
 
 	public RootConstraint(final Union union) {
@@ -36,10 +40,9 @@ public class RootConstraint extends Constraint {
 	}
 
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append("( ");
-		union.toASN1(sb);
-		sb.append(" )");
-//		super.toASN1(sb);
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		printWriter.append("( ");
+		union.toASN1(printWriter, false);
+		printWriter.append(" )");
 	}
 }

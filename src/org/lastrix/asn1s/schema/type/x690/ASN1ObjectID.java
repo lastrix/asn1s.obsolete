@@ -33,7 +33,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1ObjectID extends ASN1RelativeOID implements ASN1X690Type {
+public final class ASN1ObjectID extends ASN1RelativeOID {
 	private static final int     MULTIPLIER = 40;
 	public final static  String  NAME       = "OBJECT IDENTIFIER";
 	public final static  ASN1Tag TAG        = new ASN1Tag(0x06, TagClass.UNIVERSAL, false);

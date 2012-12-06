@@ -297,12 +297,21 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeSequenceOf() {
 		final LinkedList<Object> sofStack = transferTill(BlockTag.SEQUENCEOF);
-		ASN1Type eType = (ASN1Type) sofStack.poll();
+		final Object top = sofStack.poll();
+		final ASN1Type eType;
+		final String fieldName;
+		if (top instanceof NamedType) {
+			eType = ((NamedType) top).type;
+			fieldName = ((NamedType) top).name;
+		} else {
+			fieldName = "default";
+			eType = (ASN1Type) top;
+		}
 		Constraint c = (Constraint) sofStack.poll();
 		if (c != null) {
-			stack.push(new ASN1ConstrainedType(new ASN1Sequence(new ASN1Type[]{eType}, true), c));
+			stack.push(new ASN1ConstrainedType(new ASN1Sequence(new ASN1ComponentType[]{new ASN1ComponentType(fieldName, eType)}, true), c));
 		} else {
-			stack.push(new ASN1Sequence(new ASN1Type[]{eType}, true));
+			stack.push(new ASN1Sequence(new ASN1ComponentType[]{new ASN1ComponentType(fieldName, eType)}, true));
 		}
 	}
 
@@ -314,8 +323,8 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeSequence() {
 		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
-		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) sStack.poll();
-		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1Type[componentTypes.size()]), false));
+		final Vector<ASN1ComponentType> componentTypes = (Vector<ASN1ComponentType>) sStack.poll();
+		stack.push(new ASN1Sequence(componentTypes.toArray(new ASN1ComponentType[componentTypes.size()]), false));
 //		logger.warn(sStack);
 	}
 
@@ -327,12 +336,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeSetOf() {
 		final LinkedList<Object> sofStack = transferTill(BlockTag.SETOF);
-		ASN1Type eType = (ASN1Type) sofStack.poll();
+		ASN1ComponentType eType = (ASN1ComponentType) sofStack.poll();
 		Constraint c = (Constraint) sofStack.poll();
 		if (c != null) {
-			stack.push(new ASN1ConstrainedType(new ASN1Set(new ASN1Type[]{eType}, true), c));
+			stack.push(new ASN1ConstrainedType(new ASN1Set(new ASN1ComponentType[]{eType}, true), c));
 		} else {
-			stack.push(new ASN1Sequence(new ASN1Type[]{eType}, true));
+			stack.push(new ASN1Sequence(new ASN1ComponentType[]{eType}, true));
 		}
 	}
 
@@ -344,8 +353,8 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeSet() {
 		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
-		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) sStack.poll();
-		stack.push(new ASN1Set(componentTypes.toArray(new ASN1Type[componentTypes.size()]), false));
+		final Vector<ASN1ComponentType> componentTypes = (Vector<ASN1ComponentType>) sStack.poll();
+		stack.push(new ASN1Set(componentTypes.toArray(new ASN1ComponentType[componentTypes.size()]), false));
 //		logger.warn(sStack);
 	}
 
@@ -357,8 +366,8 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeChoice() {
 		final LinkedList<Object> chStack = transferTill(BlockTag.CHOICE);
-		final Vector<ASN1Type> componentTypes = (Vector<ASN1Type>) chStack.poll();
-		stack.push(new ASN1Choice(componentTypes.toArray(new ASN1Type[componentTypes.size()])));
+		final Vector<ASN1ComponentType> componentTypes = (Vector<ASN1ComponentType>) chStack.poll();
+		stack.push(new ASN1Choice(componentTypes.toArray(new ASN1ComponentType[componentTypes.size()])));
 	}
 
 	@Override
@@ -514,12 +523,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	protected void openUnion(final boolean except) {
 		stack.push(BlockTag.UNION);
 		stack.push(except);
-		logger.warn("OPEN UNION");
+//		logger.warn("OPEN UNION");
 	}
 
 	@Override
 	protected void closeUnion() {
-		logger.warn("CLOSE UNION");
+//		logger.warn("CLOSE UNION");
 		final LinkedList<Object> unionStack = transferTill(BlockTag.UNION);
 		Boolean except = (Boolean) unionStack.poll();
 		Object o = unionStack.poll();
@@ -537,13 +546,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void openIntersectionElement() {
-		logger.warn("OPEN IntersectionElement");
+//		logger.warn("OPEN IntersectionElement");
 		stack.push(BlockTag.INTERSECTION);
 	}
 
 	@Override
 	protected void closeIntersectionElement() {
-		logger.warn("CLOSE IntersectionElement");
+//		logger.warn("CLOSE IntersectionElement");
 		final LinkedList<Object> intStack = transferTill(BlockTag.INTERSECTION);
 		stack.push(new Intersection((Constraint) intStack.poll(), (Constraint) intStack.poll()));
 	}

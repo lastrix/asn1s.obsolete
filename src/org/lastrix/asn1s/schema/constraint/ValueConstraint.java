@@ -18,6 +18,8 @@
 
 package org.lastrix.asn1s.schema.constraint;
 
+import java.io.PrintWriter;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -36,7 +38,7 @@ public class ValueConstraint extends Constraint {
 	}
 
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append(value);
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		pw.append(value.toString());
 	}
 }

@@ -21,26 +21,34 @@ package org.lastrix.asn1s.schema.type;
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
+import org.lastrix.asn1s.schema.ASN1KeyStrings;
 import org.lastrix.asn1s.schema.ASN1Module;
+import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.type.x690.ASN1X690Type;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 
 /**
- * Used to handle user defined types.
+ * Used to handle user defined types. This type SHOULD be created only in typeAssignment structure.
+ * This class should work as a box.
  *
  * @author lastrix
  * @version 1.0
  */
 public class ASN1UserType extends ASN1Type {
-
 	private final static Logger logger = Logger.getLogger(ASN1UserType.class);
 	private ASN1Type baseType;
+
+	/**
+	 * Flag that shows if type as exported.
+	 * Actually this variable has no real use in project.
+	 */
+	protected boolean exported = false;
 
 	/**
 	 * Create user type with name, baseType
@@ -62,28 +70,36 @@ public class ASN1UserType extends ASN1Type {
 		invalid();
 	}
 
+
 	@Override
-	public String toString() {
-		return "ASN1UserType{" +
-		       '\'' + ((module == null) ? "" : module.getModuleId() + ".") +
-		       name + '\'' +
-		       ", baseType=" + baseType +
-		       '}';
+	public ASN1Tag getTag() {
+		//we should override this, because base type is tag supplier
+		return baseType.getTag();
 	}
 
-	/**
-	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
-	 *
-	 * @param o      - the object to be written
-	 * @param os     - the output stream
-	 * @param header - true if header should be written
-	 *
-	 * @throws IOException
-	 */
+
 	@Override
-	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		baseType.write(o, os, header);
+	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
+		if (getModule() != null) {
+			throw new IllegalStateException();
+		}
+
+		setModule(module);
+
+		if (baseType instanceof ASN1UnresolvedType) {
+			final ASN1Type t = module.resolveType((ASN1UnresolvedType) baseType);
+			if (t == null) {
+				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) baseType, getModule());
+			} else {
+				this.baseType = t;
+				doInstall(module);
+			}
+		} else {
+			//now we should add self to index base
+			doInstall(module);
+		}
 	}
+
 
 	@Override
 	public Object read(Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
@@ -102,6 +118,72 @@ public class ASN1UserType extends ASN1Type {
 		}
 	}
 
+
+	@Override
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		if (typeAssignment) {
+			if (getHandledClass() != null && !(baseType instanceof ASN1X690Type)) {
+				printWriter.append(ASN1KeyStrings.ASN1S_class_handling_open);
+				printWriter.append(getHandledClass().getName());
+				printWriter.append(ASN1KeyStrings.ASN1S_class_handling_close);
+			}
+			printWriter.append(name);
+			printWriter.append(ASN1KeyStrings.ASN1_assignment);
+			baseType.toASN1(printWriter, false);
+		} else {
+			printWriter.append(getName());
+		}
+	}
+
+
+	@Override
+	public String toString() {
+		return "ASN1UserType{" +
+		       '\'' + ((module == null) ? "" : module.getModuleId() + ".") +
+		       name + '\'' +
+		       ", baseType=" + baseType +
+		       '}';
+	}
+
+
+	@Override
+	public void typeResolved(
+	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
+	                        ) {
+		if (unresolved == baseType) {
+			baseType = resolved;
+			try {
+				doInstall(getModule());
+			} catch (ASN1Exception e) {
+				logger.warn("Exception:", e);
+			}
+		}
+	}
+
+
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		baseType.write(o, os, header);
+	}
+
+	private void doInstall(ASN1Module module) throws ASN1Exception {
+		module.install(this);
+		if (!(baseType instanceof ASN1UserType) && (baseType.getModule() == null)) {
+			baseType.onInstall(module);
+		}
+		typeId = makeTypeId(getName(), getModuleName());
+		valid();
+	}
+
 	private Object makeInstance() throws ASN1ReadException {
 		try {
 			Constructor c = handledClass.getConstructor();
@@ -111,74 +193,31 @@ public class ASN1UserType extends ASN1Type {
 		}
 	}
 
-	@Override
-	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
-		if (getModule() != null) {
-			throw new IllegalStateException();
-		}
 
-		setModule(module);
-
-		if (baseType instanceof ASN1UnresolvedType) {
-			final ASN1Type t = module.resolveType((ASN1UnresolvedType) baseType);
-			if (t == null) {
-				module.addPropertyChangeListener(
-				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-					@Override
-					public void propertyChange(final PropertyChangeEvent evt) {
-						if (evt.getNewValue() instanceof ASN1Type) {
-							final ASN1Type type = (ASN1Type) evt.getNewValue();
-							if (type.getName().equals(baseType.getName()) &&
-							    (((ASN1UnresolvedType) baseType).getModuleName() == null
-							     || type.getModule().getName().equals(((ASN1UnresolvedType) baseType).getModuleName()))) {
-								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-								baseType = type;
-								try {
-									doInstall(module, register);
-								} catch (ASN1Exception e) {
-									logger.error("Exception:", e);
-								}
-							}
-						}
-					}
-				}
-				                                );
-			} else {
-				this.baseType = t;
-				doInstall(module, register);
-			}
-		} else {
-			//now we should add self to index base
-			doInstall(module, register);
+	/**
+	 * Called when type should be exported. This method could be called only after #onInstall(ASN1Module)
+	 *
+	 * @param schema - the schema, where type should be.
+	 *
+	 * @throws IllegalStateException if type already exported
+	 */
+	public void onExport(ASN1Schema schema) throws IllegalStateException {
+		if (exported) {
+			throw new IllegalStateException("Type already exported.");
 		}
+		exported = true;
+		schema.install(this);
 	}
 
-	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
-		if (register) {
-			module.install(this);
-		}
-		if (!(baseType instanceof ASN1UserType) && (baseType.getModule() == null)) {
-			baseType.onInstall(module, false);
-		}
-		typeId = makeTypeId(getName(), getModuleName());
-		valid();
-	}
 
-	@Override
-	public ASN1Tag getTag() {
-		//we should override this, because base type is tag supplier
-		return baseType.getTag();
-	}
-
-	@Override
-	public void toASN1(final StringBuilder sb) {
-		if (getHandledClass() != null) {
-			sb.append("--#");
-			sb.append(getHandledClass().getName());
-			sb.append("#\n");
-		}
-		sb.append(name);
-		sb.append(" ::= ");
-		baseType.toASN1(sb);
+	/**
+	 * Called when type should be imported to module
+	 *
+	 * @param module - the module
+	 *
+	 * @throws IllegalStateException if type already imported
+	 */
+	public void onImport(ASN1Module module) throws IllegalStateException {
+		module.importType(this);
 	}
 }

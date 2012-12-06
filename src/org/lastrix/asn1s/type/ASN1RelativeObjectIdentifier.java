@@ -56,7 +56,7 @@ public class ASN1RelativeObjectIdentifier implements ASN1SchemaObject {
 	}
 
 	@Override
-	public void toASN1(final PrintWriter pw) {
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
 		pw.append(text);
 	}
 }

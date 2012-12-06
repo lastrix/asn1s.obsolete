@@ -18,11 +18,28 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
+
+import java.io.PrintWriter;
+
 /**
  * Simple interface to make types in this package identifiable.
  *
  * @author lastrix
  * @version 1.0
  */
-public interface ASN1X690Type {
+public abstract class ASN1X690Type extends ASN1Type {
+
+	@Override
+	public void typeResolved(
+	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
+	                        ) {
+		throw new UnsupportedOperationException("Not allowed for X690 types.");
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		pw.append(getName());
+	}
 }

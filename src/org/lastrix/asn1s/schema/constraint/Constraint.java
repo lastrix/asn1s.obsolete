@@ -18,17 +18,23 @@
 
 package org.lastrix.asn1s.schema.constraint;
 
+import org.lastrix.asn1s.schema.ASN1SchemaObject;
+
+import java.io.PrintWriter;
+
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Constraint {
+public class Constraint implements ASN1SchemaObject {
 
 	@Override
 	public String toString() {
 		return "Constraint";
 	}
 
-	public void toASN1(final StringBuilder sb) {
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+
 	}
 }

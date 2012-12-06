@@ -42,14 +42,14 @@ import java.util.Set;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Set extends ASN1Container implements ASN1X690Type {
+public class ASN1Set extends ASN1Container {
 	private final Logger logger = Logger.getLogger(ASN1Set.class);
 
 	public final static ASN1Tag                    TAG      = new ASN1Tag(17, TagClass.UNIVERSAL, true);
 	public final        HashMap<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
 
 
-	public ASN1Set(final ASN1Type[] componentType, final boolean of) {
+	public ASN1Set(final ASN1ComponentType[] componentType, final boolean of) {
 		super(componentType, of, "SET@" + TAG.getTag(), TAG);
 		for (ASN1Type t : componentType) {
 			tag2type.put(t.getTag(), t);
@@ -196,24 +196,23 @@ public class ASN1Set extends ASN1Container implements ASN1X690Type {
 
 
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append("SET ");
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		printWriter.append("SET ");
 		if (of) {
-			sb.append("OF ");
-			sb.append(componentType[0].getTypeId());
-			sb.append(";");
+			printWriter.append("OF ");
+			printWriter.append(componentType[0].getTypeId());
+			printWriter.append(";");
 		} else {
-			sb.append("{\n");
+			printWriter.append("{\n");
 			for (int i = 0; i < componentType.length; i++) {
-				sb.append("      ");
-				componentType[i].toASN1(sb);
+				printWriter.append("      ");
+				componentType[i].toASN1(printWriter, false);
 				if (i + 1 < componentType.length) {
-					sb.append(",");
+					printWriter.append(",");
 				}
-				sb.append("\n");
+				printWriter.append("\n");
 			}
-			sb.append("}");
+			printWriter.append("}");
 		}
-
 	}
 }

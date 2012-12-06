@@ -21,6 +21,7 @@ package org.lastrix.asn1s.schema.type;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Schema;
+import org.lastrix.asn1s.schema.ASN1SchemaObject;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.beans.PropertyChangeListener;
@@ -36,7 +37,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public abstract class ASN1Type {
+public abstract class ASN1Type implements ASN1SchemaObject {
 	/**
 	 * Constant used in property change support to notify about validity state change.
 	 */
@@ -75,12 +76,6 @@ public abstract class ASN1Type {
 	protected String typeId = null;
 
 	/**
-	 * Flag that shows if type as exported.
-	 * Actually this variable has no real use in project.
-	 */
-	protected boolean exported = false;
-
-	/**
 	 * Static method used to make a fully qualified type id.
 	 *
 	 * @param name     - type name
@@ -94,22 +89,22 @@ public abstract class ASN1Type {
 
 
 	/**
-	 * Returns module.
-	 *
-	 * @return an ASN1Module
-	 */
-	public final ASN1Module getModule() {
-		return module;
-	}
-
-
-	/**
 	 * Setups new module for this type
 	 *
 	 * @param module - an ASN1Module
 	 */
 	protected void setModule(final ASN1Module module) {
 		this.module = module;
+	}
+
+
+	/**
+	 * Returns module.
+	 *
+	 * @return an ASN1Module
+	 */
+	public final ASN1Module getModule() {
+		return module;
 	}
 
 
@@ -267,65 +262,19 @@ public abstract class ASN1Type {
 
 
 	/**
-	 * Called when type should be exported. This method could be called only after #onInstall(ASN1Module)
-	 *
-	 * @param schema - the schema, where type should be.
-	 *
-	 * @throws IllegalStateException if type already exported
-	 */
-	public void onExport(ASN1Schema schema) throws IllegalStateException {
-		if (exported) {
-			throw new IllegalStateException("Type already exported.");
-		}
-		exported = true;
-		schema.install(this);
-	}
-
-
-	/**
-	 * Called when type should be imported to module
-	 *
-	 * @param module - the module
-	 *
-	 * @throws IllegalStateException if type already imported
-	 */
-	public void onImport(ASN1Module module) throws IllegalStateException {
-		module.importType(this);
-	}
-
-
-	/**
 	 * Called when type should be installed in module.
 	 *
-	 * @param module   - the module, where type should be
-	 * @param register - if true - type should call module.install(ASN1Type)
+	 * @param module - the module, where type should be
 	 *
 	 * @throws IllegalStateException if type already installed
 	 * @throws ASN1Exception
 	 */
-	public void onInstall(ASN1Module module, boolean register) throws IllegalStateException, ASN1Exception {
+	public void onInstall(ASN1Module module) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException(getTypeId());
 		}
 
 		setModule(module);
-
-		//now we should add self to index base
-		if (register) {
-			module.install(this);
-		}
-	}
-
-
-	/**
-	 * Convert type to ASN1 schema representation
-	 *
-	 * @param sb
-	 */
-	public void toASN1(final StringBuilder sb) {
-		sb.append(name);
-//		sb.append(" of ");
-//		sb.append(this.getClass().getName());
 	}
 
 
@@ -357,4 +306,12 @@ public abstract class ASN1Type {
 	 * @throws IOException
 	 */
 	public abstract void write(final Object o, final OutputStream os, boolean header) throws IOException, ASN1Exception;
+
+	/**
+	 * Method to be used by {@see InstallPropertyChangeListener} to let class know about type resolving success
+	 *
+	 * @param unresolved
+	 * @param resolved
+	 */
+	public abstract void typeResolved(final ASN1UnresolvedType unresolved, final ASN1Type resolved);
 }

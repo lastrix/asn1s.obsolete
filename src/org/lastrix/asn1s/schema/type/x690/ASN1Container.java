@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
+import org.lastrix.asn1s.schema.type.ASN1ComponentType;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 import org.lastrix.asn1s.schema.type.ASN1UserType;
@@ -35,11 +36,11 @@ import java.beans.PropertyChangeListener;
  * @author lastrix
  * @version 1.0
  */
-abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
+abstract class ASN1Container extends ASN1X690Type {
 	private final Logger logger = Logger.getLogger(ASN1Container.class);
 
-	protected final ASN1Type[] componentType;
-	protected final boolean    of;
+	protected final ASN1ComponentType[] componentType;
+	protected final boolean             of;
 
 	/**
 	 * Create an abstract container
@@ -49,7 +50,7 @@ abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
 	 * @param name
 	 * @param tag
 	 */
-	protected ASN1Container(final ASN1Type[] componentType, final boolean of, final String name, final ASN1Tag tag) {
+	protected ASN1Container(final ASN1ComponentType[] componentType, final boolean of, final String name, final ASN1Tag tag) {
 		this.componentType = componentType;
 		this.of = of;
 		this.name = name;
@@ -58,42 +59,21 @@ abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
+	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException(getTypeId());
 		}
 
 		setModule(module);
 
-		registerComponentTypeListenters(module, register);
+		registerComponentTypeListenters(module);
 
 		for (int i = 0; i < componentType.length; i++) {
 			final ASN1Type type = componentType[i];
 			if (type instanceof ASN1UnresolvedType) {
-				final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
+				final ASN1ComponentType t = (ASN1ComponentType) module.resolveType((ASN1UnresolvedType) type);
 				if (t == null) {
-					final int index = i;
-					module.addPropertyChangeListener(
-					                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-						@Override
-						public void propertyChange(final PropertyChangeEvent evt) {
-							if (evt.getNewValue() instanceof ASN1Type) {
-								final ASN1Type _type = (ASN1Type) evt.getNewValue();
-								if (_type.getName().equals(type.getName()) &&
-								    (((ASN1UnresolvedType) type).getModuleName() == null
-								     || _type.getModule().getModuleId().equals(((ASN1UnresolvedType) type).getModuleName()))) {
-									module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-									componentType[index] = _type;
-									try {
-										doInstall(module, componentType[index]);
-									} catch (ASN1Exception e) {
-										logger.error("Exception:", e);
-									}
-								}
-							}
-						}
-					}
-					                                );
+					new MyPropertyChangeListener((ASN1UnresolvedType) type, module, i);
 				} else {
 					componentType[i] = t;
 					doInstall(module, componentType[i]);
@@ -105,7 +85,7 @@ abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
 		}
 	}
 
-	private void registerComponentTypeListenters(final ASN1Module module, final boolean register) {
+	private void registerComponentTypeListenters(final ASN1Module module) {
 		final PropertyChangeListener pcl = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
@@ -119,9 +99,6 @@ abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
 						type.removePropertyChangeListener(VALID, this);
 					}
 
-					if (register) {
-						module.install(ASN1Container.this);
-					}
 					valid();
 				}
 			}
@@ -134,7 +111,38 @@ abstract class ASN1Container extends ASN1Type implements ASN1X690Type {
 
 	private void doInstall(final ASN1Module module, final ASN1Type type) throws ASN1Exception {
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
-			type.onInstall(module, false);
+			type.onInstall(module);
+		}
+	}
+
+	private class MyPropertyChangeListener implements PropertyChangeListener {
+		private final ASN1Type   type;
+		private final ASN1Module module;
+		private final int        index;
+
+		public MyPropertyChangeListener(final ASN1UnresolvedType type, final ASN1Module module, final int index) {
+			this.type = type;
+			this.module = module;
+			this.index = index;
+			module.addPropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+		}
+
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if (evt.getNewValue() instanceof ASN1Type) {
+				final ASN1ComponentType _type = (ASN1ComponentType) evt.getNewValue();
+				if (_type.getName().equals(type.getName()) &&
+				    (type.getModuleName() == null
+				     || _type.getModule().getModuleId().equals(type.getModuleName()))) {
+					module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+					componentType[index] = _type;
+					try {
+						doInstall(module, componentType[index]);
+					} catch (ASN1Exception e) {
+						logger.error("Exception:", e);
+					}
+				}
+			}
 		}
 	}
 }

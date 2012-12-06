@@ -16,35 +16,17 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema.constraint;
-
-import org.lastrix.asn1s.schema.ASN1SchemaObject;
-
-import java.io.PrintWriter;
+package org.lastrix.asn1s.schema;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Intersection implements ASN1SchemaObject {
-	private final Constraint constraint;
-	private final Constraint except;
+public class ASN1KeyStrings {
 
-	public Intersection(final Constraint constraint, final Constraint except) {
-		this.constraint = constraint;
-		this.except = except;
-	}
-
-	@Override
-	public String toString() {
-		return "Intersection{" +
-		       "constraint=" + constraint +
-		       ", except=" + except +
-		       '}';
-	}
-
-	@Override
-	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
-		constraint.toASN1(pw, false);
-	}
+	public final static String ASN1S_class_handling_open  = "--#";
+	public final static String ASN1S_class_handling_close = "#\n";
+	public final static String ASN1_assignment            = " ::= ";
+	public final static String ASN1_tag_open              = " [";
+	public final static String ASN1_tag_close             = "] ";
 }

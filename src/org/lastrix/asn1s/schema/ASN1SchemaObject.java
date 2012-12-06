@@ -33,6 +33,7 @@ public interface ASN1SchemaObject {
 	 * Convert object to ASN.1 schema
 	 *
 	 * @param pw
+	 * @param typeAssignment
 	 */
-	public void toASN1(final PrintWriter pw);
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment);
 }

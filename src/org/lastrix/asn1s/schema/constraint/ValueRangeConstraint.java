@@ -18,6 +18,8 @@
 
 package org.lastrix.asn1s.schema.constraint;
 
+import java.io.PrintWriter;
+
 /**
  * @author lastrix
  * @version 1.0
@@ -60,11 +62,11 @@ public class ValueRangeConstraint extends Constraint {
 	}
 
 	@Override
-	public void toASN1(final StringBuilder sb) {
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
 //		sb.append("(");
-		sb.append(((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : ""));
-		sb.append(" .. ");
-		sb.append(((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES));
+		printWriter.append(((lowerValue != null) ? lowerValue : lowerES) + ((lowerLess) ? " <" : ""));
+		printWriter.append(" .. ");
+		printWriter.append(((upperLess) ? "< " : "") + ((upperValue != null) ? upperValue : upperES));
 //		sb.append(")");
 	}
 }

@@ -24,12 +24,7 @@ import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author lastrix
@@ -140,7 +135,7 @@ public class ASN1TaggedType extends ASN1Type {
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
+	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException();
 		}
@@ -150,38 +145,30 @@ public class ASN1TaggedType extends ASN1Type {
 		if (subType instanceof ASN1UnresolvedType) {
 			final ASN1Type t = module.resolveType((ASN1UnresolvedType) subType);
 			if (t == null) {
-				module.addPropertyChangeListener(
-				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-					@Override
-					public void propertyChange(final PropertyChangeEvent evt) {
-						if (evt.getNewValue() instanceof ASN1Type) {
-							final ASN1Type _type = (ASN1Type) evt.getNewValue();
-							if (_type.getName().equals(subType.getName()) &&
-							    (((ASN1UnresolvedType) subType).getModuleName() == null
-							     || _type.getModule().getName().equals(((ASN1UnresolvedType) subType).getModuleName()))) {
-								subType = _type;
-								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-								try {
-									doInstall(module, register);
-								} catch (ASN1Exception e) {
-									logger.error("Exception:", e);
-								}
-							}
-						}
-					}
-				}
-				                                );
+				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) subType, module);
 			} else {
 				this.subType = t;
-				doInstall(module, register);
+				doInstall(module);
 			}
 		} else {
 			//now we should add self to index base
-			doInstall(module, register);
+			doInstall(module);
 		}
 	}
 
-	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
+	@Override
+	public void typeResolved(final ASN1UnresolvedType unresolved, final ASN1Type resolved) {
+		if (subType == unresolved) {
+			subType = resolved;
+			try {
+				doInstall(module);
+			} catch (ASN1Exception e) {
+				logger.warn("doInstall failed:", e);
+			}
+		}
+	}
+
+	private void doInstall(ASN1Module module) throws ASN1Exception {
 		switch (taggingMethod) {
 			case AUTOMATIC:
 				switch (module.getDefaultTaggingMethod()) {
@@ -205,29 +192,22 @@ public class ASN1TaggedType extends ASN1Type {
 				break;
 		}
 		// set up tag
-		ASN1TaggedType.this.tag = new ASN1Tag(tagNumber, tagClass, subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT);
-		if (register) {
-			module.install(this);
-		}
 		if (!(subType instanceof ASN1UserType) && (subType.getModule() == null)) {
-			subType.onInstall(module, false);
+			subType.onInstall(module);
 		}
+		tag = new ASN1Tag(tagNumber, tagClass, subType.isConstructed() || _methodToUse == TaggingMethod.EXPLICIT);
 		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
 
-
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append("[");
-		sb.append(getTag().getTagClass());
-		sb.append(" ");
-		sb.append(getTag().getTag());
-		sb.append("] ");
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		getTag().toASN1(printWriter, false);
 		if (!taggingMethod.equals(TaggingMethod.AUTOMATIC)) {
-			sb.append(taggingMethod.toString());
-			sb.append(" ");
+			printWriter.append(taggingMethod.toString());
+			printWriter.append(" ");
 		}
-		subType.toASN1(sb);
+		subType.toASN1(printWriter, false);
 	}
+
 }

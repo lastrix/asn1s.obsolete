@@ -18,13 +18,16 @@
 
 package org.lastrix.asn1s.schema.constraint;
 
+import org.lastrix.asn1s.schema.ASN1SchemaObject;
+
+import java.io.PrintWriter;
 import java.util.Vector;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class Union {
+public class Union implements ASN1SchemaObject {
 
 	private final boolean        except;
 	private final Vector<Vector> unions;
@@ -50,23 +53,24 @@ public class Union {
 		return unions;
 	}
 
-	public void toASN1(final StringBuilder sb) {
+	@Override
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
 		int i = 0;
 		for (; i < unions.size() - 1; i++) {
-			intersectionToASN1(sb, unions.get(i));
-			sb.append(" | ");
+			intersectionToASN1(printWriter, unions.get(i));
+			printWriter.append(" | ");
 		}
-		intersectionToASN1(sb, unions.get(i));
+		intersectionToASN1(printWriter, unions.get(i));
 	}
 
-	private void intersectionToASN1(final StringBuilder sb, final Vector vector) {
+	private void intersectionToASN1(final PrintWriter pw, final Vector vector) {
 		Vector<Intersection> inters = vector;
 		int i = 0;
 		for (; i < inters.size() - 1; i++) {
-			inters.get(i).toASN1(sb);
-			sb.append(" ^ ");
+			inters.get(i).toASN1(pw, false);
+			pw.append(" ^ ");
 		}
-		inters.get(i).toASN1(sb);
+		inters.get(i).toASN1(pw, false);
 	}
 
 }

@@ -24,7 +24,6 @@ import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +34,7 @@ import java.util.BitSet;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1BitString extends ASN1Type implements ASN1X690Type {
+public class ASN1BitString extends ASN1X690Type {
 
 	public final static String  NAME = "BIT STRING";
 	public final static ASN1Tag TAG  = new ASN1Tag(0x03, TagClass.UNIVERSAL, false);

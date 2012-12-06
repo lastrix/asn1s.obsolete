@@ -25,6 +25,7 @@ import org.lastrix.asn1s.util.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 /**
  * Declares ASN1 Tag. This object perform reading and writing from or to stream ASN1 tags.
@@ -35,7 +36,7 @@ import java.io.InputStream;
  * @see #readTag(InputStream) - to read tag from stream
  * @see #asBytes() - to get byte array representation, you could write it to stream
  */
-public final class ASN1Tag {
+public final class ASN1Tag implements ASN1SchemaObject {
 	/**
 	 * Class mask to extract 7th and 8th bits from first tag octet
 	 */
@@ -242,5 +243,14 @@ public final class ASN1Tag {
 	 */
 	public byte[] asBytes() {
 		return bytes;
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		pw.append(ASN1KeyStrings.ASN1_tag_open);
+		pw.append(getTagClass().toString());
+		pw.append(" ");
+		pw.append(Integer.toString(getTag()));
+		pw.append(ASN1KeyStrings.ASN1_tag_close);
 	}
 }

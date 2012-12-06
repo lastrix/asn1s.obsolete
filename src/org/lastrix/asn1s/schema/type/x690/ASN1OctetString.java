@@ -24,7 +24,6 @@ import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,7 +36,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1OctetString extends ASN1Type implements ASN1X690Type {
+public class ASN1OctetString extends ASN1X690Type {
 
 	public final static  String  NAME = "OCTET STRING";
 	private final static ASN1Tag TAG  = new ASN1Tag(0x04, TagClass.UNIVERSAL, false);

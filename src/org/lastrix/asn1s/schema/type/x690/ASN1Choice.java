@@ -20,7 +20,7 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Tag;
-import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1ComponentType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ public class ASN1Choice extends ASN1Container {
 	 *
 	 * @param componentType
 	 */
-	public ASN1Choice(final ASN1Type[] componentType) {
+	public ASN1Choice(final ASN1ComponentType[] componentType) {
 		super(componentType, false, "CHOICE", null);
 	}
 

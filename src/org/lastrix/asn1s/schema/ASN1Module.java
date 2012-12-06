@@ -90,7 +90,7 @@ public class ASN1Module implements ASN1SchemaObject {
 	/**
 	 * List of types that exactly exported.
 	 */
-	protected final Map<String, ASN1Type> typesExported = new HashMap<String, ASN1Type>();
+	protected final Map<String, ASN1UserType> typesExported = new HashMap<String, ASN1UserType>();
 
 	/**
 	 * List of types beeing actually imported and registered in this module.
@@ -105,7 +105,7 @@ public class ASN1Module implements ASN1SchemaObject {
 	/**
 	 * Storage for all exports where key is [TypeName]
 	 */
-	protected final Map<String, ASN1Type> types = new HashMap<String, ASN1Type>();
+	protected final Map<String, ASN1UserType> types = new HashMap<String, ASN1UserType>();
 
 	/**
 	 * Create new module
@@ -212,19 +212,19 @@ public class ASN1Module implements ASN1SchemaObject {
 		}
 
 		//first install types
-		for (ASN1Type t : types.values()) {
-			t.onInstall(this, true);
+		for (ASN1UserType t : types.values()) {
+			t.onInstall(this);
 		}
 
 		for (String typeName : exports) {
-			final ASN1Type type = types.get(typeName);
+			final ASN1UserType type = types.get(typeName);
 			if (type == null) {
 				throw new NullPointerException();
 			}
 			typesExported.put(typeName, type);
 		}
 		//now we could export types
-		for (final ASN1Type t : (exportAll) ? types.values() : typesExported.values()) {
+		for (final ASN1UserType t : (exportAll) ? types.values() : typesExported.values()) {
 			if (t.isValid()) {
 				t.onExport(schema);
 			} else {
@@ -445,9 +445,12 @@ public class ASN1Module implements ASN1SchemaObject {
 	}
 
 	@Override
-	public void toASN1(final PrintWriter printWriter) {
-		getModuleId().toASN1(printWriter);
-		printWriter.append("DEFINITIONS");
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+//		logger.warn(typesExported);
+//		logger.warn(importedTypes);
+
+		getModuleId().toASN1(printWriter, false);
+		printWriter.append(" DEFINITIONS ");
 		printWriter.append(defaultTaggingMethod.toString());
 		printWriter.append(" TAGS ");
 		if (extensibilityImplied) {
@@ -472,11 +475,11 @@ public class ASN1Module implements ASN1SchemaObject {
 		if (imports.size() > 0) {
 			printWriter.append("IMPORTS ");
 			for (SymbolsFromModule sfm : imports) {
-				sfm.toASN1(printWriter);
+				sfm.toASN1(printWriter, false);
 			}
 		}
 		for (ASN1Type type : types.values()) {
-			type.toASN1(printWriter);
+			type.toASN1(printWriter, true);
 			printWriter.append("\n");
 		}
 
@@ -492,9 +495,9 @@ public class ASN1Module implements ASN1SchemaObject {
 		/**
 		 * The watched type
 		 */
-		private final ASN1Type t;
+		private final ASN1UserType t;
 
-		public TypeValidPropertyListener(final ASN1Type t) {
+		public TypeValidPropertyListener(final ASN1UserType t) {
 			this.t = t;
 		}
 
@@ -532,7 +535,7 @@ public class ASN1Module implements ASN1SchemaObject {
 		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (evt.getNewValue() instanceof ASN1Type) {
-				final ASN1Type type = (ASN1Type) evt.getNewValue();
+				final ASN1UserType type = (ASN1UserType) evt.getNewValue();
 				if (typeName.equals(type.getName()) && moduleName.equals(type.getModuleName())) {
 					type.onImport(ASN1Module.this);
 					ASN1Module.this.schema.removePropertyChangeListener(ASN1Schema.TYPE_INSTALLED, this);

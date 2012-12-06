@@ -65,7 +65,7 @@ public class SymbolsFromModule implements ASN1SchemaObject {
 	}
 
 	@Override
-	public void toASN1(final PrintWriter pw) {
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
 		int i = 0;
 		for (String name : getSymbols()) {
 			pw.append(name);

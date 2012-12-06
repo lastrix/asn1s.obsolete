@@ -339,9 +339,9 @@ public final class ASN1Schema implements ASN1SchemaObject {
 	}
 
 	@Override
-	public void toASN1(final PrintWriter pw) {
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
 		for (ASN1Module m : modules.values()) {
-			m.toASN1(pw);
+			m.toASN1(pw, false);
 			pw.append("\n");
 		}
 	}

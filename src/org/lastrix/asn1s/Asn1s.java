@@ -23,9 +23,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Schema;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -104,15 +102,16 @@ public class Asn1s {
 		try {
 			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/testModule.asn");
 			logger.warn(s.getModulesString());
-			final String asn1schema = s.getModule("TestModule").toASN1();
-			logger.warn(asn1schema);
-//			PrintWriter pw = new PrintWriter(new File("./test/res/testModule.asn"));
-//			pw.print(asn1schema);
-//			pw.close();
+			final FileWriter fw = new FileWriter("/tmp/out.asn");
+			final PrintWriter pw = new PrintWriter(fw);
+			s.getModule("TestModule").toASN1(pw, false);
+			fw.close();
 		} catch (ASN1Exception e) {
 			logger.warn("Exception:", e);
 //		} catch (FileNotFoundException e) {
 //			logger.warn("Exception:", e);
+		} catch (IOException e) {
+			logger.warn("Exception:", e);
 		}
 //		s.printDebugInfo();
 	}

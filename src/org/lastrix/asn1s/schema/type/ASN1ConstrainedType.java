@@ -24,11 +24,10 @@ import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /**
  * @author lastrix
@@ -84,7 +83,7 @@ public class ASN1ConstrainedType extends ASN1Type {
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module, final boolean register) throws IllegalStateException, ASN1Exception {
+	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
 		if (getModule() != null) {
 			throw new IllegalStateException();
 		}
@@ -94,41 +93,21 @@ public class ASN1ConstrainedType extends ASN1Type {
 		if (type instanceof ASN1UnresolvedType) {
 			final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
 			if (t == null) {
-				module.addPropertyChangeListener(
-				                                ASN1Module.TYPE_INSTALLED, new PropertyChangeListener() {
-					@Override
-					public void propertyChange(final PropertyChangeEvent evt) {
-						if (evt.getNewValue() instanceof ASN1Type) {
-							final ASN1Type _type = (ASN1Type) evt.getNewValue();
-							if (_type.getName().equals(ASN1ConstrainedType.this.type.getName()) &&
-							    (((ASN1UnresolvedType) type).getModuleName() == null
-							     || _type.getModule().getName().equals(((ASN1UnresolvedType) type).getModuleName()))) {
-								ASN1ConstrainedType.this.type = _type;
-								module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-								try {
-									doInstall(module, register);
-								} catch (ASN1Exception e) {
-									logger.error("Exception:", e);
-								}
-							}
-						}
-					}
-				}
-				                                );
+				logger.warn("Creating listener.");
+				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) type, module);
 			} else {
 				this.type = t;
-				doInstall(module, register);
+				doInstall(module);
 			}
 		} else {
 			//now we should add self to index base
-			doInstall(module, register);
+			doInstall(module);
 		}
 	}
 
-	private void doInstall(ASN1Module module, final boolean register) throws ASN1Exception {
-		module.install(this);
+	private void doInstall(ASN1Module module) throws ASN1Exception {
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
-			type.onInstall(module, false);
+			type.onInstall(module);
 		}
 		typeId = makeTypeId(getName(), getModuleName());
 		valid();
@@ -140,9 +119,24 @@ public class ASN1ConstrainedType extends ASN1Type {
 	}
 
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		type.toASN1(sb);
-		sb.append(" ");
-		constraint.toASN1(sb);
+	public void typeResolved(
+	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
+	                        ) {
+		if (type == unresolved) {
+			logger.warn("type resolved: " + resolved);
+			type = resolved;
+			try {
+				doInstall(module);
+			} catch (ASN1Exception e) {
+				logger.warn("Exception:", e);
+			}
+		}
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		type.toASN1(pw, false);
+		pw.append(" ");
+		constraint.toASN1(pw, false);
 	}
 }

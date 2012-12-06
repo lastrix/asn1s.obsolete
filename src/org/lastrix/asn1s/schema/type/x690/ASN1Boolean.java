@@ -25,7 +25,6 @@ import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +34,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Boolean extends ASN1Type implements ASN1X690Type {
+public class ASN1Boolean extends ASN1X690Type {
 
 	public static final ASN1Tag TAG   = new ASN1Tag(0x01, TagClass.UNIVERSAL, false);
 	public static final int     TRUE  = 0xFF;

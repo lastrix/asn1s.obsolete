@@ -25,7 +25,6 @@ import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.IOException;
@@ -36,7 +35,7 @@ import java.io.OutputStream;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Integer extends ASN1Type implements ASN1X690Type {
+public class ASN1Integer extends ASN1X690Type {
 
 	private final static Logger logger = Logger.getLogger(ASN1Integer.class);
 

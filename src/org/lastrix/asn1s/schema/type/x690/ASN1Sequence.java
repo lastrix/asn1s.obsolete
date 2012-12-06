@@ -26,6 +26,7 @@ import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
+import org.lastrix.asn1s.schema.type.ASN1ComponentType;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.util.Utils;
 
@@ -47,7 +48,7 @@ public class ASN1Sequence extends ASN1Container {
 	public final static ASN1Tag TAG = new ASN1Tag(16, TagClass.UNIVERSAL, true);
 
 	public ASN1Sequence(
-	                   final ASN1Type[] componentType,
+	                   final ASN1ComponentType[] componentType,
 	                   final boolean of
 	                   ) {
 		super(componentType, of, "SEQUENCE@" + TAG.getTag(), TAG);
@@ -137,28 +138,27 @@ public class ASN1Sequence extends ASN1Container {
 		return "SEQUENCE OF " + Arrays.toString(componentType);
 	}
 
-
 	@Override
-	public void toASN1(final StringBuilder sb) {
-		sb.append("SEQUENCE ");
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		printWriter.append("SEQUENCE ");
+		//FIXME: how the hell you gonna support constraint???
 		if (of) {
-			sb.append("OF ");
-			sb.append(componentType[0].getTypeId());
-			sb.append(";");
+			printWriter.append("OF ");
+			printWriter.append(componentType[0].getName());
+			printWriter.append(";");
 		} else {
-			sb.append("{\n");
+			printWriter.append("{\n");
 			for (int i = 0; i < componentType.length; i++) {
-				sb.append("      ");
-				componentType[i].toASN1(sb);
+				printWriter.append("      ");
+				componentType[i].toASN1(printWriter, false);
 				if (i + 1 < componentType.length) {
-					sb.append(",");
+					printWriter.append(",");
 				}
-				sb.append("\n");
+				printWriter.append("\n");
 			}
-			sb.append("}");
+			printWriter.append("}");
 		}
 	}
-
 
 	@Override
 	public void write(final Object value, final OutputStream os, boolean header) throws IOException, ASN1Exception {

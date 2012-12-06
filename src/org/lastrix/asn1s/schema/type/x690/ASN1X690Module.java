@@ -24,6 +24,7 @@ import org.lastrix.asn1s.schema.ASN1ModuleId;
 import org.lastrix.asn1s.schema.SymbolsFromModule;
 import org.lastrix.asn1s.schema.TaggingMethod;
 import org.lastrix.asn1s.schema.type.ASN1Type;
+import org.lastrix.asn1s.schema.type.ASN1UserType;
 
 import java.util.Vector;
 
@@ -62,19 +63,25 @@ public class ASN1X690Module extends ASN1Module {
 	 */
 	public ASN1X690Module() {
 		super(new ASN1ModuleId(MODULE_NAME, null), TaggingMethod.EXPLICIT, false, true, null, null, null);
-		addType(new ASN1Integer(Long.class));
-		addType(new ASN1Integer(Integer.class));
-		addType(new ASN1Integer(Short.class));
-		addType(new ASN1Integer(Byte.class));
-		addType(new ASN1Real(Float.class));
-		addType(new ASN1Real(Double.class));
-		addType(new ASN1UTF8String());
-		addType(new ASN1OctetString());
-		addType(new ASN1Null());
-		addType(new ASN1Boolean());
-		addType(new ASN1BitString());
-		addType(new ASN1ObjectID());
-		addType(new ASN1RelativeOID());
+		//only ASN1UserType could act as root type, and only this kind could be exported or imported.
+		addType(createTypeFor(new ASN1Integer(Long.class)));
+		addType(createTypeFor(new ASN1Integer(Integer.class)));
+		addType(createTypeFor(new ASN1Integer(Integer.class)));
+		addType(createTypeFor(new ASN1Integer(Short.class)));
+		addType(createTypeFor(new ASN1Integer(Byte.class)));
+		addType(createTypeFor(new ASN1Real(Float.class)));
+		addType(createTypeFor(new ASN1Real(Double.class)));
+		addType(createTypeFor(new ASN1UTF8String()));
+		addType(createTypeFor(new ASN1OctetString()));
+		addType(createTypeFor(new ASN1Null()));
+		addType(createTypeFor(new ASN1Boolean()));
+		addType(createTypeFor(new ASN1BitString()));
+		addType(createTypeFor(new ASN1ObjectID()));
+		addType(createTypeFor(new ASN1RelativeOID()));
+	}
+
+	private ASN1UserType createTypeFor(ASN1Type type) {
+		return new ASN1UserType(type.getName(), type, type.getHandledClass());
 	}
 
 	/**
@@ -82,19 +89,12 @@ public class ASN1X690Module extends ASN1Module {
 	 *
 	 * @param type - the ASN1Type
 	 */
-	private void addType(ASN1Type type) {
+	private void addType(ASN1UserType type) {
 		types.put(type.getName(), type);
-//		try {
-//			type.onInstall(this);
-//		} catch (ASN1Exception e) {
-//			logger.error("Critical error, can not install basic types.", e);
-//			System.exit(-1);
-//		}
 	}
 
 	@Override
 	public void importType(final ASN1Type type) {
-//		super.importType(type);
 		// no type could be imported to this module
 	}
 }
