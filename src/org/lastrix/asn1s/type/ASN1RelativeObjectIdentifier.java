@@ -18,6 +18,10 @@
 
 package org.lastrix.asn1s.type;
 
+import org.lastrix.asn1s.schema.ASN1SchemaObject;
+
+import java.io.PrintWriter;
+
 /**
  * Class that used for storing and processing ASN.1 type named OBJECT IDENTIFIER, see specification for more info.
  * TODO: references
@@ -25,7 +29,7 @@ package org.lastrix.asn1s.type;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1RelativeObjectIdentifier {
+public class ASN1RelativeObjectIdentifier implements ASN1SchemaObject {
 
 	private final long[] oids;
 	private final String text;
@@ -49,5 +53,10 @@ public class ASN1RelativeObjectIdentifier {
 
 	public long[] getOids() {
 		return oids;
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw) {
+		pw.append(text);
 	}
 }

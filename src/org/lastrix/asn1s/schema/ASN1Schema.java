@@ -35,6 +35,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ import java.util.Map;
  * @author lastrix
  * @version 1.0
  */
-public final class ASN1Schema {
+public final class ASN1Schema implements ASN1SchemaObject {
 	/**
 	 * Constant used in property change firing to let listeners know about new type installation.
 	 */
@@ -335,5 +336,13 @@ public final class ASN1Schema {
 			}
 		}
 		handler.write(o, os, true);
+	}
+
+	@Override
+	public void toASN1(final PrintWriter pw) {
+		for (ASN1Module m : modules.values()) {
+			m.toASN1(pw);
+			pw.append("\n");
+		}
 	}
 }

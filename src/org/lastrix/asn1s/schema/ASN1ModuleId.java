@@ -20,6 +20,8 @@ package org.lastrix.asn1s.schema;
 
 import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
 
+import java.io.PrintWriter;
+
 /**
  * ASN1ModuleId - special class to make modules unique and be described as it expected in ASN.1 specifications.
  * See ITU-T X.690 paragraph 8.19.
@@ -28,7 +30,7 @@ import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
  * @version 1.0
  *          TODO: OID
  */
-public class ASN1ModuleId {
+public class ASN1ModuleId implements ASN1SchemaObject {
 	private final String               moduleName;
 	private final ASN1ObjectIdentifier oID;
 
@@ -71,8 +73,12 @@ public class ASN1ModuleId {
 	}
 
 	public void toASN1(final StringBuilder sb) {
-		sb.append(moduleName);
-		sb.append(" ");
-		sb.append(oID);
+	}
+
+	@Override
+	public void toASN1(final PrintWriter printWriter) {
+		printWriter.append(moduleName);
+		printWriter.append(" ");
+		oID.toASN1(printWriter);
 	}
 }

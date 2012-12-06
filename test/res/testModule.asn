@@ -5,7 +5,7 @@ EXPORTS ListOfTestSeq, TestSeq;
 ListOfTestSeq ::= [APPLICATION 12] SEQUENCE OF TestModule.TestSeq;
 --#org.lastrix.asn1s.SequenceOfTestClass#
 TestSeq ::= [APPLICATION 2] IMPLICIT SEQUENCE {
-      a INTEGER ( 0 | 10 .. 100  | 1000 .. 1100),
+      a INTEGER ( 0 | 10 .. 100  | 1000 .. 1100 ^ 1050 .. 1150),
       b INTEGER,
       c REAL-Float,
       d UTF8String,

@@ -19,61 +19,20 @@
 package org.lastrix.asn1s.schema;
 
 import java.io.PrintWriter;
-import java.util.List;
 
 /**
- * This class used to hold data about import block, as described in ITU-T X.680 paragraph 12.1
+ * Interface which should implement every class that has an ASN.1 representation.
+ * This interface is required for ASN.1 schema generation
  *
  * @author lastrix
  * @version 1.0
  */
-public class SymbolsFromModule implements ASN1SchemaObject {
-	/**
-	 * full module name as declared in ITU-T X.680
-	 */
-	private final String moduleName;
+public interface ASN1SchemaObject {
 
 	/**
-	 * List of typereferences as declared in ITU-T X.680
-	 */
-	private final List<String> symbols;
-
-	/**
-	 * Create new SymbolsFromModule
+	 * Convert object to ASN.1 schema
 	 *
-	 * @param moduleName - name of module
-	 * @param symbols    - list of symbols
+	 * @param pw
 	 */
-	public SymbolsFromModule(final String moduleName, final List<String> symbols) {
-		this.moduleName = moduleName;
-		this.symbols = symbols;
-	}
-
-	public String getModuleName() {
-		return moduleName;
-	}
-
-	public List<String> getSymbols() {
-		return symbols;
-	}
-
-	@Override
-	public String toString() {
-		return "SymbolsFromModule{" + symbols +
-		       " FROM " + moduleName +
-		       '}';
-	}
-
-	@Override
-	public void toASN1(final PrintWriter pw) {
-		int i = 0;
-		for (String name : getSymbols()) {
-			pw.append(name);
-			if (++i < getSymbols().size()) {
-				pw.append(", ");
-			}
-		}
-		pw.append(" FROM ");
-		pw.append(getModuleName());
-	}
+	public void toASN1(final PrintWriter pw);
 }

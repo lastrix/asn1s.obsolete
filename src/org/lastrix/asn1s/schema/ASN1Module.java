@@ -29,6 +29,7 @@ import org.lastrix.asn1s.schema.type.x690.ASN1X690Module;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -40,7 +41,7 @@ import java.util.*;
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Module {
+public class ASN1Module implements ASN1SchemaObject {
 	private final static Logger logger = Logger.getLogger(ASN1Module.class.getName());
 
 	/**
@@ -443,64 +444,45 @@ public class ASN1Module {
 		                      );
 	}
 
-	/**
-	 * Converts this module to string
-	 *
-	 * @return
-	 */
-	public String toASN1() {
-		StringBuilder sb = new StringBuilder();
-		getModuleId().toASN1(sb);
-		sb.append(" DEFINITIONS ");
-		sb.append(defaultTaggingMethod.toString());
-		sb.append(" TAGS ");
+	@Override
+	public void toASN1(final PrintWriter printWriter) {
+		getModuleId().toASN1(printWriter);
+		printWriter.append("DEFINITIONS");
+		printWriter.append(defaultTaggingMethod.toString());
+		printWriter.append(" TAGS ");
 		if (extensibilityImplied) {
-			sb.append("EXTENSIBILITY IMPLIED ");
+			printWriter.append("EXTENSIBILITY IMPLIED ");
 		}
-		sb.append("::=\nBEGIN\n");
+		printWriter.append("::=\nBEGIN\n");
 
 		if (exportAll) {
-			sb.append("EXPORTS ALL;\n");
+			printWriter.append("EXPORTS ALL;\n");
 		} else {
-			sb.append("EXPORTS ");
+			printWriter.append("EXPORTS ");
 			int i = 0;
 			for (String name : typesExported.keySet()) {
-				sb.append(name);
+				printWriter.append(name);
 				if (++i < typesExported.size()) {
-					sb.append(", ");
+					printWriter.append(", ");
 				}
 			}
-			sb.append(";\n");
+			printWriter.append(";\n");
 		}
 
 		if (imports.size() > 0) {
-			sb.append("IMPORTS ");
+			printWriter.append("IMPORTS ");
 			for (SymbolsFromModule sfm : imports) {
-				final List<String> sym = sfm.getSymbols();
-				int i = 0;
-				for (String name : sym) {
-					sb.append(name);
-					if (++i < sym.size()) {
-						sb.append(", ");
-					}
-				}
-				sb.append(" FROM ");
-				sb.append(sfm.getModuleName());
+				sfm.toASN1(printWriter);
 			}
 		}
-
 		for (ASN1Type type : types.values()) {
-			type.toASN1(sb);
-			sb.append("\n");
+			type.toASN1(printWriter);
+			printWriter.append("\n");
 		}
 
-		sb.append("END\n");
-		return sb.toString();
+		printWriter.append("END\n");
 	}
 
-	// ------------------------------------------------------------------------ //
-	// ----------------------- PRIVATE CLASSES -------------------------------- //
-	// ------------------------------------------------------------------------ //
 
 	/**
 	 * Private class to listen type validity states.
