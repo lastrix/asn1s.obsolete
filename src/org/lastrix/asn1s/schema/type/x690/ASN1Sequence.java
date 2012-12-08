@@ -26,7 +26,6 @@ import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -36,6 +35,8 @@ import java.util.List;
 /**
  * Class to handle sequences and sequences of values.
  * This class uses definite length form (buffers elements before writing them into output stream)
+ * It supposed to write in indefinite form ALWAYS.
+ * TODO: definite/indefinite length forms on user request.
  *
  * @author lastrix
  * @version 1.0
@@ -128,39 +129,28 @@ public class ASN1Sequence extends ASN1Container {
 		if (header) {
 			//write header
 			os.write(TAG.asBytes());
-//			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
+			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
 		}
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (of) {
 			// SEQUENCE OF
 			final List list = (List) value;
 			for (Object lo : list) {
-				componentType[0].write(lo, bos, true);
+				componentType[0].write(lo, os, true);
 			}
 		} else {
 			// SEQUENCE
 			for (ASN1ComponentType t : componentType) {
 				final Object o = getField(value, t);
 				if (o != null || !t.isOptional()) {
-					t.write(o, bos, true);
+					t.write(o, os, true);
 				}
 			}
 		}
-//		if (header){
-//			os.write(0x00);
-//			os.write(0x00);
-//		}
-//		final byte[] data = bos.toByteArray();
-
-//		//store size
 		if (header) {
-//			logger.warn(bos.size());
-			os.write(ASN1Length.asBytes(bos.size()));
+			os.write(0x00);
+			os.write(0x00);
 		}
-
-		//and now we can save our data.
-		bos.writeTo(os);
 	}
 
 	private void checkReading(int componentRead) throws ASN1ProtocolException {
