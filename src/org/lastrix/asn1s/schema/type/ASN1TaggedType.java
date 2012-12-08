@@ -19,12 +19,15 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.schema.*;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /**
  * @author lastrix
@@ -90,29 +93,29 @@ public class ASN1TaggedType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		if (header) {
+			os.write(getTag().asBytes());
+			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
+		}
 		switch (_methodToUse) {
 			case IMPLICIT:
-				subType.write(o, bos, false);
+				subType.write(o, os, false);
 				break;
 
 			case EXPLICIT:
-				subType.write(o, bos, true);
+				subType.write(o, os, true);
 				break;
 		}
-		final byte[] data = bos.toByteArray();
 		if (header) {
-			os.write(getTag().asBytes());
-			os.write(ASN1Length.asBytes(data.length));
+			os.write(0x00);
+			os.write(0x00);
 		}
-
-		os.write(data);
 	}
 
 	@Override
-	public Object read(final Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(Object value, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check TAG, then check it!
@@ -124,12 +127,17 @@ public class ASN1TaggedType extends ASN1Type {
 
 		switch (_methodToUse) {
 			case IMPLICIT:
-				return subType.read(value, is, tag, false);
+				return subType.read(value, asn1is, tag, false);
 
 			case EXPLICIT:
 				//remove length field
-				ASN1Length.readLength(is);
-				return subType.read(value, is, null, false);
+				int length = ASN1Length.readLength(asn1is);
+				value = subType.read(value, asn1is, null, true);
+				if (length == -1) {
+					asn1is.read();
+					asn1is.read();
+				}
+				return value;
 		}
 		throw new ASN1Exception("Unknown error.");
 	}

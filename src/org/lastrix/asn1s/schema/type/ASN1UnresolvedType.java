@@ -18,12 +18,12 @@
 
 package org.lastrix.asn1s.schema.type;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -74,7 +74,9 @@ public class ASN1UnresolvedType extends ASN1Type {
 	}
 
 	@Override
-	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(final Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws
+	IOException,
+	ASN1Exception {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
 

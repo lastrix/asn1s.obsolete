@@ -19,6 +19,7 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.schema.ASN1KeyStrings;
@@ -26,9 +27,10 @@ import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.type.x690.ASN1X690Type;
+import org.lastrix.asn1s.type.ASN1ObjectIdentifier;
+import org.lastrix.asn1s.type.ASN1RelativeObjectIdentifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
@@ -102,20 +104,11 @@ public class ASN1UserType extends ASN1Type {
 
 
 	@Override
-	public Object read(Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
-		if (value != null) {
-			throw new IllegalArgumentException("ASN1Integer does not allow non null parameter 'value'");
-		}
-		// we does not have any headers here, so leave it for underlying type reader.
-
-		// does not allow java. objects instantiation.
-		//FIXME: find a better way here.
-		if (handledClass.getName().startsWith("java.")) {
-			return baseType.read(null, is, tag, tagCheck);
-		} else {
+	public Object read(Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		if (value == null) {
 			value = makeInstance();
-			return baseType.read(value, is, tag, tagCheck);
 		}
+		return baseType.read(value, asn1is, tag, tagCheck);
 	}
 
 
@@ -185,11 +178,17 @@ public class ASN1UserType extends ASN1Type {
 	}
 
 	private Object makeInstance() throws ASN1ReadException {
-		try {
-			Constructor c = handledClass.getConstructor();
-			return c.newInstance();
-		} catch (Exception e) {
-			throw new ASN1ReadException("Can not instantiate handled class.");
+		if (handledClass == ASN1ObjectIdentifier.class
+		    || handledClass == ASN1RelativeObjectIdentifier.class
+		    || handledClass.getName().startsWith("java.lang.")) {
+			return null;
+		} else {
+			try {
+				Constructor c = handledClass.getConstructor();
+				return c.newInstance();
+			} catch (Exception e) {
+				throw new ASN1ReadException("Can not instantiate handled class.");
+			}
 		}
 	}
 

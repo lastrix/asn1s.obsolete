@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
@@ -26,7 +27,6 @@ import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -58,14 +58,14 @@ public final class ASN1Null extends ASN1X690Type {
 	}
 
 	@Override
-	public Object read(final Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(final Object value, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value != null) {
 			throw new ASN1Exception("ASN1Null accepts only null values.");
 		}
 
 		// TAG should be null in anyway
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check TAG, then check it!
@@ -76,7 +76,7 @@ public final class ASN1Null extends ASN1X690Type {
 		}
 
 		//length should be zero
-		if (ASN1Length.readLength(is) != 0) {
+		if (ASN1Length.readLength(asn1is) != 0) {
 			throw new ASN1ReadException("Zero length expected.");
 		}
 		return null;

@@ -18,19 +18,19 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Handles ASN1 length field, as described in ASN.1 specification ITU-T X.690 paragraph 8.1.3
  *
  * @author lastrix
  * @version 1.0
- * @see #readLength(InputStream) - to read length from stream
+ * @see #readLength(ASN1InputStream) - to read length from stream
  * @see #asBytes(int) - to get byte array representation of and int
  */
 public final class ASN1Length {
@@ -77,7 +77,7 @@ public final class ASN1Length {
 	 *
 	 * @throws ASN1ReadException if I/O errors occur
 	 */
-	public static int readLength(final InputStream is) throws ASN1ReadException {
+	public static int readLength(final ASN1InputStream is) throws ASN1ReadException {
 
 		int temp;
 		// Read the length and create header
@@ -91,7 +91,7 @@ public final class ASN1Length {
 
 		if (temp == FORM_INDEFINITE) {
 			// this is an indefinite form
-			length = 0;
+			length = -1;
 		} else if ((temp & Utils.BYTE_SIGN_MASK) == 0) {
 			// this is short definite form
 			length = temp & Utils.UNSIGNED_BYTE_MASK;

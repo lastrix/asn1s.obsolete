@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
@@ -29,7 +30,6 @@ import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -141,14 +141,14 @@ public class ASN1Real extends ASN1X690Type {
 	}
 
 	@Override
-	public Object read(final Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(final Object nullValue, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (nullValue != null) {
 			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'nullValue'");
 		}
 
 		// tag should be null in anyway
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check tag, then check it!
@@ -158,14 +158,14 @@ public class ASN1Real extends ASN1X690Type {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is);
+		final int length = ASN1Length.readLength(asn1is);
 
 		//test for zero value
 		if (length == 0) {
 			return 0d;
 		}
 
-		final int info = is.read();
+		final int info = asn1is.read();
 		int mantisLength = length - 1;
 
 		//bad news
@@ -197,7 +197,7 @@ public class ASN1Real extends ASN1X690Type {
 				//TODO: check this, code is copy-pasted.
 				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) mantisLength);
 
-				Utils.transfer(is, bos, (int) mantisLength);
+				Utils.transfer(asn1is, bos, (int) mantisLength);
 				// IA5 == ASCII...?
 				String nrRep = new String(bos.toByteArray(), "US-ASCII");
 				// this will swallow NR(1-3) and give proper double :)
@@ -211,12 +211,12 @@ public class ASN1Real extends ASN1X690Type {
 		long exponent = 0;
 		int exponentType = info & EXPONENT_TYPE;
 		if (exponentType == 0) {
-			exponent = is.read();
+			exponent = asn1is.read();
 			mantisLength--;
 		} else if (exponentType == 1 || exponentType == 2) {
 			final int exponentLength = 2 + exponentType - 1;
 			final byte[] data = new byte[exponentLength];
-			if (is.read(data) != exponentLength) {
+			if (asn1is.read(data) != exponentLength) {
 				throw new ASN1ReadException("Can not read all required bytes");
 			}
 			for (int i = 0; i < exponentLength; i++) {
@@ -236,7 +236,7 @@ public class ASN1Real extends ASN1X690Type {
 
 		// read the entire chunk of data
 		final byte[] data = new byte[mantisLength];
-		if (is.read(data) != mantisLength) {
+		if (asn1is.read(data) != mantisLength) {
 			throw new ASN1ReadException("Can not read all required bytes");
 		}
 		// convert to valid form now

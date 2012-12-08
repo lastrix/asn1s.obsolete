@@ -18,13 +18,13 @@
 
 package org.lastrix.asn1s.schema;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1ReadException;
 import org.lastrix.asn1s.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 
 /**
@@ -33,7 +33,7 @@ import java.io.PrintWriter;
  *
  * @author lastrix
  * @version 1.0
- * @see #readTag(InputStream) - to read tag from stream
+ * @see #readTag(ASN1InputStream) - to read tag from stream
  * @see #asBytes() - to get byte array representation, you could write it to stream
  */
 public final class ASN1Tag implements ASN1SchemaObject {
@@ -81,7 +81,7 @@ public final class ASN1Tag implements ASN1SchemaObject {
 	 *
 	 * @throws ASN1Exception
 	 */
-	public static ASN1Tag readTag(InputStream is) throws ASN1Exception {
+	public static ASN1Tag readTag(ASN1InputStream is) throws ASN1Exception {
 		int temp;
 		//get first byte, this is only reading in most cases actually.
 		try {
@@ -120,7 +120,7 @@ public final class ASN1Tag implements ASN1SchemaObject {
 	 * @param constructed - the constructed flag
 	 *
 	 * @see #asBytes()
-	 * @see #readTag(InputStream)
+	 * @see #readTag(ASN1InputStream)
 	 */
 	public ASN1Tag(final int tag, final TagClass tagClass, final boolean constructed) {
 		super();

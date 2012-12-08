@@ -19,13 +19,13 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -76,8 +76,8 @@ public class ASN1ConstrainedType extends ASN1Type {
 
 
 	@Override
-	public Object read(Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
-		value = type.read(value, is, tag, tagCheck);
+	public Object read(Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
+		value = type.read(value, asn1is, tag, tagCheck);
 		//TODO: constraint checks
 		return value;
 	}

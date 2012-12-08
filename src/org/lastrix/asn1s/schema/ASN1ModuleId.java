@@ -72,9 +72,6 @@ public class ASN1ModuleId implements ASN1SchemaObject {
 		return moduleName;
 	}
 
-	public void toASN1(final StringBuilder sb) {
-	}
-
 	@Override
 	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
 		printWriter.append(moduleName);

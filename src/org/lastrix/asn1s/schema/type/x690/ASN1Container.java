@@ -20,6 +20,7 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.exception.ASN1NoSuchFieldException;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
@@ -29,6 +30,8 @@ import org.lastrix.asn1s.schema.type.ASN1UserType;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * This class made to handle componentType's installing.
@@ -142,6 +145,73 @@ abstract class ASN1Container extends ASN1X690Type {
 						logger.error("Exception:", e);
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * @param clazz
+	 *
+	 * @return
+	 *
+	 * @throws ASN1NoSuchFieldException
+	 */
+	private Field findField(final ASN1ComponentType type, final Class clazz) throws ASN1NoSuchFieldException {
+		Field f = null;
+		Class c = clazz;
+		while (c != null) {
+			try {
+				f = c.getDeclaredField(type.getFieldName());
+				f.setAccessible(true);
+			} catch (NoSuchFieldException e) {
+			}
+			c = c.getSuperclass();
+		}
+		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", type.getFieldName(), clazz)); }
+		return f;
+	}
+
+	/**
+	 * Helper function to set field's value
+	 *
+	 * @param parent
+	 * @param type
+	 * @param value
+	 *
+	 * @throws ASN1Exception
+	 */
+	protected void setField(final Object parent, final ASN1ComponentType type, final Object value) throws ASN1Exception {
+		if (parent instanceof Map) {
+			((Map) parent).put(type.getFieldName(), value);
+		} else {
+			final Field f = findField(type, parent.getClass());
+			try {
+				f.set(parent, value);
+			} catch (IllegalAccessException e) {
+				throw new ASN1Exception("Can not set field value", e);
+			}
+		}
+	}
+
+	/**
+	 * Helper function to get field's value
+	 *
+	 * @param parent
+	 * @param type
+	 *
+	 * @return
+	 *
+	 * @throws ASN1Exception
+	 */
+	protected Object getField(final Object parent, final ASN1ComponentType type) throws ASN1Exception {
+		if (parent instanceof Map) {
+			return ((Map) parent).get(type.getFieldName());
+		} else {
+			final Field f = findField(type, parent.getClass());
+			try {
+				return f.get(parent);
+			} catch (IllegalAccessException e) {
+				throw new ASN1Exception("Can not set field value", e);
 			}
 		}
 	}

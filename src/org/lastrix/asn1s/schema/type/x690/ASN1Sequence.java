@@ -19,19 +19,17 @@
 package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.exception.ASN1OptionalComponentSkippedException;
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.ASN1InputStream;
+import org.lastrix.asn1s.exception.*;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
-import org.lastrix.asn1s.schema.type.ASN1Type;
-import org.lastrix.asn1s.util.Utils;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,9 +41,8 @@ import java.util.List;
  * @version 1.0
  */
 public class ASN1Sequence extends ASN1Container {
-	private final Logger logger = Logger.getLogger(ASN1Sequence.class);
-
-	public final static ASN1Tag TAG = new ASN1Tag(16, TagClass.UNIVERSAL, true);
+	public final static ASN1Tag TAG    = new ASN1Tag(16, TagClass.UNIVERSAL, true);
+	private final       Logger  logger = Logger.getLogger(ASN1Sequence.class);
 
 	public ASN1Sequence(
 	                   final ASN1ComponentType[] componentType,
@@ -57,13 +54,13 @@ public class ASN1Sequence extends ASN1Container {
 
 
 	@Override
-	public Object read(Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(Object value, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null) {
-			value = new ArrayList();
+			throw new ASN1EmptyContainerException();
 		}
 		// TAG should be null in anyway
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check TAG, then check it!
@@ -73,70 +70,26 @@ public class ASN1Sequence extends ASN1Container {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is);
-		if (of) {
-			final List list;
-			if (value instanceof List) {
-				list = (List) value;
+		if (of && !(value instanceof List)) {
+			throw new IllegalArgumentException("ASN1SequenceOf does not allow any objects if it not implement java.util.List.");
+		}
+
+		final int length = ASN1Length.readLength(asn1is);
+		if (length == -1) {
+			if (of) {
+				return readSequenceOfIndefinite(asn1is, (List) value);
 			} else {
-				throw new IllegalArgumentException("ASN1SequenceOf does not allow any objects if it not implement java.util.List.");
+				return readSequenceIndefinite(asn1is, value);
 			}
-
-			//read all data
-			if (length == ASN1Length.FORM_INDEFINITE) {
-				throw new ASN1ProtocolException("SequenceOf doesn't support indefinite form");
-			}
-			final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-			Utils.transfer(is, bos, length);
-			final byte[] data = bos.toByteArray();
-			final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-			while (bis.available() > 0) {
-				list.add(componentType[0].read(bis));
-			}
-			return list;
 		} else {
-			if (value == null) {
-				throw new NullPointerException();
+			if (of) {
+				return readSequenceOfDefinite(asn1is, (List) value, length);
+			} else {
+				return readSequenceDefinite(asn1is, value, length);
 			}
-			//read first header, so we won't sent null
-			ASN1Tag itemTag = null;
-			for (ASN1Type t : componentType) {
-				// read header, if it is null for any reason
-				if (itemTag == null) {
-					itemTag = ASN1Tag.readTag(is);
-				}
-				//now try to load field value into our o.
-				try {
-					t.read(value, is, itemTag, true);
-				} catch (ASN1OptionalComponentSkippedException e) {
-					//type reader told that we can not read such component but it is optional, so simply skip it
-					continue;
-				}
-				//set it to null, so next iteration would reread it.
-				itemTag = null;
-			}
-
-			//check for indefinite form.
-			if (length == ASN1Length.FORM_INDEFINITE) {
-				final byte[] eocTest = new byte[]{0x7F, 0x7F};
-				is.read(eocTest);
-
-				if (eocTest[0] != eocTest[1] || eocTest[0] != 0x00) {
-					throw new ASN1ProtocolException("Indefinite encoding without EOC marker at end");
-				}
-			}
-			return value;
 		}
 	}
 
-
-	@Override
-	public String toString() {
-		if (of) {
-			return "SEQUENCE OF " + componentType[0];
-		}
-		return "SEQUENCE OF " + Arrays.toString(componentType);
-	}
 
 	@Override
 	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
@@ -160,14 +113,25 @@ public class ASN1Sequence extends ASN1Container {
 		}
 	}
 
+
+	@Override
+	public String toString() {
+		if (of) {
+			return "SEQUENCE OF " + componentType[0];
+		}
+		return "SEQUENCE OF " + Arrays.toString(componentType);
+	}
+
+
 	@Override
 	public void write(final Object value, final OutputStream os, boolean header) throws IOException, ASN1Exception {
 		if (header) {
 			//write header
 			os.write(TAG.asBytes());
+//			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
 		}
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (of) {
 			// SEQUENCE OF
 			final List list = (List) value;
@@ -176,18 +140,125 @@ public class ASN1Sequence extends ASN1Container {
 			}
 		} else {
 			// SEQUENCE
-			for (ASN1Type t : componentType) {
-				t.write(value, bos, true);
+			for (ASN1ComponentType t : componentType) {
+				final Object o = getField(value, t);
+				if (o != null || !t.isOptional()) {
+					t.write(o, bos, true);
+				}
 			}
 		}
-		final byte[] data = bos.toByteArray();
+//		if (header){
+//			os.write(0x00);
+//			os.write(0x00);
+//		}
+//		final byte[] data = bos.toByteArray();
 
-		//store size
+//		//store size
 		if (header) {
-			os.write(ASN1Length.asBytes(data.length));
+//			logger.warn(bos.size());
+			os.write(ASN1Length.asBytes(bos.size()));
 		}
 
 		//and now we can save our data.
-		os.write(data);
+		bos.writeTo(os);
+	}
+
+	private void checkReading(int componentRead) throws ASN1ProtocolException {
+		if (componentRead < componentType.length) {
+			for (int i = componentRead; i < componentType.length; i++) {
+				if (componentType[i].isOptional()) {
+					componentRead++;
+				} else {
+					break;
+				}
+			}
+			if (componentRead != componentType.length) {
+				throw new ASN1ProtocolException(
+				                               String.format(
+				                                            "Not all non-optional fields read. Expected: %d, actual: %d.", componentType.length,
+				                                            componentRead
+				                                            )
+				);
+			}
+		}
+	}
+
+	private Object readSequenceDefinite(final ASN1InputStream asn1is, final Object value, final int length) throws IOException, ASN1Exception {
+		final int currentPosition = asn1is.getBytesRead();
+		int componentRead = 0;
+		for (ASN1ComponentType type : componentType) {
+			try {
+				componentRead++;
+				setField(value, type, type.read(null, asn1is, null, true));
+			} catch (ASN1OptionalComponentSkippedException e) {
+				continue;
+			}
+			if (length - (asn1is.getBytesRead() - currentPosition) <= 0) {
+				break;
+			}
+		}
+		checkReading(componentRead);
+		if (length - (asn1is.getBytesRead() - currentPosition) != 0) {
+			throw new ASN1ProtocolException(
+			                               String.format(
+			                                            "Data corruption possible. Expected to read %d, actually read: %d.", length,
+			                                            asn1is.getBytesRead() - currentPosition
+			                                            )
+			);
+		}
+		return value;
+	}
+
+	private Object readSequenceIndefinite(final ASN1InputStream asn1is, final Object value) throws ASN1Exception, IOException {
+		ASN1Tag tag = null;
+		int componentRead = 0;
+		for (ASN1ComponentType type : componentType) {
+			if (tag == null) {
+				tag = ASN1Tag.readTag(asn1is);
+				if (tag.isEOC()) {
+					break;
+				}
+			}
+			componentRead++;
+			try {
+				setField(value, type, type.read(null, asn1is, tag, true));
+			} catch (ASN1OptionalComponentSkippedException e) {
+				//type asn1is told that we can not read such component but it is optional, so simply skip it
+				continue;
+			}
+			tag = null;
+		}
+		checkReading(componentRead);
+		if (tag == null) {
+			asn1is.read();
+		}
+		asn1is.read();
+		return value;
+	}
+
+	private Object readSequenceOfDefinite(final ASN1InputStream asn1is, final List value, final int length) throws IOException, ASN1Exception {
+		final int currentPosition = asn1is.getBytesRead();
+		while (length - (asn1is.getBytesRead() - currentPosition) > 0) {
+			value.add(componentType[0].read(asn1is));
+		}
+		if (length - (asn1is.getBytesRead() - currentPosition) != 0) {
+			throw new ASN1ProtocolException(
+			                               String.format(
+			                                            "Data corruption possible. Expected to read %d, actually read: %d.", length,
+			                                            asn1is.getBytesRead() - currentPosition
+			                                            )
+			);
+		}
+		return value;
+	}
+
+	private Object readSequenceOfIndefinite(final ASN1InputStream asn1is, final List value) throws IOException, ASN1Exception {
+		ASN1Tag tag = ASN1Tag.readTag(asn1is);
+		while (!tag.isEOC()) {
+			value.add(componentType[0].read(null, asn1is, tag, true));
+			tag = ASN1Tag.readTag(asn1is);
+		}
+		asn1is.read();
+		return value;
 	}
 }

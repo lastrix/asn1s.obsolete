@@ -22,6 +22,7 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1TypeHandlerNotFoundException;
 import org.lastrix.asn1s.schema.compiler.ASN1TreeWalkerImpl;
@@ -297,12 +298,13 @@ public final class ASN1Schema implements ASN1SchemaObject {
 	 * @return an Object
 	 */
 	public Object read(InputStream is) throws ASN1Exception, IOException {
-		final ASN1Tag tag = ASN1Tag.readTag(is);
+		final ASN1InputStream asn1is = new ASN1InputStream(is);
+		final ASN1Tag tag = ASN1Tag.readTag(asn1is);
 		final ASN1Type handler = getHandler(tag);
 		if (handler == null) {
 			throw new ASN1TypeHandlerNotFoundException("Cannot handle tag " + tag);
 		}
-		return handler.read(null, is, tag, true);
+		return handler.read(null, asn1is, tag, true);
 	}
 
 

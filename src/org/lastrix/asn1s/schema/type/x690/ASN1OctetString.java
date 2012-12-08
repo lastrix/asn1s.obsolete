@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ReadException;
@@ -114,14 +115,14 @@ public class ASN1OctetString extends ASN1X690Type {
 	}
 
 	@Override
-	public Object read(Object nullValue, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(Object nullValue, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (nullValue != null) {
 			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'nullValue'");
 		}
 
 		// tag should be null in anyway
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check tag, then check it!
@@ -131,6 +132,6 @@ public class ASN1OctetString extends ASN1X690Type {
 			}
 		}
 
-		return decode(is, ASN1Length.readLength(is));
+		return decode(asn1is, ASN1Length.readLength(asn1is));
 	}
 }

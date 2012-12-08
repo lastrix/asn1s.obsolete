@@ -19,16 +19,14 @@
 package org.lastrix.asn1s.schema.type;
 
 import org.apache.log4j.Logger;
-import org.lastrix.asn1s.exception.*;
+import org.lastrix.asn1s.ASN1InputStream;
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.util.Map;
 
 /**
  * Class for writing/reading specified object's field to/from ASN.1 notation.
@@ -45,8 +43,6 @@ public class ASN1ComponentType extends ASN1Type {
 	private final boolean optional = false;
 
 	private ASN1Type type;
-
-	private Field field;
 
 	//	private final Object defaultValue;
 	public ASN1ComponentType(final String fieldName, final ASN1Type type) {
@@ -98,33 +94,10 @@ public class ASN1ComponentType extends ASN1Type {
 
 
 	@Override
-	public Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws IOException, ASN1Exception {
-		if (value == null || tag == null) {
-			throw new NullPointerException();
-		}
-		field = findField(value.getClass());
-		// type should know about which class to make and etc, so it should return valid object... probably. I hope so.
-		try {
-			// underlying type reader should always test header.
-			final Object ro = type.read(null, is, tag, true);
-			try {
-				field.set(value, ro);
-			} catch (Exception e) {
-				//we should catch everything, i don't trust it.
-				e.printStackTrace();
-				throw new ASN1ReadException("Unable to setup new value of field '" + name + "'.");
-			}
-		} catch (ASN1IncorrectTagException e) {
-			//we can allow state when object is not read only if it optional
-			if (optional) {
-				throw new ASN1OptionalComponentSkippedException();
-			} else {
-				//if not, so throw it again! :)
-				throw e;
-			}
-		}
-		//we should always return null here. Since we're not type readers, we are auxiliary modifier.
-		return null;
+	public Object read(final Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws
+	IOException,
+	ASN1Exception {
+		return type.read(value, asn1is, tag, tagCheck);
 	}
 
 
@@ -145,20 +118,7 @@ public class ASN1ComponentType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		//let's find field with name in object class
-		if (o instanceof Map) {
-			Object value = ((Map) o).get(fieldName);
-			type.write(value, os, true);
-		} else {
-			field = findField(o.getClass());
-			Object value = null;
-			try {
-				value = field.get(o);
-			} catch (IllegalAccessException e) {
-				throw new ASN1Exception(e);
-			}
-			type.write(value, os, true);
-		}
+		type.write(o, os, header);
 	}
 
 
@@ -175,28 +135,6 @@ public class ASN1ComponentType extends ASN1Type {
 		valid();
 	}
 
-
-	/**
-	 * @param clazz
-	 *
-	 * @return
-	 *
-	 * @throws ASN1Exception
-	 */
-	private Field findField(final Class clazz) throws ASN1Exception {
-		Field f = null;
-		Class c = clazz;
-		while (c != null) {
-			try {
-				f = c.getDeclaredField(fieldName);
-				f.setAccessible(true);
-			} catch (NoSuchFieldException e) {
-			}
-			c = c.getSuperclass();
-		}
-		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", name, clazz)); }
-		return f;
-	}
 
 	@Override
 	public void typeResolved(
@@ -217,5 +155,9 @@ public class ASN1ComponentType extends ASN1Type {
 		pw.append(fieldName);
 		pw.append(" ");
 		type.toASN1(pw, false);
+	}
+
+	public String getFieldName() {
+		return fieldName;
 	}
 }

@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema.type;
 
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Schema;
@@ -27,7 +28,6 @@ import org.lastrix.asn1s.schema.ASN1Tag;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -235,15 +235,15 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	/**
 	 * Read object of type from input stream
 	 *
-	 * @param is - the input stream
+	 * @param asn1is - the input stream
 	 *
 	 * @return an Object or null
 	 *
 	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
+	 * @throws ASN1Exception if selected type asn1is can not acquire data
 	 */
-	public final Object read(final InputStream is) throws IOException, ASN1Exception {
-		return read(null, is, null, false);
+	public final Object read(final ASN1InputStream asn1is) throws IOException, ASN1Exception {
+		return read(null, asn1is, null, false);
 	}
 
 
@@ -282,18 +282,18 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	 * Read object of type from input stream
 	 *
 	 * @param value    - the object which should be used for modifying
-	 * @param is       - the input stream
+	 * @param asn1is   - the input stream
 	 * @param tag      - the ASN.1 tag
-	 * @param tagCheck - force type reader to check tag validity
+	 * @param tagCheck - force type asn1is to check tag validity
 	 *
 	 * @return an Object or null
 	 *
 	 * @throws IOException   thrown from I/O
-	 * @throws ASN1Exception if selected type reader can not acquire data
+	 * @throws ASN1Exception if selected type asn1is can not acquire data
 	 */
-	public abstract Object read(final Object value, final InputStream is, final ASN1Tag tag, final boolean tagCheck) throws
-	                                                                                                                 IOException,
-	                                                                                                                 ASN1Exception;
+	public abstract Object read(final Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws
+	                                                                                                                         IOException,
+	                                                                                                                         ASN1Exception;
 
 
 	/**

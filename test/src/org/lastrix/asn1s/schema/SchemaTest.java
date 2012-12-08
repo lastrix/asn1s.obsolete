@@ -36,7 +36,7 @@ public class SchemaTest extends CustomTestCase {
 
 	public void testSaveLoad() throws Exception {
 		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
-		final int COUNT = 1000;
+		final int COUNT = 10;
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
 		try {
 			for (int i = 0; i < COUNT; i++) {
@@ -68,8 +68,8 @@ public class SchemaTest extends CustomTestCase {
 
 	public void testSaveLoadInList() throws Exception {
 		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/TestModule.asn");
-		final int COUNT = 1000;
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(128 * COUNT);
+		final int COUNT = 3;
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(2);
 		final List list = new ArrayList();
 		for (int i = 0; i < COUNT; i++) {
 			list.add(new SequenceOfTestClass(i, 0x1111, 2.5, "Test" + i, new SequenceOfTestClassAsField(i, "susy" + i, 1.0)));

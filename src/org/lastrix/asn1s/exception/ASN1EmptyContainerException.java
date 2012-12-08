@@ -16,19 +16,25 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
+package org.lastrix.asn1s.exception;
 
 /**
- * Misc constants holder
- *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1KeyStrings {
+public class ASN1EmptyContainerException extends ASN1Exception {
+	public ASN1EmptyContainerException(final Throwable cause) {
+		super(cause);
+	}
 
-	public final static String ASN1S_class_handling_open  = "--#";
-	public final static String ASN1S_class_handling_close = "#\n";
-	public final static String ASN1_assignment            = " ::= ";
-	public final static String ASN1_tag_open              = " [";
-	public final static String ASN1_tag_close             = "] ";
+	public ASN1EmptyContainerException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
+	public ASN1EmptyContainerException(final String message) {
+		super(message);
+	}
+
+	public ASN1EmptyContainerException() {
+	}
 }

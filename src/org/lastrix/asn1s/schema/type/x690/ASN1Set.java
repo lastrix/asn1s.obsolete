@@ -19,6 +19,7 @@
 package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
@@ -100,13 +101,13 @@ public class ASN1Set extends ASN1Container {
 	}
 
 	@Override
-	public Object read(Object value, final InputStream is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
+	public Object read(Object value, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null) {
 			value = new HashSet();
 		}
 		// TAG should be null in anyway
 		if (tag == null) {
-			tag = ASN1Tag.readTag(is);
+			tag = ASN1Tag.readTag(asn1is);
 			tagCheck = true;
 		}
 		// if we should check TAG, then check it!
@@ -116,7 +117,7 @@ public class ASN1Set extends ASN1Container {
 			}
 		}
 
-		final int length = ASN1Length.readLength(is);
+		final int length = ASN1Length.readLength(asn1is);
 		if (of) {
 			final Set set;
 			if (value instanceof Set) {
@@ -130,11 +131,11 @@ public class ASN1Set extends ASN1Container {
 				throw new ASN1ProtocolException("SetOf doesn't support indefinite form");
 			}
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-			Utils.transfer(is, bos, length);
+			Utils.transfer(asn1is, bos, length);
 			final byte[] data = bos.toByteArray();
 			final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			while (bis.available() > 0) {
-				set.add(componentType[0].read(bis));
+//				set.add(componentType[0].read(bis));
 			}
 			return set;
 		} else {
@@ -149,38 +150,38 @@ public class ASN1Set extends ASN1Container {
 			final HashMap<ASN1Type, Boolean> readFlag = new HashMap<ASN1Type, Boolean>();
 			final InputStream _is;
 			if (length == ASN1Length.FORM_INDEFINITE) {
-				_is = is;
+				_is = asn1is;
 			} else {
 				final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-				Utils.transfer(is, bos, length);
+				Utils.transfer(asn1is, bos, length);
 				final byte[] data = bos.toByteArray();
 				_is = new ByteArrayInputStream(data);
 			}
 
-			for (int i = 0; i < componentType.length; i++) {
-				if (itemTag == null) {
-					itemTag = ASN1Tag.readTag(_is);
-				}
-				if (length == ASN1Length.FORM_INDEFINITE && itemTag.isEOC()) {
-					break;
-				}
-				final ASN1ComponentType type = getByTag(itemTag);
-				if (readFlag.get(type)) {
-					throw new ASN1ProtocolException("Unable to read data.");
-				}
-				type.read(value, _is, itemTag, true);
-				readFlag.put(type, Boolean.TRUE);
-				if (length != ASN1Length.FORM_INDEFINITE && _is.available() == 0) {
-					break;
-				}
-			}
-
-			for (int i = 0; i < componentType.length; i++) {
-				//TODO: default value handling.
-				if (!readFlag.get(componentType[i]) && !((ASN1ComponentType) componentType[i]).isOptional()) {
-					throw new ASN1ProtocolException("Unmet non-optional non-default set member.");
-				}
-			}
+//			for (int i = 0; i < componentType.length; i++) {
+//				if (itemTag == null) {
+//					itemTag = ASN1Tag.readTag(_is);
+//				}
+//				if (length == ASN1Length.FORM_INDEFINITE && itemTag.isEOC()) {
+//					break;
+//				}
+//				final ASN1ComponentType type = getByTag(itemTag);
+//				if (readFlag.get(type)) {
+//					throw new ASN1ProtocolException("Unable to read data.");
+//				}
+//				type.read(value, _is, itemTag, true);
+//				readFlag.put(type, Boolean.TRUE);
+//				if (length != ASN1Length.FORM_INDEFINITE && _is.available() == 0) {
+//					break;
+//				}
+//			}
+//
+//			for (int i = 0; i < componentType.length; i++) {
+//				//TODO: default value handling.
+//				if (!readFlag.get(componentType[i]) && !((ASN1ComponentType) componentType[i]).isOptional()) {
+//					throw new ASN1ProtocolException("Unmet non-optional non-default set member.");
+//				}
+//			}
 			return value;
 		}
 	}
