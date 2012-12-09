@@ -129,7 +129,20 @@ public class ASN1Integer extends ASN1X690Type {
 				value = (value << 8) | (((long) data[i]) & Utils.BYTE_MASK);
 			}
 		}
-		return handledClass.cast(value);
+		return toRequestedClass(value);
+	}
+
+	private Object toRequestedClass(long value) {
+		if (handledClass == Long.class) {
+			return value;
+		} else if (handledClass == Integer.class) {
+			return (int) value;
+		} else if (handledClass == Short.class) {
+			return (short) value;
+		} else if (handledClass == Byte.class) {
+			return (byte) value;
+		}
+		return null;
 	}
 
 	/**

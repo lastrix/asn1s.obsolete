@@ -162,7 +162,7 @@ public class ASN1Real extends ASN1X690Type {
 
 		//test for zero value
 		if (length == 0) {
-			return 0d;
+			return toRequestedClass(0d);
 		}
 
 		final int info = asn1is.read();
@@ -188,8 +188,10 @@ public class ASN1Real extends ASN1X690Type {
 				if (length > 1) {
 					throw new ASN1ProtocolException("'SpecialRealValues' section, but length is not '1' ( has '" + length + "').");
 				}
-				if (info == SPECIAL_REAL_VALUE) { return Double.POSITIVE_INFINITY; } else if (info == SPECIAL_REAL_VALUE_NEGATIVE_INF) {
-					return Double.NEGATIVE_INFINITY;
+				if (info == SPECIAL_REAL_VALUE) {
+					return toRequestedClass(Double.POSITIVE_INFINITY);
+				} else if (info == SPECIAL_REAL_VALUE_NEGATIVE_INF) {
+					return toRequestedClass(Double.NEGATIVE_INFINITY);
 				} else {
 					throw new ASN1ProtocolException("Invalid real format for -inf/+inf");
 				}
@@ -201,7 +203,7 @@ public class ASN1Real extends ASN1X690Type {
 				// IA5 == ASCII...?
 				String nrRep = new String(bos.toByteArray(), "US-ASCII");
 				// this will swallow NR(1-3) and give proper double :)
-				return Double.parseDouble(nrRep);
+				return toRequestedClass(Double.parseDouble(nrRep));
 			}
 		}
 		//calculate scale
@@ -251,8 +253,18 @@ public class ASN1Real extends ASN1X690Type {
 		long rawDouble = ((info & REAL_SIGN_MASK) != 0) ? DOUBLE_SIGN_MASK : 0;
 		rawDouble |= (exponent & EXPONENT_MASK) << DOUBLE_EXPONENT_POSITION;
 		rawDouble |= mantis & MANTIS_MASK;
-		return Double.longBitsToDouble(rawDouble);
+		return toRequestedClass(Double.longBitsToDouble(rawDouble));
 	}
+
+	private Object toRequestedClass(double value) {
+		if (handledClass == Double.class) {
+			return value;
+		} else if (handledClass == Float.class) {
+			return (float) value;
+		}
+		return null;
+	}
+
 
 	/**
 	 * Convert Float or Double to double
