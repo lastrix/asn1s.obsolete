@@ -65,7 +65,7 @@ public class ASN1UTF8String extends ASN1OctetString {
 			os.write(TAG.asBytes());
 			os.write(ASN1Length.asBytes(data.length));
 		}
-		encode(os, data);
+		os.write(data);
 	}
 
 	@Override
