@@ -225,9 +225,10 @@ public final class ASN1Tag implements ASN1SchemaObject {
 			// now write tag number as described in ITU-T X.690 paragraph 8.1.2.4.3.
 			long mTag = Utils.makeByteGaps(getTag(), 1, Utils.UNSIGNED_BYTE_MASK);
 			final int bytesCount = Utils.getMinimumBytes(mTag);
-			for (int i = bytesCount - 1; i >= 0; i--) {
+			for (int i = bytesCount - 1; i >= 1; i--) {
 				bos.write((int) ((mTag >> (i * 8)) & Utils.BYTE_MASK) | Utils.BYTE_SIGN_MASK);
 			}
+			bos.write((int) (mTag & Utils.UNSIGNED_BYTE_MASK));
 		} else {
 			// one byte tag
 			bos.write(getTag() & TAG_MASK | getTagClass().getCode() | ((isConstructed()) ? PC_MASK : 0));
