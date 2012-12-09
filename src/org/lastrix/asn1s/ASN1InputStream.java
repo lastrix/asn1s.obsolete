@@ -22,16 +22,64 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * Proxy class for use in ASN1S reading, this class counts every byte read.
+ *
  * @author lastrix
  * @version 1.0
  */
 public class ASN1InputStream extends InputStream {
-	private int bytesRead = 0;
 	private final InputStream is;
+	private int bytesRead = 0;
 
 	public ASN1InputStream(final InputStream is) {
 		this.is = is;
 	}
+
+	/**
+	 * Returns amount of bytes read from this stream from its creation
+	 *
+	 * @return int value
+	 */
+	public int getBytesRead() {
+		return bytesRead;
+	}
+
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException("Cloning not allowed.");
+	}
+
+
+	@Override
+	public int available() throws IOException {
+		return is.available();
+	}
+
+
+	@Override
+	public void close() throws IOException {
+		is.close();
+	}
+
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this;
+	}
+
+
+	@Override
+	public void mark(final int readlimit) {
+		is.mark(readlimit);
+	}
+
+
+	@Override
+	public boolean markSupported() {
+		return is.markSupported();
+	}
+
 
 	@Override
 	public int read() throws IOException {
@@ -42,23 +90,6 @@ public class ASN1InputStream extends InputStream {
 		return _byte;
 	}
 
-	@Override
-	public int read(final byte[] buf, final int offset, final int length) throws IOException {
-		final int bytesRead = is.read(buf, offset, length);
-		this.bytesRead += bytesRead;
-		return bytesRead;
-	}
-
-	public int getBytesRead() {
-		return bytesRead;
-	}
-
-	@Override
-	public long skip(final long n) throws IOException {
-		final long bytesRead = is.skip(n);
-		this.bytesRead += (int) bytesRead;
-		return bytesRead;
-	}
 
 	@Override
 	public int read(final byte[] buf) throws IOException {
@@ -67,44 +98,32 @@ public class ASN1InputStream extends InputStream {
 		return bytesRead;
 	}
 
+
+	@Override
+	public int read(final byte[] buf, final int offset, final int length) throws IOException {
+		final int bytesRead = is.read(buf, offset, length);
+		this.bytesRead += bytesRead;
+		return bytesRead;
+	}
+
+
 	@Override
 	public void reset() throws IOException {
 		is.reset();
 		bytesRead = 0;
 	}
 
-	@Override
-	public int available() throws IOException {
-		return is.available();
-	}
 
 	@Override
-	public void close() throws IOException {
-		is.close();
+	public long skip(final long n) throws IOException {
+		final long bytesRead = is.skip(n);
+		this.bytesRead += (int) bytesRead;
+		return bytesRead;
 	}
 
-	@Override
-	public void mark(final int readlimit) {
-		is.mark(readlimit);
-	}
-
-	@Override
-	public boolean markSupported() {
-		return is.markSupported();
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		throw new UnsupportedOperationException("Cloning not allowed.");
-	}
 
 	@Override
 	public String toString() {
 		return String.format("%s [%d bytes read from %s ]", getClass().getSimpleName(), getBytesRead(), is);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this;
 	}
 }

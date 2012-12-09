@@ -156,9 +156,14 @@ public final class ASN1Schema implements ASN1SchemaObject {
 	}
 
 
-	// ------------------------------------------------------------------------ //
-	// ----------------------- PRIVATE METHODS -------------------------------- //
-	// ------------------------------------------------------------------------ //
+	@Override
+	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
+		for (ASN1Module m : modules.values()) {
+			m.toASN1(pw, false);
+			pw.append("\n");
+		}
+	}
+
 
 	/**
 	 * Returns handler for certain tag
@@ -338,13 +343,5 @@ public final class ASN1Schema implements ASN1SchemaObject {
 			}
 		}
 		handler.write(o, os, true);
-	}
-
-	@Override
-	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
-		for (ASN1Module m : modules.values()) {
-			m.toASN1(pw, false);
-			pw.append("\n");
-		}
 	}
 }
