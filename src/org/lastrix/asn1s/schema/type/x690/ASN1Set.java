@@ -20,20 +20,18 @@ package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
 import org.lastrix.asn1s.ASN1InputStream;
-import org.lastrix.asn1s.exception.ASN1Exception;
-import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
-import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.exception.*;
 import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
 import org.lastrix.asn1s.schema.type.ASN1Type;
-import org.lastrix.asn1s.util.Utils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -44,11 +42,9 @@ import java.util.Set;
  * @version 1.0
  */
 public class ASN1Set extends ASN1Container {
-	private final Logger logger = Logger.getLogger(ASN1Set.class);
-
 	public final static ASN1Tag                    TAG      = new ASN1Tag(17, TagClass.UNIVERSAL, true);
+	private final       Logger                     logger   = Logger.getLogger(ASN1Set.class);
 	public final        HashMap<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
-
 
 	public ASN1Set(final ASN1ComponentType[] componentType, final boolean of) {
 		super(componentType, of, "SET@" + TAG.getTag(), TAG);
@@ -58,52 +54,11 @@ public class ASN1Set extends ASN1Container {
 		valid();
 	}
 
-	@Override
-	public String toString() {
-		if (of) {
-			return "SET OF " + componentType[0];
-		}
-		return "SET OF " + Arrays.toString(componentType);
-	}
-
-	@Override
-	public void write(Object value, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		if (header) {
-			//write header
-			os.write(TAG.asBytes());
-		}
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
-		if (of) {
-			// SET OF
-			final Set set = (Set) value;
-			for (Object lo : set) {
-				componentType[0].write(lo, bos, true);
-			}
-		} else {
-			// SET
-			//actually we should think that this thing is object.
-			//TODO: hashmap?
-			for (ASN1Type t : componentType) {
-				t.write(value, bos, true);
-			}
-		}
-		final byte[] data = bos.toByteArray();
-
-		//store size
-		if (header) {
-			//i don't like those 00 00 bytes at end
-			os.write(ASN1Length.asBytes(data.length));
-		}
-
-		//and now we can save our data.
-		os.write(data);
-	}
 
 	@Override
 	public Object read(Object value, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (value == null) {
-			value = new HashSet();
+			throw new ASN1EmptyContainerException();
 		}
 		// TAG should be null in anyway
 		if (tag == null) {
@@ -117,82 +72,29 @@ public class ASN1Set extends ASN1Container {
 			}
 		}
 
+		if (of && !(value instanceof Set)) {
+			throw new IllegalArgumentException("ASN1SetOf does not allow any objects if it not implement java.util.Set.");
+		}
+
 		final int length = ASN1Length.readLength(asn1is);
-		if (of) {
-			final Set set;
-			if (value instanceof Set) {
-				set = (Set) value;
+		cleanState();
+		if (length == -1) {
+			if (of) {
+				value = readSetOfIndefinite(asn1is, (Set) value);
 			} else {
-				throw new IllegalArgumentException("ASN1SetOf does not allow any objects if it not implement java.util.Set.");
+				value = readSetIndefinite(asn1is, value);
 			}
-
-			//read all data
-			if (length == ASN1Length.FORM_INDEFINITE) {
-				throw new ASN1ProtocolException("SetOf doesn't support indefinite form");
-			}
-			final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-			Utils.transfer(asn1is, bos, length);
-			final byte[] data = bos.toByteArray();
-			final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-			while (bis.available() > 0) {
-//				set.add(componentType[0].read(bis));
-			}
-			return set;
 		} else {
-//			throw new UnsupportedOperationException("Not implemented!");
-			if (value == null) {
-				throw new NullPointerException();
-			}
-
-			//read first header, so we won't sent null
-			ASN1Tag itemTag = null;
-			int readObjects = 0;
-			final HashMap<ASN1Type, Boolean> readFlag = new HashMap<ASN1Type, Boolean>();
-			final InputStream _is;
-			if (length == ASN1Length.FORM_INDEFINITE) {
-				_is = asn1is;
+			if (of) {
+				value = readSetOfDefinite(asn1is, (Set) value, length);
 			} else {
-				final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-				Utils.transfer(asn1is, bos, length);
-				final byte[] data = bos.toByteArray();
-				_is = new ByteArrayInputStream(data);
-			}
-
-//			for (int i = 0; i < componentType.length; i++) {
-//				if (itemTag == null) {
-//					itemTag = ASN1Tag.readTag(_is);
-//				}
-//				if (length == ASN1Length.FORM_INDEFINITE && itemTag.isEOC()) {
-//					break;
-//				}
-//				final ASN1ComponentType type = getByTag(itemTag);
-//				if (readFlag.get(type)) {
-//					throw new ASN1ProtocolException("Unable to read data.");
-//				}
-//				type.read(value, _is, itemTag, true);
-//				readFlag.put(type, Boolean.TRUE);
-//				if (length != ASN1Length.FORM_INDEFINITE && _is.available() == 0) {
-//					break;
-//				}
-//			}
-//
-//			for (int i = 0; i < componentType.length; i++) {
-//				//TODO: default value handling.
-//				if (!readFlag.get(componentType[i]) && !((ASN1ComponentType) componentType[i]).isOptional()) {
-//					throw new ASN1ProtocolException("Unmet non-optional non-default set member.");
-//				}
-//			}
-			return value;
-		}
-	}
-
-	private ASN1ComponentType getByTag(final ASN1Tag itemTag) {
-		for (ASN1Type t : componentType) {
-			if (t.getTag().equals(itemTag)) {
-				return (ASN1ComponentType) t;
+				value = readSetDefinite(asn1is, value, length);
 			}
 		}
-		return null;
+		if (!of) {
+			checkRead();
+		}
+		return value;
 	}
 
 
@@ -215,5 +117,134 @@ public class ASN1Set extends ASN1Container {
 			}
 			printWriter.append("}");
 		}
+	}
+
+
+	@Override
+	public String toString() {
+		if (of) {
+			return "SET OF " + componentType[0];
+		}
+		return "SET OF " + Arrays.toString(componentType);
+	}
+
+
+	@Override
+	public void write(Object value, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		if (header) {
+			//write header
+			os.write(TAG.asBytes());
+			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
+		}
+
+		if (of) {
+			// SET OF
+			final Set set = (Set) value;
+			for (Object lo : set) {
+				componentType[0].write(lo, os, true);
+			}
+		} else {
+			// SET
+			for (ASN1ComponentType t : componentType) {
+				final Object o = getField(value, t);
+				if (o != null || !t.isOptional()) {
+					t.write(o, os, true);
+				}
+			}
+		}
+		if (header) {
+			os.write(0x00);
+			os.write(0x00);
+		}
+	}
+
+	private Object readSetDefinite(final ASN1InputStream asn1is, final Object value, final int length) throws ASN1Exception, IOException {
+		final int currentPosition = asn1is.getBytesRead();
+		ASN1Tag tag = null;
+		ASN1ComponentType type;
+		while (true) {
+			if (tag == null) {
+				tag = ASN1Tag.readTag(asn1is);
+			}
+			type = getTypeByTag(tag);
+			if (type == null) {
+				throw new ASN1ProtocolException("Unknown tag found: " + tag.toString());
+			}
+			if (isRead(type)) {
+				throw new ASN1ProtocolException(String.format("Field %s already read.", type.toString()));
+			}
+			try {
+				setField(value, type, type.read(null, asn1is, null, true));
+			} catch (ASN1OptionalComponentSkippedException e) {
+				continue;
+			}
+			tag = null;
+			if (length - (asn1is.getBytesRead() - currentPosition) <= 0) {
+				break;
+			}
+		}
+		if (length - (asn1is.getBytesRead() - currentPosition) != 0) {
+			throw new ASN1ProtocolException(
+			                               String.format(
+			                                            "Data corruption possible. Expected to read %d, actually read: %d.", length,
+			                                            asn1is.getBytesRead() - currentPosition
+			                                            )
+			);
+		}
+		return value;
+	}
+
+	private Object readSetIndefinite(final ASN1InputStream asn1is, final Object value) throws ASN1Exception, IOException {
+		ASN1Tag tag = null;
+		ASN1ComponentType type;
+		while (true) {
+			if (tag == null) {
+				tag = ASN1Tag.readTag(asn1is);
+				if (tag.isEOC()) {
+					break;
+				}
+			}
+			type = getTypeByTag(tag);
+			if (type == null) {
+				throw new ASN1ProtocolException("Unknown tag found: " + tag.toString());
+			}
+			if (isRead(type)) {
+				throw new ASN1ProtocolException(String.format("Field %s already read.", type.toString()));
+			}
+			try {
+				setField(value, type, type.read(null, asn1is, null, true));
+			} catch (ASN1OptionalComponentSkippedException e) {
+				continue;
+			}
+			tag = null;
+		}
+		indefiniteCheck(tag, asn1is);
+		return value;
+	}
+
+	private Object readSetOfDefinite(final ASN1InputStream asn1is, final Set value, final int length) throws ASN1Exception, IOException {
+		final int currentPosition = asn1is.getBytesRead();
+		while (length - (asn1is.getBytesRead() - currentPosition) > 0) {
+			value.add(componentType[0].read(null, asn1is, null, true));
+		}
+		if (length - (asn1is.getBytesRead() - currentPosition) != 0) {
+			throw new ASN1ProtocolException(
+			                               String.format(
+			                                            "Data corruption possible. Expected to read %d, actually read: %d.", length,
+			                                            asn1is.getBytesRead() - currentPosition
+			                                            )
+			);
+		}
+		return value;
+	}
+
+	private Object readSetOfIndefinite(final ASN1InputStream asn1is, final Set value) throws ASN1Exception, IOException {
+		ASN1Tag tag = ASN1Tag.readTag(asn1is);
+		while (!tag.isEOC()) {
+			value.add(componentType[0].read(null, asn1is, tag, true));
+			tag = ASN1Tag.readTag(asn1is);
+		}
+		indefiniteCheck(tag, asn1is);
+		return value;
 	}
 }

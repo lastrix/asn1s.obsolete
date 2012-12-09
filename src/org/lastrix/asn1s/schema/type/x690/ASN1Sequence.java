@@ -76,19 +76,24 @@ public class ASN1Sequence extends ASN1Container {
 		}
 
 		final int length = ASN1Length.readLength(asn1is);
+		cleanState();
 		if (length == -1) {
 			if (of) {
-				return readSequenceOfIndefinite(asn1is, (List) value);
+				value = readSequenceOfIndefinite(asn1is, (List) value);
 			} else {
-				return readSequenceIndefinite(asn1is, value);
+				value = readSequenceIndefinite(asn1is, value);
 			}
 		} else {
 			if (of) {
-				return readSequenceOfDefinite(asn1is, (List) value, length);
+				value = readSequenceOfDefinite(asn1is, (List) value, length);
 			} else {
-				return readSequenceDefinite(asn1is, value, length);
+				value = readSequenceDefinite(asn1is, value, length);
 			}
 		}
+		if (!of) {
+			checkRead();
+		}
+		return value;
 	}
 
 
@@ -153,32 +158,10 @@ public class ASN1Sequence extends ASN1Container {
 		}
 	}
 
-	private void checkReading(int componentRead) throws ASN1ProtocolException {
-		if (componentRead < componentType.length) {
-			for (int i = componentRead; i < componentType.length; i++) {
-				if (componentType[i].isOptional()) {
-					componentRead++;
-				} else {
-					break;
-				}
-			}
-			if (componentRead != componentType.length) {
-				throw new ASN1ProtocolException(
-				                               String.format(
-				                                            "Not all non-optional fields read. Expected: %d, actual: %d.", componentType.length,
-				                                            componentRead
-				                                            )
-				);
-			}
-		}
-	}
-
 	private Object readSequenceDefinite(final ASN1InputStream asn1is, final Object value, final int length) throws IOException, ASN1Exception {
 		final int currentPosition = asn1is.getBytesRead();
-		int componentRead = 0;
 		for (ASN1ComponentType type : componentType) {
 			try {
-				componentRead++;
 				setField(value, type, type.read(null, asn1is, null, true));
 			} catch (ASN1OptionalComponentSkippedException e) {
 				continue;
@@ -187,7 +170,6 @@ public class ASN1Sequence extends ASN1Container {
 				break;
 			}
 		}
-		checkReading(componentRead);
 		if (length - (asn1is.getBytesRead() - currentPosition) != 0) {
 			throw new ASN1ProtocolException(
 			                               String.format(
@@ -201,7 +183,6 @@ public class ASN1Sequence extends ASN1Container {
 
 	private Object readSequenceIndefinite(final ASN1InputStream asn1is, final Object value) throws ASN1Exception, IOException {
 		ASN1Tag tag = null;
-		int componentRead = 0;
 		for (ASN1ComponentType type : componentType) {
 			if (tag == null) {
 				tag = ASN1Tag.readTag(asn1is);
@@ -209,7 +190,6 @@ public class ASN1Sequence extends ASN1Container {
 					break;
 				}
 			}
-			componentRead++;
 			try {
 				setField(value, type, type.read(null, asn1is, tag, true));
 			} catch (ASN1OptionalComponentSkippedException e) {
@@ -218,11 +198,7 @@ public class ASN1Sequence extends ASN1Container {
 			}
 			tag = null;
 		}
-		checkReading(componentRead);
-		if (tag == null) {
-			asn1is.read();
-		}
-		asn1is.read();
+		indefiniteCheck(tag, asn1is);
 		return value;
 	}
 
@@ -248,7 +224,7 @@ public class ASN1Sequence extends ASN1Container {
 			value.add(componentType[0].read(null, asn1is, tag, true));
 			tag = ASN1Tag.readTag(asn1is);
 		}
-		asn1is.read();
+		indefiniteCheck(tag, asn1is);
 		return value;
 	}
 }

@@ -19,8 +19,10 @@
 package org.lastrix.asn1s.schema.type.x690;
 
 import org.apache.log4j.Logger;
+import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1NoSuchFieldException;
+import org.lastrix.asn1s.exception.ASN1ProtocolException;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
@@ -30,7 +32,9 @@ import org.lastrix.asn1s.schema.type.ASN1UserType;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,8 +44,9 @@ import java.util.Map;
  * @version 1.0
  */
 abstract class ASN1Container extends ASN1X690Type {
-	private final Logger logger = Logger.getLogger(ASN1Container.class);
-
+	private final HashMap<ASN1Tag, ASN1ComponentType> tag2type  = new HashMap<ASN1Tag, ASN1ComponentType>();
+	private final Logger                              logger    = Logger.getLogger(ASN1Container.class);
+	private final Map<ASN1ComponentType, Boolean>     readState = new HashMap<ASN1ComponentType, Boolean>();
 	protected final ASN1ComponentType[] componentType;
 	protected final boolean             of;
 
@@ -60,6 +65,7 @@ abstract class ASN1Container extends ASN1X690Type {
 		this.tag = tag;
 		this.typeId = name;
 	}
+
 
 	@Override
 	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
@@ -88,6 +94,35 @@ abstract class ASN1Container extends ASN1X690Type {
 		}
 	}
 
+	private void doInstall(final ASN1Module module, final ASN1Type type) throws ASN1Exception {
+		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
+			type.onInstall(module);
+		}
+	}
+
+
+	/**
+	 * @param clazz
+	 *
+	 * @return
+	 *
+	 * @throws ASN1NoSuchFieldException
+	 */
+	private Field findField(final ASN1ComponentType type, final Class clazz) throws ASN1NoSuchFieldException {
+		Field f = null;
+		Class c = clazz;
+		while (c != null) {
+			try {
+				f = c.getDeclaredField(type.getFieldName());
+				f.setAccessible(true);
+			} catch (NoSuchFieldException e) {
+			}
+			c = c.getSuperclass();
+		}
+		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", type.getFieldName(), clazz)); }
+		return f;
+	}
+
 	private void registerComponentTypeListenters(final ASN1Module module) {
 		final PropertyChangeListener pcl = new PropertyChangeListener() {
 			@Override
@@ -112,86 +147,20 @@ abstract class ASN1Container extends ASN1X690Type {
 		}
 	}
 
-	private void doInstall(final ASN1Module module, final ASN1Type type) throws ASN1Exception {
-		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
-			type.onInstall(module);
-		}
-	}
-
-	private class MyPropertyChangeListener implements PropertyChangeListener {
-		private final ASN1Type   type;
-		private final ASN1Module module;
-		private final int        index;
-
-		public MyPropertyChangeListener(final ASN1UnresolvedType type, final ASN1Module module, final int index) {
-			this.type = type;
-			this.module = module;
-			this.index = index;
-			module.addPropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-		}
-
-		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if (evt.getNewValue() instanceof ASN1Type) {
-				final ASN1ComponentType _type = (ASN1ComponentType) evt.getNewValue();
-				if (_type.getName().equals(type.getName()) &&
-				    (type.getModuleName() == null
-				     || _type.getModule().getModuleId().equals(type.getModuleName()))) {
-					module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
-					componentType[index] = _type;
-					try {
-						doInstall(module, componentType[index]);
-					} catch (ASN1Exception e) {
-						logger.error("Exception:", e);
-					}
-				}
+	protected void checkRead() throws ASN1ProtocolException {
+		for (ASN1ComponentType t : componentType) {
+			if (readState.get(t) == false && !t.isOptional()) {
+				throw new ASN1ProtocolException(String.format("Data corruption possible. Not all fields had been read."));
 			}
 		}
 	}
 
-	/**
-	 * @param clazz
-	 *
-	 * @return
-	 *
-	 * @throws ASN1NoSuchFieldException
-	 */
-	private Field findField(final ASN1ComponentType type, final Class clazz) throws ASN1NoSuchFieldException {
-		Field f = null;
-		Class c = clazz;
-		while (c != null) {
-			try {
-				f = c.getDeclaredField(type.getFieldName());
-				f.setAccessible(true);
-			} catch (NoSuchFieldException e) {
-			}
-			c = c.getSuperclass();
+	protected void cleanState() {
+		for (final ASN1ComponentType t : componentType) {
+			readState.put(t, Boolean.FALSE);
 		}
-		if (f == null) { throw new ASN1NoSuchFieldException(String.format("No %s in %s.", type.getFieldName(), clazz)); }
-		return f;
 	}
 
-	/**
-	 * Helper function to set field's value
-	 *
-	 * @param parent
-	 * @param type
-	 * @param value
-	 *
-	 * @throws ASN1Exception
-	 */
-	protected void setField(final Object parent, final ASN1ComponentType type, final Object value) throws ASN1Exception {
-		if (parent instanceof Map) {
-			((Map) parent).put(type.getFieldName(), value);
-		} else {
-			final Field f = findField(type, parent.getClass());
-			try {
-				f.set(parent, value);
-			} catch (IllegalAccessException e) {
-				throw new ASN1Exception("Can not set field value", e);
-			}
-		}
-	}
 
 	/**
 	 * Helper function to get field's value
@@ -212,6 +181,90 @@ abstract class ASN1Container extends ASN1X690Type {
 				return f.get(parent);
 			} catch (IllegalAccessException e) {
 				throw new ASN1Exception("Can not set field value", e);
+			}
+		}
+	}
+
+	protected ASN1ComponentType getTypeByTag(ASN1Tag tag) {
+		if (tag2type.size() == 0) {
+			for (ASN1ComponentType type : componentType) {
+				tag2type.put(type.getTag(), type);
+			}
+		}
+		return tag2type.get(tag);
+	}
+
+	protected void indefiniteCheck(ASN1Tag tag, ASN1InputStream asn1is) throws ASN1ProtocolException, IOException {
+		int _byte;
+		if (tag == null) {
+			_byte = asn1is.read();
+			if (_byte != 0) {
+				throw new ASN1ProtocolException(String.format("Zero value expected, got %d", _byte));
+			}
+		}
+		_byte = asn1is.read();
+		if (_byte != 0) {
+			throw new ASN1ProtocolException(String.format("Zero value expected, got %d", _byte));
+		}
+	}
+
+	protected boolean isRead(ASN1ComponentType t) {
+		return readState.get(t);
+	}
+
+
+	/**
+	 * Helper function to set field's value
+	 *
+	 * @param parent
+	 * @param type
+	 * @param value
+	 *
+	 * @throws ASN1Exception
+	 */
+	protected void setField(final Object parent, final ASN1ComponentType type, final Object value) throws ASN1Exception {
+		if (parent instanceof Map) {
+			((Map) parent).put(type.getFieldName(), value);
+		} else {
+			final Field f = findField(type, parent.getClass());
+			try {
+				f.set(parent, value);
+				readState.put(type, Boolean.TRUE);
+			} catch (IllegalAccessException e) {
+				throw new ASN1Exception("Can not set field value", e);
+			}
+		}
+	}
+
+
+	private class MyPropertyChangeListener implements PropertyChangeListener {
+		private final ASN1Module module;
+		private final ASN1Type   type;
+		private final int        index;
+
+		public MyPropertyChangeListener(final ASN1UnresolvedType type, final ASN1Module module, final int index) {
+			this.type = type;
+			this.module = module;
+			this.index = index;
+			module.addPropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+		}
+
+
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if (evt.getNewValue() instanceof ASN1Type) {
+				final ASN1ComponentType _type = (ASN1ComponentType) evt.getNewValue();
+				if (_type.getName().equals(type.getName()) &&
+				    (type.getModuleName() == null
+				     || _type.getModule().getModuleId().equals(type.getModuleName()))) {
+					module.removePropertyChangeListener(ASN1Module.TYPE_INSTALLED, this);
+					componentType[index] = _type;
+					try {
+						doInstall(module, componentType[index]);
+					} catch (ASN1Exception e) {
+						logger.error("Exception:", e);
+					}
+				}
 			}
 		}
 	}
