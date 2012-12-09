@@ -16,32 +16,39 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s;
+package org.lastrix.asn1s.schema.type.x690;
+
+import junit.extensions.TestSetup;
+import junit.framework.TestSuite;
+import org.junit.Test;
+
+import java.util.Locale;
 
 /**
+ * All tests for package org.lastrix.asn1s.schema.
+ *
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClassAsField {
-	private String name;
-	private long   id;
-	private double weight;
+@SuppressWarnings({"ALL"})
+public class AllTests {
 
-	public SequenceOfTestClassAsField(final long id, final String name, final double weight) {
-		this.id = id;
-		this.name = name;
-		this.weight = weight;
-	}
+	/**
+	 * Generate {@link TestSuite}
+	 *
+	 * @return an {@link Test} object
+	 */
+	public static junit.framework.Test suite() {
+		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema.type.x690");
 
-	public SequenceOfTestClassAsField() {
-	}
-
-	@Override
-	public String toString() {
-		return "SequenceOfTestClassAsField{" +
-		       "id=" + id +
-		       ", name='" + name + '\'' +
-		       ", weight=" + weight +
-		       '}';
+		suite.addTestSuite(ASN1SetTest.class);
+		suite.addTestSuite(ASN1SequenceTest.class);
+		// Make sure that we run the tests using the english locale
+		return new TestSetup(suite) {
+			@Override
+			public void setUp() {
+				Locale.setDefault(Locale.US);
+			}
+		};
 	}
 }

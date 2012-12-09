@@ -184,7 +184,10 @@ public class ASN1UserType extends ASN1Type {
 			return null;
 		} else {
 			try {
-				Constructor c = handledClass.getConstructor();
+				Constructor c = handledClass.getDeclaredConstructor();
+				if (!c.isAccessible()) {
+					c.setAccessible(true);
+				}
 				return c.newInstance();
 			} catch (Exception e) {
 				throw new ASN1ReadException("Can not instantiate handled class.");

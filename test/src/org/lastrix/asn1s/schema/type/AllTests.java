@@ -16,38 +16,38 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s;
+package org.lastrix.asn1s.schema.type;
+
+import junit.extensions.TestSetup;
+import junit.framework.TestSuite;
+import org.junit.Test;
+
+import java.util.Locale;
 
 /**
+ * All tests for package org.lastrix.asn1s.schema.
+ *
  * @author lastrix
  * @version 1.0
  */
-public class SequenceOfTestClass {
-	private long                       a;
-	private long                       b;
-	private double                     c;
-	private String                     d;
-	private SequenceOfTestClassAsField myField;
+@SuppressWarnings({"ALL"})
+public class AllTests {
 
-	public SequenceOfTestClass() {
-	}
+	/**
+	 * Generate {@link TestSuite}
+	 *
+	 * @return an {@link Test} object
+	 */
+	public static junit.framework.Test suite() {
+		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema.type");
 
-	public SequenceOfTestClass(final int a, final int b, final double c, final String d, final SequenceOfTestClassAsField myField) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
-		this.myField = myField;
-	}
-
-	@Override
-	public String toString() {
-		return "SequenceOfTestClass{" +
-		       "a=" + a +
-		       ", b=" + b +
-		       ", c=" + c +
-		       ", d=" + d +
-		       ", myField=" + myField +
-		       '}';
+		suite.addTest(org.lastrix.asn1s.schema.type.x690.AllTests.suite());
+		// Make sure that we run the tests using the english locale
+		return new TestSetup(suite) {
+			@Override
+			public void setUp() {
+				Locale.setDefault(Locale.US);
+			}
+		};
 	}
 }

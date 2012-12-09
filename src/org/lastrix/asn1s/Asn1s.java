@@ -100,7 +100,7 @@ public class Asn1s {
 //		}
 
 		try {
-			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/testModule.asn");
+			final ASN1Schema s = ASN1Schema.loadSchema("./test/res/SequenceTest.asn");
 			logger.warn(s.getModulesString());
 			final FileWriter fw = new FileWriter("/tmp/out.asn");
 			final PrintWriter pw = new PrintWriter(fw);

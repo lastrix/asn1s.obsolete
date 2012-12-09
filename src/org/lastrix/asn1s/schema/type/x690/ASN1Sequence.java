@@ -125,7 +125,7 @@ public class ASN1Sequence extends ASN1Container {
 		if (of) {
 			return "SEQUENCE OF " + componentType[0];
 		}
-		return "SEQUENCE OF " + Arrays.toString(componentType);
+		return "SEQUENCE " + Arrays.toString(componentType);
 	}
 
 

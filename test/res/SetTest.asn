@@ -1,0 +1,16 @@
+-- Test module, SHOULD NOT BE USED on non-clean schema --
+-- DO NOT MODIFY IT UNLESS YOU KNOW WHAT YOU'RE DOING --
+SetTest DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+EXPORTS ALL;
+--#java.util.HashSet#
+TestSetOf ::= [APPLICATION 1] SET OF INTEGER
+
+--#org.lastrix.asn1s.util.TestObject#
+TestObject ::= [APPLICATION 2] SET {
+    id INTEGER-Integer,
+    name UTF8String,
+    weight REAL-Float
+}
+
+END

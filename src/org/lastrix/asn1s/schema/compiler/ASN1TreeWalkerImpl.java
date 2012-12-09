@@ -125,7 +125,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeModuleId() {
 		final LinkedList<Object> moduleIdStack = transferTill(BlockTag.MODULE_ID);
-		logger.warn(moduleIdStack);
+//		logger.warn(moduleIdStack);
 		final String name = (String) moduleIdStack.poll();
 		final Vector v = (Vector) moduleIdStack.poll();
 		if (name == null) {
@@ -338,12 +338,21 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeSetOf() {
 		final LinkedList<Object> sofStack = transferTill(BlockTag.SETOF);
-		ASN1ComponentType eType = (ASN1ComponentType) sofStack.poll();
+		final Object top = sofStack.poll();
+		final ASN1Type eType;
+		final String fieldName;
+		if (top instanceof NamedType) {
+			eType = ((NamedType) top).type;
+			fieldName = ((NamedType) top).name;
+		} else {
+			fieldName = "default";
+			eType = (ASN1Type) top;
+		}
 		Constraint c = (Constraint) sofStack.poll();
 		if (c != null) {
-			stack.push(new ASN1ConstrainedType(new ASN1Set(new ASN1ComponentType[]{eType}, true), c));
+			stack.push(new ASN1ConstrainedType(new ASN1Set(new ASN1ComponentType[]{new ASN1ComponentType(fieldName, eType)}, true), c));
 		} else {
-			stack.push(new ASN1Sequence(new ASN1ComponentType[]{eType}, true));
+			stack.push(new ASN1Set(new ASN1ComponentType[]{new ASN1ComponentType(fieldName, eType)}, true));
 		}
 	}
 
@@ -354,7 +363,7 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 
 	@Override
 	protected void closeSet() {
-		final LinkedList<Object> sStack = transferTill(BlockTag.SEQUENCE);
+		final LinkedList<Object> sStack = transferTill(BlockTag.SET);
 		final Vector<ASN1ComponentType> componentTypes = (Vector<ASN1ComponentType>) sStack.poll();
 		stack.push(new ASN1Set(componentTypes.toArray(new ASN1ComponentType[componentTypes.size()]), false));
 //		logger.warn(sStack);

@@ -16,25 +16,41 @@
  * along with ASN1S. If not, see <http://www.gnu.org/licenses/>.              *
  ******************************************************************************/
 
-package org.lastrix.asn1s.schema;
-
-import org.lastrix.asn1s.CustomTestCase;
+package org.lastrix.asn1s.util;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class SchemaTest extends CustomTestCase {
+public class TestObject {
 
-	public void testSequenceTestSchemaLoading() throws Exception {
-		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/SequenceTest.asn");
-		assertNotNull(s);
-		assertNotNull(s.getModule("SequenceTest"));
+	private int    id;
+	private String name;
+	private float  weight;
+
+	protected TestObject() {
+
 	}
 
-	public void testSetTestSchemaLoading() throws Exception {
-		final ASN1Schema s = ASN1Schema.loadSchema("./test/res/SetTest.asn");
-		assertNotNull(s);
-		assertNotNull(s.getModule("SetTest"));
+	public TestObject(final int id, final String name, final float weight) {
+		this.id = id;
+		this.name = name;
+		this.weight = weight;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("TestObject[%d, %s, %f]", id, name, weight);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		} else if (obj instanceof TestObject) {
+			final TestObject o = (TestObject) obj;
+			return id == o.id && name.equals(o.name) && weight == o.weight;
+		}
+		return false;
 	}
 }

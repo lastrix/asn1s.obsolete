@@ -25,13 +25,11 @@ import org.lastrix.asn1s.schema.ASN1Length;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.TagClass;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
-import org.lastrix.asn1s.schema.type.ASN1Type;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -42,15 +40,11 @@ import java.util.Set;
  * @version 1.0
  */
 public class ASN1Set extends ASN1Container {
-	public final static ASN1Tag                    TAG      = new ASN1Tag(17, TagClass.UNIVERSAL, true);
-	private final       Logger                     logger   = Logger.getLogger(ASN1Set.class);
-	public final        HashMap<ASN1Tag, ASN1Type> tag2type = new HashMap<ASN1Tag, ASN1Type>();
+	public final static ASN1Tag TAG    = new ASN1Tag(17, TagClass.UNIVERSAL, true);
+	private final       Logger  logger = Logger.getLogger(ASN1Set.class);
 
 	public ASN1Set(final ASN1ComponentType[] componentType, final boolean of) {
 		super(componentType, of, "SET@" + TAG.getTag(), TAG);
-		for (ASN1Type t : componentType) {
-			tag2type.put(t.getTag(), t);
-		}
 		valid();
 	}
 
@@ -101,9 +95,10 @@ public class ASN1Set extends ASN1Container {
 	@Override
 	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
 		printWriter.append("SET ");
+		//FIXME: how the hell you gonna support constraint???
 		if (of) {
 			printWriter.append("OF ");
-			printWriter.append(componentType[0].getTypeId());
+			printWriter.append(componentType[0].getName());
 			printWriter.append(";");
 		} else {
 			printWriter.append("{\n");
@@ -123,9 +118,9 @@ public class ASN1Set extends ASN1Container {
 	@Override
 	public String toString() {
 		if (of) {
-			return "SET OF " + componentType[0];
+			return "SET OF " + componentType[0].getName();
 		}
-		return "SET OF " + Arrays.toString(componentType);
+		return "SET " + Arrays.toString(componentType);
 	}
 
 
@@ -212,7 +207,7 @@ public class ASN1Set extends ASN1Container {
 				throw new ASN1ProtocolException(String.format("Field %s already read.", type.toString()));
 			}
 			try {
-				setField(value, type, type.read(null, asn1is, null, true));
+				setField(value, type, type.read(null, asn1is, tag, false));
 			} catch (ASN1OptionalComponentSkippedException e) {
 				continue;
 			}

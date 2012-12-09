@@ -41,6 +41,7 @@ public class AllTests {
 	public static junit.framework.Test suite() {
 		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema");
 
+		suite.addTest(org.lastrix.asn1s.schema.type.AllTests.suite());
 		suite.addTestSuite(SchemaTest.class);
 		// Make sure that we run the tests using the english locale
 		return new TestSetup(suite) {
