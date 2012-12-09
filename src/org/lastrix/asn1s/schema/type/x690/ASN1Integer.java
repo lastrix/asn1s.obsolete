@@ -49,10 +49,18 @@ public class ASN1Integer extends ASN1X690Type {
 		handledClass = _class;
 		if (_class == Long.class) {
 			this.name = NAME;
+			tag = TAG;
 		} else {
 			this.name = NAME + "-" + _class.getSimpleName();
+			if (_class == Integer.class) {
+				tag = new ASN1Tag(0x102, TagClass.UNIVERSAL, false);
+			} else if (_class == Short.class) {
+				tag = new ASN1Tag(0x202, TagClass.UNIVERSAL, false);
+			} else {
+				tag = new ASN1Tag(0x302, TagClass.UNIVERSAL, false);
+			}
 		}
-		this.tag = TAG;
+//		this.tag = TAG;
 		this.typeId = getName();
 		valid();
 	}
@@ -80,7 +88,7 @@ public class ASN1Integer extends ASN1X690Type {
 
 		if (header) {
 			//write header
-			os.write(TAG.asBytes());
+			os.write(getTag().asBytes());
 			//write length
 			os.write(ASN1Length.asBytes(size));
 		}
@@ -101,7 +109,7 @@ public class ASN1Integer extends ASN1X690Type {
 		}
 		// if we should check TAG, then check it!
 		if (tagCheck) {
-			if (!TAG.equals(tag)) {
+			if (!getTag().equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}

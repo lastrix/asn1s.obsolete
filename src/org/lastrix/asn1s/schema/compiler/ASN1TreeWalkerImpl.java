@@ -377,8 +377,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	@Override
 	protected void closeChoice() {
 		final LinkedList<Object> chStack = transferTill(BlockTag.CHOICE);
-		final Vector<ASN1ComponentType> componentTypes = (Vector<ASN1ComponentType>) chStack.poll();
-		stack.push(new ASN1Choice(componentTypes.toArray(new ASN1ComponentType[componentTypes.size()])));
+		final Vector<NamedType> componentTypes = (Vector<NamedType>) chStack.poll();
+		final ASN1ComponentType components[] = new ASN1ComponentType[componentTypes.size()];
+		for (int i = 0; i < componentTypes.size(); i++) {
+			final NamedType namedType = componentTypes.get(i);
+			components[i] = new ASN1ComponentType(namedType.name, namedType.type);
+		}
+		stack.push(new ASN1Choice(components));
 	}
 
 	@Override

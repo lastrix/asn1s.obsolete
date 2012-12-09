@@ -104,7 +104,7 @@ public class Asn1s {
 			logger.warn(s.getModulesString());
 			final FileWriter fw = new FileWriter("/tmp/out.asn");
 			final PrintWriter pw = new PrintWriter(fw);
-			s.getModule("TestModule").toASN1(pw, false);
+			s.getModule("SequenceTest").toASN1(pw, false);
 			fw.close();
 		} catch (ASN1Exception e) {
 			logger.warn("Exception:", e);

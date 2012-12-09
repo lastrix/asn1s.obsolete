@@ -23,6 +23,7 @@ import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1NoSuchFieldException;
 import org.lastrix.asn1s.exception.ASN1ProtocolException;
+import org.lastrix.asn1s.exception.ASN1UniquenessViolationException;
 import org.lastrix.asn1s.schema.ASN1Module;
 import org.lastrix.asn1s.schema.ASN1Tag;
 import org.lastrix.asn1s.schema.type.ASN1ComponentType;
@@ -44,11 +45,13 @@ import java.util.Map;
  * @version 1.0
  */
 abstract class ASN1Container extends ASN1X690Type {
-	private final HashMap<ASN1Tag, ASN1ComponentType> tag2type  = new HashMap<ASN1Tag, ASN1ComponentType>();
-	private final Logger                              logger    = Logger.getLogger(ASN1Container.class);
+	private final HashMap<ASN1Tag, ASN1ComponentType> tag2type = new HashMap<ASN1Tag, ASN1ComponentType>();
+	private final HashMap<Class, ASN1ComponentType>   class2type = new HashMap<Class, ASN1ComponentType>();
+	private final Logger                              logger = Logger.getLogger(ASN1Container.class);
 	private final Map<ASN1ComponentType, Boolean>     readState = new HashMap<ASN1ComponentType, Boolean>();
 	protected final ASN1ComponentType[] componentType;
 	protected final boolean             of;
+	private final   boolean             tagsUnique;
 
 	/**
 	 * Create an abstract container
@@ -57,10 +60,18 @@ abstract class ASN1Container extends ASN1X690Type {
 	 * @param of
 	 * @param name
 	 * @param tag
+	 * @param tagsUnique
 	 */
-	protected ASN1Container(final ASN1ComponentType[] componentType, final boolean of, final String name, final ASN1Tag tag) {
+	protected ASN1Container(
+	                       final ASN1ComponentType[] componentType,
+	                       final boolean of,
+	                       final String name,
+	                       final ASN1Tag tag,
+	                       final boolean tagsUnique
+	                       ) {
 		this.componentType = componentType;
 		this.of = of;
+		this.tagsUnique = tagsUnique;
 		this.name = name;
 		this.tag = tag;
 		this.typeId = name;
@@ -185,13 +196,33 @@ abstract class ASN1Container extends ASN1X690Type {
 		}
 	}
 
-	protected ASN1ComponentType getTypeByTag(ASN1Tag tag) {
-		if (tag2type.size() == 0) {
-			for (ASN1ComponentType type : componentType) {
-				tag2type.put(type.getTag(), type);
+	protected ASN1ComponentType getTypeByTag(ASN1Tag tag) throws ASN1UniquenessViolationException {
+		if (tag2type.size() == 0 || class2type.size() == 0) {
+			for (ASN1ComponentType _type : componentType) {
+				if (tag2type.containsKey(_type.getTag()) && tagsUnique) {
+					throw new ASN1UniquenessViolationException();
+				}
+				tag2type.put(_type.getTag(), _type);
+				class2type.put(_type.getHandledClass(), _type);
 			}
 		}
 		return tag2type.get(tag);
+	}
+
+	protected ASN1ComponentType getTypeFor(Object o) throws ASN1UniquenessViolationException {
+		if (o == null) {
+			return null;
+		}
+		if (tag2type.size() == 0 || class2type.size() == 0) {
+			for (ASN1ComponentType _type : componentType) {
+				if (tag2type.containsKey(_type.getTag()) && tagsUnique) {
+					throw new ASN1UniquenessViolationException();
+				}
+				tag2type.put(_type.getTag(), _type);
+				class2type.put(_type.getHandledClass(), _type);
+			}
+		}
+		return class2type.get(o.getClass());
 	}
 
 	protected void indefiniteCheck(ASN1Tag tag, ASN1InputStream asn1is) throws ASN1ProtocolException, IOException {

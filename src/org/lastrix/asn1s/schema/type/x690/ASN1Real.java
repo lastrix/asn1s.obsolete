@@ -67,10 +67,11 @@ public class ASN1Real extends ASN1X690Type {
 		handledClass = clazz;
 		if (clazz == Double.class) {
 			this.name = NAME;
+			this.tag = TAG;
 		} else {
 			this.name = NAME + "-" + clazz.getSimpleName();
+			this.tag = new ASN1Tag(0x109, TagClass.UNIVERSAL, false);
 		}
-		this.tag = TAG;
 		this.typeId = getName();
 		valid();
 	}
@@ -91,7 +92,7 @@ public class ASN1Real extends ASN1X690Type {
 
 		if (header) {
 			//write the header
-			os.write(TAG.asBytes());
+			os.write(getTag().asBytes());
 			if (value == 0d) {
 				//write length
 				os.write(ASN1Length.asBytes(0x00));
@@ -153,7 +154,7 @@ public class ASN1Real extends ASN1X690Type {
 		}
 		// if we should check tag, then check it!
 		if (tagCheck) {
-			if (!TAG.equals(tag)) {
+			if (!getTag().equals(tag)) {
 				throw new ASN1IncorrectTagException();
 			}
 		}

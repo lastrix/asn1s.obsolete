@@ -43,6 +43,7 @@ public class AllTests {
 
 		suite.addTestSuite(ASN1SetTest.class);
 		suite.addTestSuite(ASN1SequenceTest.class);
+		suite.addTestSuite(ASN1ChoiceTest.class);
 		// Make sure that we run the tests using the english locale
 		return new TestSetup(suite) {
 			@Override

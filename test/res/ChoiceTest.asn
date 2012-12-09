@@ -1,0 +1,20 @@
+-- Test module, SHOULD NOT BE USED on non-clean schema --
+-- DO NOT MODIFY IT UNLESS YOU KNOW WHAT YOU'RE DOING --
+ChoiceTest DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+EXPORTS ALL;
+
+--#java.util.ArrayList#
+ChoiceTestType ::= CHOICE {
+    a INTEGER,
+    b REAL,
+    c TestObject
+}
+
+--#org.lastrix.asn1s.util.TestObject#
+TestObject ::= [APPLICATION 2] SEQUENCE {
+    id INTEGER-Integer,
+    name UTF8String,
+    weight REAL-Float
+}
+END

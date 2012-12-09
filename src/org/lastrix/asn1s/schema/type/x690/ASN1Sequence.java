@@ -49,7 +49,7 @@ public class ASN1Sequence extends ASN1Container {
 	                   final ASN1ComponentType[] componentType,
 	                   final boolean of
 	                   ) {
-		super(componentType, of, "SEQUENCE@" + TAG.getTag(), TAG);
+		super(componentType, of, "SEQUENCE@" + TAG.getTag(), TAG, false);
 		valid();
 	}
 

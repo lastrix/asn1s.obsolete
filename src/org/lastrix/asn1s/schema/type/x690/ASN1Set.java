@@ -44,7 +44,7 @@ public class ASN1Set extends ASN1Container {
 	private final       Logger  logger = Logger.getLogger(ASN1Set.class);
 
 	public ASN1Set(final ASN1ComponentType[] componentType, final boolean of) {
-		super(componentType, of, "SET@" + TAG.getTag(), TAG);
+		super(componentType, of, "SET@" + TAG.getTag(), TAG, true);
 		valid();
 	}
 
@@ -201,6 +201,9 @@ public class ASN1Set extends ASN1Container {
 			}
 			type = getTypeByTag(tag);
 			if (type == null) {
+				logger.warn(this.componentType[0].getTag());
+				logger.warn(this.componentType[1].getTag());
+				logger.warn(this.componentType[2].getTag());
 				throw new ASN1ProtocolException("Unknown tag found: " + tag.toString());
 			}
 			if (isRead(type)) {

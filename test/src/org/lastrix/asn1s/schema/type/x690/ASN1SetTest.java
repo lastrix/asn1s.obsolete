@@ -49,13 +49,13 @@ public class ASN1SetTest extends CustomTestCase {
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 		final Set<Integer> n_iSet = (Set<Integer>) schema.read(bis);
 		assertNotNull(n_iSet);
-		assertTrue(n_iSet.size() == iSet.size());
-		assertTrue(n_iSet.toString().equals(iSet.toString()));
+		assertEquals(n_iSet.size(), iSet.size());
+		assertEquals(n_iSet.toString(), iSet.toString());
 	}
 
 	public void testSet() throws Exception {
 		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/SetTest.asn");
-		final TestObject to = new TestObject(101010, "MyName", 0.0f);
+		final TestObject to = new TestObject(10, "MyName", 0.0f);
 
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		final int N = 2;

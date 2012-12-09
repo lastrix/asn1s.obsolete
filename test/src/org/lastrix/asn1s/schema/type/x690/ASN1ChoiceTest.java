@@ -18,61 +18,47 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
-import org.junit.Test;
 import org.lastrix.asn1s.CustomTestCase;
 import org.lastrix.asn1s.schema.ASN1Schema;
 import org.lastrix.asn1s.util.TestObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author lastrix
  * @version 1.0
  */
-public class ASN1SequenceTest extends CustomTestCase {
+public class ASN1ChoiceTest extends CustomTestCase {
 
-	@Test
-	public void testSequenceOf() throws Exception {
-		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/SequenceTest.asn");
-		final List<Integer> list = new ArrayList<Integer>();
-		final int N = 5;
-		for (int i = 0; i < N; i++) {
-			list.add(i);
-		}
+	public void testChoice() throws Exception {
+		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/ChoiceTest.asn");
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		schema.write(list, bos);
 
-		final byte[] data = bos.toByteArray();
-//		System.out.println(Utils.toHexString(data));
-		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-		final List<Integer> n_list = (List<Integer>) schema.read(bis);
-		assertNotNull(n_list);
-		assertEquals(n_list.size(), list.size());
-		assertEquals(n_list.toString(), list.toString());
-	}
-
-	@Test
-	public void testSequence() throws Exception {
-		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/SequenceTest.asn");
+		final long longValue = 101010L;
+		schema.write(longValue, bos);
 		final TestObject to = new TestObject(101010, "MyName", 0.0f);
-
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		final int N = 2;
-		for (int i = 0; i < N; i++) {
-			schema.write(to, bos);
-		}
+		schema.write(to, bos);
+		final double doubleValue = 10.02d;
+		schema.write(doubleValue, bos);
 
 		final byte[] data = bos.toByteArray();
 //		System.out.println(Utils.toHexString(data));
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 
-		for (int i = 0; i < N; i++) {
-			final TestObject n_to = (TestObject) schema.read(bis);
-			assertNotNull(n_to);
-			assertTrue(n_to.equals(to));
-		}
+		Object tmp;
+		tmp = schema.read(bis);
+		assertNotNull(tmp);
+		assertEquals(tmp.getClass(), Long.class);
+		final long nLongValue = (Long) tmp;
+		assertTrue(nLongValue == longValue);
+		tmp = schema.read(bis);
+		assertNotNull(tmp);
+		assertEquals(tmp, to);
+		tmp = schema.read(bis);
+		assertNotNull(tmp);
+		assertEquals(tmp.getClass(), Double.class);
+		final double nDoubleValue = (Double) tmp;
+		assertTrue(nDoubleValue == doubleValue);
 	}
 }
