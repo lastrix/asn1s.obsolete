@@ -39,12 +39,10 @@ import java.util.Vector;
  */
 public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 	private final static Logger logger = Logger.getLogger(ASN1TreeWalkerImpl.class);
-
 	/**
 	 * The schema where every valid module should be placed
 	 */
 	private final ASN1Schema schema;
-
 	/**
 	 * Stack is used to construct ASN1 schema objects
 	 */
@@ -284,9 +282,13 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final TaggingMethod taggingMethod = (TaggingMethod) taggedTypeStack.poll();
 		final Object type = taggedTypeStack.poll();
 		final ASN1Type asn1type = getType(type);
+		final Constraint constraint = (Constraint) taggedTypeStack.poll();
 		//and create new type
-//		logger.info(String.format("Creating type for %d %s %s %s", tagNumber, tagClass, taggingMethod, type));
-		stack.push(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod, (Constraint) taggedTypeStack.poll()));
+		if (constraint == null) {
+			stack.push(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod));
+		} else {
+			stack.push(new ASN1ConstrainedType(new ASN1TaggedType(asn1type, tagNumber, tagClass, taggingMethod), constraint));
+		}
 	}
 
 	@Override
@@ -664,7 +666,6 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		super.enumerationItem(text);
 	}
 
-
 	@Override
 	protected void numberForm(final int number) {
 		stack.push((long) number);
@@ -778,6 +779,31 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		stack.push(true);
 	}
 
+	private enum BlockTag {
+		MODULE,
+		VECTOR,
+		TYPE_DEFINITION,
+		CONSTRAINT,
+		TYPE,
+		TAGGED_TYPE,
+		UNION,
+		CONSTRAINT_VALUE_RANGE,
+		ENDPOINT,
+		VALUE,
+		CONSTRAINT_VALUE,
+		INTERSECTION,
+		CONSTRAINT_SIZE,
+		SYMBOLS_FROM_MODULE,
+		IMPORTS,
+		EXPORTS,
+		SEQUENCEOF,
+		TYPE_REFERENCE,
+		SEQUENCE,
+		NAMED_TYPE,
+		COMPONENT_TYPE,
+		SETOF, SET, CHOICE, MODULE_ID
+	}
+
 	private static class NamedType {
 		final String   name;
 		final ASN1Type type;
@@ -795,7 +821,6 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 			       '}';
 		}
 	}
-
 
 	private static class Endpoint {
 		final boolean                            less;
@@ -850,30 +875,5 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 			return "Imports{" + imports +
 			       '}';
 		}
-	}
-
-	private enum BlockTag {
-		MODULE,
-		VECTOR,
-		TYPE_DEFINITION,
-		CONSTRAINT,
-		TYPE,
-		TAGGED_TYPE,
-		UNION,
-		CONSTRAINT_VALUE_RANGE,
-		ENDPOINT,
-		VALUE,
-		CONSTRAINT_VALUE,
-		INTERSECTION,
-		CONSTRAINT_SIZE,
-		SYMBOLS_FROM_MODULE,
-		IMPORTS,
-		EXPORTS,
-		SEQUENCEOF,
-		TYPE_REFERENCE,
-		SEQUENCE,
-		NAMED_TYPE,
-		COMPONENT_TYPE,
-		SETOF, SET, CHOICE, MODULE_ID
 	}
 }

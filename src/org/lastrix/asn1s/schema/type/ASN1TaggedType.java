@@ -23,7 +23,6 @@ import org.lastrix.asn1s.ASN1InputStream;
 import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.exception.ASN1IncorrectTagException;
 import org.lastrix.asn1s.schema.*;
-import org.lastrix.asn1s.schema.constraint.Constraint;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,25 +34,17 @@ import java.io.PrintWriter;
  */
 public class ASN1TaggedType extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1TaggedType.class);
-
-
-	private final TaggingMethod taggingMethod;
 	private final TagClass      tagClass;
+	private final TaggingMethod taggingMethod;
 	private final int           tagNumber;
 	private       ASN1Type      subType;
-
-	/**
-	 * It should be set later, so we would know for certain how to handle tagging
-	 */
 	private TaggingMethod _methodToUse = null;
-
 
 	public ASN1TaggedType(
 	                     final ASN1Type subType,
 	                     final int tagNumber,
 	                     final TagClass tagClass,
-	                     final TaggingMethod taggingMethod,
-	                     final Constraint constraint
+	                     final TaggingMethod taggingMethod
 	                     ) {
 		if (subType == null || tagNumber < 0) {
 			throw new NullPointerException();
@@ -71,44 +62,25 @@ public class ASN1TaggedType extends ASN1Type {
 		invalid();
 	}
 
-
 	@Override
-	public String toString() {
-		return "ASN1TaggedType{ [" + ((tagClass != null) ? tagClass : "") +
-		       " " + tagNumber +
-		       "] " + subType +
-		       " " + taggingMethod + " }";
-	}
-
-	/**
-	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
-	 *
-	 * @param o      - the object to be written
-	 * @param os     - the output stream
-	 * @param header - true if header should be written
-	 *
-	 * @return number of bytes written
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		if (header) {
-			os.write(getTag().asBytes());
-			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
+	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
+		if (getModule() != null) {
+			throw new IllegalStateException();
 		}
-		switch (_methodToUse) {
-			case IMPLICIT:
-				subType.write(o, os, false);
-				break;
 
-			case EXPLICIT:
-				subType.write(o, os, true);
-				break;
-		}
-		if (header) {
-			os.write(0x00);
-			os.write(0x00);
+		setModule(module);
+
+		if (subType instanceof ASN1UnresolvedType) {
+			final ASN1Type t = module.resolveType((ASN1UnresolvedType) subType);
+			if (t == null) {
+				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) subType, module);
+			} else {
+				this.subType = t;
+				doInstall(module);
+			}
+		} else {
+			//now we should add self to index base
+			doInstall(module);
 		}
 	}
 
@@ -143,25 +115,21 @@ public class ASN1TaggedType extends ASN1Type {
 	}
 
 	@Override
-	public void onInstall(final ASN1Module module) throws IllegalStateException, ASN1Exception {
-		if (getModule() != null) {
-			throw new IllegalStateException();
+	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
+		getTag().toASN1(printWriter, false);
+		if (!taggingMethod.equals(TaggingMethod.AUTOMATIC)) {
+			printWriter.append(taggingMethod.toString());
+			printWriter.append(" ");
 		}
+		subType.toASN1(printWriter, false);
+	}
 
-		setModule(module);
-
-		if (subType instanceof ASN1UnresolvedType) {
-			final ASN1Type t = module.resolveType((ASN1UnresolvedType) subType);
-			if (t == null) {
-				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) subType, module);
-			} else {
-				this.subType = t;
-				doInstall(module);
-			}
-		} else {
-			//now we should add self to index base
-			doInstall(module);
-		}
+	@Override
+	public String toString() {
+		return "ASN1TaggedType{ [" + ((tagClass != null) ? tagClass : "") +
+		       " " + tagNumber +
+		       "] " + subType +
+		       " " + taggingMethod + " }";
 	}
 
 	@Override
@@ -173,6 +141,38 @@ public class ASN1TaggedType extends ASN1Type {
 			} catch (ASN1Exception e) {
 				logger.warn("doInstall failed:", e);
 			}
+		}
+	}
+
+	/**
+	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
+	 *
+	 * @param o      - the object to be written
+	 * @param os     - the output stream
+	 * @param header - true if header should be written
+	 *
+	 * @return number of bytes written
+	 *
+	 * @throws IOException
+	 */
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		if (header) {
+			os.write(getTag().asBytes());
+			os.write(ASN1Length.asBytes(ASN1Length.FORM_INDEFINITE));
+		}
+		switch (_methodToUse) {
+			case IMPLICIT:
+				subType.write(o, os, false);
+				break;
+
+			case EXPLICIT:
+				subType.write(o, os, true);
+				break;
+		}
+		if (header) {
+			os.write(0x00);
+			os.write(0x00);
 		}
 	}
 
@@ -207,15 +207,4 @@ public class ASN1TaggedType extends ASN1Type {
 		typeId = makeTypeId(getName(), getModuleName());
 		valid();
 	}
-
-	@Override
-	public void toASN1(final PrintWriter printWriter, final boolean typeAssignment) {
-		getTag().toASN1(printWriter, false);
-		if (!taggingMethod.equals(TaggingMethod.AUTOMATIC)) {
-			printWriter.append(taggingMethod.toString());
-			printWriter.append(" ");
-		}
-		subType.toASN1(printWriter, false);
-	}
-
 }
