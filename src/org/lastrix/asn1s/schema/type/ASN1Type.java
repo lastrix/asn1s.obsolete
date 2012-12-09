@@ -41,39 +41,33 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	/**
 	 * Constant used in property change support to notify about validity state change.
 	 */
-	public final static String                VALID = "valid";
+	public final static String                VALID  = "valid";
 	/**
 	 * Property change support used to notify listeners about validity changes.
 	 */
-	private final       PropertyChangeSupport pcs   = new PropertyChangeSupport(this);
-
-	/**
-	 * Flag that show object validity state.
-	 */
-	private boolean valid;
-
+	private final       PropertyChangeSupport pcs    = new PropertyChangeSupport(this);
 	/**
 	 * Module that holds this type
 	 */
-	protected ASN1Module module = null;
-
+	protected           ASN1Module            module = null;
 	/**
 	 * ASN1Tag used in index maps to choose valid handler for incoming object in
 	 * an ASN1 binary stream.
 	 */
-	protected ASN1Tag tag = null;
-
+	protected           ASN1Tag               tag    = null;
 	/**
 	 * Class used by this type, see {@link ASN1Schema} index HashMaps.
 	 */
-	protected Class handledClass;
-
+	protected Class  handledClass;
 	/**
 	 * Name of this type
 	 */
 	protected String name;
-
 	protected String typeId = null;
+	/**
+	 * Flag that show object validity state.
+	 */
+	private boolean valid;
 
 	/**
 	 * Static method used to make a fully qualified type id.
@@ -87,6 +81,14 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return moduleId + "." + name;
 	}
 
+	/**
+	 * Returns module.
+	 *
+	 * @return an ASN1Module
+	 */
+	public final ASN1Module getModule() {
+		return module;
+	}
 
 	/**
 	 * Setups new module for this type
@@ -97,17 +99,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		this.module = module;
 	}
 
-
-	/**
-	 * Returns module.
-	 *
-	 * @return an ASN1Module
-	 */
-	public final ASN1Module getModule() {
-		return module;
-	}
-
-
 	/**
 	 * Returns name of this type
 	 *
@@ -116,7 +107,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	public final String getName() {
 		return name;
 	}
-
 
 	/**
 	 * Returns fully qualified type name.
@@ -127,7 +117,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return typeId;
 	}
 
-
 	/**
 	 * Returns true if this type is constructed
 	 *
@@ -136,7 +125,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	public final boolean isConstructed() {
 		return getTag().isConstructed();
 	}
-
 
 	/**
 	 * Returns true if this type is valid: all types resolved, handled classes found.
@@ -147,7 +135,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return valid;
 	}
 
-
 	/**
 	 * Returns class used by this type
 	 *
@@ -156,7 +143,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	public Class getHandledClass() {
 		return handledClass;
 	}
-
 
 	/**
 	 * Delegate from Module
@@ -167,7 +153,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return getModule().getName();
 	}
 
-
 	/**
 	 * Return tag
 	 *
@@ -177,12 +162,10 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return tag;
 	}
 
-
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
 	}
-
 
 	/**
 	 * Delegate from pcs
@@ -199,7 +182,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		                      );
 	}
 
-
 	/**
 	 * Sets valid field to false, fires pcs to notify others about state change
 	 */
@@ -208,7 +190,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		this.valid = false;
 	}
 
-
 	/**
 	 * Sets valid field to true, fires pcs to notify others about state change
 	 */
@@ -216,7 +197,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		firePropertyChange(VALID, this.valid, true);
 		this.valid = true;
 	}
-
 
 	/**
 	 * Delegate from pcs
@@ -230,7 +210,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		                             listener
 		                             );
 	}
-
 
 	/**
 	 * Read object of type from input stream
@@ -246,7 +225,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		return read(null, asn1is, null, false);
 	}
 
-
 	/**
 	 * Delegate from pcs
 	 *
@@ -259,7 +237,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		                                listener
 		                                );
 	}
-
 
 	/**
 	 * Called when type should be installed in module.
@@ -277,7 +254,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 		setModule(module);
 	}
 
-
 	/**
 	 * Read object of type from input stream
 	 *
@@ -294,7 +270,6 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	public abstract Object read(final Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck) throws
 	                                                                                                                         IOException,
 	                                                                                                                         ASN1Exception;
-
 
 	/**
 	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>

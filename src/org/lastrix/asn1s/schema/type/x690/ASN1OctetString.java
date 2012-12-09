@@ -50,21 +50,6 @@ public class ASN1OctetString extends ASN1X690Type {
 		valid();
 	}
 
-
-	/**
-	 * Protected method to encode octet strings
-	 *
-	 * @param os   - the output stream
-	 * @param data - the data to write
-	 *
-	 * @throws IOException   thrown by I/O
-	 * @throws ASN1Exception
-	 */
-	protected final void encode(final OutputStream os, byte[] data) throws IOException, ASN1Exception {
-		//infinite
-		os.write(data);
-	}
-
 	/**
 	 * Protected method for decoding octet strings
 	 *
@@ -111,13 +96,13 @@ public class ASN1OctetString extends ASN1X690Type {
 			os.write(getTag().asBytes());
 			os.write(ASN1Length.asBytes(array.length));
 		}
-		encode(os, array);
+		os.write(array);
 	}
 
 	@Override
 	public Object read(Object nullValue, final ASN1InputStream asn1is, ASN1Tag tag, boolean tagCheck) throws IOException, ASN1Exception {
 		if (nullValue != null) {
-			throw new IllegalArgumentException("ASN1Real does not allow non null parameter 'nullValue'");
+			throw new IllegalArgumentException("ASN1OctetString does not allow non null parameter 'nullValue'");
 		}
 
 		// tag should be null in anyway

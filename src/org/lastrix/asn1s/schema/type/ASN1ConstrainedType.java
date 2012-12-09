@@ -93,7 +93,6 @@ public class ASN1ConstrainedType extends ASN1Type {
 		if (type instanceof ASN1UnresolvedType) {
 			final ASN1Type t = module.resolveType((ASN1UnresolvedType) type);
 			if (t == null) {
-				logger.warn("Creating listener.");
 				new InstallPropertyChangeListener(this, (ASN1UnresolvedType) type, module);
 			} else {
 				this.type = t;
@@ -123,7 +122,6 @@ public class ASN1ConstrainedType extends ASN1Type {
 	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
 	                        ) {
 		if (type == unresolved) {
-			logger.warn("type resolved: " + resolved);
 			type = resolved;
 			try {
 				doInstall(module);
