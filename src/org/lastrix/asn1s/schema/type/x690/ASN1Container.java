@@ -45,10 +45,10 @@ import java.util.Map;
  * @version 1.0
  */
 abstract class ASN1Container extends ASN1X690Type {
-	private final HashMap<ASN1Tag, ASN1ComponentType> tag2type = new HashMap<ASN1Tag, ASN1ComponentType>();
+	private final HashMap<ASN1Tag, ASN1ComponentType> tag2type   = new HashMap<ASN1Tag, ASN1ComponentType>();
 	private final HashMap<Class, ASN1ComponentType>   class2type = new HashMap<Class, ASN1ComponentType>();
-	private final Logger                              logger = Logger.getLogger(ASN1Container.class);
-	private final Map<ASN1ComponentType, Boolean>     readState = new HashMap<ASN1ComponentType, Boolean>();
+	private final Logger                              logger     = Logger.getLogger(ASN1Container.class);
+	private final Map<ASN1ComponentType, Boolean>     readState  = new HashMap<ASN1ComponentType, Boolean>();
 	protected final ASN1ComponentType[] componentType;
 	protected final boolean             of;
 	private final   boolean             tagsUnique;
@@ -160,7 +160,7 @@ abstract class ASN1Container extends ASN1X690Type {
 
 	protected void checkRead() throws ASN1ProtocolException {
 		for (ASN1ComponentType t : componentType) {
-			if (readState.get(t) == false && !t.isOptional()) {
+			if (!readState.get(t) && !t.isOptional()) {
 				throw new ASN1ProtocolException(String.format("Data corruption possible. Not all fields had been read."));
 			}
 		}

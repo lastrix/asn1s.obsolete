@@ -110,9 +110,7 @@ public class ASN1Real extends ASN1X690Type {
 		if (Double.isInfinite(value)) {
 			//write info octet
 			os.write(((value < 0) ? SPECIAL_REAL_VALUE_NEGATIVE_INF : SPECIAL_REAL_VALUE_POSITIVE_INF));
-			return;
 		} else {
-
 			// we don't need to make anything else
 			long valueBits = Double.doubleToLongBits(value);
 
