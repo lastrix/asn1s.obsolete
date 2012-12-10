@@ -35,9 +35,9 @@ public class ASN1SetTest extends CustomTestCase {
 
 	public void testSetOf() throws Exception {
 		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/SetTest.asn");
-		final Set<Integer> iSet = new HashSet<Integer>();
-		final int N = 5;
-		for (int i = 0; i < N; i++) {
+		final Set<Long> iSet = new HashSet<Long>();
+		final long N = 5;
+		for (long i = 0; i < N; i++) {
 			iSet.add(i);
 		}
 
@@ -47,7 +47,7 @@ public class ASN1SetTest extends CustomTestCase {
 		final byte[] data = bos.toByteArray();
 //		System.out.println(Utils.toHexString(data));
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
-		final Set<Integer> n_iSet = (Set<Integer>) schema.read(bis);
+		final Set<Long> n_iSet = (Set<Long>) schema.read(bis);
 		assertNotNull(n_iSet);
 		assertEquals(n_iSet.size(), iSet.size());
 		assertEquals(n_iSet.toString(), iSet.toString());
