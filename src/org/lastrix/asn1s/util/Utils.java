@@ -42,6 +42,7 @@ public final class Utils {
 	private final static Logger logger = Logger.getLogger(Utils.class);
 
 	private final static double LOG_255            = Math.log(255);
+	private final static double LOG_2              = Math.log(2);
 	public static final  int    BYTE_MASK          = 0x00FF;
 	public static final  int    BYTE_SIGN_MASK     = 0x0080;
 	public static final  int    UNSIGNED_BYTE_MASK = 0x007F;
@@ -56,7 +57,27 @@ public final class Utils {
 	 * @return number of bytes
 	 */
 	public static int getMinimumBytes(long value) {
-		return Math.max((int) (Math.ceil(Math.log(Long.highestOneBit(value)) / Utils.LOG_255)), 1);
+		//TODO: may be simple if-else clauses would be better than all that math?
+		if (value > 0) {
+			final double value_log = Math.log(Long.highestOneBit(value));
+			int result = Math.max((int) (Math.ceil(value_log / Utils.LOG_255)), 1);
+			final int pow = (int) Math.ceil(value_log / LOG_2);
+			if (pow % 8 == 7) {
+				result++;
+			}
+			return result;
+		} else if (value == 0) {
+			return 1;
+		} else {
+			long nValue = ~value;
+			final double nValue_log = Math.log(Long.highestOneBit(nValue));
+			int result = Math.max((int) (Math.ceil(nValue_log / Utils.LOG_255)), 1);
+			final int pow = (int) Math.floor(nValue_log / LOG_2);
+			if (pow % 8 == 7) {
+				result++;
+			}
+			return result;
+		}
 	}
 
 	/**
@@ -67,7 +88,27 @@ public final class Utils {
 	 * @return number of bytes
 	 */
 	public static int getMinimumBytes(int value) {
-		return Math.max((int) (Math.ceil(Math.log(Integer.highestOneBit(value)) / Utils.LOG_255)), 1);
+		//TODO: may be simple if-else clauses would be better than all that math?
+		if (value > 0) {
+			final double value_log = Math.log(Integer.highestOneBit(value));
+			int result = Math.max((int) (Math.ceil(value_log / Utils.LOG_255)), 1);
+			final int pow = (int) Math.ceil(value_log / LOG_2);
+			if (pow % 8 == 7) {
+				result++;
+			}
+			return result;
+		} else if (value == 0) {
+			return 1;
+		} else {
+			int nValue = ~value;
+			final double nValue_log = Math.log(Integer.highestOneBit(nValue));
+			int result = Math.max((int) (Math.ceil(nValue_log / Utils.LOG_255)), 1);
+			final int pow = (int) Math.floor(nValue_log / LOG_2);
+			if (pow % 8 == 7) {
+				result++;
+			}
+			return result;
+		}
 	}
 
 	/**
@@ -133,6 +174,54 @@ public final class Utils {
 	 * @return the byte array
 	 */
 	public static byte[] extractBytes(long value, int from, int to) {
+		final int bCount = Math.abs(to - from);
+		final byte[] bytes = new byte[bCount];
+		if (from > to) {
+			for (int i = from - 1; i >= to; i--) {
+				bytes[from - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
+			}
+		} else {
+			for (int i = from; i < to; i++) {
+				bytes[to - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
+			}
+		}
+		return bytes;
+	}
+
+	/**
+	 * Extracts bytes from {@code value}, you may specify from > to and to > from to choose LE or BE
+	 *
+	 * @param value - the value
+	 * @param from  - start point
+	 * @param to    - end point
+	 *
+	 * @return the byte array
+	 */
+	public static byte[] extractBytes(int value, int from, int to) {
+		final int bCount = Math.abs(to - from);
+		final byte[] bytes = new byte[bCount];
+		if (from > to) {
+			for (int i = from - 1; i >= to; i--) {
+				bytes[from - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
+			}
+		} else {
+			for (int i = from; i < to; i++) {
+				bytes[to - i - 1] = (byte) ((value >> i * 8) & BYTE_MASK);
+			}
+		}
+		return bytes;
+	}
+
+	/**
+	 * Extracts bytes from {@code value}, you may specify from > to and to > from to choose LE or BE
+	 *
+	 * @param value - the value
+	 * @param from  - start point
+	 * @param to    - end point
+	 *
+	 * @return the byte array
+	 */
+	public static byte[] extractBytes(short value, int from, int to) {
 		final int bCount = Math.abs(to - from);
 		final byte[] bytes = new byte[bCount];
 		if (from > to) {

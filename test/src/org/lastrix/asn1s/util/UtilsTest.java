@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2011 Lastrix                                            *
+ * Copyright (C) 2010-2012 Lastrix                                            *
  * This file is part of ASN1S.                                                *
  *                                                                            *
  * ASN1S is free software: you can redistribute it and/or modify              *
@@ -40,6 +40,11 @@ public class UtilsTest extends CustomTestCase {
 		assertTrue(Utils.getMinimumBytes(0x100) == 2);
 		assertTrue(Utils.getMinimumBytes(0x10000) == 3);
 		assertTrue(Utils.getMinimumBytes(0x1000000) == 4);
+		assertTrue(Utils.getMinimumBytes(Integer.MIN_VALUE) == 4);
+		assertTrue(Utils.getMinimumBytes(-1) == 1);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFF01) == 2);
+		assertTrue(Utils.getMinimumBytes(0xFFFF0001) == 3);
+		assertTrue(Utils.getMinimumBytes(0xFF000001) == 4);
 	}
 
 	@Test
@@ -52,6 +57,15 @@ public class UtilsTest extends CustomTestCase {
 		assertTrue(Utils.getMinimumBytes(0x10000000000L) == 6);
 		assertTrue(Utils.getMinimumBytes(0x1000000000000L) == 7);
 		assertTrue(Utils.getMinimumBytes(0x100000000000000L) == 8);
+		assertTrue(Utils.getMinimumBytes(Long.MIN_VALUE) == 8);
+		assertTrue(Utils.getMinimumBytes(-1) == 1);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFFFFFFFFFF01L) == 2);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFFFFFFFF0001L) == 3);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFFFFFF000001L) == 4);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFFFF00000001L) == 5);
+		assertTrue(Utils.getMinimumBytes(0xFFFFFF0000000001L) == 6);
+		assertTrue(Utils.getMinimumBytes(0xFFFF000000000001L) == 7);
+		assertTrue(Utils.getMinimumBytes(0xFF00000000000001L) == 8);
 	}
 
 	@Test
