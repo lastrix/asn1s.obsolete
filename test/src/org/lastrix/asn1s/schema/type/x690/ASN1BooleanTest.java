@@ -18,45 +18,39 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
-import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
+import org.lastrix.asn1s.schema.ASN1Schema;
 
-import java.util.Locale;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
- * All tests for package org.lastrix.asn1s.schema.
- *
  * @author lastrix
  * @version 1.0
  */
-@SuppressWarnings({"ALL"})
-public class AllTests {
+public class ASN1BooleanTest extends CustomTestCase {
 
-	/**
-	 * Generate {@link TestSuite}
-	 *
-	 * @return an {@link Test} object
-	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema.type.x690");
+	private final Boolean dataSet[] = new Boolean[]{Boolean.FALSE, Boolean.TRUE};
 
-		suite.addTestSuite(ASN1SetTest.class);
-		suite.addTestSuite(ASN1SequenceTest.class);
-		suite.addTestSuite(ASN1ChoiceTest.class);
-		suite.addTestSuite(ASN1IntegerTest.class);
-		suite.addTestSuite(ASN1IntegerIntegerTest.class);
-		suite.addTestSuite(ASN1IntegerShortTest.class);
-		suite.addTestSuite(ASN1IntegerByteTest.class);
-		suite.addTestSuite(ASN1UTF8StringTest.class);
-		suite.addTestSuite(ASN1OctetStringTest.class);
-		suite.addTestSuite(ASN1BooleanTest.class);
-		// Make sure that we run the tests using the english locale
-		return new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
+	public void testBoolean() throws Exception {
+		final ASN1Schema schema = new ASN1Schema();
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+		for (int i = 0; i < dataSet.length; i++) { schema.write(dataSet[i], bos); }
+
+		final byte[] data = bos.toByteArray();
+//		System.out.println(Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+
+		Object tmp;
+		boolean value;
+		for (int i = 0; i < dataSet.length; i++) {
+			tmp = schema.read(bis);
+			assertNotNull(tmp);
+			assertEquals(tmp.getClass(), Boolean.class);
+			value = (Boolean) tmp;
+			assertTrue("Value " + dataSet[i] + " failed.", value == dataSet[i]);
+		}
+
 	}
 }
