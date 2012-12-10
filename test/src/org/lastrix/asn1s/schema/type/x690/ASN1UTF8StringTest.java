@@ -18,43 +18,39 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
-import org.junit.Test;
+import org.lastrix.asn1s.CustomTestCase;
+import org.lastrix.asn1s.schema.ASN1Schema;
 
-import java.util.Locale;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
- * All tests for package org.lastrix.asn1s.schema.
- *
  * @author lastrix
  * @version 1.0
  */
-@SuppressWarnings({"ALL"})
-public class AllTests {
+public class ASN1UTF8StringTest extends CustomTestCase {
+	private final String dataSet[] = new String[]{"", "Java", "ASN.1", "Все будет хорошо"};
 
-	/**
-	 * Generate {@link TestSuite}
-	 *
-	 * @return an {@link Test} object
-	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema.type.x690");
+	public void testUTF8Strings() throws Exception {
+		final ASN1Schema schema = new ASN1Schema();
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		suite.addTestSuite(ASN1SetTest.class);
-		suite.addTestSuite(ASN1SequenceTest.class);
-		suite.addTestSuite(ASN1ChoiceTest.class);
-		suite.addTestSuite(ASN1IntegerTest.class);
-		suite.addTestSuite(ASN1IntegerIntegerTest.class);
-		suite.addTestSuite(ASN1IntegerShortTest.class);
-		suite.addTestSuite(ASN1IntegerByteTest.class);
-		suite.addTestSuite(ASN1UTF8StringTest.class);
-		// Make sure that we run the tests using the english locale
-		return new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
+		for (int i = 0; i < dataSet.length; i++) { schema.write(dataSet[i], bos); }
+
+		final byte[] data = bos.toByteArray();
+//		System.out.println(Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+
+		Object tmp;
+		String value;
+		for (int i = 0; i < dataSet.length; i++) {
+			tmp = schema.read(bis);
+			assertNotNull(tmp);
+			assertEquals(tmp.getClass(), String.class);
+			value = (String) tmp;
+			assertEquals("Failed to test value=" + dataSet[i], value, dataSet[i]);
+		}
+
 	}
+
 }
