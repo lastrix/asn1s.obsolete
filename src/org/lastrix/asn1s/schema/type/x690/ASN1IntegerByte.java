@@ -31,15 +31,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * This is non-default type handler which should read/write Byte to ASN1 stream.
+ *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Integer extends ASN1X690Type {
-	public static final  String  NAME = "INTEGER";
-	private final static ASN1Tag TAG  = new ASN1Tag(0x02, TagClass.UNIVERSAL, false);
+public class ASN1IntegerByte extends ASN1X690Type {
+	public static final  String  NAME = "INTEGER-Byte";
+	private final static ASN1Tag TAG  = new ASN1Tag(0x302, TagClass.UNIVERSAL, false);
 
-	public ASN1Integer() {
-		this.handledClass = Long.class;
+	public ASN1IntegerByte() {
+		handledClass = Byte.class;
 		this.tag = TAG;
 		this.name = NAME;
 		this.typeId = getName();
@@ -57,9 +59,12 @@ public class ASN1Integer extends ASN1X690Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException {
-		final long value = (Long) o;
+		final byte value = (Byte) o;
 
 		int size = Utils.getMinimumBytes((value < 0) ? -value : value);
+		if (size > 1) {
+			size = 1;
+		}
 
 		if (header) {
 			//write header
@@ -90,28 +95,19 @@ public class ASN1Integer extends ASN1X690Type {
 		}
 
 		final int length = ASN1Length.readLength(asn1is);
+		if (length > 1) {
+			throw new ASN1ReadException("ASN1IntegerByte doesn't allow length to be more than 1.");
+		}
 
-		long value = 0;
+		byte value = 0;
 		//extract sign
 		int temp = asn1is.read();
 		if ((temp & Utils.BYTE_SIGN_MASK) != 0) {
 			//set value to all ones, so we get an negative value
-			value = Long.MIN_VALUE | Long.MAX_VALUE;
+			value = Byte.MIN_VALUE | Byte.MAX_VALUE;
 		}
 		// now we could extract all other octets
-		value = (value << 8) | ((long) temp & Utils.BYTE_MASK);
-
-		if (length > 1) {
-			// read the entire chunk of data
-			final byte[] data = new byte[length - 1];
-			if (asn1is.read(data) != length - 1) {
-				throw new ASN1ReadException("Can not read all required bytes");
-			}
-			// now convert it to valid form
-			for (int i = 0; i < data.length; i++) {
-				value = (value << 8) | (((long) data[i]) & Utils.BYTE_MASK);
-			}
-		}
+		value = (byte) ((value << 8) | ((byte) temp & Utils.BYTE_MASK));
 		return value;
 	}
 }

@@ -31,15 +31,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * This is non-default type handler which should read/write Short to ASN1 stream.
+ *
  * @author lastrix
  * @version 1.0
  */
-public class ASN1Integer extends ASN1X690Type {
-	public static final  String  NAME = "INTEGER";
-	private final static ASN1Tag TAG  = new ASN1Tag(0x02, TagClass.UNIVERSAL, false);
+public class ASN1IntegerShort extends ASN1X690Type {
+	public static final  String  NAME = "INTEGER-Short";
+	private final static ASN1Tag TAG  = new ASN1Tag(0x202, TagClass.UNIVERSAL, false);
 
-	public ASN1Integer() {
-		this.handledClass = Long.class;
+	public ASN1IntegerShort() {
+		handledClass = Short.class;
 		this.tag = TAG;
 		this.name = NAME;
 		this.typeId = getName();
@@ -57,9 +59,12 @@ public class ASN1Integer extends ASN1X690Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException {
-		final long value = (Long) o;
+		final short value = (Short) o;
 
 		int size = Utils.getMinimumBytes((value < 0) ? -value : value);
+		if (size > 2) {
+			size = 2;
+		}
 
 		if (header) {
 			//write header
@@ -91,15 +96,15 @@ public class ASN1Integer extends ASN1X690Type {
 
 		final int length = ASN1Length.readLength(asn1is);
 
-		long value = 0;
+		short value = 0;
 		//extract sign
 		int temp = asn1is.read();
 		if ((temp & Utils.BYTE_SIGN_MASK) != 0) {
 			//set value to all ones, so we get an negative value
-			value = Long.MIN_VALUE | Long.MAX_VALUE;
+			value = Short.MIN_VALUE | Short.MAX_VALUE;
 		}
 		// now we could extract all other octets
-		value = (value << 8) | ((long) temp & Utils.BYTE_MASK);
+		value = (short) ((value << 8) | (temp & Utils.BYTE_MASK));
 
 		if (length > 1) {
 			// read the entire chunk of data
@@ -109,7 +114,7 @@ public class ASN1Integer extends ASN1X690Type {
 			}
 			// now convert it to valid form
 			for (int i = 0; i < data.length; i++) {
-				value = (value << 8) | (((long) data[i]) & Utils.BYTE_MASK);
+				value = (short) ((value << 8) | (((int) data[i]) & Utils.BYTE_MASK));
 			}
 		}
 		return value;

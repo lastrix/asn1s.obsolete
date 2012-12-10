@@ -43,9 +43,9 @@ public class ASN1X690Module extends ASN1Module {
 	static {
 		Vector<String> items = new Vector<String>();
 		items.add(ASN1Integer.NAME);
-		items.add(ASN1Integer.NAME + "-Byte");
-		items.add(ASN1Integer.NAME + "-Short");
-		items.add(ASN1Integer.NAME + "-Integer");
+		items.add(ASN1IntegerByte.NAME);
+		items.add(ASN1IntegerShort.NAME);
+		items.add(ASN1IntegerInteger.NAME);
 		items.add(ASN1Real.NAME);
 		items.add(ASN1Real.NAME + "-Float");
 		items.add(ASN1UTF8String.NAME);
@@ -64,11 +64,10 @@ public class ASN1X690Module extends ASN1Module {
 	public ASN1X690Module() {
 		super(new ASN1ModuleId(MODULE_NAME, null), TaggingMethod.EXPLICIT, false, true, null, null, null);
 		//only ASN1UserType could act as root type, and only this kind could be exported or imported.
-		addType(createTypeFor(new ASN1Integer(Long.class)));
-		addType(createTypeFor(new ASN1Integer(Integer.class)));
-		addType(createTypeFor(new ASN1Integer(Integer.class)));
-		addType(createTypeFor(new ASN1Integer(Short.class)));
-		addType(createTypeFor(new ASN1Integer(Byte.class)));
+		addType(createTypeFor(new ASN1Integer()));
+		addType(createTypeFor(new ASN1IntegerInteger()));
+		addType(createTypeFor(new ASN1IntegerShort()));
+		addType(createTypeFor(new ASN1IntegerByte()));
 		addType(createTypeFor(new ASN1Real(Float.class)));
 		addType(createTypeFor(new ASN1Real(Double.class)));
 		addType(createTypeFor(new ASN1UTF8String()));
