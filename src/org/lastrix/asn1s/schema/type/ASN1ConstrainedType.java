@@ -132,6 +132,11 @@ public class ASN1ConstrainedType extends ASN1Type {
 	}
 
 	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		type.moduleDeployed();
+	}
+
+	@Override
 	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
 		type.toASN1(pw, false);
 		pw.append(" ");

@@ -289,4 +289,11 @@ public abstract class ASN1Type implements ASN1SchemaObject {
 	 * @param resolved
 	 */
 	public abstract void typeResolved(final ASN1UnresolvedType unresolved, final ASN1Type resolved);
+
+	/**
+	 * This method is called after module had been successfully deployed.
+	 *
+	 * @throws ASN1Exception
+	 */
+	public abstract void moduleDeployed() throws ASN1Exception;
 }

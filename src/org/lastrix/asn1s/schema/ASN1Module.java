@@ -234,6 +234,10 @@ public class ASN1Module implements ASN1SchemaObject {
 				                           );
 			}
 		}
+
+		for (ASN1UserType type : types.values()) {
+			type.moduleDeployed();
+		}
 	}
 
 	@Override

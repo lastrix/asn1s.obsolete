@@ -151,6 +151,11 @@ public class ASN1ComponentType extends ASN1Type {
 	}
 
 	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		type.moduleDeployed();
+	}
+
+	@Override
 	public void toASN1(final PrintWriter pw, final boolean typeAssignment) {
 		pw.append(fieldName);
 		pw.append(" ");

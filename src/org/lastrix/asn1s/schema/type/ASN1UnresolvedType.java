@@ -105,4 +105,9 @@ public class ASN1UnresolvedType extends ASN1Type {
 	                        ) {
 		throw new UnsupportedOperationException("You trying to use " + this);
 	}
+
+	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		throw new UnsupportedOperationException("You trying to use " + this);
+	}
 }

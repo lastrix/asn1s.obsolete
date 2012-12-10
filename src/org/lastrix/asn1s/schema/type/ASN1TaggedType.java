@@ -144,6 +144,11 @@ public class ASN1TaggedType extends ASN1Type {
 		}
 	}
 
+	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		subType.moduleDeployed();
+	}
+
 	/**
 	 * Encode <code>o</code> to ASN.1 notation and write it to <code>os</code>
 	 *

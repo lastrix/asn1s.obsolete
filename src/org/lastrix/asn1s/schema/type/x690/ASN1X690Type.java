@@ -18,6 +18,7 @@
 
 package org.lastrix.asn1s.schema.type.x690;
 
+import org.lastrix.asn1s.exception.ASN1Exception;
 import org.lastrix.asn1s.schema.type.ASN1Type;
 import org.lastrix.asn1s.schema.type.ASN1UnresolvedType;
 
@@ -36,6 +37,11 @@ public abstract class ASN1X690Type extends ASN1Type {
 	                        final ASN1UnresolvedType unresolved, final ASN1Type resolved
 	                        ) {
 		throw new UnsupportedOperationException("Not allowed for X690 types.");
+	}
+
+	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		//nothing to do
 	}
 
 	@Override

@@ -105,6 +105,23 @@ abstract class ASN1Container extends ASN1X690Type {
 		}
 	}
 
+	@Override
+	public void moduleDeployed() throws ASN1Exception {
+		for (ASN1ComponentType type : componentType) {
+			type.moduleDeployed();
+		}
+
+		tag2type.clear();
+		class2type.clear();
+		for (ASN1ComponentType _type : componentType) {
+			if (tag2type.containsKey(_type.getTag()) && tagsUnique) {
+				throw new ASN1UniquenessViolationException();
+			}
+			tag2type.put(_type.getTag(), _type);
+			class2type.put(_type.getHandledClass(), _type);
+		}
+	}
+
 	private void doInstall(final ASN1Module module, final ASN1Type type) throws ASN1Exception {
 		if (!(type instanceof ASN1UserType) && (type.getModule() == null)) {
 			type.onInstall(module);
@@ -197,30 +214,12 @@ abstract class ASN1Container extends ASN1X690Type {
 	}
 
 	protected ASN1ComponentType getTypeByTag(ASN1Tag tag) throws ASN1UniquenessViolationException {
-		if (tag2type.size() == 0 || class2type.size() == 0) {
-			for (ASN1ComponentType _type : componentType) {
-				if (tag2type.containsKey(_type.getTag()) && tagsUnique) {
-					throw new ASN1UniquenessViolationException();
-				}
-				tag2type.put(_type.getTag(), _type);
-				class2type.put(_type.getHandledClass(), _type);
-			}
-		}
 		return tag2type.get(tag);
 	}
 
 	protected ASN1ComponentType getTypeFor(Object o) throws ASN1UniquenessViolationException {
 		if (o == null) {
 			return null;
-		}
-		if (tag2type.size() == 0 || class2type.size() == 0) {
-			for (ASN1ComponentType _type : componentType) {
-				if (tag2type.containsKey(_type.getTag()) && tagsUnique) {
-					throw new ASN1UniquenessViolationException();
-				}
-				tag2type.put(_type.getTag(), _type);
-				class2type.put(_type.getHandledClass(), _type);
-			}
 		}
 		return class2type.get(o.getClass());
 	}
