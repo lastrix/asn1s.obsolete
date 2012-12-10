@@ -180,7 +180,8 @@ public class ASN1UserType extends ASN1Type {
 	private Object makeInstance() throws ASN1ReadException {
 		if (handledClass == ASN1ObjectIdentifier.class
 		    || handledClass == ASN1RelativeObjectIdentifier.class
-		    || handledClass.getName().startsWith("java.lang.")) {
+		    || handledClass.getName().startsWith("java.lang.")
+		    || handledClass.isArray()) {
 			return null;
 		} else {
 			try {

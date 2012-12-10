@@ -45,7 +45,7 @@ public class ASN1OctetString extends ASN1X690Type {
 	protected ASN1OctetString() {
 		this.tag = TAG;
 		this.name = NAME;
-		this.handledClass = new byte[0].getClass();
+		this.handledClass = byte[].class;
 		this.typeId = getName();
 		valid();
 	}
