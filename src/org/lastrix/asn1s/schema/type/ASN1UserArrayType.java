@@ -18,37 +18,45 @@
 
 package org.lastrix.asn1s.schema.type;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
-import org.junit.Test;
+import org.lastrix.asn1s.ASN1InputStream;
+import org.lastrix.asn1s.exception.ASN1Exception;
+import org.lastrix.asn1s.schema.ASN1Tag;
 
-import java.util.Locale;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * All tests for package org.lastrix.asn1s.schema.
- *
  * @author lastrix
  * @version 1.0
  */
-@SuppressWarnings({"ALL"})
-public class AllTests {
-
+public class ASN1UserArrayType extends ASN1UserType {
 	/**
-	 * Generate {@link TestSuite}
+	 * Create user type with name, baseType
 	 *
-	 * @return an {@link Test} object
+	 * @param name     - the name of user type
+	 * @param baseType - the base type which should handle loading/saving
+	 * @param clazz
+	 *
+	 * @throws NullPointerException if name or baseType is null
 	 */
-	public static junit.framework.Test suite() {
-		final TestSuite suite = new TestSuite("Test for org.lastrix.asn1s.schema.type");
+	public ASN1UserArrayType(final String name, final ASN1Type baseType, final Class clazz) throws NullPointerException {
+		super(name, baseType, clazz);
+	}
 
-		suite.addTestSuite(ASN1UserTypeTest.class);
-		suite.addTest(org.lastrix.asn1s.schema.type.x690.AllTests.suite());
-		// Make sure that we run the tests using the english locale
-		return new TestSetup(suite) {
-			@Override
-			public void setUp() {
-				Locale.setDefault(Locale.US);
-			}
-		};
+	@Override
+	public Object read(
+	                  final Object value, final ASN1InputStream asn1is, final ASN1Tag tag, final boolean tagCheck
+	                  ) throws IOException, ASN1Exception {
+		final List list = (List) baseType.read(new ArrayList(), asn1is, tag, tagCheck);
+		return list.toArray((Object[]) Array.newInstance(getHandledClass().getComponentType(), list.size()));
+	}
+
+	@Override
+	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
+		baseType.write(Arrays.asList((Object[]) o), os, header);
 	}
 }

@@ -32,7 +32,8 @@ import java.util.Arrays;
  */
 public class ASN1UserTypeTest extends CustomTestCase {
 
-	private final TestObject dataSet[] = new TestObject[]{new TestObject(1, "MyName1", -1), new TestObject(2, "MyName2", -2)};
+	private final TestObject dataSet[]    = new TestObject[]{new TestObject(1, "MyName1", -1), new TestObject(2, "MyName2", -2)};
+	private final Integer    intDataSet[] = new Integer[]{1, 2, 3, 4, 5, 6};
 
 	public void testArray() throws Exception {
 		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/ArraysTest.asn");
@@ -48,5 +49,21 @@ public class ASN1UserTypeTest extends CustomTestCase {
 		assertNotNull(tmp);
 		assertEquals(tmp.getClass(), TestObject[].class);
 		assertTrue(Arrays.deepEquals(dataSet, (TestObject[]) tmp));
+	}
+
+	public void testIntArray() throws Exception {
+		final ASN1Schema schema = ASN1Schema.loadSchema("./test/res/ArraysTest.asn");
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+		schema.write(intDataSet, bos);
+
+		final byte[] data = bos.toByteArray();
+//		System.out.println(Utils.toHexString(data));
+		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
+
+		Object tmp = schema.read(bis);
+		assertNotNull(tmp);
+		assertEquals(tmp.getClass(), Integer[].class);
+		assertTrue(Arrays.deepEquals(intDataSet, (Object[]) tmp));
 	}
 }

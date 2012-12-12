@@ -6,6 +6,9 @@ EXPORTS ALL;
 --#[Lorg.lastrix.asn1s.util.TestObject;#
 TestArray ::= [APPLICATION 1] SEQUENCE OF TestObject
 
+--#[Ljava.lang.Integer;#
+IntArray ::= [APPLICATION 3] SEQUENCE OF INTEGER-Integer
+
 --#org.lastrix.asn1s.util.TestObject#
 TestObject ::= [APPLICATION 2] SEQUENCE {
     id INTEGER-Integer,

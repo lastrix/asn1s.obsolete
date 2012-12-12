@@ -220,7 +220,12 @@ public class ASN1TreeWalkerImpl extends ASN1TreeWalker {
 		final ASN1Type type = (ASN1Type) typeDefStack.poll();
 
 //		logger.warn("User specified class for " + typeName + " = " + clazz);
-		stack.push(new ASN1UserType(typeName, type, clazz));
+		if (clazz != null && clazz.isArray()) {
+			//TODO: primitives can not be handled
+			stack.push(new ASN1UserArrayType(typeName, type, clazz));
+		} else {
+			stack.push(new ASN1UserType(typeName, type, clazz));
+		}
 	}
 
 	@Override

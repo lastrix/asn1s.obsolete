@@ -33,11 +33,7 @@ import org.lastrix.asn1s.type.ASN1RelativeObjectIdentifier;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Used to handle user defined types. This type SHOULD be created only in typeAssignment structure.
@@ -48,7 +44,7 @@ import java.util.List;
  */
 public class ASN1UserType extends ASN1Type {
 	private final static Logger logger = Logger.getLogger(ASN1UserType.class);
-	private ASN1Type baseType;
+	protected ASN1Type baseType;
 
 	/**
 	 * Flag that shows if type as exported.
@@ -112,10 +108,6 @@ public class ASN1UserType extends ASN1Type {
 		if (value == null) {
 			value = makeInstance();
 		}
-		if (getHandledClass().isArray()) {
-			final List list = (List) baseType.read(new ArrayList(), asn1is, tag, tagCheck);
-			return list.toArray((Object[]) Array.newInstance(getHandledClass().getComponentType(), list.size()));
-		}
 		return baseType.read(value, asn1is, tag, tagCheck);
 	}
 
@@ -178,11 +170,7 @@ public class ASN1UserType extends ASN1Type {
 	 */
 	@Override
 	public void write(final Object o, final OutputStream os, final boolean header) throws IOException, ASN1Exception {
-		if (getHandledClass().isArray()) {
-			baseType.write(Arrays.asList((Object[]) o), os, header);
-		} else {
-			baseType.write(o, os, header);
-		}
+		baseType.write(o, os, header);
 	}
 
 	private void doInstall(ASN1Module module) throws ASN1Exception {
