@@ -1,0 +1,16 @@
+-- Test module, SHOULD NOT BE USED on non-clean schema --
+-- DO NOT MODIFY IT UNLESS YOU KNOW WHAT YOU'RE DOING --
+SetTest DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+EXPORTS ALL;
+--#[Lorg.lastrix.asn1s.util.TestObject;#
+TestArray ::= [APPLICATION 1] SEQUENCE OF TestObject
+
+--#org.lastrix.asn1s.util.TestObject#
+TestObject ::= [APPLICATION 2] SEQUENCE {
+    id INTEGER-Integer,
+    name UTF8String,
+    weight REAL-Float
+}
+
+END
